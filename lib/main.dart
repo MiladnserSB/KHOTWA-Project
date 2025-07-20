@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:khotwa/shared/themes/app_theme.dart';
 import 'package:khotwa/view/change_password/change_password_page.dart';
+import 'package:khotwa/view/intro/Intro_Screen.dart';
+import 'package:khotwa/view/intro/Splash_Screen.dart';
 
 
 void main() async {
@@ -16,9 +18,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Clean Architecture Login',
+      title: '',
       theme: AppTheme.light,
-      home: ChangingPasswordPage(),
+      home: SplashScreen(),
     );
   }
 }
