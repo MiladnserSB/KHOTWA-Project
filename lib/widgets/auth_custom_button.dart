@@ -4,7 +4,7 @@ import 'package:khotwa/shared/constants/colors.dart';
 class AuthCustomButton extends StatelessWidget {
   const AuthCustomButton({super.key, required this.title, required this.onPressed});
   final String title;
-  final VoidCallback onPressed;
+  final void Function()? onPressed;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(

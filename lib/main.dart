@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:khotwa/shared/themes/app_theme.dart';
 import 'package:khotwa/view/change_password/change_password_page.dart';
 import 'package:khotwa/view/intro/Intro_Screen.dart';
+import 'package:khotwa/view/profile/profile_page.dart';
 
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+  await Hive.openBox('authBox');
   runApp(const MyApp());
 }
 
-//TODO: Milad we didn't use the hive in auth_repo_impl and also in auth_api in the remote
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -19,7 +23,9 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: '',
       theme: AppTheme.light,
-      home: ChangingPasswordPage(),
+
+      home: ProfilePage(),
+
     );
   }
 }

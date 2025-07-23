@@ -1,10 +1,13 @@
+// widgets/login_form_widget.dart
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:khotwa/controller/auth_controller.dart';
 import 'package:khotwa/shared/constants/app_strings.dart';
 import 'package:khotwa/view/login/forgot_password_dialogue.dart';
 
-
 class LoginForm extends StatefulWidget {
   final Size size;
+
   const LoginForm({super.key, required this.size});
 
   @override
@@ -12,8 +15,7 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+  final AuthController authController = Get.find();
   bool isPasswordVisible = false;
 
   @override
@@ -30,7 +32,7 @@ class _LoginFormState extends State<LoginForm> {
         ),
         SizedBox(height: height * 0.01),
         TextFormField(
-          controller: emailController,
+          onChanged: (value) => authController.email.value = value,
           keyboardType: TextInputType.emailAddress,
           decoration: InputDecoration(
             hintText: AppStrings.emailHint,
@@ -50,7 +52,7 @@ class _LoginFormState extends State<LoginForm> {
         ),
         SizedBox(height: height * 0.01),
         TextFormField(
-          controller: passwordController,
+          onChanged: (value) => authController.password.value = value,
           obscureText: !isPasswordVisible,
           decoration: InputDecoration(
             hintText: AppStrings.passwordHint,
@@ -64,35 +66,34 @@ class _LoginFormState extends State<LoginForm> {
               icon: Icon(
                 isPasswordVisible ? Icons.visibility_off : Icons.visibility,
               ),
-              onPressed: () {
-                setState(() {
-                  isPasswordVisible = !isPasswordVisible;
-                });
-              },
+              onPressed: () => setState(() {
+                isPasswordVisible = !isPasswordVisible;
+              }),
             ),
           ),
         ),
         SizedBox(height: height * 0.015),
         Align(
-  alignment: Alignment.centerRight,
-  child: GestureDetector(
-    onTap: () {
-      showDialog(
-        context: context,
-        builder: (_) => ForgotPasswordDialogue(emailController: emailController),
-      );
-    },
-    child: Text(
-      AppStrings.forgotPassword,
-      style: TextStyle(
-        decoration: TextDecoration.underline,
-        fontWeight: FontWeight.w600,
-        fontSize: width * 0.035,
-      ),
-    ),
-  ),
-),
-
+          alignment: Alignment.centerRight,
+          child: GestureDetector(
+            onTap: () {
+              showDialog(
+                context: context,
+                builder: (_) => ForgotPasswordDialogue(
+                  emailController: TextEditingController(text: authController.email.value),
+                ),
+              );
+            },
+            child: Text(
+              AppStrings.forgotPassword,
+              style: TextStyle(
+                decoration: TextDecoration.underline,
+                fontWeight: FontWeight.w600,
+                fontSize: width * 0.035,
+              ),
+            ),
+          ),
+        ),
       ],
     );
   }
