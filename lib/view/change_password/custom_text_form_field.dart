@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:khotwa/shared/constants/colors.dart';
 
 class CustomTextFormField extends StatelessWidget {
   final TextEditingController controller;
@@ -19,12 +20,12 @@ class CustomTextFormField extends StatelessWidget {
     return TextFormField(
       controller: controller,
       obscureText: obscureText,
-      style: const TextStyle(color: Colors.black),
+      style: const TextStyle(color: textBlack),
       decoration: InputDecoration(
         filled: true,
         fillColor: const Color(0xFFF4F5F3),
         hintText: hintText,
-        hintStyle: const TextStyle(color: Colors.grey),
+        hintStyle: const TextStyle(color: grey),
         suffixIcon: suffixIcon,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),

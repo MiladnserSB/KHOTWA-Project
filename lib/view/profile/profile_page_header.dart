@@ -22,7 +22,7 @@ class ProfilePageHeader extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'John Doe',
+                  'Milad AlNser',
                   style: TextStyle(
                     fontSize: 20 * textScale,
                     fontWeight: FontWeight.bold,
@@ -31,10 +31,9 @@ class ProfilePageHeader extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  'JohnDoe@gmail.com',
+                  'Miladalnser@gmail.com',
                   style: TextStyle(
                     fontSize: 18 * textScale,
-                    // fontWeight: FontWeight.bold,
                     color: primaryColor,
                   ),
                 ),

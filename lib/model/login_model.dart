@@ -1,31 +1,33 @@
-class LoginResponse {
-  final String message;
-  final String token;
-  final User user;
+import 'dart:convert';
 
-  LoginResponse({required this.message, required this.token, required this.user});
+LoginModel loginModelFromJson(String str) => LoginModel.fromJson(json.decode(str));
 
-  factory LoginResponse.fromJson(Map<String, dynamic> json) {
-    return LoginResponse(
-      message: json['message'],
-      token: json['token'],
-      user: User.fromJson(json['user']),
+String loginModelToJson(LoginModel data) => json.encode(data.toJson());
+
+class LoginModel {
+    final String status;
+    final String message;
+    final String email;
+    final String token;
+
+    LoginModel({
+        required this.status,
+        required this.message,
+        required this.email,
+        required this.token,
+    });
+
+    factory LoginModel.fromJson(Map<String, dynamic> json) => LoginModel(
+        status: json["status"],
+        message: json["message"],
+        email: json["email"],
+        token: json["token"],
     );
-  }
-}
 
-class User {
-  final int id;
-  final String name;
-  final String email;
-
-  User({required this.id, required this.name, required this.email});
-
-  factory User.fromJson(Map<String, dynamic> json) {
-    return User(
-      id: json['id'],
-      name: json['name'],
-      email: json['email'],
-    );
-  }
+    Map<String, dynamic> toJson() => {
+        "status": status,
+        "message": message,
+        "email": email,
+        "token": token,
+    };
 }

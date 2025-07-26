@@ -1,54 +1,48 @@
 import 'package:flutter/material.dart';
 import 'package:khotwa/shared/constants/colors.dart';
 
-class InfoSectionPage extends StatefulWidget {
+class ProfileCategoryDetails extends StatefulWidget {
   final String title;
   final List<Map<String, String>> fields;
 
-  const InfoSectionPage({super.key, required this.title, required this.fields});
+  const ProfileCategoryDetails({super.key, required this.title, required this.fields});
 
   @override
-  State<InfoSectionPage> createState() => _InfoSectionPageState();
+  State<ProfileCategoryDetails> createState() => _ProfileCategoryDetailsState();
 }
 
-class _InfoSectionPageState extends State<InfoSectionPage> {
-  late List<TextEditingController> _controllers;
-  bool _isEditing = false;
-
+class _ProfileCategoryDetailsState extends State<ProfileCategoryDetails> {
+  late List<TextEditingController> controllers;
+  bool isEditing = false;
   Map<String, String> updatedData = {};
 
-  @override
-  void initState() {
-    super.initState();
-    _controllers = widget.fields
+@override
+void initState() {
+super.initState();
+    controllers = widget.fields
         .map((item) => TextEditingController(text: item['value']))
         .toList();
   }
-
   @override
   void dispose() {
-    for (final controller in _controllers) {
+    for (final controller in controllers) {
       controller.dispose();
     }
     super.dispose();
   }
 
-  void _toggleEditSave() {
-    if (_isEditing) {
+  void changeEditSaveState() {
+    if (isEditing) {
       for (int i = 0; i < widget.fields.length; i++) {
-        updatedData[widget.fields[i]['label']!] = _controllers[i].text;
+        updatedData[widget.fields[i]['label']!] = controllers[i].text;
       }
-      print('Saved Data: $updatedData');
     }
-
-    setState(() => _isEditing = !_isEditing);
+    setState(() => isEditing = !isEditing);
   }
-
   @override
   Widget build(BuildContext context) {
     // ignore: deprecated_member_use
     final textScale = MediaQuery.of(context).textScaleFactor;
-
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -83,9 +77,9 @@ class _InfoSectionPageState extends State<InfoSectionPage> {
                     ),
                   ),
                   const SizedBox(height: 6),
-                  _isEditing
+                  isEditing
                       ? TextField(
-                          controller: _controllers[index],
+                          controller: controllers[index],
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(),
                             contentPadding: EdgeInsets.symmetric(
@@ -97,11 +91,11 @@ class _InfoSectionPageState extends State<InfoSectionPage> {
                       : Padding(
                           padding: const EdgeInsets.only(top: 4.0),
                           child: Text(
-                            _controllers[index].text,
+                            controllers[index].text,
                             style: TextStyle(fontSize: 18 * textScale),
                           ),
                         ),
-                  !_isEditing
+                  !isEditing
                       ? const Divider(height: 24)
                       : const SizedBox(height: 0.1),
                   SizedBox(height: 20),
@@ -112,16 +106,16 @@ class _InfoSectionPageState extends State<InfoSectionPage> {
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: _toggleEditSave,
+        onPressed: changeEditSaveState,
         backgroundColor: secondaryColor,
         label: Text(
-          _isEditing ? 'Save' : 'Edit',
+          isEditing ? 'Save' : 'Edit',
           style: const TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
           ),
         ),
-        icon: Icon(_isEditing ? Icons.save : Icons.edit, color: Colors.white),
+        icon: Icon(isEditing ? Icons.save : Icons.edit, color: Colors.white),
       ),
     );
   }

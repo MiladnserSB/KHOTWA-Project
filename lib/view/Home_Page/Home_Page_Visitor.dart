@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:khotwa/widgets/Animated_Bottom_Bar_Visitor.dart';
 
 class HomePageVisitor extends StatelessWidget {
   final TextStyle titleStyle = TextStyle(

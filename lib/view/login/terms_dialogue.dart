@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:khotwa/shared/constants/app_strings.dart';
 import 'package:khotwa/widgets/auth_custom_button.dart';
+import 'package:khotwa/shared/constants/colors.dart';
 
 class TermsDialog extends StatelessWidget {
   const TermsDialog({super.key});
@@ -20,13 +21,13 @@ class TermsDialog extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 20),
-            const Text("1. Example term 1", style: TextStyle(fontSize: 16, color: Colors.black54)),
+            const Text("1. Example term 1", style: TextStyle(fontSize: 16, color: textBlack)),
             const SizedBox(height: 10),
-            const Text("2. Example term 2", style: TextStyle(fontSize: 16, color: Colors.black54)),
+            const Text("2. Example term 2", style: TextStyle(fontSize: 16, color: textBlack)),
             const SizedBox(height: 10),
-            const Text("3. Example term 3", style: TextStyle(fontSize: 16, color: Colors.black54)),
+            const Text("3. Example term 3", style: TextStyle(fontSize: 16, color: textBlack)),
             const SizedBox(height: 10),
-            const Text("4. Example term 4", style: TextStyle(fontSize: 16, color: Colors.black54)),
+            const Text("4. Example term 4", style: TextStyle(fontSize: 16, color: textBlack)),
             const SizedBox(height: 20),
             AuthCustomButton(title: AppStrings.close, onPressed: (){Navigator.of(context).pop();}),
           ],

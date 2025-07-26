@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:khotwa/shared/constants/colors.dart';
-import 'package:khotwa/view/profile/info_section_page.dart';
+import 'package:khotwa/view/profile/profile_category_details.dart';
 import 'package:khotwa/view/profile/volunteer%20history/volunteer_history_page.dart';
 
 class ProfilePageCategoriesInfoList extends StatelessWidget {
@@ -8,10 +8,10 @@ class ProfilePageCategoriesInfoList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _buildInfoList(context);
+    return buildProfileListCategories(context);
   }
 
-  Widget _buildInfoList(BuildContext context) {
+  Widget buildProfileListCategories(BuildContext context) {
     final List<Map<String, String>> infoItems = [
       {'title': 'Personal Information', 'subtitle': 'Details about you'},
       {'title': 'Volunteer Info', 'subtitle': 'Your volunteering details'},
@@ -43,11 +43,11 @@ class ProfilePageCategoriesInfoList extends StatelessWidget {
                   MaterialPageRoute(builder: (_) =>  VolunteerHistoryPage()),
                 );
               } else {
-                final sectionFields = _getFieldsForIndex(index);
+                final sectionFields = getCategoryPage(index);
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (_) => InfoSectionPage(
+                    builder: (_) => ProfileCategoryDetails(
                       title: infoItems[index]['title']!,
                       fields: sectionFields,
                     ),
@@ -100,7 +100,7 @@ class ProfilePageCategoriesInfoList extends StatelessWidget {
     );
   }
 
-  List<Map<String, String>> _getFieldsForIndex(int index) {
+  List<Map<String, String>> getCategoryPage(int index) {
     switch (index) {
       case 0:
         return [
