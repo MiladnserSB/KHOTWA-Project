@@ -72,7 +72,7 @@ class AuthController extends GetxController {
 
       if (success) {
         Get.snackbar("Changed", "Password changed successfully");
-        Get.offAllNamed(AppRoutes.login);
+        Get.offAllNamed(AppRoutes.homeVolunteer);
       } else {
         Get.snackbar("Failed", "Failed to change password");
       }
