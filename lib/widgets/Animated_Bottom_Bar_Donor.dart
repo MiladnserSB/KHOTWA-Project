@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:khotwa/view/Home_Page/Home_Page_Donor.dart';
 import 'package:khotwa/view/intro/Intro_Screen.dart';
-import 'package:khotwa/view/login/login_page.dart';
 
 class AnimatedBottomBarPageDonor extends StatefulWidget {
   @override
@@ -15,7 +14,7 @@ class _AnimatedBottomBarPageDonorState extends State<AnimatedBottomBarPageDonor>
 
   final List<_NavItem> _items = [
     _NavItem(icon: Icons.menu, label: 'Menu'),
-    _NavItem(icon: Icons.login, label: 'Logout'),
+    // _NavItem(icon: Icons.login, label: 'Logout'),
     _NavItem(icon: Icons.volunteer_activism, label: 'Donate'),
     _NavItem(icon: Icons.shopping_cart, label: 'Cart'),
     _NavItem(icon: Icons.home, label: 'Home'),
@@ -33,38 +32,38 @@ class _AnimatedBottomBarPageDonorState extends State<AnimatedBottomBarPageDonor>
         });
         break;
 
-      case 'Logout':
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text("Confirm Logout",  style: TextStyle(        fontWeight: FontWeight.bold,
+//       case 'Logout':
+//         showDialog(
+//           context: context,
+//           builder: (BuildContext context) {
+//             return AlertDialog(
+//               title: Text("Confirm Logout",  style: TextStyle(        fontWeight: FontWeight.bold,
 
-)
-),
-              content: Text("Are you sure you want to logout?"),
-              actions: [
-                TextButton(
-                  child: Text("No",style: TextStyle(color: Color(0xFFDDA15E))),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-                TextButton(
-                  child: Text("yes",style: TextStyle(color: Color(0xFFDDA15E))),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => LoginPage()),
-                    );
-                  },
-                ),
-              ],
-            );
-          },
-        );
-        break;
+// )
+// ),
+//               content: Text("Are you sure you want to logout?"),
+//               actions: [
+//                 TextButton(
+//                   child: Text("No",style: TextStyle(color: Color(0xFFDDA15E))),
+//                   onPressed: () {
+//                     Navigator.of(context).pop();
+//                   },
+//                 ),
+//                 TextButton(
+//                   child: Text("yes",style: TextStyle(color: Color(0xFFDDA15E))),
+//                   onPressed: () {
+//                     Navigator.of(context).pop();
+//                     Navigator.pushReplacement(
+//                       context,
+//                       MaterialPageRoute(builder: (context) => LoginPage()),
+//                     );
+//                   },
+//                 ),
+//               ],
+//             );
+//           },
+//         );
+//         break;
 
       case 'Donate':
         Navigator.push(
@@ -114,6 +113,14 @@ class _AnimatedBottomBarPageDonorState extends State<AnimatedBottomBarPageDonor>
             ListTile(
               leading: Icon(Icons.chat),
               title: Text('Chat'),
+            ),
+             ListTile(
+              leading: Icon(Icons.logout),
+              title: Text('Logout'),
+            ),
+             ListTile(
+              leading: Icon(Icons.receipt_long),
+              title: Text('Log'),
             ),
             ListTile(
               leading: Icon(Icons.info_outline),

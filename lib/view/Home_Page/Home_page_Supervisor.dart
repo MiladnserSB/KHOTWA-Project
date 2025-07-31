@@ -4,17 +4,14 @@ import 'package:khotwa/widgets/Home_Events_Card.dart';
 import 'package:khotwa/widgets/Home_Person_Card.dart';
 import 'package:khotwa/widgets/Home_Projects_Card.dart';
 
-class HomePageVolunteer extends StatefulWidget {
-  const HomePageVolunteer({super.key});
+class HomePageSupervisor extends StatefulWidget {
+  HomePageSupervisor({super.key});
 
   @override
-  State<HomePageVolunteer> createState() => _HomePageVolunteerState();
+  State<HomePageSupervisor> createState() => _HomePageSupervisorState();
 }
 
-class _HomePageVolunteerState extends State<HomePageVolunteer> {
-
-
-  
+class _HomePageSupervisorState extends State<HomePageSupervisor> {
   final FocusNode _focusNode = FocusNode();
   final TextEditingController _controller = TextEditingController();
 

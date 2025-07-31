@@ -3,11 +3,14 @@ import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import 'package:khotwa/bindings/splash_binding.dart';
-import 'package:khotwa/bindings/initial_binding.dart'; // ✅ You forgot this import
+import 'package:khotwa/bindings/initial_binding.dart';
 import 'package:khotwa/shared/constants/app_routes.dart';
 import 'package:khotwa/shared/themes/app_theme.dart';
 import 'package:khotwa/view/change_password/change_password_page.dart';
-import 'package:khotwa/view/event/event_details_page.dart';
+import 'package:khotwa/view/event_and_projects/event_details/event_details_page.dart';
+import 'package:khotwa/view/event_and_projects/events_and_projects_page.dart';
+import 'package:khotwa/view/event_and_projects/my_events_page.dart';
+import 'package:khotwa/view/event_and_projects/project_details/project_details_page.dart';
 
 import 'package:khotwa/view/intro/Splash_Screen.dart';
 import 'package:khotwa/view/intro/Intro_Screen.dart';
@@ -15,6 +18,7 @@ import 'package:khotwa/view/Home_Page/Home_Page_Volunteer.dart';
 import 'package:khotwa/view/login/login_page.dart';
 import 'package:khotwa/view/profile/profile_page.dart';
 import 'package:khotwa/view/verify_email/verify_email_page.dart';
+import 'package:khotwa/widgets/Animated_Bottom_Bar_Volunteer.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -42,11 +46,11 @@ class MyApp extends StatelessWidget {
       //   ),
       //   GetPage(name: AppRoutes.intro, page: () => const IntroScreen()),
       //   GetPage(name: AppRoutes.login, page: () => LoginPage()),
-      //     GetPage(name: AppRoutes.verifyEmail, page: () =>  VerifyEmailPage()), // ✅ added
+      //     GetPage(name: AppRoutes.verifyEmail, page: () =>  VerifyEmailPage()),
       //   GetPage(name: AppRoutes.homeVolunteer, page: () => HomePageVoulunteer()),
       //   GetPage(name: AppRoutes.changePassword, page: () => ChangingPasswordPage()),
       // ],
-      home: ProfilePage(),
+      home: AnimatedBottomBarPageVolunteer(),
     );
   }
 }
