@@ -4,17 +4,18 @@ import 'package:khotwa/view/Home_Page/Home_Page_Volunteer.dart';
 import 'package:khotwa/view/intro/Intro_Screen.dart';
 import 'package:khotwa/view/login/login_page.dart';
 
-class AnimatedBottomBarPageVolunteer extends StatefulWidget {
+class AnimatedBottomBarPageSupervisor extends StatefulWidget {
   @override
-  _AnimatedBottomBarPageVolunteerState createState() =>
-      _AnimatedBottomBarPageVolunteerState();
+  _AnimatedBottomBarPageSupervisorState createState() =>
+      _AnimatedBottomBarPageSupervisorState();
 }
 
-class _AnimatedBottomBarPageVolunteerState
-    extends State<AnimatedBottomBarPageVolunteer> {
+class _AnimatedBottomBarPageSupervisorState
+    extends State<AnimatedBottomBarPageSupervisor> {
 
 
-      
+
+
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   int _selectedIndex = 4;

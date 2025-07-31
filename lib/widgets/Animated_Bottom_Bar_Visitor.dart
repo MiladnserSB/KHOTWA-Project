@@ -11,14 +11,14 @@ class AnimatedBottomBarPageVisitor extends StatefulWidget {
 class _AnimatedBottomBarPageVisitorState extends State<AnimatedBottomBarPageVisitor> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  int _selectedIndex = 4; // الهوم في الفهرس 4 (آخر عنصر)
+  int _selectedIndex = 4; 
 
   final List<_NavItem> _items = [
     _NavItem(icon: Icons.menu, label: 'Menu'),
     _NavItem(icon: Icons.login, label: 'Login'),
     _NavItem(icon: Icons.volunteer_activism, label: 'Donate'),
     _NavItem(icon: Icons.shopping_cart, label: 'Cart'),
-    _NavItem(icon: Icons.home, label: 'Home'), // الهوم في النهاية
+    _NavItem(icon: Icons.home, label: 'Home'), 
   ];
 
   void _onIconTap(int index) {
@@ -84,6 +84,14 @@ class _AnimatedBottomBarPageVisitorState extends State<AnimatedBottomBarPageVisi
             ListTile(
               leading: Icon(Icons.chat),
               title: Text('Chat'),
+            ),
+             ListTile(
+              leading: Icon(Icons.logout),
+              title: Text('Logout'),
+            ),
+             ListTile(
+              leading: Icon(Icons.receipt_long),
+              title: Text('Log'),
             ),
             ListTile(
               leading: Icon(Icons.info_outline),
