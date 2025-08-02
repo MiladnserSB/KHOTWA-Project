@@ -1,21 +1,68 @@
 import 'package:flutter/material.dart';
+import 'package:khotwa/shared/constants/colors.dart';
+import 'package:khotwa/view/login/login_page.dart';
 import 'package:khotwa/widgets/Home_Events_Card.dart';
 import 'package:khotwa/widgets/Home_Person_Card.dart';
-import 'package:khotwa/widgets/Home_Projects_Card.dart';
+import 'package:khotwa/widgets/Home_Projects_Card_Donor_and_Visitor.dart';
 
-class HomePageVisitor extends StatelessWidget {
-  final TextStyle titleStyle = const TextStyle(
-    fontSize: 22,
-    fontWeight: FontWeight.bold,
-    color: Color(0xFFDDA15E),
-    fontFamily: '._Acumin Variable Concept',
-  );
+class HomePageVisitor extends StatefulWidget {
+  @override
+  State<HomePageVisitor> createState() => _HomePageVisitorState();
+}
+
+class _HomePageVisitorState extends State<HomePageVisitor> {
+  final FocusNode _focusNode = FocusNode();
+  final TextEditingController _controller = TextEditingController();
+
+  final ScrollController _myEventScrollController = ScrollController();
+  final ScrollController _recommendedScrollController = ScrollController();
+  final ScrollController _projectScrollController = ScrollController();
+
+  double _myEventScroll = 0.0;
+  double _recommendedScroll = 0.0;
+  double _projectScroll = 0.0;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _myEventScrollController.addListener(() {
+      setState(() {
+        _myEventScroll = _myEventScrollController.offset;
+      });
+    });
+
+    _recommendedScrollController.addListener(() {
+      setState(() {
+        _recommendedScroll = _recommendedScrollController.offset;
+      });
+    });
+
+    _projectScrollController.addListener(() {
+      setState(() {
+        _projectScroll = _projectScrollController.offset;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    _controller.dispose();
+    _myEventScrollController.dispose();
+    _recommendedScrollController.dispose();
+    _projectScrollController.dispose();
+    super.dispose();
+  }
+
+  bool _isPressed = false;
 
   final TextStyle subtitleStyle = const TextStyle(
-    fontSize: 18,
+    fontSize: 22,
     fontWeight: FontWeight.bold,
-    color: Color(0xFFDDA15E),
+    color: primaryColor,
     fontFamily: '._Acumin Variable Concept',
+    decoration: TextDecoration.underline,
   );
 
   final List<Map<String, String>> personList = [
@@ -34,16 +81,13 @@ class HomePageVisitor extends StatelessWidget {
       "role": "Serinan",
       "image": 'assets/images/person.jpg',
     },
-    {
-      "name": "Eleanor Pena",
-      "role": "Auditar",
-      "image": 'assets/images/person.jpg',
-    },
   ];
 
-  final List<Map<String, String>> eventsList = [
-    {'title': 'Community Cleanup', 'image': 'assets/images/image.png'},
-    {'title': 'Food Drive', 'image': 'assets/images/image.png'},
+  final List<Map<String, String>> myeventsList = [
+    {'title': 'Communityworld ', 'image': 'assets/images/new.jpg'},
+    {'title': 'Food Driveworld', 'image': 'assets/images/new.jpg'},
+    {'title': 'Communityworld ', 'image': 'assets/images/new.jpg'},
+    {'title': 'Food Driveworld', 'image': 'assets/images/new.jpg'},
   ];
 
   final List<Map<String, dynamic>> projectsList = [
@@ -66,6 +110,14 @@ class HomePageVisitor extends StatelessWidget {
       "total": 50000.0,
     },
   ];
+
+  double _calculateScale(double scrollOffset, int index, double itemWidth) {
+    double itemOffset = index * (itemWidth + 20); // 20 = spacing
+    double diff = (itemOffset - scrollOffset).abs();
+    double scale = 1 - (diff / (itemWidth * 3));
+    return scale.clamp(0.9, 1.0);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -79,76 +131,224 @@ class HomePageVisitor extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("Step Volunteering Team", style: titleStyle),
-                  IconButton(onPressed: () {}, icon: const Icon(Icons.search)),
+                   GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => LoginPage()),
+                      );
+                    },
+                    child: ClipOval(
+                      child: Image.asset(
+                        'assets/images/new.jpg',
+                        width: 50,
+                        height: 50,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+
+                  Expanded(
+                    child: Center(
+                      child:    Text(
+                        'Khotwa',
+                        style: TextStyle(
+                          fontSize: 35,
+                          fontFamily: 'GreatVibes',
+                          color: Color(0xFFDDA15E),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  IconButton(
+                    icon: Icon(
+                      Icons.notifications,
+                      size: 28,
+                      color: _isPressed ? Color(0xFFDDA15E) : Colors.black,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _isPressed = !_isPressed;
+                      });
+                    },
+                  ),
                 ],
               ),
-              const SizedBox(height: 6),
-              const Text(
-                "Step Volunteering Team is dedicated to empowering communities through impactful initiatives and sustainable solutions.",
-                style: TextStyle(
-                  fontSize: 16,
-                  fontFamily: '._Acumin Variable Concept',
-                ),
-              ),
+
               const SizedBox(height: 20),
+
+              TextField(
+                controller: _controller,
+                focusNode: _focusNode,
+                decoration: InputDecoration(
+                  hintText: 'Search...',
+                  filled: true,
+                  fillColor: Colors.grey[200],
+                  isDense: true,
+                  contentPadding: EdgeInsets.symmetric(
+                    vertical: 13,
+                    horizontal: 12,
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                    borderSide: BorderSide.none,
+                  ),
+                  prefixIcon: const Icon(Icons.search, size: 22),
+                ),
+                style: TextStyle(fontSize: 16),
+              ),
+
+              const SizedBox(height: 15),
+
               Text("Hall of Honor", style: subtitleStyle),
-              const SizedBox(height: 10),
+              const SizedBox(height: 20),
+
               SizedBox(
-                height: 120,
+                height: 150,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: personList.length,
                   itemBuilder: (context, index) {
                     final person = personList[index];
+                    String? medalText;
+                    if (index == 0) medalText = "🥇";
+                    if (index == 1) medalText = "🥈";
+                    if (index == 2) medalText = "🥉";
+
                     return Padding(
                       padding: const EdgeInsets.only(right: 20),
-                      child: HomePersonCard(
-                        name: person['name']!,
-                        image: person['image']!,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          HomePersonCard(
+                            name: person['name'] ?? '',
+                            image: person['image'] ?? '',
+                          ),
+                          const SizedBox(height: 5),
+                          if (medalText != null)
+                            Text(
+                              medalText,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 23,
+                              ),
+                            ),
+                        ],
                       ),
                     );
                   },
                 ),
               ),
-              const SizedBox(height: 20),
-              Text(" Events and Campaigns", style: subtitleStyle),
-              const SizedBox(height: 17),
+
+              const SizedBox(height: 10),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("My Events ", style: subtitleStyle),
+                  Text("View all..", style: TextStyle(fontSize: 13)),
+                ],
+              ),
+              const SizedBox(height: 10),
+
               SizedBox(
-                height: 130,
-                child: ListView.builder(
+                height: 280,
+                child: ListView.separated(
+                  controller: _myEventScrollController,
                   scrollDirection: Axis.horizontal,
-                  itemCount: eventsList.length,
+                  itemCount: myeventsList.length,
+                  separatorBuilder: (_, __) => const SizedBox(width: 10),
                   itemBuilder: (context, index) {
-                    final event = eventsList[index];
-                    return HomeEventsCard(
-                      title: event['title']!,
-                      image: event['image']!,
-                      volunteersCount: 12, status: 'accept',
+                    final event = myeventsList[index];
+                    double scale = _calculateScale(_myEventScroll, index, 220);
+                    return Transform.scale(
+                      scale: scale,
+                      child: HomeEventsCard(
+                        title: event['title']!,
+                        image: event['image']!,
+                        volunteersCount: 12,
+                        status: 'accept',
+                      ),
                     );
                   },
                 ),
               ),
-              const SizedBox(height: 20),
-              Text("Top Projects", style: subtitleStyle),
+
+              const SizedBox(height: 25),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("Recommended Events ", style: subtitleStyle),
+                  Text("View all..", style: TextStyle(fontSize: 13)),
+                ],
+              ),
               const SizedBox(height: 10),
+
               SizedBox(
-                height: 340,
-                child: ListView.builder(
+                height: 280,
+                child: ListView.separated(
+                  controller: _recommendedScrollController,
+                  scrollDirection: Axis.horizontal,
+                  itemCount: myeventsList.length,
+                  separatorBuilder: (_, __) => const SizedBox(width: 10),
+                  itemBuilder: (context, index) {
+                    final event = myeventsList[index];
+                    double scale = _calculateScale(
+                      _recommendedScroll,
+                      index,
+                      240,
+                    );
+                    return Transform.scale(
+                      scale: scale,
+                      child: HomeEventsCard(
+                        title: event['title']!,
+                        image: event['image']!,
+                        volunteersCount: 12,
+                        status: 'accept',
+                      ),
+                    );
+                  },
+                ),
+              ),
+
+              const SizedBox(height: 25),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("Top Projects ", style: subtitleStyle),
+                  Text("View all..", style: TextStyle(fontSize: 13)),
+                ],
+              ),
+              const SizedBox(height: 10),
+
+              SizedBox(
+                height: 330,
+                child: ListView.separated(
+                  controller: _projectScrollController,
                   scrollDirection: Axis.horizontal,
                   itemCount: projectsList.length,
+                  separatorBuilder: (_, __) => const SizedBox(width: 10),
                   itemBuilder: (context, index) {
                     final project = projectsList[index];
-                    return HomeProjectsCard(
-                      name: project['name'],
-                      organization: project['organization'],
-                      paid: project['paid'],
-                      total: project['total'],
+                    double scale = _calculateScale(_projectScroll, index, 260);
+                    return Transform.scale(
+                      scale: scale,
+                      child: HomeProjectsCardDonorAndVisitor(
+                        name: project['name'],
+                        organization: project['organization'],
+                        paid: project['paid'],
+                        total: project['total'],
+                      ),
                     );
                   },
                 ),
               ),
-              const SizedBox(height: 20),
+
+              const SizedBox(height: 30),
             ],
           ),
         ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:khotwa/shared/constants/colors.dart';
+import 'package:khotwa/view/event_and_projects/event_details/card_information_in_event.dart';
 import 'package:khotwa/view/event_and_projects/event_details/project_card_in_details_page.dart';
 
 
@@ -65,7 +66,7 @@ class EventDetailsPage extends StatelessWidget {
                   Row(
                     children: const [
                       Expanded(
-                        child: InfoCard(
+                        child: CardInformationInEvent(
                           icon: Icons.calendar_month,
                           title: 'Start Date',
                           value: 'September 15, 2024',
@@ -73,7 +74,7 @@ class EventDetailsPage extends StatelessWidget {
                       ),
                       SizedBox(width: 12),
                       Expanded(
-                        child: InfoCard(
+                        child: CardInformationInEvent(
                           icon: Icons.calendar_today,
                           title: 'End Date',
                           value: 'October 30, 2024',
@@ -85,7 +86,7 @@ class EventDetailsPage extends StatelessWidget {
                   Row(
                     children: const [
                       Expanded(
-                        child: InfoCard(
+                        child: CardInformationInEvent(
                           icon: Icons.access_time,
                           title: 'Time',
                           value: '9:00 AM - 4:00 PM\nDaily',
@@ -93,7 +94,7 @@ class EventDetailsPage extends StatelessWidget {
                       ),
                       SizedBox(width: 12),
                       Expanded(
-                        child: InfoCard(
+                        child: CardInformationInEvent(
                           icon: Icons.location_on,
                           title: 'Location',
                           value: 'Central Park West Side',
@@ -185,58 +186,3 @@ class EventDetailsPage extends StatelessWidget {
   }
 }
 
-// Updated InfoCard with secondaryColor background
-class InfoCard extends StatelessWidget {
-  final IconData icon;
-  final String title;
-  final String value;
-
-  const InfoCard({
-    super.key,
-    required this.icon,
-    required this.title,
-    required this.value,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-
-    return Container(
-      padding: EdgeInsets.all(size.width * 0.035),
-      decoration: BoxDecoration(
-        color: secondaryColor,
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Icon(icon, size: 20, color: white),
-              const SizedBox(width: 8),
-              Text(
-                title,
-                style: const TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 13,
-                  color: white,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 8),
-          Text(
-            value,
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 14,
-              height: 1.3,
-              color: white,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}

@@ -93,29 +93,9 @@ class HomeProjectsCard extends StatelessWidget {
           ),
           SizedBox(height: 20),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              ElevatedButton(
-                onPressed: () {
-                  print("Donate to $name");
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xFFDDA15E),
-                  padding: EdgeInsets.symmetric(horizontal: 30, vertical: 8),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                child: Text(
-                  'Donate',
-                  style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: '._Acumin Variable Concept',
-                    color: primaryColor,
-                  ),
-                ),
-              ),
+            
               SizedBox(width: 5,),
               ElevatedButton(
                 onPressed: () {
@@ -137,7 +117,7 @@ class HomeProjectsCard extends StatelessWidget {
                   ),
                 ),
                 child: Text(
-                  'Details',
+                  'View Details',
                   style: TextStyle(
                     fontSize: 13,
                     fontWeight: FontWeight.bold,
