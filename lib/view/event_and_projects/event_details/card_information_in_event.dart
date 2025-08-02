@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:khotwa/shared/constants/colors.dart';
 
-class EventCardInformation extends StatelessWidget {
+class CardInformationInEvent extends StatelessWidget {
   final IconData icon;
   final String title;
   final String value;
-  final double fontScale;
 
-  const EventCardInformation({
+  const CardInformationInEvent({
     super.key,
     required this.icon,
     required this.title,
     required this.value,
-    this.fontScale = 1.0,
   });
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+
     return Container(
-      padding: const EdgeInsets.all(12),
+      padding: EdgeInsets.all(size.width * 0.035),
       decoration: BoxDecoration(
         color: secondaryColor,
         borderRadius: BorderRadius.circular(12),
@@ -28,18 +28,26 @@ class EventCardInformation extends StatelessWidget {
         children: [
           Row(
             children: [
-              Icon(icon, color: white, size: 20),
+              Icon(icon, size: 20, color: white),
               const SizedBox(width: 8),
-              Text(title, style: TextStyle(color: white, fontSize: 13 * fontScale)),
+              Text(
+                title,
+                style: const TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 13,
+                  color: white,
+                ),
+              ),
             ],
           ),
           const SizedBox(height: 8),
           Text(
             value,
-            style: TextStyle(
-              color: white,
+            style: const TextStyle(
               fontWeight: FontWeight.bold,
-              fontSize: 14 * fontScale,
+              fontSize: 14,
+              height: 1.3,
+              color: white,
             ),
           ),
         ],

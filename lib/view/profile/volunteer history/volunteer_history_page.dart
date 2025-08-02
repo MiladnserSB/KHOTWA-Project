@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:khotwa/shared/constants/colors.dart';
-import 'package:khotwa/view/event_and_projects/event_details/event_details_page.dart';
 
 class VolunteerHistoryPage extends StatelessWidget {
   VolunteerHistoryPage({super.key});

@@ -25,7 +25,7 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
   }
 
   double _calculateScale(int index, double itemWidth) {
-    final double itemOffset = index * (itemWidth + 16); // 16 is separator
+    final double itemOffset = index * (itemWidth + 16);
     final double diff = (itemOffset - currentScroll).abs();
     double scale = 1 - (diff / (itemWidth * 2));
     return scale.clamp(0.9, 0.99);
@@ -34,7 +34,8 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final double itemWidth = size.width * 0.75;
+    final scaleFactor = size.width / 375; // base width = iPhone 11
+    final itemWidth = size.width * 0.75;
 
     return Scaffold(
       backgroundColor: white,
@@ -42,9 +43,13 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
         backgroundColor: white,
         elevation: 0,
         centerTitle: true,
-        title: const Text(
+        title: Text(
           'Project Details',
-          style: TextStyle(color: textBlack, fontWeight: FontWeight.bold),
+          style: TextStyle(
+            color: textBlack,
+            fontWeight: FontWeight.bold,
+            fontSize: 18 * scaleFactor,
+          ),
         ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: textBlack),
@@ -56,6 +61,7 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            SizedBox(height: size.height * 0.02),
             ClipRRect(
               borderRadius: BorderRadius.circular(16),
               child: Image.asset(
@@ -65,73 +71,79 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
                 fit: BoxFit.cover,
               ),
             ),
-            const SizedBox(height: 16),
-            const Text(
+            SizedBox(height: size.height * 0.02),
+            Text(
               "Local Community Garden Revitalization",
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: 20 * scaleFactor,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-            const SizedBox(height: 8),
-            const Text(
+            SizedBox(height: size.height * 0.01),
+            Text(
               "Join us in transforming a neglected urban space into a vibrant community garden. This project fosters local engagement, promotes sustainable living, and provides fresh produce for everyone.",
               style: TextStyle(
-                fontSize: 14,
+                fontSize: 14 * scaleFactor,
                 color: Colors.black54,
                 height: 1.5,
               ),
             ),
-            const SizedBox(height: 24),
+            SizedBox(height: size.height * 0.03),
             Row(
-              children: const [
+              children: [
                 Expanded(
                   child: EventCardInformation(
                     icon: Icons.calendar_month,
                     title: 'Start Date',
                     value: 'September 15, 2024',
+                    fontScale: scaleFactor,
                   ),
                 ),
-                SizedBox(width: 12),
+                SizedBox(width: size.width * 0.03),
                 Expanded(
                   child: EventCardInformation(
                     icon: Icons.calendar_today,
                     title: 'End Date',
                     value: 'October 30, 2024',
+                    fontScale: scaleFactor,
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 24),
+            SizedBox(height: size.height * 0.03),
             Container(
-              padding: const EdgeInsets.all(16),
+              padding: EdgeInsets.all(size.width * 0.04),
               decoration: BoxDecoration(
                 color: Colors.green.withOpacity(0.08),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Row(
-                children: const [
-                  Icon(Icons.check_circle, color: Colors.green),
-                  SizedBox(width: 8),
+                children: [
+                  const Icon(Icons.check_circle, color: Colors.green),
+                  SizedBox(width: size.width * 0.02),
                   Text(
                     "Status: Active",
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
                       color: Colors.green,
+                      fontSize: 14 * scaleFactor,
                     ),
                   ),
                 ],
               ),
             ),
-            const SizedBox(height: 24),
-            const Text(
+            SizedBox(height: size.height * 0.03),
+            Text(
               "Upcoming Events",
               style: TextStyle(
-                fontSize: 16,
+                fontSize: 16 * scaleFactor,
                 fontWeight: FontWeight.bold,
                 color: textBlack,
               ),
             ),
-            const SizedBox(height: 12),
+            SizedBox(height: size.height * 0.015),
             SizedBox(
-              height: size.height * 0.5,
+              height: size.height * 0.45,
               child: ListView.separated(
                 controller: _scrollController,
                 scrollDirection: Axis.horizontal,
@@ -166,52 +178,72 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
                 },
               ),
             ),
-            const SizedBox(height: 24),
-            const Text(
+            SizedBox(height: size.height * 0.03),
+            Text(
               "Donation Progress",
               style: TextStyle(
-                fontSize: 16,
+                fontSize: 16 * scaleFactor,
                 fontWeight: FontWeight.bold,
                 color: textBlack,
               ),
             ),
-            const SizedBox(height: 12),
+            SizedBox(height: size.height * 0.015),
             ClipRRect(
               borderRadius: BorderRadius.circular(12),
               child: LinearProgressIndicator(
                 value: 0.75,
                 minHeight: 12,
                 backgroundColor: Colors.grey[300],
-                valueColor: const AlwaysStoppedAnimation<Color>(Color.fromARGB(255, 22, 70, 26)),
+                valueColor: const AlwaysStoppedAnimation<Color>(
+                  Color.fromARGB(255, 22, 70, 26),
+                ),
               ),
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: size.height * 0.01),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [
-                Text("Collected: \$7,500", style: TextStyle(color: primaryColor, fontWeight: FontWeight.w600)),
-                Text("Target: \$10,000", style: TextStyle(color: secondaryColor, fontWeight: FontWeight.w600)),
+              children: [
+                Text(
+                  "Collected: \$7,500",
+                  style: TextStyle(
+                    color: primaryColor,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14 * scaleFactor,
+                  ),
+                ),
+                Text(
+                  "Target: \$10,000",
+                  style: TextStyle(
+                    color: secondaryColor,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14 * scaleFactor,
+                  ),
+                ),
               ],
             ),
-            const SizedBox(height: 24),
+            SizedBox(height: size.height * 0.03),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {},
                 style: ElevatedButton.styleFrom(
                   backgroundColor: secondaryColor,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  padding: EdgeInsets.symmetric(vertical: size.height * 0.02),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
                 ),
-                child: const Text(
+                child: Text(
                   "Donate Now",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: white),
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16 * scaleFactor,
+                    color: white,
+                  ),
                 ),
               ),
             ),
-            const SizedBox(height: 30),
+            SizedBox(height: size.height * 0.04),
           ],
         ),
       ),

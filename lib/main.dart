@@ -17,6 +17,8 @@ import 'package:khotwa/view/intro/Intro_Screen.dart';
 import 'package:khotwa/view/Home_Page/Home_Page_Volunteer.dart';
 import 'package:khotwa/view/login/login_page.dart';
 import 'package:khotwa/view/profile/profile_page.dart';
+import 'package:khotwa/view/settings/settings_page.dart';
+import 'package:khotwa/view/tasks/tasks_page.dart';
 import 'package:khotwa/view/verify_email/verify_email_page.dart';
 import 'package:khotwa/widgets/Animated_Bottom_Bar_Volunteer.dart';
 

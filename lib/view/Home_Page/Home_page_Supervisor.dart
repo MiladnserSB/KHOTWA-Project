@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:khotwa/shared/constants/colors.dart';
+import 'package:khotwa/view/login/login_page.dart';
 import 'package:khotwa/widgets/Home_Events_Card.dart';
 import 'package:khotwa/widgets/Home_Person_Card.dart';
 import 'package:khotwa/widgets/Home_Projects_Card.dart';
@@ -130,47 +131,53 @@ class _HomePageSupervisorState extends State<HomePageSupervisor> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
-  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  children: [
-    ClipOval(
-      child: Image.asset(
-        'assets/images/new.jpg',
-        width: 50,
-        height: 50,
-        fit: BoxFit.cover,
-      ),
-    ),
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                   GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => LoginPage()),
+                      );
+                    },
+                    child: ClipOval(
+                      child: Image.asset(
+                        'assets/images/new.jpg',
+                        width: 50,
+                        height: 50,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
 
-    Expanded(
-      child: Center(
-        child: Text(
-  'Khotwa',
-  style: TextStyle(
-    fontSize: 28,
-    fontFamily: 'GreatVibes',
-    color: primaryColor,
-    fontWeight: FontWeight.bold,
-  ),
-),
+                  Expanded(
+                    child: Center(
+                     child: Text(
+                        'Khotwa',
+                        style: TextStyle(
+                          fontSize: 35,
+                          fontFamily: 'GreatVibes',
+                          color: Color(0xFFDDA15E),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
 
-      ),
-    ),
-
-    IconButton(
-      icon: Icon(
-        Icons.notifications,
-        size: 28,
-        color: _isPressed ? Color(0xFFDDA15E) : Colors.black,
-      ),
-      onPressed: () {
-        setState(() {
-          _isPressed = !_isPressed;
-        });
-      },
-    ),
-  ],
-),
-
+                  IconButton(
+                    icon: Icon(
+                      Icons.notifications,
+                      size: 28,
+                      color: _isPressed ? Color(0xFFDDA15E) : Colors.black,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _isPressed = !_isPressed;
+                      });
+                    },
+                  ),
+                ],
+              ),
 
               const SizedBox(height: 20),
 
@@ -182,8 +189,10 @@ class _HomePageSupervisorState extends State<HomePageSupervisor> {
                   filled: true,
                   fillColor: Colors.grey[200],
                   isDense: true,
-                  contentPadding:
-                      EdgeInsets.symmetric(vertical: 13, horizontal: 12),
+                  contentPadding: EdgeInsets.symmetric(
+                    vertical: 13,
+                    horizontal: 12,
+                  ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20),
                     borderSide: BorderSide.none,
@@ -255,8 +264,7 @@ class _HomePageSupervisorState extends State<HomePageSupervisor> {
                   separatorBuilder: (_, __) => const SizedBox(width: 10),
                   itemBuilder: (context, index) {
                     final event = myeventsList[index];
-                    double scale =
-                        _calculateScale(_myEventScroll, index, 220);
+                    double scale = _calculateScale(_myEventScroll, index, 220);
                     return Transform.scale(
                       scale: scale,
                       child: HomeEventsCard(
@@ -290,8 +298,11 @@ class _HomePageSupervisorState extends State<HomePageSupervisor> {
                   separatorBuilder: (_, __) => const SizedBox(width: 10),
                   itemBuilder: (context, index) {
                     final event = myeventsList[index];
-                    double scale =
-                        _calculateScale(_recommendedScroll, index, 240);
+                    double scale = _calculateScale(
+                      _recommendedScroll,
+                      index,
+                      240,
+                    );
                     return Transform.scale(
                       scale: scale,
                       child: HomeEventsCard(
@@ -325,8 +336,7 @@ class _HomePageSupervisorState extends State<HomePageSupervisor> {
                   separatorBuilder: (_, __) => const SizedBox(width: 10),
                   itemBuilder: (context, index) {
                     final project = projectsList[index];
-                    double scale =
-                        _calculateScale(_projectScroll, index, 260);
+                    double scale = _calculateScale(_projectScroll, index, 260);
                     return Transform.scale(
                       scale: scale,
                       child: HomeProjectsCard(
