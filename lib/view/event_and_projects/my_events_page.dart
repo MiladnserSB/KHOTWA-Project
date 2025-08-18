@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:khotwa/shared/constants/colors.dart';
 import 'package:khotwa/view/event_and_projects/donate_apologize_button.dart';
+import 'package:khotwa/view/event_and_projects/event_details/event_details_page.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
 class MyEventsPage extends StatefulWidget {
@@ -102,9 +104,12 @@ class _MyEventsPageState extends State<MyEventsPage> {
                     double scale = _calculateScale(index, itemHeight);
                     return Transform.scale(
                       scale: scale,
-                      child: EventCard(
-                        size: size,
-                        elevation: scale > 0.98 ? 10 : 2,
+                      child: GestureDetector(
+                         onTap: (){Get.to(EventDetailsPage());},
+                        child: EventCard(
+                          size: size,
+                          elevation: scale > 0.98 ? 10 : 2,
+                        ),
                       ),
                     );
                   },

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:khotwa/view/login/login_page.dart';
+import 'package:khotwa/widgets/Animated_Bottom_Bar_Visitor.dart';
 
 class IntroScreen extends StatefulWidget {
   const IntroScreen({super.key});
@@ -77,7 +80,7 @@ class _IntroScreenState extends State<IntroScreen> with TickerProviderStateMixin
                     child: SizedBox(
                       width: 400,
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {Get.to(LoginPage());},
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFFDDA15E),
                           foregroundColor: Colors.white,
@@ -153,7 +156,7 @@ class _IntroScreenState extends State<IntroScreen> with TickerProviderStateMixin
                       curve: Curves.easeOut,
                     )),
                     child: GestureDetector(
-                      onTap: () {},
+                      onTap: () {Get.to(AnimatedBottomBarPageVisitor());},
                       child: Text(
                         "continue as a guest",
                         style: TextStyle(

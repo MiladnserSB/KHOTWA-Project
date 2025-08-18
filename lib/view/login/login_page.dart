@@ -4,6 +4,7 @@ import 'package:khotwa/controller/auth_controller.dart';
 import 'package:khotwa/shared/constants/app_strings.dart';
 import 'package:khotwa/view/login/login_form.dart';
 import 'package:khotwa/view/login/login_terms_row.dart';
+import 'package:khotwa/widgets/Animated_Bottom_Bar_Volunteer.dart';
 import 'package:khotwa/widgets/auth_custom_button.dart';
 import 'package:khotwa/widgets/login_verify_change_hero_section.dart';
 
@@ -37,7 +38,8 @@ class LoginPage extends StatelessWidget {
                       SizedBox(height: size.height * 0.04),
                       Obx(() => AuthCustomButton(
                         title: authController.isLoading.value ? 'Logging in...' : AppStrings.signIn,
-                        onPressed: authController.isLoading.value ? null : () => authController.login(),
+                        // onPressed: authController.isLoading.value ? null : () => authController.login(),
+                        onPressed: (){Get.to(AnimatedBottomBarPageVolunteer());},
                       )),
                       SizedBox(height: size.height * 0.14),
                       const LoginTermsRow(),

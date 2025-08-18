@@ -12,7 +12,7 @@ class AuthController extends GetxController {
   final password = ''.obs;
   final otp = ''.obs;
   var isEmailDialogShown = false;
-        
+
   Future<void> login() async {
     isLoading.value = true;
 

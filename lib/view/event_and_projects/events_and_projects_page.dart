@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:khotwa/shared/constants/colors.dart';
 import 'package:khotwa/view/event_and_projects/donate_apologize_button.dart';
+import 'package:khotwa/view/event_and_projects/event_details/event_details_page.dart';
+import 'package:khotwa/view/event_and_projects/project_details/project_details_page.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:buttons_tabbar/buttons_tabbar.dart';
 
@@ -183,12 +186,25 @@ class _AnimatedListViewState extends State<AnimatedListView>
         return Transform.scale(
           scale: scale,
           child: widget.isEvent
-              ? EventCard(size: widget.size, elevation: scale > 0.98 ? 10 : 2)
-              : ProjectCard(
-                  size: widget.size,
-                  elevation: scale > 0.98 ? 10 : 2,
-                  donatedAmount: 10000,
-                  totalAmount: 15000,
+              ? GestureDetector(
+                  onTap: () {
+                    Get.to(EventDetailsPage());
+                  },
+                  child: EventCard(
+                    size: widget.size,
+                    elevation: scale > 0.98 ? 10 : 2,
+                  ),
+                )
+              : GestureDetector(
+                  onTap: () {
+                    Get.to(ProjectDetailsPage());
+                  },
+                  child: ProjectCard(
+                    size: widget.size,
+                    elevation: scale > 0.98 ? 10 : 2,
+                    donatedAmount: 10000,
+                    totalAmount: 15000,
+                  ),
                 ),
         );
       },
@@ -198,8 +214,6 @@ class _AnimatedListViewState extends State<AnimatedListView>
   @override
   bool get wantKeepAlive => true;
 }
-
-
 
 class EventCard extends StatelessWidget {
   const EventCard({super.key, required this.size, this.elevation = 2});
