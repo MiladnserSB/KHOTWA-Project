@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:khotwa/shared/constants/colors.dart';
+import 'package:khotwa/view/supervisor/create_task/create_task_page.dart';
 import 'package:khotwa/view/tasks/animated_task_list_view.dart';
 import 'package:khotwa/view/tasks/custom_search_bar.dart';
 import 'package:khotwa/view/tasks/task_card.dart';
@@ -13,6 +15,7 @@ class TasksPage extends StatelessWidget {
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
+      floatingActionButton: true ? FloatingActionButton(onPressed: (){Get.to(CreateTaskPage());}, backgroundColor: secondaryColor, shape: CircleBorder(), child: Icon(Icons.add, color: white,),) : SizedBox(),
       appBar: AppBar(
         iconTheme: const IconThemeData(color: white),
         title: const Text("My Tasks", style: TextStyle(color: textBlack)),
