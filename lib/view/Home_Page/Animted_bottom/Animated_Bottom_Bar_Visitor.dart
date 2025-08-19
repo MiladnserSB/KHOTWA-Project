@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:khotwa/view/Home_Page/Home_Page_Visitor.dart';
-import 'package:khotwa/view/Home_Page/Home_Page_Volunteer.dart';
+import 'package:khotwa/view/Home_Page/Home_Page/Home_Page_Visitor.dart';
+import 'package:khotwa/view/Home_Page/Home_Page/Home_Page_Volunteer.dart';
 import 'package:khotwa/view/intro/Intro_Screen.dart';
 import 'package:khotwa/view/login/login_page.dart';
 

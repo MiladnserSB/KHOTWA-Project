@@ -4,7 +4,7 @@ import 'package:khotwa/controller/auth_controller.dart';
 import 'package:khotwa/shared/constants/app_strings.dart';
 import 'package:khotwa/view/login/login_form.dart';
 import 'package:khotwa/view/login/login_terms_row.dart';
-import 'package:khotwa/widgets/Animated_Bottom_Bar_Volunteer.dart';
+import 'package:khotwa/view/Home_Page/Animted_bottom/Animated_Bottom_Bar_Volunteer.dart';
 import 'package:khotwa/widgets/auth_custom_button.dart';
 import 'package:khotwa/widgets/login_verify_change_hero_section.dart';
 

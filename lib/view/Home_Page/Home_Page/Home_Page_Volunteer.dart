@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:khotwa/shared/constants/colors.dart';
 import 'package:khotwa/view/login/login_page.dart';
-import 'package:khotwa/widgets/Home_Events_Card.dart';
-import 'package:khotwa/widgets/Home_Person_Card.dart';
-import 'package:khotwa/widgets/Home_Projects_Card.dart';
+import 'package:khotwa/view/Home_Page/Cards/Home_Events_Card.dart';
+import 'package:khotwa/view/Home_Page/Cards/Home_Person_Card.dart';
+import 'package:khotwa/view/Home_Page/Cards/Home_Projects_Card.dart';
 
-class HomePageSupervisor extends StatefulWidget {
-  HomePageSupervisor({super.key});
+class HomePageVolunteer extends StatefulWidget {
+  const HomePageVolunteer({super.key});
 
   @override
-  State<HomePageSupervisor> createState() => _HomePageSupervisorState();
+  State<HomePageVolunteer> createState() => _HomePageVolunteerState();
 }
 
-class _HomePageSupervisorState extends State<HomePageSupervisor> {
+class _HomePageVolunteerState extends State<HomePageVolunteer> {
   final FocusNode _focusNode = FocusNode();
   final TextEditingController _controller = TextEditingController();
 
@@ -133,7 +133,7 @@ class _HomePageSupervisorState extends State<HomePageSupervisor> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                   GestureDetector(
+                  GestureDetector(
                     onTap: () {
                       Navigator.push(
                         context,
@@ -152,7 +152,7 @@ class _HomePageSupervisorState extends State<HomePageSupervisor> {
 
                   Expanded(
                     child: Center(
-                     child: Text(
+                      child:    Text(
                         'Khotwa',
                         style: TextStyle(
                           fontSize: 35,

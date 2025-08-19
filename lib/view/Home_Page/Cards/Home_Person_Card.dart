@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:khotwa/view/Home_Page/Details_Page.dart';
 
 class HomePersonCard extends StatelessWidget {
   final String name;
@@ -15,15 +14,7 @@ class HomePersonCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (_) => DetailsPage(
-              title: name,
-              image: image,
-            ),
-          ),
-        );
+     
       },
       child: Column(
         children: [

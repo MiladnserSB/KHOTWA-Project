@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:khotwa/shared/constants/colors.dart';
 import 'package:khotwa/view/login/login_page.dart';
-import 'package:khotwa/widgets/Home_Events_Card.dart';
-import 'package:khotwa/widgets/Home_Person_Card.dart';
-import 'package:khotwa/widgets/Home_Projects_Card.dart';
+import 'package:khotwa/view/Home_Page/Cards/Home_Events_Card.dart';
+import 'package:khotwa/view/Home_Page/Cards/Home_Person_Card.dart';
+import 'package:khotwa/view/Home_Page/Cards/Home_Projects_Card_Donor_and_Visitor.dart';
 
-class HomePageVolunteer extends StatefulWidget {
-  const HomePageVolunteer({super.key});
-
+class HomePageVisitor extends StatefulWidget {
   @override
-  State<HomePageVolunteer> createState() => _HomePageVolunteerState();
+  State<HomePageVisitor> createState() => _HomePageVisitorState();
 }
 
-class _HomePageVolunteerState extends State<HomePageVolunteer> {
+class _HomePageVisitorState extends State<HomePageVisitor> {
   final FocusNode _focusNode = FocusNode();
   final TextEditingController _controller = TextEditingController();
 
@@ -133,7 +131,7 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  GestureDetector(
+                   GestureDetector(
                     onTap: () {
                       Navigator.push(
                         context,
@@ -339,7 +337,7 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
                     double scale = _calculateScale(_projectScroll, index, 260);
                     return Transform.scale(
                       scale: scale,
-                      child: HomeProjectsCard(
+                      child: HomeProjectsCardDonorAndVisitor(
                         name: project['name'],
                         organization: project['organization'],
                         paid: project['paid'],

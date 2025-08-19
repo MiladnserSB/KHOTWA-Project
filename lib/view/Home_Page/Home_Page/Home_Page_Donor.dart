@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:khotwa/shared/constants/colors.dart';
 import 'package:khotwa/view/login/login_page.dart';
-import 'package:khotwa/widgets/Home_Events_Card.dart';
-import 'package:khotwa/widgets/Home_Person_Card.dart';
-import 'package:khotwa/widgets/Home_Projects_Card_Donor_and_Visitor.dart';
+import 'package:khotwa/view/Home_Page/Cards/Home_Events_Card.dart';
+import 'package:khotwa/view/Home_Page/Cards/Home_Person_Card.dart';
+import 'package:khotwa/view/Home_Page/Cards/Home_Projects_Card_Donor_and_Visitor.dart';
 
 class HomePageDonor extends StatefulWidget {
   @override

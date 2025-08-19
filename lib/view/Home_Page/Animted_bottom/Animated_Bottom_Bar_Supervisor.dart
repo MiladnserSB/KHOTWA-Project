@@ -1,29 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:khotwa/shared/constants/colors.dart';
-import 'package:khotwa/view/Home_Page/Home_Page_Volunteer.dart';
-import 'package:khotwa/view/event_and_projects/events_and_projects_page.dart';
-import 'package:khotwa/view/event_and_projects/my_events_page.dart';
+import 'package:khotwa/view/Home_Page/Home_Page/Home_Page_Volunteer.dart';
 import 'package:khotwa/view/intro/Intro_Screen.dart';
 import 'package:khotwa/view/login/login_page.dart';
-import 'package:khotwa/view/profile/profile_page.dart';
-import 'package:khotwa/view/settings/settings_page.dart';
-import 'package:khotwa/view/tasks/tasks_page.dart';
 
-class AnimatedBottomBarPageVolunteer extends StatefulWidget {
+class AnimatedBottomBarPageSupervisor extends StatefulWidget {
   @override
-  _AnimatedBottomBarPageVolunteerState createState() =>
-      _AnimatedBottomBarPageVolunteerState();
+  _AnimatedBottomBarPageSupervisorState createState() =>
+      _AnimatedBottomBarPageSupervisorState();
 }
 
-class _AnimatedBottomBarPageVolunteerState
-    extends State<AnimatedBottomBarPageVolunteer> {
+class _AnimatedBottomBarPageSupervisorState
+    extends State<AnimatedBottomBarPageSupervisor> {
 
 
-      
+
+
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  int _selectedIndex = 2;
+  int _selectedIndex = 4;
 
   String _selectedDrawerItem = '';
 
@@ -50,7 +45,7 @@ class _AnimatedBottomBarPageVolunteerState
       case 'My events':
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => MyEventsPage()),
+          MaterialPageRoute(builder: (context) => IntroScreen()),
         );
         break;
 
@@ -64,14 +59,14 @@ class _AnimatedBottomBarPageVolunteerState
       case 'Projects,Events':
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => EventsAndProjectsPage()),
+          MaterialPageRoute(builder: (context) => IntroScreen()),
         );
         break;
 
       case 'Tasks':
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => TasksPage()),
+          MaterialPageRoute(builder: (context) => HomePageVolunteer()),
         );
         break;
     }
@@ -140,11 +135,10 @@ class _AnimatedBottomBarPageVolunteerState
                 setState(() {
                   _selectedDrawerItem = 'Profile';
                 });
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(builder: (context) => HomePageVolunteer()),
-                // );
-                Get.to(ProfilePage());
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomePageVolunteer()),
+                );
               },
             ),
             ListTile(
@@ -164,7 +158,6 @@ class _AnimatedBottomBarPageVolunteerState
                 setState(() {
                   _selectedDrawerItem = 'Settings';
                 });
-                Get.to(SettingsPage());
               },
             ),
             ListTile(

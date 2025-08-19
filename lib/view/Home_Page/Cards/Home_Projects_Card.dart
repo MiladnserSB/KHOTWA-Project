@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:khotwa/shared/constants/colors.dart';
-import 'package:khotwa/view/Home_Page/Details_Page.dart';
 
 class HomeProjectsCard extends StatelessWidget {
   final String name;
@@ -99,15 +98,7 @@ class HomeProjectsCard extends StatelessWidget {
               SizedBox(width: 5,),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => DetailsPage(
-                        title: name,
-                        image: 'assets/images/projets.jpg',
-                      ),
-                    ),
-                  );
+               
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color(0xFFDDA15E),

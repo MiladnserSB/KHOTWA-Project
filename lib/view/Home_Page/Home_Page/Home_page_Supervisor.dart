@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:khotwa/shared/constants/colors.dart';
 import 'package:khotwa/view/login/login_page.dart';
-import 'package:khotwa/widgets/Home_Events_Card.dart';
-import 'package:khotwa/widgets/Home_Person_Card.dart';
-import 'package:khotwa/widgets/Home_Projects_Card_Donor_and_Visitor.dart';
+import 'package:khotwa/view/Home_Page/Cards/Home_Events_Card.dart';
+import 'package:khotwa/view/Home_Page/Cards/Home_Person_Card.dart';
+import 'package:khotwa/view/Home_Page/Cards/Home_Projects_Card.dart';
 
-class HomePageVisitor extends StatefulWidget {
+class HomePageSupervisor extends StatefulWidget {
+  HomePageSupervisor({super.key});
+
   @override
-  State<HomePageVisitor> createState() => _HomePageVisitorState();
+  State<HomePageSupervisor> createState() => _HomePageSupervisorState();
 }
 
-class _HomePageVisitorState extends State<HomePageVisitor> {
+class _HomePageSupervisorState extends State<HomePageSupervisor> {
   final FocusNode _focusNode = FocusNode();
   final TextEditingController _controller = TextEditingController();
 
@@ -150,7 +152,7 @@ class _HomePageVisitorState extends State<HomePageVisitor> {
 
                   Expanded(
                     child: Center(
-                      child:    Text(
+                     child: Text(
                         'Khotwa',
                         style: TextStyle(
                           fontSize: 35,
@@ -337,7 +339,7 @@ class _HomePageVisitorState extends State<HomePageVisitor> {
                     double scale = _calculateScale(_projectScroll, index, 260);
                     return Transform.scale(
                       scale: scale,
-                      child: HomeProjectsCardDonorAndVisitor(
+                      child: HomeProjectsCard(
                         name: project['name'],
                         organization: project['organization'],
                         paid: project['paid'],

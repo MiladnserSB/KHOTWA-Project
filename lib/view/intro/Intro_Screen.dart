@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:khotwa/view/login/login_page.dart';
-import 'package:khotwa/widgets/Animated_Bottom_Bar_Visitor.dart';
+import 'package:khotwa/view/Home_Page/Animted_bottom/Animated_Bottom_Bar_Visitor.dart';
 
 class IntroScreen extends StatefulWidget {
   const IntroScreen({super.key});

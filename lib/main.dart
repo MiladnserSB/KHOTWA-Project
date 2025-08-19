@@ -14,7 +14,7 @@ import 'package:khotwa/view/event_and_projects/project_details/project_details_p
 
 import 'package:khotwa/view/intro/Splash_Screen.dart';
 import 'package:khotwa/view/intro/Intro_Screen.dart';
-import 'package:khotwa/view/Home_Page/Home_Page_Volunteer.dart';
+import 'package:khotwa/view/Home_Page/Home_Page/Home_Page_Volunteer.dart';
 import 'package:khotwa/view/login/login_page.dart';
 import 'package:khotwa/view/profile/profile_page.dart';
 import 'package:khotwa/view/settings/settings_page.dart';
@@ -23,8 +23,8 @@ import 'package:khotwa/view/supervisor/attendence/show_qr_in_page.dart';
 import 'package:khotwa/view/supervisor/feedback/feedback_page.dart';
 import 'package:khotwa/view/tasks/tasks_page.dart';
 import 'package:khotwa/view/verify_email/verify_email_page.dart';
-import 'package:khotwa/widgets/Animated_Bottom_Bar_Visitor.dart';
-import 'package:khotwa/widgets/Animated_Bottom_Bar_Volunteer.dart';
+import 'package:khotwa/view/Home_Page/Animted_bottom/Animated_Bottom_Bar_Visitor.dart';
+import 'package:khotwa/view/Home_Page/Animted_bottom/Animated_Bottom_Bar_Volunteer.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
