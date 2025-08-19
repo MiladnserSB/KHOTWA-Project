@@ -23,6 +23,7 @@ import 'package:khotwa/view/supervisor/attendence/show_qr_in_page.dart';
 import 'package:khotwa/view/supervisor/feedback/feedback_page.dart';
 import 'package:khotwa/view/tasks/tasks_page.dart';
 import 'package:khotwa/view/verify_email/verify_email_page.dart';
+import 'package:khotwa/widgets/Animated_Bottom_Bar_Visitor.dart';
 import 'package:khotwa/widgets/Animated_Bottom_Bar_Volunteer.dart';
 
 void main() async {
@@ -55,7 +56,7 @@ class MyApp extends StatelessWidget {
       //   GetPage(name: AppRoutes.homeVolunteer, page: () => HomePageVoulunteer()),
       //   GetPage(name: AppRoutes.changePassword, page: () => ChangingPasswordPage()),
       // ],
-      home: AnimatedBottomBarPageVolunteer(),
+      home: AnimatedBottomBarPageVisitor(),
     );
   }
 }
