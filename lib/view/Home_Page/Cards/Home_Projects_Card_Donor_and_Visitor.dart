@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:khotwa/shared/constants/colors.dart';
+import 'package:khotwa/view/login/login_page.dart';
 
 class HomeProjectsCardDonorAndVisitor extends StatelessWidget {
   final String name;
@@ -60,7 +61,7 @@ class HomeProjectsCardDonorAndVisitor extends StatelessWidget {
               fontFamily: '._Acumin Variable Concept',
             ),
           ),
-          SizedBox(height: 15),
+          SizedBox(height: 25),
           LinearProgressIndicator(
             value: progress,
             color: Colors.green,
@@ -68,7 +69,8 @@ class HomeProjectsCardDonorAndVisitor extends StatelessWidget {
             minHeight: 8,
             borderRadius: BorderRadius.circular(6),
           ),
-          SizedBox(height: 8),
+          SizedBox(height:10 ),   
+            
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -145,30 +147,30 @@ class HomeProjectsCardDonorAndVisitor extends StatelessWidget {
                                         borderRadius: BorderRadius.circular(10),
                                       ),
                                     ),
-                                    child: Text("Cancel",style: TextStyle(color: primaryColor),),
+                                    child: Text("Cancel",style: TextStyle(color: Colors.white),),
                                   ),
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                      Navigator.pushNamed(context, '/login');
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: Color(0xFFDDA15E),
-                                      foregroundColor: primaryColor,
-                                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(10),
+                                 ElevatedButton(
+                                      onPressed: () {
+Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()),);
+                                      },
+                              
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Color(0xFFDDA15E),
+                                        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(10),
+                                        ),
+                                      ),
+                                      child: Text(
+                                        "Login",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                          fontFamily: '._Acumin Variable Concept',
+                                        ),
                                       ),
                                     ),
-                                    child: Text(
-                                      "Login",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: primaryColor,
-                                        fontFamily: '._Acumin Variable Concept',
-                                      ),
-                                    ),
-                                  ),
+                                
                                 ],
                               ),
                             ],
@@ -191,7 +193,7 @@ class HomeProjectsCardDonorAndVisitor extends StatelessWidget {
                     fontSize: 13,
                     fontWeight: FontWeight.bold,
                     fontFamily: '._Acumin Variable Concept',
-                    color: primaryColor,
+                    color: Colors.white,
                   ),
                 ),
               ),
@@ -213,7 +215,7 @@ class HomeProjectsCardDonorAndVisitor extends StatelessWidget {
                     fontSize: 13,
                     fontWeight: FontWeight.bold,
                     fontFamily: '._Acumin Variable Concept',
-                    color: primaryColor,
+                    color: Colors.white,
                   ),
                 ),
               ),

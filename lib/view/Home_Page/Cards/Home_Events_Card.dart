@@ -89,19 +89,23 @@ class HomeEventsCard extends StatelessWidget {
                       colors: [Colors.transparent, Colors.black54],
                     ),
                   ),
-                  child: Text(
-                    title,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14,
-                      color: Colors.white,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
+                
                 ),
               ),
+                
             ],
+            
           ),
+          SizedBox(height: 15),
+           Text(
+                    title,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+              fontFamily: '._Acumin Variable Concept',
+                      fontSize: 16,
+                      color: Colors.black,
+                    ),
+                  ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 18),
             child: Row(
@@ -133,7 +137,7 @@ class HomeEventsCard extends StatelessWidget {
             onPressed: () {
             
             },
-            child: const Text('View Details',style:TextStyle(color:  primaryColor)),
+            child: const Text('View Details',style:TextStyle(color:  Colors.white)),
           ),
           const SizedBox(height: 10),
         ],

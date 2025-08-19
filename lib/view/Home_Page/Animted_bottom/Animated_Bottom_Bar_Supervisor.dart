@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:khotwa/shared/constants/colors.dart';
-import 'package:khotwa/view/Home_Page/Home_Page/Home_Page_Volunteer.dart';
-import 'package:khotwa/view/intro/Intro_Screen.dart';
+import 'package:khotwa/view/Home_Page/Home_Page/Home_Page_Supervisor.dart';
+import 'package:khotwa/view/Tasks/Tasks_Page.dart';
+import 'package:khotwa/view/event_and_projects/events_and_projects_page.dart';
+import 'package:khotwa/view/event_and_projects/my_events_page.dart';
 import 'package:khotwa/view/login/login_page.dart';
 
 class AnimatedBottomBarPageSupervisor extends StatefulWidget {
@@ -12,14 +14,9 @@ class AnimatedBottomBarPageSupervisor extends StatefulWidget {
 
 class _AnimatedBottomBarPageSupervisorState
     extends State<AnimatedBottomBarPageSupervisor> {
-
-
-
-
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  int _selectedIndex = 4;
-
+  int _selectedIndex = 2; 
   String _selectedDrawerItem = '';
 
   final List<_NavItem> _items = [
@@ -30,46 +27,24 @@ class _AnimatedBottomBarPageSupervisorState
     _NavItem(icon: Icons.task, label: 'Tasks'),
   ];
 
+  late final List<Widget> _pages = [
+    Container(),
+    MyEventsPage(),
+    HomePageSupervisor(),
+    EventsAndProjectsPage(),
+    TasksPage(),
+  ];
+
   void _onIconTap(int index) {
+    if (_items[index].label == "Menu") {
+      Future.delayed(Duration(milliseconds: 100), () {
+        _scaffoldKey.currentState?.openDrawer();
+      });
+      return;
+    }
     setState(() {
       _selectedIndex = index;
     });
-
-    switch (_items[index].label) {
-      case 'Menu':
-        Future.delayed(Duration(milliseconds: 100), () {
-          _scaffoldKey.currentState?.openDrawer();
-        });
-        break;
-
-      case 'My events':
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => IntroScreen()),
-        );
-        break;
-
-      case 'Home':
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => IntroScreen()),
-        );
-        break;
-
-      case 'Projects,Events':
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => IntroScreen()),
-        );
-        break;
-
-      case 'Tasks':
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => HomePageVolunteer()),
-        );
-        break;
-    }
   }
 
   @override
@@ -94,12 +69,9 @@ class _AnimatedBottomBarPageSupervisorState
                     onTap: () {
                       setState(() {
                         _selectedDrawerItem = 'Profile';
+                        _selectedIndex = 4;
                       });
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => HomePageVolunteer()),
-                      );
+                      Navigator.pop(context); 
                     },
                     child: CircleAvatar(
                       radius: 35,
@@ -134,11 +106,9 @@ class _AnimatedBottomBarPageSupervisorState
               onTap: () {
                 setState(() {
                   _selectedDrawerItem = 'Profile';
+                  _selectedIndex = 4;
                 });
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => HomePageVolunteer()),
-                );
+                Navigator.pop(context);
               },
             ),
             ListTile(
@@ -158,6 +128,7 @@ class _AnimatedBottomBarPageSupervisorState
                 setState(() {
                   _selectedDrawerItem = 'Settings';
                 });
+                Navigator.pop(context);
               },
             ),
             ListTile(
@@ -177,62 +148,78 @@ class _AnimatedBottomBarPageSupervisorState
                 setState(() {
                   _selectedDrawerItem = 'About Us';
                 });
+                Navigator.pop(context);
               },
             ),
             ListTile(
-  leading: Icon(Icons.logout,
-      color: _selectedDrawerItem == 'Logout'
-          ? Color(0xFFDDA15E)
-          : Colors.black),
-  title: Text(
-    'Logout',
-    style: TextStyle(
-      color: _selectedDrawerItem == 'Logout'
-          ? Color(0xFFDDA15E)
-          : Colors.black,
-    ),
-  ),
-  onTap: () {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text("Confirm Logout",style: TextStyle(color:primaryColor,    fontWeight: FontWeight.bold,
-  )),
-        content: Text("Are you sure you want to log out?"),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text("Cancel",style: TextStyle(color:primaryColor,    
-  )),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop(); 
-              setState(() {
-                _selectedDrawerItem = 'Logout';
-              });
-
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (context) => LoginPage()),
-                (route) => false,
-              );
-            },
-            child: Text(
-              "Logout",
-              style: TextStyle(color: Colors.red),
+              leading: Icon(Icons.logout,
+                  color: _selectedDrawerItem == 'Logout'
+                      ? Color(0xFFDDA15E)
+                      : Colors.black),
+              title: Text(
+                'Logout',
+                style: TextStyle(
+                  color: _selectedDrawerItem == 'Logout'
+                      ? Color(0xFFDDA15E)
+                      : Colors.black,
+                ),
+              ),
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: Text("Confirm Logout",
+                        style: TextStyle(
+                          color: primaryColor,
+                          fontWeight: FontWeight.bold,
+                        )),
+                    content: Text("Are you sure you want to log out?"),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: Text("Cancel",
+                            style: TextStyle(color: primaryColor)),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          setState(() {
+                            _selectedDrawerItem = 'Logout';
+                          });
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => LoginPage()),
+                            (route) => false,
+                          );
+                        },
+                        child: Text(
+                          "Logout",
+                          style: TextStyle(color: Colors.red),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
             ),
-          ),
-        ],
-      ),
-    );
-  },
-),
-
           ],
         ),
       ),
-      body: HomePageVolunteer(),
+      body: AnimatedSwitcher(
+        duration: Duration(milliseconds: 300),
+        transitionBuilder: (Widget child, Animation<double> animation) {
+          final offsetAnimation = Tween<Offset>(
+            begin: Offset(1.0, 0.0),
+            end: Offset.zero,
+          ).animate(animation);
+          return SlideTransition(
+            position: offsetAnimation,
+            child: FadeTransition(opacity: animation, child: child),
+          );
+        },
+        child: _pages[_selectedIndex],
+      ),
       bottomNavigationBar: Container(
         padding: EdgeInsets.symmetric(vertical: 10),
         decoration: BoxDecoration(
@@ -276,6 +263,5 @@ class _AnimatedBottomBarPageSupervisorState
 class _NavItem {
   final IconData icon;
   final String label;
-
   _NavItem({required this.icon, required this.label});
 }

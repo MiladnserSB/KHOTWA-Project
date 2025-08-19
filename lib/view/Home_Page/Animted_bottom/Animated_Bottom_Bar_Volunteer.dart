@@ -4,7 +4,6 @@ import 'package:khotwa/shared/constants/colors.dart';
 import 'package:khotwa/view/Home_Page/Home_Page/Home_Page_Volunteer.dart';
 import 'package:khotwa/view/event_and_projects/events_and_projects_page.dart';
 import 'package:khotwa/view/event_and_projects/my_events_page.dart';
-import 'package:khotwa/view/intro/Intro_Screen.dart';
 import 'package:khotwa/view/login/login_page.dart';
 import 'package:khotwa/view/profile/profile_page.dart';
 import 'package:khotwa/view/settings/settings_page.dart';
@@ -18,13 +17,9 @@ class AnimatedBottomBarPageVolunteer extends StatefulWidget {
 
 class _AnimatedBottomBarPageVolunteerState
     extends State<AnimatedBottomBarPageVolunteer> {
-
-
-      
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  int _selectedIndex = 2;
-
+  int _selectedIndex = 2; 
   String _selectedDrawerItem = '';
 
   final List<_NavItem> _items = [
@@ -35,45 +30,23 @@ class _AnimatedBottomBarPageVolunteerState
     _NavItem(icon: Icons.task, label: 'Tasks'),
   ];
 
+  final List<Widget> _pages = [
+    SizedBox(),
+    MyEventsPage(),
+    HomePageVolunteer(),
+    EventsAndProjectsPage(),
+    TasksPage(),
+  ];
+
   void _onIconTap(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-
-    switch (_items[index].label) {
-      case 'Menu':
-        Future.delayed(Duration(milliseconds: 100), () {
-          _scaffoldKey.currentState?.openDrawer();
-        });
-        break;
-
-      case 'My events':
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => MyEventsPage()),
-        );
-        break;
-
-      case 'Home':
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => IntroScreen()),
-        );
-        break;
-
-      case 'Projects,Events':
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => EventsAndProjectsPage()),
-        );
-        break;
-
-      case 'Tasks':
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => TasksPage()),
-        );
-        break;
+    if (_items[index].label == 'Menu') {
+      Future.delayed(Duration(milliseconds: 100), () {
+        _scaffoldKey.currentState?.openDrawer();
+      });
+    } else {
+      setState(() {
+        _selectedIndex = index;
+      });
     }
   }
 
@@ -99,12 +72,9 @@ class _AnimatedBottomBarPageVolunteerState
                     onTap: () {
                       setState(() {
                         _selectedDrawerItem = 'Profile';
+                        _selectedIndex = -1; 
                       });
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => HomePageVolunteer()),
-                      );
+                      Get.to(ProfilePage());
                     },
                     child: CircleAvatar(
                       radius: 35,
@@ -139,11 +109,8 @@ class _AnimatedBottomBarPageVolunteerState
               onTap: () {
                 setState(() {
                   _selectedDrawerItem = 'Profile';
+                  _selectedIndex = -1; 
                 });
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(builder: (context) => HomePageVolunteer()),
-                // );
                 Get.to(ProfilePage());
               },
             ),
@@ -163,6 +130,7 @@ class _AnimatedBottomBarPageVolunteerState
               onTap: () {
                 setState(() {
                   _selectedDrawerItem = 'Settings';
+                  _selectedIndex = -1;
                 });
                 Get.to(SettingsPage());
               },
@@ -183,63 +151,75 @@ class _AnimatedBottomBarPageVolunteerState
               onTap: () {
                 setState(() {
                   _selectedDrawerItem = 'About Us';
+                  _selectedIndex = -1;
                 });
               },
             ),
             ListTile(
-  leading: Icon(Icons.logout,
-      color: _selectedDrawerItem == 'Logout'
-          ? Color(0xFFDDA15E)
-          : Colors.black),
-  title: Text(
-    'Logout',
-    style: TextStyle(
-      color: _selectedDrawerItem == 'Logout'
-          ? Color(0xFFDDA15E)
-          : Colors.black,
-    ),
-  ),
-  onTap: () {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text("Confirm Logout",style: TextStyle(color:primaryColor,    fontWeight: FontWeight.bold,
-  )),
-        content: Text("Are you sure you want to log out?"),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text("Cancel",style: TextStyle(color:primaryColor,    
-  )),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop(); 
-              setState(() {
-                _selectedDrawerItem = 'Logout';
-              });
+              leading: Icon(Icons.logout,
+                  color: _selectedDrawerItem == 'Logout'
+                      ? Color(0xFFDDA15E)
+                      : Colors.black),
+              title: Text(
+                'Logout',
+                style: TextStyle(
+                  color: _selectedDrawerItem == 'Logout'
+                      ? Color(0xFFDDA15E)
+                      : Colors.black,
+                ),
+              ),
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: Text(
+                      "Confirm Logout",
+                      style: TextStyle(
+                          color: primaryColor, fontWeight: FontWeight.bold),
+                    ),
+                    content: Text("Are you sure you want to log out?"),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: Text(
+                          "Cancel",
+                          style: TextStyle(color: primaryColor),
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          setState(() {
+                            _selectedDrawerItem = 'Logout';
+                            _selectedIndex = -1;
+                          });
 
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (context) => LoginPage()),
-                (route) => false,
-              );
-            },
-            child: Text(
-              "Logout",
-              style: TextStyle(color: Colors.red),
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => LoginPage()),
+                            (route) => false,
+                          );
+                        },
+                        child: Text(
+                          "Logout",
+                          style: TextStyle(color: Colors.red),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
             ),
-          ),
-        ],
-      ),
-    );
-  },
-),
-
           ],
         ),
       ),
-      body: HomePageVolunteer(),
+      body: AnimatedSwitcher(
+        duration: Duration(milliseconds: 300),
+        child: (_selectedIndex == -1)
+            ? Container() 
+            : _pages[_selectedIndex],
+      ),
       bottomNavigationBar: Container(
         padding: EdgeInsets.symmetric(vertical: 10),
         decoration: BoxDecoration(
@@ -250,27 +230,37 @@ class _AnimatedBottomBarPageVolunteerState
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: List.generate(_items.length, (index) {
             final item = _items[index];
-            final isSelected = index == _selectedIndex;
+            final isSelected = index == _selectedIndex && _selectedIndex != -1;
+
             return GestureDetector(
               onTap: () => _onIconTap(index),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    item.icon,
-                    color: isSelected ? Color(0xFFDDA15E) : Colors.grey,
-                  ),
-                  SizedBox(height: 4),
-                  Text(
-                    item.label,
-                    style: TextStyle(
-                      fontSize: 12,
+              child: AnimatedContainer(
+                duration: Duration(milliseconds: 250),
+                padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                decoration: BoxDecoration(
+                  color: Colors.transparent,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      item.icon,
+                      size: 26,
                       color: isSelected ? Color(0xFFDDA15E) : Colors.grey,
-                      fontWeight:
-                          isSelected ? FontWeight.bold : FontWeight.normal,
                     ),
-                  ),
-                ],
+                    SizedBox(height: 4),
+                    Text(
+                      item.label,
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: isSelected ? Color(0xFFDDA15E) : Colors.grey,
+                        fontWeight:
+                            isSelected ? FontWeight.bold : FontWeight.normal,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             );
           }),

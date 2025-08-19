@@ -46,7 +46,7 @@ class HomeProjectsCard extends StatelessWidget {
           Text(
             name,
             style: TextStyle(
-              fontSize: 14,
+              fontSize: 16,
               fontWeight: FontWeight.bold,
               fontFamily: '._Acumin Variable Concept',
             ),
@@ -55,12 +55,12 @@ class HomeProjectsCard extends StatelessWidget {
           Text(
             organization,
             style: TextStyle(
-              fontSize: 11,
+              fontSize: 12,
               color: Colors.grey[700],
               fontFamily: '._Acumin Variable Concept',
             ),
           ),
-          SizedBox(height: 15),
+          SizedBox(height: 20),
           LinearProgressIndicator(
             value: progress,
             color: Colors.green,
@@ -68,7 +68,8 @@ class HomeProjectsCard extends StatelessWidget {
             minHeight: 8,
             borderRadius: BorderRadius.circular(6),
           ),
-          SizedBox(height: 8),
+          SizedBox(height: 10),
+          
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -113,7 +114,7 @@ class HomeProjectsCard extends StatelessWidget {
                     fontSize: 13,
                     fontWeight: FontWeight.bold,
                     fontFamily: '._Acumin Variable Concept',
-                    color: primaryColor,
+                    color: Colors.white,
                   ),
                 ),
               ),

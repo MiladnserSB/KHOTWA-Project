@@ -12,14 +12,11 @@ class HomePersonCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-     
-      },
-      child: Column(
+    return 
+       Column(
         children: [
           CircleAvatar(
-            radius: 36,
+            radius: 40,
             backgroundImage: AssetImage(image),
           ),
           SizedBox(height: 2),
@@ -30,9 +27,9 @@ class HomePersonCard extends StatelessWidget {
               fontFamily: '._Acumin Variable Concept',
             ),
           ),
-        
+       
         ],
-      ),
-    );
+       );
+    
   }
 }

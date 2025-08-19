@@ -1,69 +1,51 @@
 import 'package:flutter/material.dart';
 import 'package:khotwa/view/Home_Page/Home_Page/Home_Page_Visitor.dart';
-import 'package:khotwa/view/Home_Page/Home_Page/Home_Page_Volunteer.dart';
-import 'package:khotwa/view/intro/Intro_Screen.dart';
+import 'package:khotwa/view/change_password/change_password_page.dart';
 import 'package:khotwa/view/login/login_page.dart';
+import 'package:khotwa/view/login/login_form.dart'; 
 
 class AnimatedBottomBarPageVisitor extends StatefulWidget {
   @override
-  _AnimatedBottomBarPageVisitorState createState() => _AnimatedBottomBarPageVisitorState();
+  _AnimatedBottomBarPageVisitorState createState() =>
+      _AnimatedBottomBarPageVisitorState();
 }
 
-class _AnimatedBottomBarPageVisitorState extends State<AnimatedBottomBarPageVisitor> {
-  
+class _AnimatedBottomBarPageVisitorState
+    extends State<AnimatedBottomBarPageVisitor> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  int _selectedIndex = 4; 
+  int _selectedIndex = 2; 
   String _selectedDrawerItem = '';
 
   final List<_NavItem> _items = [
     _NavItem(icon: Icons.menu, label: 'Menu'),
     _NavItem(icon: Icons.login, label: 'Login'),
-    _NavItem(icon: Icons.home, label: 'Home'), 
+    _NavItem(icon: Icons.home, label: 'Home'),
     _NavItem(icon: Icons.volunteer_activism, label: 'Donate'),
     _NavItem(icon: Icons.shopping_cart, label: 'Cart'),
   ];
 
-  void _onIconTap(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+  final List<Widget> _pages = [
+    SizedBox(),
+    LoginPage(),
+    HomePageVisitor(),
+    ChangingPasswordPage(),
+    ChangingPasswordPage(),
+  ];
 
-    switch (_items[index].label) {
-      case 'Menu':
-        Future.delayed(Duration(milliseconds: 100), () {
-          _scaffoldKey.currentState?.openDrawer();
-        });
-        break;
-      case 'Login':
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => LoginPage()),
-        );
-        break;
-         case 'Home':
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => HomePageVisitor()),
-        );
-        break;
-      case 'Donate':
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => IntroScreen()),
-        );
-        break;
-      case 'Cart':
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => IntroScreen()),
-        );
-        break;
-     
+  void _onIconTap(int index) {
+    if (_items[index].label == 'Menu') {
+      Future.delayed(Duration(milliseconds: 100), () {
+        _scaffoldKey.currentState?.openDrawer();
+      });
+    } else {
+      setState(() {
+        _selectedIndex = index;
+      });
     }
   }
 
-    @override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
@@ -81,21 +63,9 @@ class _AnimatedBottomBarPageVisitorState extends State<AnimatedBottomBarPageVisi
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        _selectedDrawerItem = 'Profile';
-                      });
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => HomePageVolunteer()),
-                      );
-                    },
-                    child: CircleAvatar(
-                      radius: 35,
-                      backgroundImage: AssetImage('assets/images/person.jpg'),
-                    ),
+                  CircleAvatar(
+                    radius: 35,
+                    backgroundImage: AssetImage('assets/images/person.jpg'),
                   ),
                   const SizedBox(height: 10),
                   Text(
@@ -110,72 +80,19 @@ class _AnimatedBottomBarPageVisitorState extends State<AnimatedBottomBarPageVisi
               ),
             ),
             ListTile(
-              leading: Icon(Icons.person,
-                  color: _selectedDrawerItem == 'Profile'
-                      ? Color(0xFFDDA15E)
-                      : Colors.black),
-              title: Text(
-                'Profile',
-                style: TextStyle(
-                  color: _selectedDrawerItem == 'Profile'
-                      ? Color(0xFFDDA15E)
-                      : Colors.black,
-                ),
-              ),
-              onTap: () {
-                setState(() {
-                  _selectedDrawerItem = 'Profile';
-                });
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => HomePageVolunteer()),
-                );
-              },
+              leading: Icon(Icons.settings),
+              title: Text('Settings'),
+              onTap: () {},
             ),
             ListTile(
-              leading: Icon(Icons.settings,
-                  color: _selectedDrawerItem == 'Settings'
-                      ? Color(0xFFDDA15E)
-                      : Colors.black),
-              title: Text(
-                'Settings',
-                style: TextStyle(
-                  color: _selectedDrawerItem == 'Settings'
-                      ? Color(0xFFDDA15E)
-                      : Colors.black,
-                ),
-              ),
-              onTap: () {
-                setState(() {
-                  _selectedDrawerItem = 'Settings';
-                });
-              },
+              leading: Icon(Icons.info_outline),
+              title: Text('About Us'),
+              onTap: () {},
             ),
-            ListTile(
-              leading: Icon(Icons.info_outline,
-                  color: _selectedDrawerItem == 'About Us'
-                      ? Color(0xFFDDA15E)
-                      : Colors.black),
-              title: Text(
-                'About Us',
-                style: TextStyle(
-                  color: _selectedDrawerItem == 'About Us'
-                      ? Color(0xFFDDA15E)
-                      : Colors.black,
-                ),
-              ),
-              onTap: () {
-                setState(() {
-                  _selectedDrawerItem = 'About Us';
-                });
-              },
-            ),
-           
-
           ],
         ),
       ),
-      body: HomePageVisitor(),
+      body: _pages[_selectedIndex], 
       bottomNavigationBar: Container(
         padding: EdgeInsets.symmetric(vertical: 10),
         decoration: BoxDecoration(

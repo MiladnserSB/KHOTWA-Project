@@ -61,11 +61,9 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
   bool _isPressed = false;
 
   final TextStyle subtitleStyle = const TextStyle(
-    fontSize: 22,
-    fontWeight: FontWeight.bold,
-    color: primaryColor,
-    fontFamily: '._Acumin Variable Concept',
-    decoration: TextDecoration.underline,
+    fontSize: 24,
+    color: Colors.black,
+    fontFamily: 'DG Heaven',
   );
 
   final List<Map<String, String>> personList = [
@@ -157,9 +155,8 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
                         'Khotwa',
                         style: TextStyle(
                           fontSize: 35,
-                          fontFamily: 'GreatVibes',
-                          color: Color(0xFFDDA15E),
-                          fontWeight: FontWeight.bold,
+                          fontFamily: 'DG Heaven',
+                          color: primaryColor,
                         ),
                       ),
                     ),
@@ -203,9 +200,7 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
                 style: TextStyle(fontSize: 16),
               ),
 
-              const SizedBox(height: 15),
 
-              Text("Hall of Honor", style: subtitleStyle),
               const SizedBox(height: 20),
 
               SizedBox(
@@ -213,6 +208,7 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: personList.length,
+                  
                   itemBuilder: (context, index) {
                     final person = personList[index];
                     String? medalText;
@@ -221,7 +217,7 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
                     if (index == 2) medalText = "🥉";
 
                     return Padding(
-                      padding: const EdgeInsets.only(right: 20),
+                      padding: const EdgeInsets.only(right: 35),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -251,13 +247,13 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text("My Events ", style: subtitleStyle),
-                  Text("View all..", style: TextStyle(fontSize: 13)),
+                  Text("View all", style: TextStyle(fontSize: 13,color: primaryColor,fontFamily: 'DG Heaven'),),
                 ],
               ),
               const SizedBox(height: 10),
 
               SizedBox(
-                height: 280,
+                height: 330,
                 child: ListView.separated(
                   controller: _myEventScrollController,
                   scrollDirection: Axis.horizontal,
@@ -284,14 +280,14 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("Recommended Events ", style: subtitleStyle),
-                  Text("View all..", style: TextStyle(fontSize: 13)),
+                  Text("Recommended ", style: subtitleStyle),
+                  Text("View all", style: TextStyle(fontSize: 13,color: primaryColor,fontFamily: 'DG Heaven'),),
                 ],
               ),
               const SizedBox(height: 10),
 
               SizedBox(
-                height: 280,
+                height: 330,
                 child: ListView.separated(
                   controller: _recommendedScrollController,
                   scrollDirection: Axis.horizontal,
@@ -323,13 +319,13 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text("Top Projects ", style: subtitleStyle),
-                  Text("View all..", style: TextStyle(fontSize: 13)),
+                  Text("View all", style: TextStyle(fontSize: 13,color: primaryColor,fontFamily: 'DG Heaven'),),
                 ],
               ),
               const SizedBox(height: 10),
 
               SizedBox(
-                height: 330,
+                height: 350,
                 child: ListView.separated(
                   controller: _projectScrollController,
                   scrollDirection: Axis.horizontal,
