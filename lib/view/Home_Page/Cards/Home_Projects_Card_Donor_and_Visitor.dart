@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:khotwa/shared/constants/colors.dart';
+import 'package:khotwa/view/event_and_projects/project_details/project_details_page.dart';
 import 'package:khotwa/view/login/login_page.dart';
 
 class HomeProjectsCardDonorAndVisitor extends StatelessWidget {
@@ -200,7 +201,10 @@ Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()),);
               SizedBox(width: 5),
               ElevatedButton(
                 onPressed: () {
-                 
+                  Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => ProjectDetailsPage()),
+    );
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color(0xFFDDA15E),
@@ -208,17 +212,24 @@ Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()),);
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
+                  
                 ),
-                child: Text(
-                  'Details',
-                  style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: '._Acumin Variable Concept',
-                    color: Colors.white,
+               
+                  child: Text(
+                    'Details',
+                    style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: '._Acumin Variable Concept',
+                      color: Colors.white,
+                    ),
                   ),
-                ),
-              ),
+               
+              )
+              
+              
+              
+              ,
             ],
           ),
         ],

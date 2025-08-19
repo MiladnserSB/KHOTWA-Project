@@ -19,7 +19,7 @@ class _AnimatedBottomBarPageVolunteerState
     extends State<AnimatedBottomBarPageVolunteer> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  int _selectedIndex = 2; 
+  int _selectedIndex = 2; // افتراضي Home
   String _selectedDrawerItem = '';
 
   final List<_NavItem> _items = [
@@ -72,7 +72,6 @@ class _AnimatedBottomBarPageVolunteerState
                     onTap: () {
                       setState(() {
                         _selectedDrawerItem = 'Profile';
-                        _selectedIndex = -1; 
                       });
                       Get.to(ProfilePage());
                     },
@@ -109,7 +108,6 @@ class _AnimatedBottomBarPageVolunteerState
               onTap: () {
                 setState(() {
                   _selectedDrawerItem = 'Profile';
-                  _selectedIndex = -1; 
                 });
                 Get.to(ProfilePage());
               },
@@ -130,7 +128,6 @@ class _AnimatedBottomBarPageVolunteerState
               onTap: () {
                 setState(() {
                   _selectedDrawerItem = 'Settings';
-                  _selectedIndex = -1;
                 });
                 Get.to(SettingsPage());
               },
@@ -151,7 +148,6 @@ class _AnimatedBottomBarPageVolunteerState
               onTap: () {
                 setState(() {
                   _selectedDrawerItem = 'About Us';
-                  _selectedIndex = -1;
                 });
               },
             ),
@@ -191,7 +187,6 @@ class _AnimatedBottomBarPageVolunteerState
                           Navigator.of(context).pop();
                           setState(() {
                             _selectedDrawerItem = 'Logout';
-                            _selectedIndex = -1;
                           });
 
                           Navigator.pushAndRemoveUntil(
@@ -216,9 +211,7 @@ class _AnimatedBottomBarPageVolunteerState
       ),
       body: AnimatedSwitcher(
         duration: Duration(milliseconds: 300),
-        child: (_selectedIndex == -1)
-            ? Container() 
-            : _pages[_selectedIndex],
+        child: _pages[_selectedIndex], // ✅ بدون -1
       ),
       bottomNavigationBar: Container(
         padding: EdgeInsets.symmetric(vertical: 10),
@@ -230,7 +223,7 @@ class _AnimatedBottomBarPageVolunteerState
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: List.generate(_items.length, (index) {
             final item = _items[index];
-            final isSelected = index == _selectedIndex && _selectedIndex != -1;
+            final isSelected = index == _selectedIndex;
 
             return GestureDetector(
               onTap: () => _onIconTap(index),

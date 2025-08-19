@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:khotwa/shared/constants/colors.dart';
+import 'package:khotwa/view/event_and_projects/event_details/event_details_page.dart';
 
 class HomeEventsCard extends StatelessWidget {
   final String title;
@@ -135,10 +136,14 @@ class HomeEventsCard extends StatelessWidget {
               textStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
             ),
             onPressed: () {
-            
+              Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => EventDetailsPage()),
+    );
             },
-            child: const Text('View Details',style:TextStyle(color:  Colors.white)),
-          ),
+           
+              child: const Text('View Details',style:TextStyle(color:  Colors.white))),
+          
           const SizedBox(height: 10),
         ],
       ),
