@@ -56,7 +56,7 @@ class MyApp extends StatelessWidget {
       //   GetPage(name: AppRoutes.homeVolunteer, page: () => HomePageVoulunteer()),
       //   GetPage(name: AppRoutes.changePassword, page: () => ChangingPasswordPage()),
       // ],
-      home: AnimatedBottomBarPageVisitor(),
+      home: LoginPage(),
     );
   }
 }
