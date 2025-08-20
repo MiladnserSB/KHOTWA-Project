@@ -53,7 +53,6 @@ class _AnimatedBottomBarPageVisitorState
       context,
       MaterialPageRoute(builder: (_) => page),
     ).then((_) {
-      // يرجع لون العناصر عادي لما تطلع من الصفحة
       setState(() {
         _selectedDrawerItem = '';
       });
@@ -62,9 +61,13 @@ class _AnimatedBottomBarPageVisitorState
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return Scaffold(
       key: _scaffoldKey,
       drawer: Drawer(
+        backgroundColor: theme.scaffoldBackgroundColor,
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
@@ -77,19 +80,25 @@ class _AnimatedBottomBarPageVisitorState
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  CircleAvatar(
+                children: [
+                  const CircleAvatar(
                     radius: 35,
                     backgroundImage: AssetImage('assets/images/person.jpg'),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Text(
                     'User',
-                    style: TextStyle(color: Colors.white, fontSize: 18),
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                    ),
                   ),
                   Text(
                     'User@gmail.com',
-                    style: TextStyle(color: Colors.white70, fontSize: 14),
+                    style: TextStyle(
+                      color: Colors.white70,
+                      fontSize: 14,
+                    ),
                   ),
                 ],
               ),
@@ -99,14 +108,14 @@ class _AnimatedBottomBarPageVisitorState
                 Icons.settings,
                 color: _selectedDrawerItem == 'Settings'
                     ? const Color(0xFFDDA15E)
-                    : Colors.grey,
+                    : theme.iconTheme.color,
               ),
               title: Text(
                 'Settings',
                 style: TextStyle(
                   color: _selectedDrawerItem == 'Settings'
                       ? const Color(0xFFDDA15E)
-                      : Colors.black,
+                      : theme.textTheme.bodyMedium?.color,
                   fontWeight: _selectedDrawerItem == 'Settings'
                       ? FontWeight.bold
                       : FontWeight.normal,
@@ -119,21 +128,21 @@ class _AnimatedBottomBarPageVisitorState
                 Icons.info_outline,
                 color: _selectedDrawerItem == 'About Us'
                     ? const Color(0xFFDDA15E)
-                    : Colors.grey,
+                    : theme.iconTheme.color,
               ),
               title: Text(
                 'About Us',
                 style: TextStyle(
                   color: _selectedDrawerItem == 'About Us'
                       ? const Color(0xFFDDA15E)
-                      : Colors.black,
+                      : theme.textTheme.bodyMedium?.color,
                   fontWeight: _selectedDrawerItem == 'About Us'
                       ? FontWeight.bold
                       : FontWeight.normal,
                 ),
               ),
               onTap: () {
-                _onDrawerItemTap('About Us', const Placeholder()); 
+                _onDrawerItemTap('About Us', const Placeholder());
               },
             ),
           ],
@@ -143,8 +152,14 @@ class _AnimatedBottomBarPageVisitorState
       bottomNavigationBar: Container(
         padding: const EdgeInsets.symmetric(vertical: 10),
         decoration: BoxDecoration(
-          color: Colors.white,
-          boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 4)],
+          color: theme.bottomNavigationBarTheme.backgroundColor ??
+              theme.scaffoldBackgroundColor,
+          boxShadow: [
+            BoxShadow(
+              color: isDark ? Colors.white10 : Colors.black12,
+              blurRadius: 4,
+            )
+          ],
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -158,14 +173,18 @@ class _AnimatedBottomBarPageVisitorState
                 children: [
                   Icon(
                     item.icon,
-                    color: isSelected ? const Color(0xFFDDA15E) : Colors.grey,
+                    color: isSelected
+                        ? const Color(0xFFDDA15E)
+                        : theme.iconTheme.color,
                   ),
                   const SizedBox(height: 4),
                   Text(
                     item.label,
                     style: TextStyle(
                       fontSize: 12,
-                      color: isSelected ? const Color(0xFFDDA15E) : Colors.grey,
+                      color: isSelected
+                          ? const Color(0xFFDDA15E)
+                          : theme.textTheme.bodyMedium?.color,
                       fontWeight:
                           isSelected ? FontWeight.bold : FontWeight.normal,
                     ),

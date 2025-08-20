@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:khotwa/shared/constants/colors.dart';
 import 'package:khotwa/view/Home_Page/Home_Page/Home_Page_Donor.dart';
 import 'package:khotwa/view/change_password/change_password_page.dart';
 import 'package:khotwa/view/settings/settings_page.dart';
@@ -44,9 +45,13 @@ class _AnimatedBottomBarPageDonorState
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return Scaffold(
       key: _scaffoldKey,
       drawer: Drawer(
+        backgroundColor: theme.scaffoldBackgroundColor,
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
@@ -76,65 +81,36 @@ class _AnimatedBottomBarPageDonorState
                 ],
               ),
             ),
-            // Settings
-            ListTile(
-              leading: Icon(
-                Icons.settings,
-                color: _selectedDrawerItem == 'Settings'
-                    ? const Color(0xFFDDA15E)
-                    : Colors.grey,
-              ),
-              title: Text(
-                'Settings',
-                style: TextStyle(
-                  color: _selectedDrawerItem == 'Settings'
-                      ? const Color(0xFFDDA15E)
-                      : Colors.grey,
-                ),
-              ),
-              onTap: () {
-                setState(() {
-                  _selectedDrawerItem = 'Settings';
-                });
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => SettingsPage()),
-                );
-              },
+            _buildDrawerItem(
+              context,
+              icon: Icons.settings,
+              label: 'Settings',
+              page: SettingsPage(),
             ),
-            // About Us
-            ListTile(
-              leading: Icon(
-                Icons.info_outline,
-                color: _selectedDrawerItem == 'About Us'
-                    ? const Color(0xFFDDA15E)
-                    : Colors.grey,
-              ),
-              title: Text(
-                'About Us',
-                style: TextStyle(
-                  color: _selectedDrawerItem == 'About Us'
-                      ? const Color(0xFFDDA15E)
-                      : Colors.grey,
-                ),
-              ),
-              onTap: () {
-                setState(() {
-                  _selectedDrawerItem = 'About Us';
-                });
-                Navigator.pop(context);
-              },
+            _buildDrawerItem(
+              context,
+              icon: Icons.info_outline,
+              label: 'About Us',
+              page: const Placeholder(),
             ),
           ],
         ),
       ),
-      body: _pages[_selectedIndex],
+      body: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 300),
+        child: _pages[_selectedIndex],
+      ),
       bottomNavigationBar: Container(
         padding: const EdgeInsets.symmetric(vertical: 10),
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 4)],
+        decoration: BoxDecoration(
+          color: theme.bottomNavigationBarTheme.backgroundColor ??
+              theme.scaffoldBackgroundColor,
+          boxShadow: [
+            BoxShadow(
+              color: isDark ? Colors.white10 : Colors.black12,
+              blurRadius: 4,
+            )
+          ],
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -148,14 +124,16 @@ class _AnimatedBottomBarPageDonorState
                 children: [
                   Icon(
                     item.icon,
-                    color: isSelected ? const Color(0xFFDDA15E) : Colors.grey,
+                    color: isSelected ? const Color(0xFFDDA15E) : theme.iconTheme.color,
                   ),
                   const SizedBox(height: 4),
                   Text(
                     item.label,
                     style: TextStyle(
                       fontSize: 12,
-                      color: isSelected ? const Color(0xFFDDA15E) : Colors.grey,
+                      color: isSelected
+                          ? const Color(0xFFDDA15E)
+                          : theme.textTheme.bodyMedium?.color,
                       fontWeight:
                           isSelected ? FontWeight.bold : FontWeight.normal,
                     ),
@@ -166,6 +144,39 @@ class _AnimatedBottomBarPageDonorState
           }),
         ),
       ),
+    );
+  }
+
+  Widget _buildDrawerItem(BuildContext context,
+      {required IconData icon, required String label, required Widget page}) {
+    final theme = Theme.of(context);
+    return ListTile(
+      leading: Icon(
+        icon,
+        color: _selectedDrawerItem == label
+            ? const Color(0xFFDDA15E)
+            : theme.iconTheme.color,
+      ),
+      title: Text(
+        label,
+        style: TextStyle(
+          color: _selectedDrawerItem == label
+              ? const Color(0xFFDDA15E)
+              : theme.textTheme.bodyMedium?.color,
+          fontWeight: _selectedDrawerItem == label
+              ? FontWeight.bold
+              : FontWeight.normal,
+        ),
+      ),
+      onTap: () {
+        setState(() {
+          _selectedDrawerItem = label;
+        });
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => page),
+        );
+      },
     );
   }
 }

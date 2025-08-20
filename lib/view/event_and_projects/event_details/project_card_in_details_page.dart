@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:khotwa/shared/constants/colors.dart';
 
 class ProjectCard extends StatelessWidget {
   const ProjectCard({
@@ -17,6 +18,8 @@ class ProjectCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+                      final theme = Theme.of(context); 
+
     return Card(
       elevation: 6,
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -44,18 +47,12 @@ class ProjectCard extends StatelessWidget {
                 Positioned.fill(
                   child: Container(
                     decoration: BoxDecoration(
+                   
                       borderRadius: BorderRadius.circular(
                         21.0,
                       ), // Set your desired border radius
 
-                      gradient: LinearGradient(
-                        colors: [
-                          Colors.black.withOpacity(0.6),
-                          Colors.transparent,
-                        ],
-                        begin: Alignment.bottomCenter,
-                        end: Alignment.topCenter,
-                      ),
+                  
                     ),
                   ),
                 ),
@@ -70,7 +67,9 @@ class ProjectCard extends StatelessWidget {
                 style: TextStyle(
                   fontSize: size.width * 0.048,
                   fontWeight: FontWeight.w700,
-                  color: Colors.black87,
+                   color:   theme.brightness == Brightness.dark
+            ? Colors.white
+            : textBlack,
                   fontFamily: 'Acumin',
                 ),
               ),
@@ -111,7 +110,9 @@ class ProjectCard extends StatelessWidget {
                     style: TextStyle(
                       fontSize: size.width * 0.038,
                       fontWeight: FontWeight.w600,
-                      color: Colors.black87,
+                      color:   theme.brightness == Brightness.dark
+            ? Colors.white
+            : textBlack,
                     ),
                   ),
                 ],

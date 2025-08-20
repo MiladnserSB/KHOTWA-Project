@@ -4,8 +4,14 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 import 'package:khotwa/bindings/splash_binding.dart';
 import 'package:khotwa/bindings/initial_binding.dart';
+import 'package:khotwa/controller/theme_controller.dart';
 import 'package:khotwa/shared/constants/app_routes.dart';
 import 'package:khotwa/shared/themes/app_theme.dart';
+import 'package:khotwa/view/Home_Page/Animted_bottom/Animated_Bottom_Bar_Donor.dart';
+import 'package:khotwa/view/Home_Page/Animted_bottom/Animated_Bottom_Bar_Supervisor.dart';
+import 'package:khotwa/view/Home_Page/Home_Page/Home_Page_Donor.dart';
+import 'package:khotwa/view/Home_Page/Home_Page/Home_Page_Visitor.dart';
+import 'package:khotwa/view/Home_Page/Home_Page/Home_page_Supervisor.dart';
 import 'package:khotwa/view/change_password/change_password_page.dart';
 import 'package:khotwa/view/event_and_projects/event_details/event_details_page.dart';
 import 'package:khotwa/view/event_and_projects/events_and_projects_page.dart';
@@ -27,23 +33,53 @@ import 'package:khotwa/view/Home_Page/Animted_bottom/Animated_Bottom_Bar_Visitor
 import 'package:khotwa/view/Home_Page/Animted_bottom/Animated_Bottom_Bar_Volunteer.dart';
 
 void main() async {
+  Get.put(ThemeController());
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   await Hive.openBox('authBox');
-  runApp(const MyApp());
+  runApp( MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+    const MyApp({super.key});
+
+
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      title: 'Khotwa',
-      debugShowCheckedModeBanner: false,
-      theme: AppTheme.light,
-      initialBinding: InitialBinding(),
-      // initialRoute: AppRoutes.login,
+      final themeController = Get.find<ThemeController>();
+
+  return Obx(() {
+      return GetMaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Khotwa App',
+        theme: ThemeData.light().copyWith(
+          appBarTheme: const AppBarTheme(
+            backgroundColor: Colors.white,
+            foregroundColor: Colors.black,
+          ),
+          scaffoldBackgroundColor: Colors.white,
+          textTheme: const TextTheme(
+            bodyMedium: TextStyle(color: Colors.black),
+          ),
+        ),
+        darkTheme: ThemeData.dark().copyWith(
+          appBarTheme: const AppBarTheme(
+            backgroundColor: Colors.black,
+            foregroundColor: Colors.white,
+          ),
+          scaffoldBackgroundColor: Colors.black,
+          textTheme: const TextTheme(
+            bodyMedium: TextStyle(color: Colors.white),
+          ),
+        ),
+        themeMode: themeController.themeMode,
+        home:  AnimatedBottomBarPageSupervisor(),
+      );
+    });
+  }
+}
+// initialRoute: AppRoutes.login,
       // getPages: [
       //   GetPage(
       //     name: AppRoutes.splash,
@@ -56,7 +92,3 @@ class MyApp extends StatelessWidget {
       //   GetPage(name: AppRoutes.homeVolunteer, page: () => HomePageVoulunteer()),
       //   GetPage(name: AppRoutes.changePassword, page: () => ChangingPasswordPage()),
       // ],
-      home: LoginPage(),
-    );
-  }
-}

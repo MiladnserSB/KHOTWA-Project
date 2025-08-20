@@ -69,7 +69,6 @@ class _IntroScreenState extends State<IntroScreen> with TickerProviderStateMixin
 
                 const Spacer(flex: 15),
 
-                // login button with scale + fade
                 ScaleTransition(
                   scale: Tween<double>(begin: 0.8, end: 1.0).animate(CurvedAnimation(
                     parent: _loginController,
@@ -100,7 +99,6 @@ class _IntroScreenState extends State<IntroScreen> with TickerProviderStateMixin
 
                 const SizedBox(height: 20),
 
-                // OR fade + move slightly
                 FadeTransition(
                   opacity: _orController,
                   child: SlideTransition(
@@ -144,7 +142,6 @@ class _IntroScreenState extends State<IntroScreen> with TickerProviderStateMixin
 
                 const SizedBox(height: 20),
 
-                // Guest button with slide up and fade
                 FadeTransition(
                   opacity: _guestController,
                   child: SlideTransition(

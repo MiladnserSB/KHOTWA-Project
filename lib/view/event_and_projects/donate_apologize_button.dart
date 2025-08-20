@@ -13,6 +13,7 @@ final String title;
       onTap: onTap,
       child: Center(
         child: Container(
+          
           width: MediaQuery.sizeOf(context).width * 0.45,
           height: 40,
           decoration: BoxDecoration(

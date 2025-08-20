@@ -19,7 +19,7 @@ class _AnimatedBottomBarPageVolunteerState
     extends State<AnimatedBottomBarPageVolunteer> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  int _selectedIndex = 2; // افتراضي Home
+  int _selectedIndex = 2; 
   String _selectedDrawerItem = '';
 
   final List<_NavItem> _items = [
@@ -52,14 +52,18 @@ class _AnimatedBottomBarPageVolunteerState
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return Scaffold(
       key: _scaffoldKey,
       drawer: Drawer(
+        backgroundColor: theme.scaffoldBackgroundColor,
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
             DrawerHeader(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage('assets/images/drawer.jpg'),
                   fit: BoxFit.cover,
@@ -75,7 +79,7 @@ class _AnimatedBottomBarPageVolunteerState
                       });
                       Get.to(ProfilePage());
                     },
-                    child: CircleAvatar(
+                    child: const CircleAvatar(
                       radius: 35,
                       backgroundImage: AssetImage('assets/images/person.jpg'),
                     ),
@@ -83,103 +87,77 @@ class _AnimatedBottomBarPageVolunteerState
                   const SizedBox(height: 10),
                   Text(
                     'User',
-                    style: TextStyle(color: Colors.white, fontSize: 18),
+                    style: const TextStyle(color: Colors.white, fontSize: 18),
                   ),
-                  Text(
+                  const Text(
                     'User@gmail.com',
                     style: TextStyle(color: Colors.white70, fontSize: 14),
                   ),
                 ],
               ),
             ),
-            ListTile(
-              leading: Icon(Icons.person,
-                  color: _selectedDrawerItem == 'Profile'
-                      ? Color(0xFFDDA15E)
-                      : Colors.black),
-              title: Text(
-                'Profile',
-                style: TextStyle(
-                  color: _selectedDrawerItem == 'Profile'
-                      ? Color(0xFFDDA15E)
-                      : Colors.black,
-                ),
-              ),
-              onTap: () {
-                setState(() {
-                  _selectedDrawerItem = 'Profile';
-                });
-                Get.to(ProfilePage());
-              },
+            _buildDrawerItem(
+              context,
+              icon: Icons.person,
+              label: 'Profile',
+              page: ProfilePage(),
+            ),
+            _buildDrawerItem(
+              context,
+              icon: Icons.settings,
+              label: 'Settings',
+              page: SettingsPage(),
+            ),
+            _buildDrawerItem(
+              context,
+              icon: Icons.info_outline,
+              label: 'About Us',
+              page: const Placeholder(),
             ),
             ListTile(
-              leading: Icon(Icons.settings,
-                  color: _selectedDrawerItem == 'Settings'
-                      ? Color(0xFFDDA15E)
-                      : Colors.black),
-              title: Text(
-                'Settings',
-                style: TextStyle(
-                  color: _selectedDrawerItem == 'Settings'
-                      ? Color(0xFFDDA15E)
-                      : Colors.black,
-                ),
+              leading: Icon(
+                Icons.logout,
+                color: _selectedDrawerItem == 'Logout'
+                    ? const Color(0xFFDDA15E)
+                    : theme.iconTheme.color,
               ),
-              onTap: () {
-                setState(() {
-                  _selectedDrawerItem = 'Settings';
-                });
-                Get.to(SettingsPage());
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.info_outline,
-                  color: _selectedDrawerItem == 'About Us'
-                      ? Color(0xFFDDA15E)
-                      : Colors.black),
-              title: Text(
-                'About Us',
-                style: TextStyle(
-                  color: _selectedDrawerItem == 'About Us'
-                      ? Color(0xFFDDA15E)
-                      : Colors.black,
-                ),
-              ),
-              onTap: () {
-                setState(() {
-                  _selectedDrawerItem = 'About Us';
-                });
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.logout,
-                  color: _selectedDrawerItem == 'Logout'
-                      ? Color(0xFFDDA15E)
-                      : Colors.black),
               title: Text(
                 'Logout',
                 style: TextStyle(
                   color: _selectedDrawerItem == 'Logout'
-                      ? Color(0xFFDDA15E)
-                      : Colors.black,
+                      ? const Color(0xFFDDA15E)
+                      : theme.textTheme.bodyMedium?.color,
                 ),
               ),
               onTap: () {
                 showDialog(
                   context: context,
                   builder: (context) => AlertDialog(
+                  
+                    backgroundColor:  theme.brightness == Brightness.dark
+            ? primaryColor
+            : Colors.white, 
                     title: Text(
                       "Confirm Logout",
                       style: TextStyle(
-                          color: primaryColor, fontWeight: FontWeight.bold),
+                         color: theme.brightness == Brightness.dark
+            ? Colors.white
+            : primaryColor,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                    content: Text("Are you sure you want to log out?"),
+                    content: Text(
+                      "Are you sure you want to log out?",
+                      style: TextStyle(color: theme.textTheme.bodyMedium?.color),
+                    ),
                     actions: [
                       TextButton(
                         onPressed: () => Navigator.pop(context),
                         child: Text(
                           "Cancel",
-                          style: TextStyle(color: primaryColor),
+                          style: TextStyle( color: theme.brightness == Brightness.dark
+            ? Colors.white
+            : primaryColor,),
                         ),
                       ),
                       TextButton(
@@ -188,7 +166,6 @@ class _AnimatedBottomBarPageVolunteerState
                           setState(() {
                             _selectedDrawerItem = 'Logout';
                           });
-
                           Navigator.pushAndRemoveUntil(
                             context,
                             MaterialPageRoute(
@@ -196,7 +173,7 @@ class _AnimatedBottomBarPageVolunteerState
                             (route) => false,
                           );
                         },
-                        child: Text(
+                        child: const Text(
                           "Logout",
                           style: TextStyle(color: Colors.red),
                         ),
@@ -211,13 +188,19 @@ class _AnimatedBottomBarPageVolunteerState
       ),
       body: AnimatedSwitcher(
         duration: Duration(milliseconds: 300),
-        child: _pages[_selectedIndex], // ✅ بدون -1
+        child: _pages[_selectedIndex],
       ),
       bottomNavigationBar: Container(
-        padding: EdgeInsets.symmetric(vertical: 10),
+        padding: const EdgeInsets.symmetric(vertical: 10),
         decoration: BoxDecoration(
-          color: Colors.white,
-          boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 4)],
+          color: theme.bottomNavigationBarTheme.backgroundColor ??
+              theme.scaffoldBackgroundColor,
+          boxShadow: [
+            BoxShadow(
+              color: isDark ? Colors.white10 : Colors.black12,
+              blurRadius: 4,
+            )
+          ],
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -227,38 +210,66 @@ class _AnimatedBottomBarPageVolunteerState
 
             return GestureDetector(
               onTap: () => _onIconTap(index),
-              child: AnimatedContainer(
-                duration: Duration(milliseconds: 250),
-                padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                decoration: BoxDecoration(
-                  color: Colors.transparent,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      item.icon,
-                      size: 26,
-                      color: isSelected ? Color(0xFFDDA15E) : Colors.grey,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    item.icon,
+                    size: 26,
+                    color: isSelected
+                        ? const Color(0xFFDDA15E)
+                        : theme.iconTheme.color,
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    item.label,
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: isSelected
+                          ? const Color(0xFFDDA15E)
+                          : theme.textTheme.bodyMedium?.color,
+                      fontWeight:
+                          isSelected ? FontWeight.bold : FontWeight.normal,
                     ),
-                    SizedBox(height: 4),
-                    Text(
-                      item.label,
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: isSelected ? Color(0xFFDDA15E) : Colors.grey,
-                        fontWeight:
-                            isSelected ? FontWeight.bold : FontWeight.normal,
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             );
           }),
         ),
       ),
+    );
+  }
+
+  Widget _buildDrawerItem(BuildContext context,
+      {required IconData icon,
+      required String label,
+      required Widget page}) {
+    final theme = Theme.of(context);
+    return ListTile(
+      leading: Icon(
+        icon,
+        color: _selectedDrawerItem == label
+            ? const Color(0xFFDDA15E)
+            : theme.iconTheme.color,
+      ),
+      title: Text(
+        label,
+        style: TextStyle(
+          color: _selectedDrawerItem == label
+              ? const Color(0xFFDDA15E)
+              : theme.textTheme.bodyMedium?.color,
+          fontWeight: _selectedDrawerItem == label
+              ? FontWeight.bold
+              : FontWeight.normal,
+        ),
+      ),
+      onTap: () {
+        setState(() {
+          _selectedDrawerItem = label;
+        });
+        Get.to(page);
+      },
     );
   }
 }

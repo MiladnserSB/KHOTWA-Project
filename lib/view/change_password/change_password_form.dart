@@ -35,7 +35,9 @@ class _ChangePasswordFormState extends State<ChangePasswordForm> {
             AppStrings.newPass,
             style: theme.textTheme.bodyLarge?.copyWith(
               fontWeight: FontWeight.w500,
-              color: textBlack,
+              color:  theme.brightness == Brightness.dark
+            ? Colors.white
+            : primaryColor,
               
             ),
             
@@ -61,7 +63,9 @@ class _ChangePasswordFormState extends State<ChangePasswordForm> {
             AppStrings.confirmNewPass,
             style: theme.textTheme.bodyLarge?.copyWith(
               fontWeight: FontWeight.w500,
-              color: textBlack,
+             color:  theme.brightness == Brightness.dark
+            ? Colors.white
+            : primaryColor,
             ),
           ),
         ),

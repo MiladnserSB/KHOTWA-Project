@@ -3,7 +3,9 @@ import 'package:khotwa/shared/constants/colors.dart';
 import 'package:khotwa/view/Home_Page/Cards/Home_Events_Card.dart';
 import 'package:khotwa/view/Home_Page/Cards/Home_Person_Card.dart';
 import 'package:khotwa/view/Home_Page/Cards/Home_Projects_Card.dart';
+import 'package:khotwa/view/event_and_projects/events_and_projects_page.dart';
 import 'package:khotwa/view/login/login_page.dart';
+import 'package:khotwa/view/profile/profile_page.dart';
 
 
 class HomePageVolunteer extends StatefulWidget {
@@ -121,8 +123,10 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
 
   @override
   Widget build(BuildContext context) {
+        final theme = Theme.of(context); 
+
     return Scaffold(
-      backgroundColor: Colors.grey[50],
+      backgroundColor: theme.scaffoldBackgroundColor,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
@@ -136,7 +140,7 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (_) => LoginPage()),
+                        MaterialPageRoute(builder: (_) => ProfilePage()),
                       );
                     },
                     child: ClipOval(
@@ -156,8 +160,9 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
                         style: TextStyle(
                           fontSize: 35,
                           fontFamily: 'DG Heaven',
-                          color: primaryColor,
-                        ),
+ color: theme.brightness == Brightness.dark
+            ? secondaryColor
+            : primaryColor,                        ),
                       ),
                     ),
                   ),
@@ -221,9 +226,17 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          HomePersonCard(
-                            name: person['name'] ?? '',
-                            image: person['image'] ?? '',
+                          GestureDetector(
+                             onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => ProfilePage()),
+                      );
+                    },
+                            child: HomePersonCard(
+                              name: person['name'] ?? '',
+                              image: person['image'] ?? '',
+                            ),
                           ),
                           const SizedBox(height: 5),
                           if (medalText != null)
@@ -245,9 +258,28 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
 
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("My Events ", style: subtitleStyle),
-                  Text("View all", style: TextStyle(fontSize: 13,color: primaryColor,fontFamily: 'DG Heaven'),),
+                  children: [
+                  Text("My Events", style: subtitleStyle.copyWith( color: theme.brightness == Brightness.dark
+            ? Colors.white
+            :Colors.black,)),
+                  GestureDetector(
+ onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => EventsAndProjectsPage()),
+                      );
+                    },
+                    child: Text(
+                      "View all",
+                      style: TextStyle(
+                        fontSize: 13,
+                         color: theme.brightness == Brightness.dark
+                                ? Colors.white
+                                : primaryColor,
+                        fontFamily: 'DG Heaven',
+                      ),
+                    ),
+                  ),
                 ],
               ),
               const SizedBox(height: 10),
@@ -280,8 +312,27 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("Recommended ", style: subtitleStyle),
-                  Text("View all", style: TextStyle(fontSize: 13,color: primaryColor,fontFamily: 'DG Heaven'),),
+                  Text("Recommended ", style: subtitleStyle.copyWith( color: theme.brightness == Brightness.dark
+            ? Colors.white
+            : Colors.black,)),
+                  GestureDetector(
+                     onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => EventsAndProjectsPage()),
+                      );
+                    },
+                    child: Text(
+                      "View all",
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: theme.brightness == Brightness.dark
+                                ? Colors.white
+                                : primaryColor,
+                        fontFamily: 'DG Heaven',
+                      ),
+                    ),
+                  ),
                 ],
               ),
               const SizedBox(height: 10),
@@ -318,8 +369,27 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("Top Projects ", style: subtitleStyle),
-                  Text("View all", style: TextStyle(fontSize: 13,color: primaryColor,fontFamily: 'DG Heaven'),),
+                  Text("Top Projects", style: subtitleStyle.copyWith( color: theme.brightness == Brightness.dark
+            ? Colors.white
+            : Colors.black,)),
+                  GestureDetector(
+                     onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => EventsAndProjectsPage()),
+                      );
+                    },
+                    child: Text(
+                      "View all",
+                      style: TextStyle(
+                        fontSize: 13,
+                         color: theme.brightness == Brightness.dark
+                                ? Colors.white
+                                : primaryColor,
+                        fontFamily: 'DG Heaven',
+                      ),
+                    ),
+                  ),
                 ],
               ),
               const SizedBox(height: 10),

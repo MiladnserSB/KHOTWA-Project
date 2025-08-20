@@ -3,8 +3,9 @@ import 'package:khotwa/shared/constants/colors.dart';
 import 'package:khotwa/view/Home_Page/Cards/Home_Events_Card.dart';
 import 'package:khotwa/view/Home_Page/Cards/Home_Person_Card.dart';
 import 'package:khotwa/view/Home_Page/Cards/Home_Projects_Card_Donor_and_Visitor.dart';
+import 'package:khotwa/view/event_and_projects/events_and_projects_page.dart';
 import 'package:khotwa/view/login/login_page.dart';
-
+import 'package:khotwa/view/profile/profile_page.dart';
 
 class HomePageVisitor extends StatefulWidget {
   @override
@@ -60,7 +61,6 @@ class _HomePageVisitorState extends State<HomePageVisitor> {
 
   final TextStyle subtitleStyle = const TextStyle(
     fontSize: 24,
-    color: Colors.black,
     fontFamily: 'DG Heaven',
   );
 
@@ -119,8 +119,10 @@ class _HomePageVisitorState extends State<HomePageVisitor> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context); 
+
     return Scaffold(
-      backgroundColor: Colors.grey[50],
+      backgroundColor: theme.scaffoldBackgroundColor,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
@@ -130,11 +132,11 @@ class _HomePageVisitorState extends State<HomePageVisitor> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                   GestureDetector(
+                  GestureDetector(
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (_) => LoginPage()),
+                        MaterialPageRoute(builder: (_) => ProfilePage()),
                       );
                     },
                     child: ClipOval(
@@ -147,15 +149,16 @@ class _HomePageVisitorState extends State<HomePageVisitor> {
                     ),
                   ),
 
-                   Expanded(
+                  Expanded(
                     child: Center(
                       child: Text(
                         'Khotwa',
                         style: TextStyle(
                           fontSize: 35,
                           fontFamily: 'DG Heaven',
-                          color: primaryColor,
-                        ),
+ color: theme.brightness == Brightness.dark
+            ? secondaryColor
+            : primaryColor,                        ),
                       ),
                     ),
                   ),
@@ -164,7 +167,9 @@ class _HomePageVisitorState extends State<HomePageVisitor> {
                     icon: Icon(
                       Icons.notifications,
                       size: 28,
-                      color: _isPressed ? Color(0xFFDDA15E) : Colors.black,
+                      color: _isPressed
+                          ? const Color(0xFFDDA15E)
+                          : theme.iconTheme.color,
                     ),
                     onPressed: () {
                       setState(() {
@@ -183,9 +188,10 @@ class _HomePageVisitorState extends State<HomePageVisitor> {
                 decoration: InputDecoration(
                   hintText: 'Search...',
                   filled: true,
-                  fillColor: Colors.grey[200],
+                  fillColor: theme.inputDecorationTheme.fillColor ??
+                      Colors.grey[200],
                   isDense: true,
-                  contentPadding: EdgeInsets.symmetric(
+                  contentPadding: const EdgeInsets.symmetric(
                     vertical: 13,
                     horizontal: 12,
                   ),
@@ -193,9 +199,9 @@ class _HomePageVisitorState extends State<HomePageVisitor> {
                     borderRadius: BorderRadius.circular(20),
                     borderSide: BorderSide.none,
                   ),
-                  prefixIcon: const Icon(Icons.search, size: 22),
+                  prefixIcon: Icon(Icons.search, size: 22, color: theme.hintColor),
                 ),
-                style: TextStyle(fontSize: 16),
+                style: TextStyle(fontSize: 16, color: theme.textTheme.bodyMedium?.color),
               ),
 
               const SizedBox(height: 20),
@@ -217,18 +223,23 @@ class _HomePageVisitorState extends State<HomePageVisitor> {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          HomePersonCard(
-                            name: person['name'] ?? '',
-                            image: person['image'] ?? '',
+                          GestureDetector(
+                             onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => ProfilePage()),
+                      );
+                    },
+                            child: HomePersonCard(
+                              name: person['name'] ?? '',
+                              image: person['image'] ?? '',
+                            ),
                           ),
                           const SizedBox(height: 5),
                           if (medalText != null)
                             Text(
                               medalText,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 23,
-                              ),
+                              style: const TextStyle(fontSize: 23),
                             ),
                         ],
                       ),
@@ -242,15 +253,28 @@ class _HomePageVisitorState extends State<HomePageVisitor> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("My Events ", style: subtitleStyle),
-   Text(
-                    "View all",
-                    style: TextStyle(
-                      fontSize: 13,
-                      color: primaryColor,
-                      fontFamily: 'DG Heaven',
+                  Text("My Events", style: subtitleStyle.copyWith( color: theme.brightness == Brightness.dark
+            ? Colors.white
+            :Colors.black,)),
+                  GestureDetector(
+                     onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => EventsAndProjectsPage()),
+                      );
+                    },
+                    child: Text(
+                      "View all",
+                      style: TextStyle(
+                        fontSize: 13,
+                         color: theme.brightness == Brightness.dark
+                                ? Colors.white
+                                : primaryColor,
+                        fontFamily: 'DG Heaven',
+                      ),
                     ),
-                  ),                ],
+                  ),
+                ],
               ),
               const SizedBox(height: 10),
 
@@ -279,18 +303,32 @@ class _HomePageVisitorState extends State<HomePageVisitor> {
 
               const SizedBox(height: 25),
 
+              // Recommended Events
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("Recommended Events ", style: subtitleStyle),
-                     Text(
-                    "View all",
-                    style: TextStyle(
-                      fontSize: 13,
-                      color: primaryColor,
-                      fontFamily: 'DG Heaven',
+                  Text("Recommended", style: subtitleStyle.copyWith( color: theme.brightness == Brightness.dark
+            ? Colors.white
+            : Colors.black,)),
+                  GestureDetector(
+                     onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => EventsAndProjectsPage()),
+                      );
+                    },
+                    child: Text(
+                      "View all",
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: theme.brightness == Brightness.dark
+                                ? Colors.white
+                                : primaryColor,
+                        fontFamily: 'DG Heaven',
+                      ),
                     ),
-                  ),             ],
+                  ),
+                ],
               ),
               const SizedBox(height: 10),
 
@@ -303,11 +341,7 @@ class _HomePageVisitorState extends State<HomePageVisitor> {
                   separatorBuilder: (_, __) => const SizedBox(width: 10),
                   itemBuilder: (context, index) {
                     final event = myeventsList[index];
-                    double scale = _calculateScale(
-                      _recommendedScroll,
-                      index,
-                      240,
-                    );
+                    double scale = _calculateScale(_recommendedScroll, index, 240);
                     return Transform.scale(
                       scale: scale,
                       child: HomeEventsCard(
@@ -323,18 +357,32 @@ class _HomePageVisitorState extends State<HomePageVisitor> {
 
               const SizedBox(height: 25),
 
+              // Top Projects
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("Top Projects ", style: subtitleStyle),
- Text(
-                    "View all",
-                    style: TextStyle(
-                      fontSize: 13,
-                      color: primaryColor,
-                      fontFamily: 'DG Heaven',
+                  Text("Top Projects", style: subtitleStyle.copyWith( color: theme.brightness == Brightness.dark
+            ? Colors.white
+            : Colors.black,)),
+                  GestureDetector(
+                     onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => EventsAndProjectsPage()),
+                      );
+                    },
+                    child: Text(
+                      "View all",
+                      style: TextStyle(
+                        fontSize: 13,
+                         color: theme.brightness == Brightness.dark
+                                ? Colors.white
+                                : primaryColor,
+                        fontFamily: 'DG Heaven',
+                      ),
                     ),
-                  ),                ],
+                  ),
+                ],
               ),
               const SizedBox(height: 10),
 

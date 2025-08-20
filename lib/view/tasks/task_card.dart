@@ -27,11 +27,27 @@ class TaskCard extends StatelessWidget {
     String content,
     VoidCallback onConfirm,
   ) {
+    final theme = Theme.of(context);
+
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        title: Text(title, style: const TextStyle(color: textBlack)),
-        content: Text(content, style: const TextStyle(color: textBlack)),
+        title: Text(
+          title,
+          style: TextStyle(
+            color: theme.brightness == Brightness.dark
+                ? Colors.white
+                : primaryColor,
+          ),
+        ),
+        content: Text(
+          content,
+          style: TextStyle(
+            color: theme.brightness == Brightness.dark
+                ? Colors.white
+                : primaryColor,
+          ),
+        ),
         actions: [
           TextButton(
             style: TextButton.styleFrom(
@@ -58,6 +74,7 @@ class TaskCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
 
     Color statusColor;
     switch (status.toLowerCase()) {
@@ -85,24 +102,40 @@ class TaskCard extends StatelessWidget {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(title,
-                  style: TextStyle(
-                      fontSize: baseFont + 2,
-                      fontWeight: FontWeight.bold,
-                      color: textBlack)),
+              Text(
+                title,
+                style: TextStyle(
+                  fontSize: baseFont + 2,
+                  fontWeight: FontWeight.bold,
+                  color: theme.brightness == Brightness.dark
+                      ? Colors.white
+                      : textBlack,
+                ),
+              ),
               const SizedBox(height: 8),
-              Text(description,
-                  style: TextStyle(fontSize: baseFont, color: grey)),
+              Text(
+                description,
+                style: TextStyle(
+                  fontSize: baseFont,
+                  color:
+                      theme.brightness == Brightness.dark ? Colors.white70 : grey,
+                ),
+              ),
               const SizedBox(height: 12),
-              _infoRow(Icons.calendar_today, "Assigned: $assignedDate", baseFont),
-              _infoRow(Icons.event, "Due: $dueDate", baseFont),
-              _infoRow(Icons.location_on_outlined, "Event: $eventName", baseFont),
-              _infoRow(Icons.person, "Supervisor: $supervisorName", baseFont),
+              _infoRow(Icons.calendar_today, "Assigned: $assignedDate",
+                  baseFont, theme),
+              _infoRow(Icons.event, "Due: $dueDate", baseFont, theme),
+              _infoRow(Icons.location_on_outlined, "Event: $eventName",
+                  baseFont, theme),
+              _infoRow(Icons.person, "Supervisor: $supervisorName",
+                  baseFont, theme),
               const SizedBox(height: 10),
               Chip(
-                label: Text(status),
+                label: Text(
+                  status,
+                  style: TextStyle(fontSize: baseFont, color: statusColor),
+                ),
                 backgroundColor: statusColor.withOpacity(0.1),
-                labelStyle: TextStyle(color: statusColor, fontSize: baseFont),
               ),
               const SizedBox(height: 12),
               Row(
@@ -123,8 +156,10 @@ class TaskCard extends StatelessWidget {
                           },
                         );
                       },
-                      child: Text("Update Status",
-                          style: TextStyle(color: white, fontSize: baseFont)),
+                      child: Text(
+                        "Update Status",
+                        style: TextStyle(color: white, fontSize: baseFont),
+                      ),
                     ),
                   ),
                   const SizedBox(width: 8),
@@ -143,8 +178,10 @@ class TaskCard extends StatelessWidget {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.redAccent,
                       ),
-                      child: Text("Decline Task",
-                          style: TextStyle(color: white, fontSize: baseFont)),
+                      child: Text(
+                        "Decline Task",
+                        style: TextStyle(color: white, fontSize: baseFont),
+                      ),
                     ),
                   ),
                 ],
@@ -156,7 +193,8 @@ class TaskCard extends StatelessWidget {
     );
   }
 
-  Widget _infoRow(IconData icon, String text, double fontSize) {
+  Widget _infoRow(
+      IconData icon, String text, double fontSize, ThemeData theme) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 2),
       child: Row(
@@ -166,7 +204,11 @@ class TaskCard extends StatelessWidget {
           Expanded(
             child: Text(
               text,
-              style: TextStyle(color: textBlack, fontSize: fontSize),
+              style: TextStyle(
+                color:
+                    theme.brightness == Brightness.dark ? Colors.white : textBlack,
+                fontSize: fontSize,
+              ),
             ),
           ),
         ],

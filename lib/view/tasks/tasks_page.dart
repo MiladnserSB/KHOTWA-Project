@@ -13,12 +13,17 @@ class TasksPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+              final theme = Theme.of(context); 
 
     return Scaffold(
-      floatingActionButton: true ? FloatingActionButton(onPressed: (){Get.to(CreateTaskPage());}, backgroundColor: secondaryColor, shape: CircleBorder(), child: Icon(Icons.add, color: white,),) : SizedBox(),
+
+      floatingActionButton: true ? FloatingActionButton(onPressed: (){Get.to(CreateTaskPage());},       backgroundColor: theme.scaffoldBackgroundColor,
+ shape: CircleBorder(), child: Icon(Icons.add, color: white,),) : SizedBox(),
       appBar: AppBar(
         iconTheme: const IconThemeData(color: white),
-        title: const Text("My Tasks", style: TextStyle(color: textBlack)),
+        title: Text("My Tasks", style: TextStyle( color:  theme.brightness == Brightness.dark
+            ? Colors.white
+            : secondaryColor,)),
         centerTitle: true,
       ),
       body: Padding(

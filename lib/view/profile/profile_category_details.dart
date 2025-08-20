@@ -43,8 +43,10 @@ super.initState();
   Widget build(BuildContext context) {
     // ignore: deprecated_member_use
     final textScale = MediaQuery.of(context).textScaleFactor;
+                      final theme = Theme.of(context); 
+
     return Scaffold(
-      backgroundColor: Colors.white,
+            backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
         title: Text(
           widget.title,

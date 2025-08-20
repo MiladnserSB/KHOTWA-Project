@@ -8,14 +8,18 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+                  final theme = Theme.of(context); 
+
     final isLargeScreen = MediaQuery.of(context).size.width > 600;
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+      backgroundColor: theme.scaffoldBackgroundColor,
         elevation: isLargeScreen ? 1 : 0,
-        leading: const BackButton(color: textBlack),
+        leading: BackButton( color: theme.brightness == Brightness.dark
+            ? Colors.white
+            : primaryColor,),
       ),
       body: SafeArea(
         child: Center(

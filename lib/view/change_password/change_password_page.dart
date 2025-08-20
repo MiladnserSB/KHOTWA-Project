@@ -25,8 +25,8 @@ class ChangingPasswordPage extends StatelessWidget {
     final bool cameFromForgotPassword = args['cameFromForgotPassword'] ?? false;
 
     return Scaffold(
-      backgroundColor: Colors.white,
-      resizeToAvoidBottomInset: true,
+ backgroundColor: theme.scaffoldBackgroundColor,
+       resizeToAvoidBottomInset: true,
       body: SafeArea(
         child: LayoutBuilder(
           builder: (ctx, constraints) {
@@ -66,13 +66,19 @@ class ChangingPasswordPage extends StatelessWidget {
                           Text(
                             AppStrings.weAreDone,
                             style: theme.textTheme.titleMedium?.copyWith(
-                              color: secondaryColor,
+                             
+                                  color:  secondaryColor
+           ,
                               fontWeight: FontWeight.bold,
                               fontSize: screen.size.width * 0.065,
                             ),
                           ),
                           const SizedBox(width: 6),
-                          const Icon(Icons.check_circle, color: secondaryColor),
+                          Icon(
+                            Icons.check_circle,
+                             color: secondaryColor
+          
+                          ),
                         ],
                       ),
                       SizedBox(height: screen.size.height * 0.075),

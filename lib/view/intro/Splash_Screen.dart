@@ -1,14 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:khotwa/controller/splash_controller.dart';
+import 'package:khotwa/view/intro/Intro_Screen.dart';
 
-class SplashScreen extends StatelessWidget {
+class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final splashController = Get.find<SplashController>();
+  State<SplashScreen> createState() => _SplashScreenState();
+}
 
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(const Duration(seconds: 3), () {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const IntroScreen()),
+      );
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: [
@@ -20,7 +33,7 @@ class SplashScreen extends StatelessWidget {
           ),
           Column(
             children: [
-              const SizedBox(height: 80),
+              const SizedBox(height: 10),
               Center(
                 child: Image.asset(
                   'assets/images/خطوة.png',
@@ -28,16 +41,10 @@ class SplashScreen extends StatelessWidget {
                 ),
               ),
               const Spacer(),
-              FadeInTextAnimation(
-                text: "khotwa for change",
-                fontSize: 30,
-                delay: 0,
-              ),
-              const Spacer(),
-              FadeInTextAnimation(
+              const FadeInTextAnimation(
                 text: "...خطوة صغيرة بتعمل أثر كبير",
                 fontSize: 23,
-                color: const Color(0xFFDDA15E),
+                color: Color(0xFFDDA15E),
                 delay: 800,
               ),
               const SizedBox(height: 90),
@@ -67,7 +74,8 @@ class FadeInTextAnimation extends StatefulWidget {
   State<FadeInTextAnimation> createState() => _FadeInTextAnimationState();
 }
 
-class _FadeInTextAnimationState extends State<FadeInTextAnimation> with SingleTickerProviderStateMixin {
+class _FadeInTextAnimationState extends State<FadeInTextAnimation>
+    with SingleTickerProviderStateMixin {
   late AnimationController controller;
   late Animation<double> opacity;
   late Animation<double> translate;
@@ -76,7 +84,8 @@ class _FadeInTextAnimationState extends State<FadeInTextAnimation> with SingleTi
   @override
   void initState() {
     super.initState();
-    controller = AnimationController(vsync: this, duration: const Duration(milliseconds: 1000));
+    controller = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 1000));
     opacity = Tween<double>(begin: 0, end: 1).animate(controller);
     translate = Tween<double>(begin: 40, end: 0).animate(controller);
     scale = Tween<double>(begin: 0.8, end: 1).animate(controller);

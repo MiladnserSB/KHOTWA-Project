@@ -36,23 +36,27 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
     final size = MediaQuery.of(context).size;
     final scaleFactor = size.width / 375; // base width = iPhone 11
     final itemWidth = size.width * 0.75;
+                  final theme = Theme.of(context); 
 
     return Scaffold(
-      backgroundColor: white,
+            backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: white,
+            backgroundColor: theme.scaffoldBackgroundColor,
         elevation: 0,
         centerTitle: true,
         title: Text(
           'Project Details',
           style: TextStyle(
-            color: textBlack,
-            fontWeight: FontWeight.bold,
+ color:   theme.brightness == Brightness.dark
+            ? Colors.white
+            : textBlack,            fontWeight: FontWeight.bold,
             fontSize: 18 * scaleFactor,
           ),
         ),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: textBlack),
+          icon:  Icon(Icons.arrow_back,  color:   theme.brightness == Brightness.dark
+            ? Colors.white
+            : textBlack,),
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
@@ -84,7 +88,9 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
               "Join us in transforming a neglected urban space into a vibrant community garden. This project fosters local engagement, promotes sustainable living, and provides fresh produce for everyone.",
               style: TextStyle(
                 fontSize: 14 * scaleFactor,
-                color: Colors.black54,
+                 color:   theme.brightness == Brightness.dark
+            ? Colors.white
+            : textBlack,
                 height: 1.5,
               ),
             ),
@@ -138,12 +144,14 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
               style: TextStyle(
                 fontSize: 16 * scaleFactor,
                 fontWeight: FontWeight.bold,
-                color: textBlack,
+                color:   theme.brightness == Brightness.dark
+            ? Colors.white
+            : textBlack,
               ),
             ),
             SizedBox(height: size.height * 0.015),
             SizedBox(
-              height: size.height * 0.45,
+              height: size.height * 0.50,
               child: ListView.separated(
                 controller: _scrollController,
                 scrollDirection: Axis.horizontal,
@@ -161,7 +169,7 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
                         scale: value,
                         alignment: Alignment.center,
                         child: SizedBox(
-                          height: size.height * 0.4,
+                          height: size.height * 0.6,
                           width: itemWidth,
                           child: Material(
                             elevation: value > 0.98 ? 10 : 2,
@@ -184,8 +192,9 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
               style: TextStyle(
                 fontSize: 16 * scaleFactor,
                 fontWeight: FontWeight.bold,
-                color: textBlack,
-              ),
+ color:   theme.brightness == Brightness.dark
+            ? Colors.white
+            : textBlack,              ),
             ),
             SizedBox(height: size.height * 0.015),
             ClipRRect(
@@ -206,8 +215,9 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
                 Text(
                   "Collected: \$7,500",
                   style: TextStyle(
-                    color: primaryColor,
-                    fontWeight: FontWeight.w600,
+ color:   theme.brightness == Brightness.dark
+            ? Colors.white
+            : primaryColor,                    fontWeight: FontWeight.w600,
                     fontSize: 14 * scaleFactor,
                   ),
                 ),

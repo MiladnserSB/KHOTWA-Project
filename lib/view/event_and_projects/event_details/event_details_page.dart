@@ -10,20 +10,25 @@ class EventDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+                  final theme = Theme.of(context); 
 
     return Scaffold(
-      backgroundColor: white,
+            backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: white,
+            backgroundColor: theme.scaffoldBackgroundColor,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: textBlack),
+          icon: Icon(Icons.arrow_back, color:   theme.brightness == Brightness.dark
+            ? Colors.white
+            : textBlack,),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        title: const Text(
+        title: Text(
           "Event Details",
-          style: TextStyle(color: textBlack, fontWeight: FontWeight.bold),
+          style: TextStyle( color:   theme.brightness == Brightness.dark
+            ? Colors.white
+            : textBlack, fontWeight: FontWeight.bold),
         ),
       ),
       body: SafeArea(
@@ -50,11 +55,13 @@ class EventDetailsPage extends StatelessWidget {
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
-              const Text(
+              Text(
                 "Join us in transforming an neglected urban space into a vibrant community garden. This project fosters local engagement, promotes sustainable living, and provides fresh produce for everyone.",
                 style: TextStyle(
                   fontSize: 14,
-                  color: Colors.black54,
+                   color:   theme.brightness == Brightness.dark
+            ? Colors.white
+            : textBlack,
                   height: 1.5,
                 ),
               ),

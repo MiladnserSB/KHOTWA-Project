@@ -8,10 +8,13 @@ class ProfilePageCategoriesInfoList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return buildProfileListCategories(context);
   }
 
   Widget buildProfileListCategories(BuildContext context) {
+                      final theme = Theme.of(context); 
+
     final List<Map<String, String>> infoItems = [
       {'title': 'Personal Information', 'subtitle': 'Details about you'},
       {'title': 'Volunteer Info', 'subtitle': 'Your volunteering details'},
@@ -29,6 +32,7 @@ class ProfilePageCategoriesInfoList extends StatelessWidget {
     ];
 
     return ListView.builder(
+      
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       itemCount: infoItems.length,
@@ -70,16 +74,20 @@ class ProfilePageCategoriesInfoList extends StatelessWidget {
                     const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
                 leading: Icon(
                   icons[index],
-                  color: primaryColor,
+                   color:   theme.brightness == Brightness.dark
+            ? Colors.white
+            : primaryColor,
                   size: 26,
                 ),
                 title: Text(
                   overflow: TextOverflow.ellipsis,
                   infoItems[index]['title']!,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 16,
-                    color: textBlack,
+                    color:     theme.brightness == Brightness.dark
+            ? Colors.white
+            : textBlack,
                   ),
                 ),
                 subtitle: Text(

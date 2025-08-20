@@ -11,39 +11,45 @@ class ForgotPasswordDialogue extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+                            final theme = Theme.of(context); 
+
     final mediaQuery = MediaQuery.of(context);
     final width = mediaQuery.size.width;
     final height = mediaQuery.size.height;
 
     return Dialog(
-      insetPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+      insetPadding: const EdgeInsets.symmetric(horizontal: 30, vertical: 24),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
       child: SingleChildScrollView(
         padding: const EdgeInsets.all(20.0),
         child: ConstrainedBox(
           constraints: BoxConstraints(
             maxWidth: 400,
-            minHeight: height * 0.3,
+            minHeight: height * 0.45,
           ),
           child: Column(
+
             mainAxisSize: MainAxisSize.min,
             children: [
+                            SizedBox(height: 10),
+
               Text(
                 AppStrings.enterYourEmailPlease,
                 style: TextStyle(
                   fontSize: width * 0.055,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                ),
+ color:   theme.brightness == Brightness.dark
+            ? Colors.white
+            : textBlack,                ),
                 textAlign: TextAlign.center,
               ),
-              SizedBox(height: height * 0.025),
+              SizedBox(height: height * 0.100),
               Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
                   AppStrings.email,
                   style: TextStyle(
-                    fontSize: width * 0.042,
+                    fontSize: width * 0.045,
                     fontWeight: FontWeight.w500,
                   ),
                 ),

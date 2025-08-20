@@ -33,7 +33,10 @@ class VolunteerHistoryPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext ctx) {
-    final totalTime = dataList.fold<int>(0, (acc, item) => acc + (item['hours'] as int));
+    final theme = Theme.of(ctx);
+
+    final totalTime =
+        dataList.fold<int>(0, (acc, item) => acc + (item['hours'] as int));
     final personName = 'Ahmed Ali';
     final joinedDateText = 'Joined: March 15, 2022';
 
@@ -43,7 +46,8 @@ class VolunteerHistoryPage extends StatelessWidget {
           'Volunteer History',
           style: TextStyle(color: white, fontWeight: FontWeight.bold),
         ),
-        backgroundColor: primaryColor,
+        backgroundColor:
+            theme.brightness == Brightness.dark ? Colors.black : primaryColor,
         elevation: 2,
         leading: const BackButton(color: white),
       ),
@@ -57,6 +61,7 @@ class VolunteerHistoryPage extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    // Header
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -66,15 +71,21 @@ class VolunteerHistoryPage extends StatelessWidget {
                             children: [
                               Text(
                                 personName,
-                                style: Theme.of(ctx).textTheme.titleLarge?.copyWith(
-                                      fontWeight: FontWeight.bold,
-                                      color: textBlack,
-                                      fontSize: MediaQuery.of(ctx).size.width > 600 ? 24 : 20,
-                                    ),
+                                style: theme.textTheme.titleLarge?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: theme.brightness == Brightness.dark
+                                      ? Colors.white
+                                      : textBlack,
+                                  fontSize:
+                                      MediaQuery.of(ctx).size.width > 600
+                                          ? 24
+                                          : 20,
+                                ),
                               ),
                               const SizedBox(height: 6),
                               Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 12, vertical: 4),
                                 decoration: BoxDecoration(
                                   color: secondaryColor,
                                   borderRadius: BorderRadius.circular(20),
@@ -82,7 +93,10 @@ class VolunteerHistoryPage extends StatelessWidget {
                                 child: Text(
                                   'Active Volunteer',
                                   style: TextStyle(
-                                    fontSize: MediaQuery.of(ctx).size.width > 600 ? 14 : 12,
+                                    fontSize:
+                                        MediaQuery.of(ctx).size.width > 600
+                                            ? 14
+                                            : 12,
                                     fontWeight: FontWeight.w600,
                                     color: white,
                                   ),
@@ -96,8 +110,10 @@ class VolunteerHistoryPage extends StatelessWidget {
                           children: [
                             Container(
                               padding: EdgeInsets.symmetric(
-                                horizontal: MediaQuery.of(ctx).size.width > 600 ? 25 : 15,
-                                vertical: MediaQuery.of(ctx).size.width > 600 ? 16 : 12,
+                                horizontal:
+                                    MediaQuery.of(ctx).size.width > 600 ? 25 : 15,
+                                vertical:
+                                    MediaQuery.of(ctx).size.width > 600 ? 16 : 12,
                               ),
                               decoration: BoxDecoration(
                                 color: primaryColor.withOpacity(0.9),
@@ -106,16 +122,21 @@ class VolunteerHistoryPage extends StatelessWidget {
                               child: Text(
                                 '$totalTime',
                                 style: TextStyle(
-                                  fontSize: MediaQuery.of(ctx).size.width > 600 ? 28 : 24,
+                                  fontSize: MediaQuery.of(ctx).size.width > 600
+                                      ? 28
+                                      : 24,
                                   fontWeight: FontWeight.bold,
                                   color: white,
                                 ),
                               ),
                             ),
-                            const Text(
+                            const SizedBox(height: 4),
+                            Text(
                               'Volunteer Hours',
                               style: TextStyle(
-                                color: textBlack,
+                                color: theme.brightness == Brightness.dark
+                                    ? Colors.white
+                                    : textBlack,
                                 fontWeight: FontWeight.w600,
                               ),
                             )
@@ -158,12 +179,14 @@ class VolunteerHistoryPage extends StatelessWidget {
                       ),
                     ),
                     const Divider(height: 40),
+
                     Text(
                       'Participated and Current Campaigns',
-                      style: Theme.of(ctx).textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: textBlack,
-                          ),
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+ color:   theme.brightness == Brightness.dark
+            ? Colors.white
+            : primaryColor,                      ),
                     ),
                     const SizedBox(height: 12),
 
@@ -175,14 +198,7 @@ class VolunteerHistoryPage extends StatelessWidget {
                       itemBuilder: (context, i) {
                         final item = dataList[i];
                         return InkWell(
-                          onTap: () {
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //     builder: (_) => EventDetailsPage(data: item),
-                            //   ),
-                            // );
-                          },
+                          onTap: () {},
                           borderRadius: BorderRadius.circular(16),
                           child: Card(
                             elevation: 3,
@@ -190,7 +206,8 @@ class VolunteerHistoryPage extends StatelessWidget {
                               borderRadius: BorderRadius.circular(16),
                             ),
                             child: Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 10, horizontal: 12),
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -206,10 +223,10 @@ class VolunteerHistoryPage extends StatelessWidget {
                                     ),
                                   ),
                                   const SizedBox(width: 12),
-
                                   Expanded(
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Row(
                                           children: [
@@ -224,18 +241,23 @@ class VolunteerHistoryPage extends StatelessWidget {
                                             ),
                                             const SizedBox(width: 6),
                                             Container(
-                                              padding: const EdgeInsets.symmetric(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
                                                 vertical: 4,
                                                 horizontal: 8,
                                               ),
                                               decoration: BoxDecoration(
                                                 color: item['isCurrent']
-                                                    ? secondaryColor.withOpacity(0.15)
+                                                    ? secondaryColor
+                                                        .withOpacity(0.15)
                                                     : Colors.grey.withOpacity(0.15),
-                                                borderRadius: BorderRadius.circular(12),
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
                                               ),
                                               child: Text(
-                                                item['isCurrent'] ? 'Current' : 'Participated',
+                                                item['isCurrent']
+                                                    ? 'Current'
+                                                    : 'Participated',
                                                 style: TextStyle(
                                                   fontSize: 11,
                                                   fontWeight: FontWeight.w600,

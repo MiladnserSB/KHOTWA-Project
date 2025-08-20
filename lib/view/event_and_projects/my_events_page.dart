@@ -37,9 +37,13 @@ class _MyEventsPageState extends State<MyEventsPage> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final double itemHeight = size.height * 0.38;
+              final theme = Theme.of(context); 
 
     return Scaffold(
+            backgroundColor: theme.scaffoldBackgroundColor,
+
       body: SafeArea(
+        
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
           child: Column(
@@ -131,6 +135,8 @@ class EventCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+                            final theme = Theme.of(context); 
+
     return Card(
       elevation: elevation,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -226,7 +232,9 @@ class EventCard extends StatelessWidget {
                   builder: (BuildContext context) {
                     final size = MediaQuery.of(context).size;
                     return Dialog(
-                      backgroundColor: Colors.white,
+                      backgroundColor:   theme.brightness == Brightness.dark
+            ? textBlack
+            : Colors.white,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16),
                       ),
@@ -252,8 +260,9 @@ class EventCard extends StatelessWidget {
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: size.width * 0.04,
-                                color: Colors.black87,
-                              ),
+ color:   theme.brightness == Brightness.dark
+            ? Colors.white
+            : textBlack,                              ),
                             ),
                             SizedBox(height: size.height * 0.03),
                             Row(
@@ -281,13 +290,13 @@ class EventCard extends StatelessWidget {
                                       // Apologize logic goes here
                                     },
                                     style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.grey[300],
+                                      backgroundColor: secondaryColor,
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(10),
                                       ),
                                     ),
                                     child: Text('Apologize',
-                                        style: TextStyle(color: textBlack)),
+                                        style: TextStyle(color: Colors.white)),
                                   ),
                                 ),
                               ],

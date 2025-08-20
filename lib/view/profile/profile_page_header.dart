@@ -6,10 +6,15 @@ class ProfilePageHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+                  final theme = Theme.of(context); 
+
     final textScale = MediaQuery.of(context).textScaleFactor;
 
     return Container(
+      color: theme.scaffoldBackgroundColor,
+
       padding: const EdgeInsets.symmetric(horizontal:  16.0, vertical: 2),
+      
       child: Row(
         children: [
           const CircleAvatar(
@@ -24,17 +29,21 @@ class ProfilePageHeader extends StatelessWidget {
                 Text(
                   'Milad AlNser',
                   style: TextStyle(
-                    fontSize: 20 * textScale,
+                    fontSize: 18 * textScale,
                     fontWeight: FontWeight.bold,
-                    color: primaryColor,
+                    color:   theme.brightness == Brightness.dark
+            ? Colors.white
+            : primaryColor,
                   ),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   'Miladalnser@gmail.com',
                   style: TextStyle(
-                    fontSize: 18 * textScale,
-                    color: primaryColor,
+                    fontSize: 15 * textScale,
+                    color:   theme.brightness == Brightness.dark
+            ? Colors.white
+            : primaryColor,
                   ),
                 ),
               ],
