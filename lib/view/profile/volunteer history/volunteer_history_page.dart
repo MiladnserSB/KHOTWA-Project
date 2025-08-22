@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:khotwa/shared/constants/colors.dart';
 
 class VolunteerHistoryPage extends StatelessWidget {
@@ -35,19 +36,22 @@ class VolunteerHistoryPage extends StatelessWidget {
   Widget build(BuildContext ctx) {
     final theme = Theme.of(ctx);
 
-    final totalTime =
-        dataList.fold<int>(0, (acc, item) => acc + (item['hours'] as int));
-    final personName = 'Ahmed Ali';
-    final joinedDateText = 'Joined: March 15, 2022';
+    final totalTime = dataList.fold<int>(
+      0,
+      (acc, item) => acc + (item['hours'] as int),
+    );
+    final personName = 'Ahmed Ali'.tr;
+    final joinedDateText = 'Joined: March 15, 2022'.tr;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Volunteer History',
+        title: Text(
+          'Volunteer History'.tr,
           style: TextStyle(color: white, fontWeight: FontWeight.bold),
         ),
-        backgroundColor:
-            theme.brightness == Brightness.dark ? Colors.black : primaryColor,
+        backgroundColor: theme.brightness == Brightness.dark
+            ? Colors.black
+            : primaryColor,
         elevation: 2,
         leading: const BackButton(color: white),
       ),
@@ -76,27 +80,28 @@ class VolunteerHistoryPage extends StatelessWidget {
                                   color: theme.brightness == Brightness.dark
                                       ? Colors.white
                                       : textBlack,
-                                  fontSize:
-                                      MediaQuery.of(ctx).size.width > 600
-                                          ? 24
-                                          : 20,
+                                  fontSize: MediaQuery.of(ctx).size.width > 600
+                                      ? 24
+                                      : 20,
                                 ),
                               ),
                               const SizedBox(height: 6),
                               Container(
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 12, vertical: 4),
+                                  horizontal: 12,
+                                  vertical: 4,
+                                ),
                                 decoration: BoxDecoration(
                                   color: secondaryColor,
                                   borderRadius: BorderRadius.circular(20),
                                 ),
                                 child: Text(
-                                  'Active Volunteer',
+                                  'Active Volunteer'.tr,
                                   style: TextStyle(
                                     fontSize:
                                         MediaQuery.of(ctx).size.width > 600
-                                            ? 14
-                                            : 12,
+                                        ? 14
+                                        : 12,
                                     fontWeight: FontWeight.w600,
                                     color: white,
                                   ),
@@ -108,12 +113,26 @@ class VolunteerHistoryPage extends StatelessWidget {
                         const SizedBox(width: 20),
                         Column(
                           children: [
+                            const SizedBox(height: 17),
+                            Text(
+                              'Volunteer Hours'.tr,
+                              style: TextStyle(
+                                color: theme.brightness == Brightness.dark
+                                    ? Colors.white
+                                    : textBlack,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(height: 5),
+
                             Container(
                               padding: EdgeInsets.symmetric(
-                                horizontal:
-                                    MediaQuery.of(ctx).size.width > 600 ? 25 : 15,
-                                vertical:
-                                    MediaQuery.of(ctx).size.width > 600 ? 16 : 12,
+                                horizontal: MediaQuery.of(ctx).size.width > 600
+                                    ? 25
+                                    : 15,
+                                vertical: MediaQuery.of(ctx).size.width > 600
+                                    ? 16
+                                    : 12,
                               ),
                               decoration: BoxDecoration(
                                 color: primaryColor.withOpacity(0.9),
@@ -130,16 +149,6 @@ class VolunteerHistoryPage extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            const SizedBox(height: 4),
-                            Text(
-                              'Volunteer Hours',
-                              style: TextStyle(
-                                color: theme.brightness == Brightness.dark
-                                    ? Colors.white
-                                    : textBlack,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            )
                           ],
                         ),
                       ],
@@ -166,9 +175,9 @@ class VolunteerHistoryPage extends StatelessWidget {
                           color: Colors.red,
                           borderRadius: BorderRadius.circular(12),
                         ),
-                        child: const Center(
+                        child: Center(
                           child: Text(
-                            'Warnings',
+                            'Warnings'.tr,
                             style: TextStyle(
                               color: white,
                               fontWeight: FontWeight.bold,
@@ -181,12 +190,13 @@ class VolunteerHistoryPage extends StatelessWidget {
                     const Divider(height: 40),
 
                     Text(
-                      'Participated and Current Campaigns',
+                      'Participated and Current Campaigns'.tr,
                       style: theme.textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.bold,
- color:   theme.brightness == Brightness.dark
-            ? Colors.white
-            : primaryColor,                      ),
+                        color: theme.brightness == Brightness.dark
+                            ? Colors.white
+                            : primaryColor,
+                      ),
                     ),
                     const SizedBox(height: 12),
 
@@ -207,7 +217,9 @@ class VolunteerHistoryPage extends StatelessWidget {
                             ),
                             child: Padding(
                               padding: const EdgeInsets.symmetric(
-                                  vertical: 10, horizontal: 12),
+                                vertical: 10,
+                                horizontal: 12,
+                              ),
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -243,21 +255,23 @@ class VolunteerHistoryPage extends StatelessWidget {
                                             Container(
                                               padding:
                                                   const EdgeInsets.symmetric(
-                                                vertical: 4,
-                                                horizontal: 8,
-                                              ),
+                                                    vertical: 4,
+                                                    horizontal: 8,
+                                                  ),
                                               decoration: BoxDecoration(
                                                 color: item['isCurrent']
                                                     ? secondaryColor
-                                                        .withOpacity(0.15)
-                                                    : Colors.grey.withOpacity(0.15),
+                                                          .withOpacity(0.15)
+                                                    : Colors.grey.withOpacity(
+                                                        0.15,
+                                                      ),
                                                 borderRadius:
                                                     BorderRadius.circular(12),
                                               ),
                                               child: Text(
                                                 item['isCurrent']
-                                                    ? 'Current'
-                                                    : 'Participated',
+                                                    ? 'Active'.tr
+                                                    : 'Completed'.tr,
                                                 style: TextStyle(
                                                   fontSize: 11,
                                                   fontWeight: FontWeight.w600,
@@ -270,8 +284,10 @@ class VolunteerHistoryPage extends StatelessWidget {
                                           ],
                                         ),
                                         const SizedBox(height: 4),
-                                        Text('Hours: ${item['hours']}'),
-                                        Text('Role: ${item['role']}'),
+                                        Text(
+                                          '${"Hours: ".tr} ${item['hours']}',
+                                        ),
+                                        Text('${"Role: ".tr} ${item['role']}'),
                                       ],
                                     ),
                                   ),

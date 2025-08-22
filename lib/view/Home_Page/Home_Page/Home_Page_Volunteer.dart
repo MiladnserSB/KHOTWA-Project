@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:khotwa/shared/constants/colors.dart';
 import 'package:khotwa/view/Home_Page/Cards/Home_Events_Card.dart';
 import 'package:khotwa/view/Home_Page/Cards/Home_Person_Card.dart';
 import 'package:khotwa/view/Home_Page/Cards/Home_Projects_Card.dart';
 import 'package:khotwa/view/event_and_projects/events_and_projects_page.dart';
-import 'package:khotwa/view/login/login_page.dart';
 import 'package:khotwa/view/profile/profile_page.dart';
-
 
 class HomePageVolunteer extends StatefulWidget {
   const HomePageVolunteer({super.key});
@@ -27,22 +26,45 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
   double _recommendedScroll = 0.0;
   double _projectScroll = 0.0;
 
+  bool _isPressed = false;
+
+  final TextStyle subtitleStyle = const TextStyle(
+    fontSize: 24,
+    fontFamily: 'DG Heaven',
+  );
+
+  final List<Map<String, String>> personList = [
+    {"name": "Robert Fox", "role": "Admin", "image": 'assets/images/person.jpg'},
+    {"name": "Theresa Webb", "role": "Advisor", "image": 'assets/images/person.jpg'},
+    {"name": "Kristin Watson", "role": "Serinan", "image": 'assets/images/person.jpg'},
+  ];
+
+  final List<Map<String, String>> myeventsList = [
+    {'title': 'community world', 'image': 'assets/images/new.jpg'},
+    {'title': 'food drive', 'image': 'assets/images/new.jpg'},
+    {'title': 'community world', 'image': 'assets/images/new.jpg'},
+    {'title': 'food drive', 'image': 'assets/images/new.jpg'},
+  ];
+
+  final List<Map<String, dynamic>> projectsList = [
+    {"name": "education support", "organization": "organization charity", "paid": 15000.0, "total": 20000.0},
+    {"name": "refugee assistance", "organization": "organization relief", "paid": 8000.0, "total": 25000.0},
+    {"name": "community water well", "organization": "organization water", "paid": 40000.0, "total": 50000.0},
+  ];
+
   @override
   void initState() {
     super.initState();
-
     _myEventScrollController.addListener(() {
       setState(() {
         _myEventScroll = _myEventScrollController.offset;
       });
     });
-
     _recommendedScrollController.addListener(() {
       setState(() {
         _recommendedScroll = _recommendedScrollController.offset;
       });
     });
-
     _projectScrollController.addListener(() {
       setState(() {
         _projectScroll = _projectScrollController.offset;
@@ -60,62 +82,8 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
     super.dispose();
   }
 
-  bool _isPressed = false;
-
-  final TextStyle subtitleStyle = const TextStyle(
-    fontSize: 24,
-    color: Colors.black,
-    fontFamily: 'DG Heaven',
-  );
-
-  final List<Map<String, String>> personList = [
-    {
-      "name": "Robert Fox",
-      "role": "Admin",
-      "image": 'assets/images/person.jpg',
-    },
-    {
-      "name": "Theresa Webb",
-      "role": "Advisor",
-      "image": 'assets/images/person.jpg',
-    },
-    {
-      "name": "Kristin Watson",
-      "role": "Serinan",
-      "image": 'assets/images/person.jpg',
-    },
-  ];
-
-  final List<Map<String, String>> myeventsList = [
-    {'title': 'Communityworld ', 'image': 'assets/images/new.jpg'},
-    {'title': 'Food Driveworld', 'image': 'assets/images/new.jpg'},
-    {'title': 'Communityworld ', 'image': 'assets/images/new.jpg'},
-    {'title': 'Food Driveworld', 'image': 'assets/images/new.jpg'},
-  ];
-
-  final List<Map<String, dynamic>> projectsList = [
-    {
-      "name": "Education Support",
-      "organization": "Charity Org",
-      "paid": 15000.0,
-      "total": 20000.0,
-    },
-    {
-      "name": "Refugee Assistance",
-      "organization": "Relief Group",
-      "paid": 8000.0,
-      "total": 25000.0,
-    },
-    {
-      "name": "Community Water Well",
-      "organization": "Water Foundation",
-      "paid": 40000.0,
-      "total": 50000.0,
-    },
-  ];
-
   double _calculateScale(double scrollOffset, int index, double itemWidth) {
-    double itemOffset = index * (itemWidth + 20); // 20 = spacing
+    double itemOffset = index * (itemWidth + 20);
     double diff = (itemOffset - scrollOffset).abs();
     double scale = 1 - (diff / (itemWidth * 3));
     return scale.clamp(0.9, 1.0);
@@ -123,7 +91,8 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
 
   @override
   Widget build(BuildContext context) {
-        final theme = Theme.of(context); 
+    final theme = Theme.of(context);
+    final textColor = theme.brightness == Brightness.dark ? Colors.white : Colors.black;
 
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
@@ -133,46 +102,32 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // Header
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (_) => ProfilePage()),
-                      );
+                      Navigator.push(context, MaterialPageRoute(builder: (_) => ProfilePage()));
                     },
                     child: ClipOval(
-                      child: Image.asset(
-                        'assets/images/new.jpg',
-                        width: 50,
-                        height: 50,
-                        fit: BoxFit.cover,
-                      ),
+                      child: Image.asset('assets/images/new.jpg', width: 50, height: 50, fit: BoxFit.cover),
                     ),
                   ),
-
                   Expanded(
                     child: Center(
-                      child:    Text(
-                        'Khotwa',
+                      child: Text(
+                        'Khotwa'.tr,
                         style: TextStyle(
                           fontSize: 35,
                           fontFamily: 'DG Heaven',
- color: theme.brightness == Brightness.dark
-            ? secondaryColor
-            : primaryColor,                        ),
+                          color: theme.brightness == Brightness.dark ? secondaryColor : primaryColor,
+                        ),
                       ),
                     ),
                   ),
-
                   IconButton(
-                    icon: Icon(
-                      Icons.notifications,
-                      size: 28,
-                      color: _isPressed ? Color(0xFFDDA15E) : Colors.black,
-                    ),
+                    icon: Icon(Icons.notifications, size: 28, color: _isPressed ? Color(0xFFDDA15E) : Colors.black),
                     onPressed: () {
                       setState(() {
                         _isPressed = !_isPressed;
@@ -184,36 +139,30 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
 
               const SizedBox(height: 20),
 
+              // Search Field
               TextField(
                 controller: _controller,
                 focusNode: _focusNode,
                 decoration: InputDecoration(
-                  hintText: 'Search...',
+                  hintText: 'search'.tr,
                   filled: true,
                   fillColor: Colors.grey[200],
                   isDense: true,
-                  contentPadding: EdgeInsets.symmetric(
-                    vertical: 13,
-                    horizontal: 12,
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
-                    borderSide: BorderSide.none,
-                  ),
+                  contentPadding: EdgeInsets.symmetric(vertical: 13, horizontal: 12),
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(20), borderSide: BorderSide.none),
                   prefixIcon: const Icon(Icons.search, size: 22),
                 ),
                 style: TextStyle(fontSize: 16),
               ),
 
-
               const SizedBox(height: 20),
 
+              // Persons List
               SizedBox(
                 height: 150,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: personList.length,
-                  
                   itemBuilder: (context, index) {
                     final person = personList[index];
                     String? medalText;
@@ -227,12 +176,9 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           GestureDetector(
-                             onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (_) => ProfilePage()),
-                      );
-                    },
+                            onTap: () {
+                              Navigator.push(context, MaterialPageRoute(builder: (_) => ProfilePage()));
+                            },
                             child: HomePersonCard(
                               name: person['name'] ?? '',
                               image: person['image'] ?? '',
@@ -240,13 +186,7 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
                           ),
                           const SizedBox(height: 5),
                           if (medalText != null)
-                            Text(
-                              medalText,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 23,
-                              ),
-                            ),
+                            Text(medalText, style: const TextStyle(color: Colors.white, fontSize: 23)),
                         ],
                       ),
                     );
@@ -254,34 +194,21 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
                 ),
               ),
 
-              const SizedBox(height: 10),
+              const SizedBox(height: 20),
 
+              // My Events
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                  Text("My Events", style: subtitleStyle.copyWith( color: theme.brightness == Brightness.dark
-            ? Colors.white
-            :Colors.black,)),
+                children: [
+                  Text("my events".tr, style: subtitleStyle.copyWith(color: textColor)),
                   GestureDetector(
- onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (_) => EventsAndProjectsPage()),
-                      );
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (_) => EventsAndProjectsPage()));
                     },
-                    child: Text(
-                      "View all",
-                      style: TextStyle(
-                        fontSize: 13,
-                         color: theme.brightness == Brightness.dark
-                                ? Colors.white
-                                : primaryColor,
-                        fontFamily: 'DG Heaven',
-                      ),
-                    ),
+                    child: Text("view all".tr, style: TextStyle(fontSize: 13, color: primaryColor, fontFamily: 'DG Heaven')),
                   ),
                 ],
-              ),
+              ), 
               const SizedBox(height: 10),
 
               SizedBox(
@@ -300,7 +227,7 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
                         title: event['title']!,
                         image: event['image']!,
                         volunteersCount: 12,
-                        status: 'accept',
+                        status: 'status accept',
                       ),
                     );
                   },
@@ -309,29 +236,16 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
 
               const SizedBox(height: 25),
 
+              // Recommended
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("Recommended ", style: subtitleStyle.copyWith( color: theme.brightness == Brightness.dark
-            ? Colors.white
-            : Colors.black,)),
+                  Text("Recommended".tr, style: subtitleStyle.copyWith(color: textColor)),
                   GestureDetector(
-                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (_) => EventsAndProjectsPage()),
-                      );
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (_) => EventsAndProjectsPage()));
                     },
-                    child: Text(
-                      "View all",
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: theme.brightness == Brightness.dark
-                                ? Colors.white
-                                : primaryColor,
-                        fontFamily: 'DG Heaven',
-                      ),
-                    ),
+                    child: Text("view all".tr, style: TextStyle(fontSize: 13, color: primaryColor, fontFamily: 'DG Heaven')),
                   ),
                 ],
               ),
@@ -346,18 +260,14 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
                   separatorBuilder: (_, __) => const SizedBox(width: 10),
                   itemBuilder: (context, index) {
                     final event = myeventsList[index];
-                    double scale = _calculateScale(
-                      _recommendedScroll,
-                      index,
-                      240,
-                    );
+                    double scale = _calculateScale(_recommendedScroll, index, 240);
                     return Transform.scale(
                       scale: scale,
                       child: HomeEventsCard(
                         title: event['title']!,
                         image: event['image']!,
                         volunteersCount: 12,
-                        status: 'accept',
+                        status: 'status accept',
                       ),
                     );
                   },
@@ -366,29 +276,16 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
 
               const SizedBox(height: 25),
 
+              // Top Projects
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("Top Projects", style: subtitleStyle.copyWith( color: theme.brightness == Brightness.dark
-            ? Colors.white
-            : Colors.black,)),
+                  Text("top projects".tr, style: subtitleStyle.copyWith(color: textColor)),
                   GestureDetector(
-                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (_) => EventsAndProjectsPage()),
-                      );
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (_) => EventsAndProjectsPage()));
                     },
-                    child: Text(
-                      "View all",
-                      style: TextStyle(
-                        fontSize: 13,
-                         color: theme.brightness == Brightness.dark
-                                ? Colors.white
-                                : primaryColor,
-                        fontFamily: 'DG Heaven',
-                      ),
-                    ),
+                    child: Text("view all".tr, style: TextStyle(fontSize: 13, color: primaryColor, fontFamily: 'DG Heaven')),
                   ),
                 ],
               ),

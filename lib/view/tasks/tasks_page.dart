@@ -6,24 +6,36 @@ import 'package:khotwa/view/tasks/animated_task_list_view.dart';
 import 'package:khotwa/view/tasks/custom_search_bar.dart';
 import 'package:khotwa/view/tasks/task_card.dart';
 
-
 class TasksPage extends StatelessWidget {
   const TasksPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-              final theme = Theme.of(context); 
+    final theme = Theme.of(context);
 
     return Scaffold(
-
-      floatingActionButton: true ? FloatingActionButton(onPressed: (){Get.to(CreateTaskPage());},       backgroundColor: theme.scaffoldBackgroundColor,
- shape: CircleBorder(), child: Icon(Icons.add, color: white,),) : SizedBox(),
+      floatingActionButton: true
+          ? FloatingActionButton(
+              onPressed: () {
+                Get.to(CreateTaskPage());
+              },
+              backgroundColor: theme.scaffoldBackgroundColor,
+              // ignore: dead_code
+              shape: CircleBorder(),
+              child: Icon(Icons.add, color: secondaryColor),
+            )
+          : SizedBox(),
       appBar: AppBar(
         iconTheme: const IconThemeData(color: white),
-        title: Text("My Tasks", style: TextStyle( color:  theme.brightness == Brightness.dark
-            ? Colors.white
-            : secondaryColor,)),
+        title: Text(
+          "My Tasks".tr,
+          style: TextStyle(
+            color: theme.brightness == Brightness.dark
+                ? Colors.white
+                : secondaryColor,
+          ),
+        ),
         centerTitle: true,
       ),
       body: Padding(
@@ -46,23 +58,24 @@ class TasksPage extends StatelessWidget {
   }
 }
 
-final List<TaskCard> _dummyTasks = const [
+final List<TaskCard> _dummyTasks = [
   TaskCard(
-    title: "Welcome Event Setup",
-    description: "Prepare registration desks and welcome packets for new volunteers.",
-    assignedDate: "2024-07-18",
+    title: "Welcome event setup".tr,
+    description: "prepare registration".tr, 
+    assignedDate: "2024-07-18", 
     dueDate: "2024-07-20",
-    eventName: "New Volunteer Orientation",
-    supervisorName: "Ahmad Khan",
-    status: "In Progress",
+    eventName: "new volunteer orientation".tr, 
+    supervisorName: "Ahmad Khan", 
+    status: "In Progress".tr, 
   ),
   TaskCard(
-    title: "Community Outreach Call",
-    description: "Call community centers to confirm participation in the upcoming food drive.",
+    title: "community outreach call".tr,
+    description: "call community centers".tr,
     assignedDate: "2024-07-20",
     dueDate: "2024-07-22",
-    eventName: "Food Drive Campaign",
+    eventName: "food drive campaign".tr,
     supervisorName: "Fatima Al-Mansour",
-    status: "Pending",
+    status: "Pending".tr,
   ),
 ];
+

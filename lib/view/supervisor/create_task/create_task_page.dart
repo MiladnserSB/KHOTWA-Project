@@ -12,22 +12,22 @@ class CreateTaskPage extends StatelessWidget {
   final Rx<DateTime?> dueDate = Rx<DateTime?>(null);
 
   @override
-  Widget build(BuildContext context) {                        final theme = Theme.of(context); 
-
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
 
     return Scaffold(
-            backgroundColor: theme.scaffoldBackgroundColor,
+      backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
         title: Text(
-          "Create New Task",
-          style: TextStyle( color:   theme.brightness == Brightness.dark
-            ? Colors.white
-            : textBlack,),
+          "create new task".tr,
+          style: TextStyle(
+            color: theme.brightness == Brightness.dark ? Colors.white : textBlack,
+          ),
         ),
-            backgroundColor: theme.scaffoldBackgroundColor,
-        iconTheme:  IconThemeData(color:   theme.brightness == Brightness.dark
-            ? Colors.white
-            : textBlack,),
+        backgroundColor: theme.scaffoldBackgroundColor,
+        iconTheme: IconThemeData(
+          color: theme.brightness == Brightness.dark ? Colors.white : textBlack,
+        ),
         elevation: 1,
       ),
       body: Padding(
@@ -41,23 +41,23 @@ class CreateTaskPage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'Title',
-                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+                  Text(
+                    'title'.tr,
+                    style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
                   ),
                   const SizedBox(height: 6),
                   TextField(
                     controller: taskNameController,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
-                      hintText: "Enter task name",
+                      hintText: "enter task name".tr,
                     ),
                   ),
                   const SizedBox(height: 16),
 
-                  const Text(
-                    'Description',
-                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+                  Text(
+                    'description'.tr,
+                    style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
                   ),
                   const SizedBox(height: 6),
                   TextField(
@@ -65,19 +65,19 @@ class CreateTaskPage extends StatelessWidget {
                     maxLines: 4,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
-                      hintText: "Enter task description",
+                      hintText: "enter task description".tr,
                     ),
                   ),
                   const SizedBox(height: 16),
 
                   DatePickerSection(
-                    title: "Start Date",
+                    title: "start date".tr,
                     dateVar: startDate,
                   ),
                   const SizedBox(height: 16),
 
                   DatePickerSection(
-                    title: "Due Date",
+                    title: "due date".tr,
                     dateVar: dueDate,
                   ),
                 ],
@@ -107,9 +107,9 @@ class CreateTaskPage extends StatelessWidget {
                   print("Start Date: ${startDate.value}");
                   print("Due Date: ${dueDate.value}");
                 },
-                child: const Text(
-                  "Assign",
-                  style: TextStyle(color: Colors.white, fontSize: 16),
+                child: Text(
+                  "assign".tr,
+                  style: const TextStyle(color: Colors.white, fontSize: 16),
                 ),
               ),
             ),
@@ -122,7 +122,7 @@ class CreateTaskPage extends StatelessWidget {
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                 ),
                 onPressed: () => Get.back(),
-                child: const Text("Cancel", style: TextStyle(fontSize: 16)),
+                child: Text("cancel".tr, style: const TextStyle(fontSize: 16)),
               ),
             ),
           ],

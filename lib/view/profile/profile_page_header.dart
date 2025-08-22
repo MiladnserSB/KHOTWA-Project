@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:khotwa/shared/constants/colors.dart';
 
 class ProfilePageHeader extends StatelessWidget {
@@ -27,7 +28,7 @@ class ProfilePageHeader extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Milad AlNser',
+                  'Milad AlNser'.tr,
                   style: TextStyle(
                     fontSize: 18 * textScale,
                     fontWeight: FontWeight.bold,

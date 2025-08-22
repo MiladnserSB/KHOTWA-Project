@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:khotwa/shared/constants/colors.dart';
 import 'package:khotwa/view/event_and_projects/event_details/event_details_page.dart';
 
@@ -142,7 +143,7 @@ class HomeEventsCard extends StatelessWidget {
     );
             },
            
-              child: const Text('View Details',style:TextStyle(color:  Colors.white))),
+              child:  Text('View Details'.tr,style:TextStyle(color:  Colors.white))),
           
           const SizedBox(height: 10),
         ],

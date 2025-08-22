@@ -19,15 +19,15 @@ class _AnimatedBottomBarPageVolunteerState
     extends State<AnimatedBottomBarPageVolunteer> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  int _selectedIndex = 2; 
+  int _selectedIndex = 2;
   String _selectedDrawerItem = '';
 
   final List<_NavItem> _items = [
-    _NavItem(icon: Icons.menu, label: 'Menu'),
-    _NavItem(icon: Icons.event_note_sharp, label: 'My events'),
-    _NavItem(icon: Icons.home, label: 'Home'),
-    _NavItem(icon: Icons.event, label: 'Projects,Events'),
-    _NavItem(icon: Icons.task, label: 'Tasks'),
+    _NavItem(icon: Icons.menu, label: 'menu'),
+    _NavItem(icon: Icons.event_note_sharp, label: 'my events'),
+    _NavItem(icon: Icons.home, label: 'home'),
+    _NavItem(icon: Icons.event, label: 'projects events'),
+    _NavItem(icon: Icons.task, label: 'tasks'),
   ];
 
   final List<Widget> _pages = [
@@ -39,8 +39,8 @@ class _AnimatedBottomBarPageVolunteerState
   ];
 
   void _onIconTap(int index) {
-    if (_items[index].label == 'Menu') {
-      Future.delayed(Duration(milliseconds: 100), () {
+    if (_items[index].label == 'menu') {
+      Future.delayed(const Duration(milliseconds: 100), () {
         _scaffoldKey.currentState?.openDrawer();
       });
     } else {
@@ -75,7 +75,7 @@ class _AnimatedBottomBarPageVolunteerState
                   GestureDetector(
                     onTap: () {
                       setState(() {
-                        _selectedDrawerItem = 'Profile';
+                        _selectedDrawerItem = 'profile';
                       });
                       Get.to(ProfilePage());
                     },
@@ -85,46 +85,44 @@ class _AnimatedBottomBarPageVolunteerState
                     ),
                   ),
                   const SizedBox(height: 10),
-                  Text(
-                    'User',
-                    style: const TextStyle(color: Colors.white, fontSize: 18),
-                  ),
-                  const Text(
-                    'User@gmail.com',
-                    style: TextStyle(color: Colors.white70, fontSize: 14),
-                  ),
+                  Text('user name'.tr,
+                      style:
+                          const TextStyle(color: Colors.white, fontSize: 18)),
+                  Text('user email'.tr,
+                      style:
+                          const TextStyle(color: Colors.white70, fontSize: 14)),
                 ],
               ),
             ),
             _buildDrawerItem(
               context,
               icon: Icons.person,
-              label: 'Profile',
+              label: 'profile',
               page: ProfilePage(),
             ),
             _buildDrawerItem(
               context,
               icon: Icons.settings,
-              label: 'Settings',
+              label: 'settings',
               page: SettingsPage(),
             ),
             _buildDrawerItem(
               context,
               icon: Icons.info_outline,
-              label: 'About Us',
+              label: 'about us',
               page: const Placeholder(),
             ),
             ListTile(
               leading: Icon(
                 Icons.logout,
-                color: _selectedDrawerItem == 'Logout'
+                color: _selectedDrawerItem == 'logout'
                     ? const Color(0xFFDDA15E)
                     : theme.iconTheme.color,
               ),
               title: Text(
-                'Logout',
+                'logout'.tr,
                 style: TextStyle(
-                  color: _selectedDrawerItem == 'Logout'
+                  color: _selectedDrawerItem == 'logout'
                       ? const Color(0xFFDDA15E)
                       : theme.textTheme.bodyMedium?.color,
                 ),
@@ -133,38 +131,40 @@ class _AnimatedBottomBarPageVolunteerState
                 showDialog(
                   context: context,
                   builder: (context) => AlertDialog(
-                  
-                    backgroundColor:  theme.brightness == Brightness.dark
-            ? primaryColor
-            : Colors.white, 
+                    backgroundColor: theme.brightness == Brightness.dark
+                        ? primaryColor
+                        : Colors.white,
                     title: Text(
-                      "Confirm Logout",
+                      "confirm logout".tr,
                       style: TextStyle(
-                         color: theme.brightness == Brightness.dark
-            ? Colors.white
-            : primaryColor,
+                        color: theme.brightness == Brightness.dark
+                            ? Colors.white
+                            : primaryColor,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     content: Text(
-                      "Are you sure you want to log out?",
-                      style: TextStyle(color: theme.textTheme.bodyMedium?.color),
+                      "logout message".tr,
+                      style:
+                          TextStyle(color: theme.textTheme.bodyMedium?.color),
                     ),
                     actions: [
                       TextButton(
                         onPressed: () => Navigator.pop(context),
                         child: Text(
-                          "Cancel",
-                          style: TextStyle( color: theme.brightness == Brightness.dark
-            ? Colors.white
-            : primaryColor,),
+                          "cancel".tr,
+                          style: TextStyle(
+                            color: theme.brightness == Brightness.dark
+                                ? Colors.white
+                                : primaryColor,
+                          ),
                         ),
                       ),
                       TextButton(
                         onPressed: () {
                           Navigator.of(context).pop();
                           setState(() {
-                            _selectedDrawerItem = 'Logout';
+                            _selectedDrawerItem = 'logout';
                           });
                           Navigator.pushAndRemoveUntil(
                             context,
@@ -173,10 +173,8 @@ class _AnimatedBottomBarPageVolunteerState
                             (route) => false,
                           );
                         },
-                        child: const Text(
-                          "Logout",
-                          style: TextStyle(color: Colors.red),
-                        ),
+                        child: Text("logout".tr,
+                            style: const TextStyle(color: Colors.red)),
                       ),
                     ],
                   ),
@@ -187,7 +185,7 @@ class _AnimatedBottomBarPageVolunteerState
         ),
       ),
       body: AnimatedSwitcher(
-        duration: Duration(milliseconds: 300),
+        duration: const Duration(milliseconds: 300),
         child: _pages[_selectedIndex],
       ),
       bottomNavigationBar: Container(
@@ -222,7 +220,7 @@ class _AnimatedBottomBarPageVolunteerState
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    item.label,
+                    item.label.tr,
                     style: TextStyle(
                       fontSize: 12,
                       color: isSelected
@@ -242,9 +240,7 @@ class _AnimatedBottomBarPageVolunteerState
   }
 
   Widget _buildDrawerItem(BuildContext context,
-      {required IconData icon,
-      required String label,
-      required Widget page}) {
+      {required IconData icon, required String label, required Widget page}) {
     final theme = Theme.of(context);
     return ListTile(
       leading: Icon(
@@ -254,7 +250,7 @@ class _AnimatedBottomBarPageVolunteerState
             : theme.iconTheme.color,
       ),
       title: Text(
-        label,
+        label.tr,
         style: TextStyle(
           color: _selectedDrawerItem == label
               ? const Color(0xFFDDA15E)

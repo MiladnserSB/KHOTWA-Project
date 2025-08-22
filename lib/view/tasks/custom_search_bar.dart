@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:khotwa/shared/constants/colors.dart';
 
 class CustomSearchBar extends StatelessWidget {
@@ -15,14 +16,14 @@ class CustomSearchBar extends StatelessWidget {
         color: grey.withOpacity(0.1),
         borderRadius: BorderRadius.circular(12),
       ),
-      child: const Row(
+      child:  Row(
         children: [
           Icon(Icons.search, color: grey),
           SizedBox(width: 10),
           Expanded(
             child: TextField(
               decoration: InputDecoration(
-                hintText: 'Search...',
+                hintText: 'search'.tr,
                 border: InputBorder.none,
               ),
             ),

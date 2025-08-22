@@ -192,7 +192,7 @@ class _AnimatedListViewState extends State<AnimatedListView>
                   },
                   child: EventCard(
                     size: widget.size,
-                    elevation: scale > 0.98 ? 10 : 2,
+                    elevation: scale > 0.98 ? 10 : 2, title: '',
                   ),
                 )
               : GestureDetector(
@@ -216,7 +216,7 @@ class _AnimatedListViewState extends State<AnimatedListView>
 }
 
 class EventCard extends StatelessWidget {
-  const EventCard({super.key, required this.size, this.elevation = 2});
+  const EventCard({super.key, required this.size, this.elevation = 2, required String title});
 
   final Size size;
   final double elevation;

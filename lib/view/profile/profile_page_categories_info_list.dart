@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:khotwa/shared/constants/colors.dart';
 import 'package:khotwa/view/profile/profile_category_details.dart';
 import 'package:khotwa/view/profile/volunteer%20history/volunteer_history_page.dart';
@@ -16,11 +17,11 @@ class ProfilePageCategoriesInfoList extends StatelessWidget {
                       final theme = Theme.of(context); 
 
     final List<Map<String, String>> infoItems = [
-      {'title': 'Personal Information', 'subtitle': 'Details about you'},
-      {'title': 'Volunteer Info', 'subtitle': 'Your volunteering details'},
-      {'title': 'Experience and Skills', 'subtitle': 'Your skills and experience'},
-      {'title': 'Emergency Contact', 'subtitle': 'Emergency contact details'},
-      {'title': 'Volunteer History', 'subtitle': 'History of your volunteering'},
+      {'title': 'Personal Information'.tr, 'subtitle': 'Details about you'},
+      {'title': 'Volunteer Info'.tr, 'subtitle': 'Your volunteering details'},
+      {'title': 'Experience and Skills'.tr, 'subtitle': 'Your skills and experience'},
+      {'title': 'Emergency Contact'.tr, 'subtitle': 'Emergency contact details'},
+      {'title': 'Volunteer History'.tr, 'subtitle': 'History of your volunteering'},
     ];
 
     final List<IconData> icons = [
@@ -112,31 +113,31 @@ class ProfilePageCategoriesInfoList extends StatelessWidget {
     switch (index) {
       case 0:
         return [
-          {'label': 'Full Name', 'value': 'John Doe'},
-          {'label': 'Gender', 'value': 'Male'},
-          {'label': 'Email', 'value': 'john@example.com'},
-          {'label': 'Phone', 'value': '+963********'},
-          {'label': 'Birth Date', 'value': '1998-04-23'},
-          {'label': 'Address', 'value': 'Jaramana, AlWehda'},
-          {'label': 'City', 'value': 'Rural Damascus'},
+          {'label': 'Full Name'.tr, 'value': 'John Doe'},
+          {'label': 'Gender'.tr, 'value': 'Male'},
+          {'label': 'Email'.tr, 'value': 'john@example.com'},
+          {'label': 'Phone'.tr, 'value': '+963********'},
+          {'label': 'Birth Date'.tr, 'value': '1998-04-23'},
+          {'label': 'Address'.tr, 'value': 'Jaramana, AlWehda'},
+          {'label': 'City'.tr, 'value': 'Rural Damascus'},
         ];
       case 1:
         return [
-          {'label': 'Areas of Interest', 'value': 'Health, Education'},
-          {'label': 'Availability', 'value': 'Mon, Wed, Fri'},
-          {'label': 'Preferred Time', 'value': '5-8 hours/week'},
+          {'label': 'Areas of Interest'.tr, 'value': 'Health, Education'},
+          {'label': 'Availability'.tr, 'value': 'Mon, Wed, Fri'},
+          {'label': 'Preferred Time'.tr, 'value': '5-8 hours/week'},
         ];
       case 2:
         return [
-          {'label': 'Previous Experience', 'value': 'Blood donation volunteer'},
-          {'label': 'Skills', 'value': 'First aid, Event organizing'},
-          {'label': 'Motivation', 'value': 'Helping my community'},
+          {'label': 'Previous Experience'.tr, 'value': 'Blood donation volunteer'},
+          {'label': 'Skills'.tr, 'value': 'First aid, Event organizing'},
+          {'label': 'Motivation'.tr, 'value': 'Helping my community'},
         ];
       case 3:
         return [
-          {'label': 'Contact Name', 'value': 'Jane Doe'},
-          {'label': 'Relationship', 'value': 'Sister'},
-          {'label': 'Phone', 'value': '+963-999999'},
+          {'label': 'Contact Name'.tr, 'value': 'Jane Doe'},
+          {'label': 'Relationship'.tr, 'value': 'Sister'},
+          {'label': 'Phone', 'value'.tr: '+963-999999'},
         ];
       default:
         return [];

@@ -176,7 +176,7 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
                             borderRadius: BorderRadius.circular(24),
                             child: EventCard(
                               size: Size(itemWidth, size.height * 0.5),
-                              elevation: 0,
+                              elevation: 0, title: '',
                             ),
                           ),
                         ),

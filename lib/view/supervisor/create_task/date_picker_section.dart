@@ -27,10 +27,11 @@ class DatePickerSection extends StatelessWidget {
               Expanded(
                 child: Text(
                   dateVar.value == null
-                      ? "No date selected"
+                      ? "no date selected".tr
                       : "${dateVar.value!.toLocal()}".split(' ')[0],
                   style: const TextStyle(fontSize: 14, color: Colors.grey),
                 ),
+
               ),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
@@ -50,10 +51,8 @@ class DatePickerSection extends StatelessWidget {
                     dateVar.value = picked;
                   }
                 },
-                child: const Text(
-                  "Select Date",
-                  style: TextStyle(color: Colors.white),
-                ),
+                child: Text("Select Date".tr,
+                    style:  TextStyle(color: Colors.white)),
               ),
             ],
           ),

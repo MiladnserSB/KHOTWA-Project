@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:khotwa/shared/constants/colors.dart';
 import 'package:khotwa/view/Home_Page/Cards/Home_Events_Card.dart';
 import 'package:khotwa/view/Home_Page/Cards/Home_Person_Card.dart';
 import 'package:khotwa/view/Home_Page/Cards/Home_Projects_Card_Donor_and_Visitor.dart';
 import 'package:khotwa/view/event_and_projects/events_and_projects_page.dart';
-import 'package:khotwa/view/login/login_page.dart';
 import 'package:khotwa/view/profile/profile_page.dart';
 
 class HomePageVisitor extends StatefulWidget {
@@ -119,7 +119,7 @@ class _HomePageVisitorState extends State<HomePageVisitor> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context); 
+    final theme = Theme.of(context);
 
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
@@ -152,13 +152,14 @@ class _HomePageVisitorState extends State<HomePageVisitor> {
                   Expanded(
                     child: Center(
                       child: Text(
-                        'Khotwa',
+                        'Khotwa'.tr,
                         style: TextStyle(
                           fontSize: 35,
                           fontFamily: 'DG Heaven',
- color: theme.brightness == Brightness.dark
-            ? secondaryColor
-            : primaryColor,                        ),
+                          color: theme.brightness == Brightness.dark
+                              ? secondaryColor
+                              : primaryColor,
+                        ),
                       ),
                     ),
                   ),
@@ -186,10 +187,10 @@ class _HomePageVisitorState extends State<HomePageVisitor> {
                 controller: _controller,
                 focusNode: _focusNode,
                 decoration: InputDecoration(
-                  hintText: 'Search...',
+                  hintText: 'search'.tr,
                   filled: true,
-                  fillColor: theme.inputDecorationTheme.fillColor ??
-                      Colors.grey[200],
+                  fillColor:
+                      theme.inputDecorationTheme.fillColor ?? Colors.grey[200],
                   isDense: true,
                   contentPadding: const EdgeInsets.symmetric(
                     vertical: 13,
@@ -199,9 +200,16 @@ class _HomePageVisitorState extends State<HomePageVisitor> {
                     borderRadius: BorderRadius.circular(20),
                     borderSide: BorderSide.none,
                   ),
-                  prefixIcon: Icon(Icons.search, size: 22, color: theme.hintColor),
+                  prefixIcon: Icon(
+                    Icons.search,
+                    size: 22,
+                    color: theme.hintColor,
+                  ),
                 ),
-                style: TextStyle(fontSize: 16, color: theme.textTheme.bodyMedium?.color),
+                style: TextStyle(
+                  fontSize: 16,
+                  color: theme.textTheme.bodyMedium?.color,
+                ),
               ),
 
               const SizedBox(height: 20),
@@ -224,12 +232,14 @@ class _HomePageVisitorState extends State<HomePageVisitor> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           GestureDetector(
-                             onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (_) => ProfilePage()),
-                      );
-                    },
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => ProfilePage(),
+                                ),
+                              );
+                            },
                             child: HomePersonCard(
                               name: person['name'] ?? '',
                               image: person['image'] ?? '',
@@ -253,23 +263,30 @@ class _HomePageVisitorState extends State<HomePageVisitor> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("My Events", style: subtitleStyle.copyWith( color: theme.brightness == Brightness.dark
-            ? Colors.white
-            :Colors.black,)),
+                  Text(
+                    "my events".tr,
+                    style: subtitleStyle.copyWith(
+                      color: theme.brightness == Brightness.dark
+                          ? Colors.white
+                          : Colors.black,
+                    ),
+                  ),
                   GestureDetector(
-                     onTap: () {
+                    onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (_) => EventsAndProjectsPage()),
+                        MaterialPageRoute(
+                          builder: (_) => EventsAndProjectsPage(),
+                        ),
                       );
                     },
                     child: Text(
-                      "View all",
+                      "view all".tr,
                       style: TextStyle(
                         fontSize: 13,
-                         color: theme.brightness == Brightness.dark
-                                ? Colors.white
-                                : primaryColor,
+                        color: theme.brightness == Brightness.dark
+                            ? Colors.white
+                            : primaryColor,
                         fontFamily: 'DG Heaven',
                       ),
                     ),
@@ -307,23 +324,30 @@ class _HomePageVisitorState extends State<HomePageVisitor> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("Recommended", style: subtitleStyle.copyWith( color: theme.brightness == Brightness.dark
-            ? Colors.white
-            : Colors.black,)),
+                  Text(
+                    "Recommended".tr,
+                    style: subtitleStyle.copyWith(
+                      color: theme.brightness == Brightness.dark
+                          ? Colors.white
+                          : Colors.black,
+                    ),
+                  ),
                   GestureDetector(
-                     onTap: () {
+                    onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (_) => EventsAndProjectsPage()),
+                        MaterialPageRoute(
+                          builder: (_) => EventsAndProjectsPage(),
+                        ),
                       );
                     },
                     child: Text(
-                      "View all",
+                      "view all".tr,
                       style: TextStyle(
                         fontSize: 13,
                         color: theme.brightness == Brightness.dark
-                                ? Colors.white
-                                : primaryColor,
+                            ? Colors.white
+                            : primaryColor,
                         fontFamily: 'DG Heaven',
                       ),
                     ),
@@ -341,7 +365,11 @@ class _HomePageVisitorState extends State<HomePageVisitor> {
                   separatorBuilder: (_, __) => const SizedBox(width: 10),
                   itemBuilder: (context, index) {
                     final event = myeventsList[index];
-                    double scale = _calculateScale(_recommendedScroll, index, 240);
+                    double scale = _calculateScale(
+                      _recommendedScroll,
+                      index,
+                      240,
+                    );
                     return Transform.scale(
                       scale: scale,
                       child: HomeEventsCard(
@@ -361,23 +389,30 @@ class _HomePageVisitorState extends State<HomePageVisitor> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("Top Projects", style: subtitleStyle.copyWith( color: theme.brightness == Brightness.dark
-            ? Colors.white
-            : Colors.black,)),
+                  Text(
+                    "top projects".tr,
+                    style: subtitleStyle.copyWith(
+                      color: theme.brightness == Brightness.dark
+                          ? Colors.white
+                          : Colors.black,
+                    ),
+                  ),
                   GestureDetector(
-                     onTap: () {
+                    onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (_) => EventsAndProjectsPage()),
+                        MaterialPageRoute(
+                          builder: (_) => EventsAndProjectsPage(),
+                        ),
                       );
                     },
                     child: Text(
-                      "View all",
+                      "view all".tr,
                       style: TextStyle(
                         fontSize: 13,
-                         color: theme.brightness == Brightness.dark
-                                ? Colors.white
-                                : primaryColor,
+                        color: theme.brightness == Brightness.dark
+                            ? Colors.white
+                            : primaryColor,
                         fontFamily: 'DG Heaven',
                       ),
                     ),
@@ -387,7 +422,7 @@ class _HomePageVisitorState extends State<HomePageVisitor> {
               const SizedBox(height: 10),
 
               SizedBox(
-                height: 350,
+                height: 360,
                 child: ListView.separated(
                   controller: _projectScrollController,
                   scrollDirection: Axis.horizontal,

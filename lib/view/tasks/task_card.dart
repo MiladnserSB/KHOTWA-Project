@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:khotwa/shared/constants/colors.dart';
 
 class TaskCard extends StatelessWidget {
@@ -50,11 +51,9 @@ class TaskCard extends StatelessWidget {
         ),
         actions: [
           TextButton(
-            style: TextButton.styleFrom(
-              foregroundColor: grey,
-            ),
+            style: TextButton.styleFrom(foregroundColor: grey),
             onPressed: () => Navigator.pop(context),
-            child: const Text("Cancel"),
+            child: Text("Cancel".tr),
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
@@ -65,7 +64,7 @@ class TaskCard extends StatelessWidget {
               Navigator.pop(context);
               onConfirm();
             },
-            child: const Text("Confirm"),
+            child: Text("Confirm".tr),
           ),
         ],
       ),
@@ -96,105 +95,126 @@ class TaskCard extends StatelessWidget {
       elevation: 3,
       child: Padding(
         padding: const EdgeInsets.all(16),
-        child: LayoutBuilder(builder: (context, constraints) {
-          double baseFont = constraints.maxWidth * 0.045;
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            double baseFont = constraints.maxWidth * 0.045;
 
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style: TextStyle(
-                  fontSize: baseFont + 2,
-                  fontWeight: FontWeight.bold,
-                  color: theme.brightness == Brightness.dark
-                      ? Colors.white
-                      : textBlack,
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: baseFont + 2,
+                    fontWeight: FontWeight.bold,
+                    color: theme.brightness == Brightness.dark
+                        ? Colors.white
+                        : textBlack,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                description,
-                style: TextStyle(
-                  fontSize: baseFont,
-                  color:
-                      theme.brightness == Brightness.dark ? Colors.white70 : grey,
+                const SizedBox(height: 8),
+                Text(
+                  description,
+                  style: TextStyle(
+                    fontSize: baseFont,
+                    color: theme.brightness == Brightness.dark
+                        ? Colors.white70
+                        : grey,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 12),
-              _infoRow(Icons.calendar_today, "Assigned: $assignedDate",
-                  baseFont, theme),
-              _infoRow(Icons.event, "Due: $dueDate", baseFont, theme),
-              _infoRow(Icons.location_on_outlined, "Event: $eventName",
-                  baseFont, theme),
-              _infoRow(Icons.person, "Supervisor: $supervisorName",
-                  baseFont, theme),
-              const SizedBox(height: 10),
-              Chip(
-                label: Text(
-                  status,
-                  style: TextStyle(fontSize: baseFont, color: statusColor),
+                const SizedBox(height: 12),
+                _infoRow(
+                  Icons.calendar_today,
+                  "${'Assigned'.tr}: $assignedDate",
+                  baseFont,
+                  theme,
                 ),
-                backgroundColor: statusColor.withOpacity(0.1),
-              ),
-              const SizedBox(height: 12),
-              Row(
-                children: [
-                  Expanded(
-                    child: OutlinedButton(
-                      style: OutlinedButton.styleFrom(
-                        backgroundColor: primaryColor,
-                        side: BorderSide(color: secondaryColor),
-                      ),
-                      onPressed: () {
-                        _showConfirmationDialog(
-                          context,
-                          "Update Status",
-                          "Are you sure you want to update the task status?",
-                          () {
-                            // handle update
-                          },
-                        );
-                      },
-                      child: Text(
-                        "Update Status",
-                        style: TextStyle(color: white, fontSize: baseFont),
+                _infoRow(Icons.event, "${'Due'.tr}: $dueDate", baseFont, theme),
+                _infoRow(
+                  Icons.location_on_outlined,
+                  "${'Event'.tr}: $eventName",
+                  baseFont,
+                  theme,
+                ),
+                _infoRow(
+                  Icons.person,
+                  "${'Supervisor'.tr}: $supervisorName",
+                  baseFont,
+                  theme,
+                ),
+
+                const SizedBox(height: 10),
+                Chip(
+                  label: Text(
+                    status,
+                    style: TextStyle(fontSize: baseFont, color: statusColor),
+                  ),
+                  backgroundColor: statusColor.withOpacity(0.1),
+                ),
+                const SizedBox(height: 12),
+                Row(
+                  children: [
+                    Expanded(
+                      child: OutlinedButton(
+                        style: OutlinedButton.styleFrom(
+                          backgroundColor: primaryColor,
+                          side: BorderSide(color: secondaryColor),
+                        ),
+                        onPressed: () {
+                          _showConfirmationDialog(
+                            context,
+                            "Update Status".tr,
+                            "Are you sure you want to update the task status?"
+                                .tr,
+                            () {
+                              // handle update
+                            },
+                          );
+                        },
+                        child: Text(
+                          "Update Status".tr,
+                          style: TextStyle(color: white, fontSize: baseFont),
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        _showConfirmationDialog(
-                          context,
-                          "Decline Task",
-                          "Are you sure you want to decline this task?",
-                          () {
-                            // handle decline
-                          },
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.redAccent,
-                      ),
-                      child: Text(
-                        "Decline Task",
-                        style: TextStyle(color: white, fontSize: baseFont),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          _showConfirmationDialog(
+                            context,
+                            "Decline Task".tr,
+                            "Are you sure you want to decline this task?".tr,
+                            () {
+                              // handle decline
+                            },
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.redAccent,
+                        ),
+                        child: Text(
+                          "Decline Task".tr,
+                          style: TextStyle(color: white, fontSize: baseFont),
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              )
-            ],
-          );
-        }),
+                  ],
+                ),
+              ],
+            );
+          },
+        ),
       ),
     );
   }
 
   Widget _infoRow(
-      IconData icon, String text, double fontSize, ThemeData theme) {
+    IconData icon,
+    String text,
+    double fontSize,
+    ThemeData theme,
+  ) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 2),
       child: Row(
@@ -205,8 +225,9 @@ class TaskCard extends StatelessWidget {
             child: Text(
               text,
               style: TextStyle(
-                color:
-                    theme.brightness == Brightness.dark ? Colors.white : textBlack,
+                color: theme.brightness == Brightness.dark
+                    ? Colors.white
+                    : textBlack,
                 fontSize: fontSize,
               ),
             ),

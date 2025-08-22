@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:khotwa/shared/constants/colors.dart';
 import 'package:khotwa/view/event_and_projects/project_details/project_details_page.dart';
 import 'package:khotwa/view/login/login_page.dart';
@@ -16,7 +18,21 @@ class HomeProjectsCardDonorAndVisitor extends StatelessWidget {
     required this.paid,
     required this.total,
   });
-
+ String formatNumber(double number) {
+    String langCode = Get.locale?.languageCode ?? 'en';
+    if (langCode == 'ar') {
+      const arabicNumbers = ['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'];
+      return number.toStringAsFixed(0).split('').map((e) {
+        if (RegExp(r'\d').hasMatch(e)) {
+          return arabicNumbers[int.parse(e)];
+        } else {
+          return e;
+        }
+      }).join('');
+    } else {
+      return number.toStringAsFixed(0);
+    }
+  }
   @override
   Widget build(BuildContext context) {
     double progress = total > 0 ? paid / total : 0;
@@ -31,7 +47,7 @@ class HomeProjectsCardDonorAndVisitor extends StatelessWidget {
           BoxShadow(color: Colors.black12, blurRadius: 4, offset: Offset(0, 2)),
         ],
       ),
-      width: 235,
+      width: 250,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -70,26 +86,18 @@ class HomeProjectsCardDonorAndVisitor extends StatelessWidget {
             minHeight: 8,
             borderRadius: BorderRadius.circular(6),
           ),
-          SizedBox(height:10 ),   
-            
+          SizedBox(height: 10),
+
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Paid: ${paid.toStringAsFixed(0)}',
-                style: TextStyle(
-                  fontSize: 11,
-                  color: Colors.green[800],
-                  fontFamily: '._Acumin Variable Concept',
-                ),
+                'paid'.trParams({'amount'.tr: formatNumber(paid)}),
+                style: const TextStyle(fontSize: 11, color: Colors.green),
               ),
               Text(
-                'Remaining: ${(total - paid).toStringAsFixed(0)}',
-                style: TextStyle(
-                  fontSize: 11,
-                  color: Colors.red[800],
-                  fontFamily: '._Acumin Variable Concept',
-                ),
+                'remaining'.trParams({'amount'.tr: formatNumber(total - paid)}),
+                style: const TextStyle(fontSize: 11, color: Colors.red),
               ),
             ],
           ),
@@ -112,7 +120,11 @@ class HomeProjectsCardDonorAndVisitor extends StatelessWidget {
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Icon(Icons.lock_outline, size: 48, color: Colors.orange[800]),
+                              Icon(
+                                Icons.lock_outline,
+                                size: 48,
+                                color: Colors.orange[800],
+                              ),
                               SizedBox(height: 15),
                               Text(
                                 "Login Required",
@@ -135,43 +147,57 @@ class HomeProjectsCardDonorAndVisitor extends StatelessWidget {
                               ),
                               SizedBox(height: 20),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
                                 children: [
                                   ElevatedButton(
                                     onPressed: () {
                                       Navigator.of(context).pop();
                                     },
-                                   style: ElevatedButton.styleFrom(
+                                    style: ElevatedButton.styleFrom(
                                       backgroundColor: Color(0xFFDDA15E),
-                                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: 20,
+                                        vertical: 10,
+                                      ),
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(10),
                                       ),
                                     ),
-                                    child: Text("Cancel",style: TextStyle(color: Colors.white),),
+                                    child: Text(
+                                      "Cancel",
+                                      style: TextStyle(color: Colors.white),
+                                    ),
                                   ),
-                                 ElevatedButton(
-                                      onPressed: () {
-Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()),);
-                                      },
-                              
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: Color(0xFFDDA15E),
-                                        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(10),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => LoginPage(),
                                         ),
+                                      );
+                                    },
+
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Color(0xFFDDA15E),
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: 20,
+                                        vertical: 10,
                                       ),
-                                      child: Text(
-                                        "Login",
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white,
-                                          fontFamily: '._Acumin Variable Concept',
-                                        ),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(10),
                                       ),
                                     ),
-                                
+                                    child: Text(
+                                      "Login",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                        fontFamily: '._Acumin Variable Concept',
+                                      ),
+                                    ),
+                                  ),
                                 ],
                               ),
                             ],
@@ -189,7 +215,7 @@ Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()),);
                   ),
                 ),
                 child: Text(
-                  'Donate',
+                  'Donate'.tr,
                   style: TextStyle(
                     fontSize: 13,
                     fontWeight: FontWeight.bold,
@@ -202,9 +228,11 @@ Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()),);
               ElevatedButton(
                 onPressed: () {
                   Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => ProjectDetailsPage()),
-    );
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ProjectDetailsPage(),
+                    ),
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color(0xFFDDA15E),
@@ -212,24 +240,18 @@ Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()),);
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  
                 ),
-               
-                  child: Text(
-                    'Details',
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: '._Acumin Variable Concept',
-                      color: Colors.white,
-                    ),
+
+                child: Text(
+                  'Details'.tr,
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: '._Acumin Variable Concept',
+                    color: Colors.white,
                   ),
-               
-              )
-              
-              
-              
-              ,
+                ),
+              ),
             ],
           ),
         ],

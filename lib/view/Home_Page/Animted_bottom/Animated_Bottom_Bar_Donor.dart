@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:khotwa/shared/constants/colors.dart';
 import 'package:khotwa/view/Home_Page/Home_Page/Home_Page_Donor.dart';
 import 'package:khotwa/view/change_password/change_password_page.dart';
@@ -13,15 +14,14 @@ class AnimatedBottomBarPageDonor extends StatefulWidget {
 class _AnimatedBottomBarPageDonorState
     extends State<AnimatedBottomBarPageDonor> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
   int _selectedIndex = 1; 
   String _selectedDrawerItem = '';
 
   final List<_NavItem> _items = [
-    _NavItem(icon: Icons.menu, label: 'Menu'),
-    _NavItem(icon: Icons.home, label: 'Home'),
-    _NavItem(icon: Icons.volunteer_activism, label: 'Donate'),
-    _NavItem(icon: Icons.shopping_cart, label: 'Cart'),
+    _NavItem(icon: Icons.menu, label: 'menu'.tr),
+    _NavItem(icon: Icons.home, label: 'home'.tr),
+    _NavItem(icon: Icons.volunteer_activism, label: 'donate'.tr),
+    _NavItem(icon: Icons.shopping_cart, label: 'cart'.tr),
   ];
 
   final List<Widget> _pages = [
@@ -32,7 +32,7 @@ class _AnimatedBottomBarPageDonorState
   ];
 
   void _onIconTap(int index) {
-    if (_items[index].label == 'Menu') {
+    if (_items[index].label == 'menu'.tr) {
       Future.delayed(const Duration(milliseconds: 100), () {
         _scaffoldKey.currentState?.openDrawer();
       });
@@ -64,35 +64,21 @@ class _AnimatedBottomBarPageDonorState
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  CircleAvatar(
+                children: [
+                  const CircleAvatar(
                     radius: 35,
                     backgroundImage: AssetImage('assets/images/person.jpg'),
                   ),
-                  SizedBox(height: 10),
-                  Text(
-                    'User',
-                    style: TextStyle(color: Colors.white, fontSize: 18),
-                  ),
-                  Text(
-                    'User@gmail.com',
-                    style: TextStyle(color: Colors.white70, fontSize: 14),
-                  ),
+                  const SizedBox(height: 10),
+                  Text('user name'.tr,
+                      style: TextStyle(color: Colors.white, fontSize: 18)),
+                  Text('user email'.tr,
+                      style: TextStyle(color: Colors.white70, fontSize: 14)),
                 ],
               ),
             ),
-            _buildDrawerItem(
-              context,
-              icon: Icons.settings,
-              label: 'Settings',
-              page: SettingsPage(),
-            ),
-            _buildDrawerItem(
-              context,
-              icon: Icons.info_outline,
-              label: 'About Us',
-              page: const Placeholder(),
-            ),
+            _buildDrawerItem(icon: Icons.settings, label: 'settings'.tr, page: SettingsPage()),
+            _buildDrawerItem(icon: Icons.info_outline, label: 'about us'.tr, page: const Placeholder()),
           ],
         ),
       ),
@@ -122,22 +108,20 @@ class _AnimatedBottomBarPageDonorState
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(
-                    item.icon,
-                    color: isSelected ? const Color(0xFFDDA15E) : theme.iconTheme.color,
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    item.label,
-                    style: TextStyle(
-                      fontSize: 12,
+                  Icon(item.icon,
                       color: isSelected
                           ? const Color(0xFFDDA15E)
-                          : theme.textTheme.bodyMedium?.color,
-                      fontWeight:
-                          isSelected ? FontWeight.bold : FontWeight.normal,
-                    ),
-                  ),
+                          : theme.iconTheme.color),
+                  const SizedBox(height: 4),
+                  Text(item.label,
+                      style: TextStyle(
+                          fontSize: 12,
+                          color: isSelected
+                              ? const Color(0xFFDDA15E)
+                              : theme.textTheme.bodyMedium?.color,
+                          fontWeight: isSelected
+                              ? FontWeight.bold
+                              : FontWeight.normal)),
                 ],
               ),
             );
@@ -147,35 +131,26 @@ class _AnimatedBottomBarPageDonorState
     );
   }
 
-  Widget _buildDrawerItem(BuildContext context,
-      {required IconData icon, required String label, required Widget page}) {
+  Widget _buildDrawerItem({required IconData icon, required String label, required Widget page}) {
     final theme = Theme.of(context);
     return ListTile(
-      leading: Icon(
-        icon,
-        color: _selectedDrawerItem == label
-            ? const Color(0xFFDDA15E)
-            : theme.iconTheme.color,
-      ),
-      title: Text(
-        label,
-        style: TextStyle(
+      leading: Icon(icon,
           color: _selectedDrawerItem == label
               ? const Color(0xFFDDA15E)
-              : theme.textTheme.bodyMedium?.color,
-          fontWeight: _selectedDrawerItem == label
-              ? FontWeight.bold
-              : FontWeight.normal,
-        ),
-      ),
+              : theme.iconTheme.color),
+      title: Text(label,
+          style: TextStyle(
+              color: _selectedDrawerItem == label
+                  ? const Color(0xFFDDA15E)
+                  : theme.textTheme.bodyMedium?.color,
+              fontWeight: _selectedDrawerItem == label
+                  ? FontWeight.bold
+                  : FontWeight.normal)),
       onTap: () {
         setState(() {
           _selectedDrawerItem = label;
         });
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => page),
-        );
+        Navigator.push(context, MaterialPageRoute(builder: (context) => page));
       },
     );
   }
@@ -184,6 +159,5 @@ class _AnimatedBottomBarPageDonorState
 class _NavItem {
   final IconData icon;
   final String label;
-
   _NavItem({required this.icon, required this.label});
 }

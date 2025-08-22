@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:khotwa/view/Home_Page/Home_Page/Home_Page_Visitor.dart';
 import 'package:khotwa/view/change_password/change_password_page.dart';
 import 'package:khotwa/view/login/login_page.dart';
@@ -13,16 +14,15 @@ class AnimatedBottomBarPageVisitor extends StatefulWidget {
 class _AnimatedBottomBarPageVisitorState
     extends State<AnimatedBottomBarPageVisitor> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
   int _selectedIndex = 2;
   String _selectedDrawerItem = '';
 
   final List<_NavItem> _items = [
-    _NavItem(icon: Icons.menu, label: 'Menu'),
-    _NavItem(icon: Icons.login, label: 'Login'),
-    _NavItem(icon: Icons.home, label: 'Home'),
-    _NavItem(icon: Icons.volunteer_activism, label: 'Donate'),
-    _NavItem(icon: Icons.shopping_cart, label: 'Cart'),
+    _NavItem(icon: Icons.menu, label: 'menu'.tr),
+    _NavItem(icon: Icons.login, label: 'login'.tr),
+    _NavItem(icon: Icons.home, label: 'home'.tr),
+    _NavItem(icon: Icons.volunteer_activism, label: 'donate'.tr),
+    _NavItem(icon: Icons.shopping_cart, label: 'cart'.tr),
   ];
 
   final List<Widget> _pages = [
@@ -34,7 +34,7 @@ class _AnimatedBottomBarPageVisitorState
   ];
 
   void _onIconTap(int index) {
-    if (_items[index].label == 'Menu') {
+    if (_items[index].label == 'menu'.tr) {
       Future.delayed(const Duration(milliseconds: 100), () {
         _scaffoldKey.currentState?.openDrawer();
       });
@@ -87,18 +87,12 @@ class _AnimatedBottomBarPageVisitorState
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    'User',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                    ),
+                    'user name'.tr,
+                    style: TextStyle(color: Colors.white, fontSize: 18),
                   ),
                   Text(
-                    'User@gmail.com',
-                    style: TextStyle(
-                      color: Colors.white70,
-                      fontSize: 14,
-                    ),
+                    'user email'.tr,
+                    style: TextStyle(color: Colors.white70, fontSize: 14),
                   ),
                 ],
               ),
@@ -106,44 +100,42 @@ class _AnimatedBottomBarPageVisitorState
             ListTile(
               leading: Icon(
                 Icons.settings,
-                color: _selectedDrawerItem == 'Settings'
+                color: _selectedDrawerItem == 'settings'.tr
                     ? const Color(0xFFDDA15E)
                     : theme.iconTheme.color,
               ),
               title: Text(
-                'Settings',
+                'settings'.tr,
                 style: TextStyle(
-                  color: _selectedDrawerItem == 'Settings'
+                  color: _selectedDrawerItem == 'settings'.tr
                       ? const Color(0xFFDDA15E)
                       : theme.textTheme.bodyMedium?.color,
-                  fontWeight: _selectedDrawerItem == 'Settings'
+                  fontWeight: _selectedDrawerItem == 'settings'.tr
                       ? FontWeight.bold
                       : FontWeight.normal,
                 ),
               ),
-              onTap: () => _onDrawerItemTap('Settings', SettingsPage()),
+              onTap: () => _onDrawerItemTap('settings'.tr, SettingsPage()),
             ),
             ListTile(
               leading: Icon(
                 Icons.info_outline,
-                color: _selectedDrawerItem == 'About Us'
+                color: _selectedDrawerItem == 'about_us'.tr
                     ? const Color(0xFFDDA15E)
                     : theme.iconTheme.color,
               ),
               title: Text(
-                'About Us',
+                'about us'.tr,
                 style: TextStyle(
-                  color: _selectedDrawerItem == 'About Us'
+                  color: _selectedDrawerItem == 'about_us'.tr
                       ? const Color(0xFFDDA15E)
                       : theme.textTheme.bodyMedium?.color,
-                  fontWeight: _selectedDrawerItem == 'About Us'
+                  fontWeight: _selectedDrawerItem == 'about_us'.tr
                       ? FontWeight.bold
                       : FontWeight.normal,
                 ),
               ),
-              onTap: () {
-                _onDrawerItemTap('About Us', const Placeholder());
-              },
+              onTap: () => _onDrawerItemTap('about_us'.tr, const Placeholder()),
             ),
           ],
         ),

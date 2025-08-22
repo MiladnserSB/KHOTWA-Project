@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:khotwa/shared/constants/colors.dart';
 import 'package:khotwa/view/Home_Page/Cards/Home_Events_Card.dart';
 import 'package:khotwa/view/Home_Page/Cards/Home_Person_Card.dart';
@@ -153,7 +154,7 @@ class _HomePageDonorState extends State<HomePageDonor> {
                   Expanded(
                     child: Center(
                       child:  Text(
-                        'Khotwa',
+                        'Khotwa'.tr,
                         style: TextStyle(
                           fontSize: 35,
                           fontFamily: 'DG Heaven',
@@ -185,7 +186,7 @@ class _HomePageDonorState extends State<HomePageDonor> {
                 controller: _controller,
                 focusNode: _focusNode,
                 decoration: InputDecoration(
-                  hintText: 'Search...',
+                  hintText: 'search'.tr,
                   filled: true,
                   fillColor: Colors.grey[200],
                   isDense: true,
@@ -255,7 +256,7 @@ class _HomePageDonorState extends State<HomePageDonor> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                  children: [
-                  Text("My Events", style: subtitleStyle.copyWith( color: theme.brightness == Brightness.dark
+                  Text("my events".tr, style: subtitleStyle.copyWith( color: theme.brightness == Brightness.dark
             ? Colors.white
             :Colors.black,)),
                   GestureDetector(
@@ -266,7 +267,7 @@ class _HomePageDonorState extends State<HomePageDonor> {
                       );
                     },
                     child: Text(
-                      "View all",
+                      "view all".tr,
                       style: TextStyle(
                         fontSize: 13,
                          color: theme.brightness == Brightness.dark
@@ -308,7 +309,7 @@ class _HomePageDonorState extends State<HomePageDonor> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                children: [
-                  Text("Recommended", style: subtitleStyle.copyWith( color: theme.brightness == Brightness.dark
+                  Text("Recommended".tr, style: subtitleStyle.copyWith( color: theme.brightness == Brightness.dark
             ? Colors.white
             : Colors.black,)),
                   GestureDetector(
@@ -319,7 +320,7 @@ class _HomePageDonorState extends State<HomePageDonor> {
                       );
                     },
                     child: Text(
-                      "View all",
+                      "view all".tr,
                       style: TextStyle(
                         fontSize: 13,
                         color: theme.brightness == Brightness.dark
@@ -365,7 +366,7 @@ class _HomePageDonorState extends State<HomePageDonor> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                  Text("Top Projects", style: subtitleStyle.copyWith( color: theme.brightness == Brightness.dark
+                  Text("top projects".tr, style: subtitleStyle.copyWith( color: theme.brightness == Brightness.dark
             ? Colors.white
             : Colors.black,)),
                   GestureDetector(
@@ -376,7 +377,7 @@ class _HomePageDonorState extends State<HomePageDonor> {
                       );
                     },
                     child: Text(
-                      "View all",
+                      "view all".tr,
                       style: TextStyle(
                         fontSize: 13,
                          color: theme.brightness == Brightness.dark

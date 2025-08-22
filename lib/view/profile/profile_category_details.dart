@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:khotwa/shared/constants/colors.dart';
 
 class ProfileCategoryDetails extends StatefulWidget {
@@ -111,7 +112,7 @@ super.initState();
         onPressed: changeEditSaveState,
         backgroundColor: secondaryColor,
         label: Text(
-          isEditing ? 'Save' : 'Edit',
+          isEditing ? 'Save'.tr : 'Edit'.tr,
           style: const TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
