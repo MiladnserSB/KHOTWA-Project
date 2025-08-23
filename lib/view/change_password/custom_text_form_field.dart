@@ -6,6 +6,7 @@ class CustomTextFormField extends StatelessWidget {
   final String hintText;
   final bool obscureText;
   final Widget? suffixIcon;
+  final String? Function(String?)? validator; // ✅ added validator
 
   const CustomTextFormField({
     Key? key,
@@ -13,6 +14,7 @@ class CustomTextFormField extends StatelessWidget {
     required this.hintText,
     this.obscureText = false,
     this.suffixIcon,
+    this.validator, // ✅ added validator
   }) : super(key: key);
 
   @override
@@ -21,6 +23,7 @@ class CustomTextFormField extends StatelessWidget {
       controller: controller,
       obscureText: obscureText,
       style: const TextStyle(color: textBlack),
+      validator: validator, // ✅ used validator
       decoration: InputDecoration(
         filled: true,
         fillColor: const Color(0xFFF4F5F3),

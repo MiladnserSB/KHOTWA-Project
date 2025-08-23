@@ -15,9 +15,9 @@ class SplashController extends GetxController {
     final token = box.get('token');
 
     if (token != null) {
-      Get.offAllNamed(AppRoutes.homeVolunteer);
+      Get.offAllNamed(AppRoutes.volunteerHome);
     } else {
-      Get.offAllNamed(AppRoutes.intro);
+      Get.offAllNamed(AppRoutes.splash);
     }
   }
 }

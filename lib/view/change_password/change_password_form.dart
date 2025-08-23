@@ -3,7 +3,6 @@ import 'package:khotwa/shared/constants/app_strings.dart';
 import 'package:khotwa/shared/constants/colors.dart';
 import 'package:khotwa/view/change_password/custom_text_form_field.dart';
 
-
 class ChangePasswordForm extends StatefulWidget {
   final TextEditingController newPasswordController;
   final TextEditingController confirmPasswordController;
@@ -31,16 +30,13 @@ class _ChangePasswordFormState extends State<ChangePasswordForm> {
         Align(
           alignment: Alignment.centerLeft,
           child: Text(
-                 
             AppStrings.newPass,
             style: theme.textTheme.bodyLarge?.copyWith(
               fontWeight: FontWeight.w500,
-              color:  theme.brightness == Brightness.dark
-            ? Colors.white
-            : primaryColor,
-              
+              color: theme.brightness == Brightness.dark
+                  ? Colors.white
+                  : primaryColor,
             ),
-            
           ),
         ),
         const SizedBox(height: 8),
@@ -48,6 +44,15 @@ class _ChangePasswordFormState extends State<ChangePasswordForm> {
           controller: widget.newPasswordController,
           hintText: '********',
           obscureText: !showPassword1,
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return "New password is required";
+            }
+            if (value.length < 6) {
+              return "Password must be at least 6 characters";
+            }
+            return null;
+          }, // ✅ validation
           suffixIcon: IconButton(
             icon: Icon(
               showPassword1 ? Icons.visibility_off : Icons.visibility,
@@ -63,9 +68,9 @@ class _ChangePasswordFormState extends State<ChangePasswordForm> {
             AppStrings.confirmNewPass,
             style: theme.textTheme.bodyLarge?.copyWith(
               fontWeight: FontWeight.w500,
-             color:  theme.brightness == Brightness.dark
-            ? Colors.white
-            : primaryColor,
+              color: theme.brightness == Brightness.dark
+                  ? Colors.white
+                  : primaryColor,
             ),
           ),
         ),
@@ -74,6 +79,15 @@ class _ChangePasswordFormState extends State<ChangePasswordForm> {
           controller: widget.confirmPasswordController,
           hintText: '********',
           obscureText: !showPassword2,
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return "Please confirm your password";
+            }
+            if (value != widget.newPasswordController.text) {
+              return "Passwords do not match";
+            }
+            return null;
+          }, // ✅ confirm password validation
           suffixIcon: IconButton(
             icon: Icon(
               showPassword2 ? Icons.visibility_off : Icons.visibility,

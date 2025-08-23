@@ -55,20 +55,30 @@ class ForgotPasswordDialogue extends StatelessWidget {
                 ),
               ),
               SizedBox(height: height * 0.008),
-              TextFormField(
-                controller: emailController,
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(
-                  hintText: AppStrings.emailHint,
-                  filled: true,
-                  fillColor: const Color(0xFFF5F6F4),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide.none,
-                  ),
-                  hintStyle: TextStyle(color: Colors.grey.shade600),
-                ),
-              ),
+             TextFormField(
+  controller: emailController,
+  keyboardType: TextInputType.emailAddress,
+  validator: (value) {
+    if (value == null || value.isEmpty) {
+      return "Email is required";
+    }
+    final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+');
+    if (!emailRegex.hasMatch(value)) {
+      return "Enter a valid email";
+    }
+    return null;
+  }, // ✅ email validation
+  decoration: InputDecoration(
+    hintText: AppStrings.emailHint,
+    filled: true,
+    fillColor: const Color(0xFFF5F6F4),
+    border: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(12),
+      borderSide: BorderSide.none,
+    ),
+    hintStyle: TextStyle(color: Colors.grey.shade600),
+  ),
+),
               SizedBox(height: height * 0.02),
               Row(
                 children: [

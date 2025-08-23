@@ -1,8 +1,12 @@
+import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:khotwa/model/login_model.dart';
+import 'package:khotwa/model/login_model_after_otp.dart';
 import 'package:khotwa/service/auth_service.dart';
 import 'package:khotwa/shared/constants/app_routes.dart';
+import 'package:khotwa/shared/constants/base_url.dart';
+import 'package:khotwa/widgets/custom_snack_bar.dart';
 
 class AuthController extends GetxController {
   final AuthService authService = AuthService();
@@ -13,30 +17,79 @@ class AuthController extends GetxController {
   final otp = ''.obs;
   var isEmailDialogShown = false;
 
-  Future<void> login() async {
+  Future<void> loginBeforeOTP() async {
     isLoading.value = true;
 
- try {
-      final LoginModel? response = await authService.signIn(email.value, password.value);
+    try {
+      final LoginModel? response = await authService.signIn(
+        email.value,
+        password.value,
+      );
+
+      final box = Hive.box('authBox');
+      await box.put('token', response!.token);
+      await box.put('user_name', response.email);
+      await box.put('user_type', 'volunteer');
+
+    } catch (e) {
+      if (e is DioException && e.response?.data != null) {
+        try {
+          final errorResponse = LoginModel.fromJson(e.response!.data);
+          final box = Hive.box('authBox');
+          await box.put('token', errorResponse.token);
+          await box.put('user_name', errorResponse.email);
+          await box.put('user_type', 'volunteer');
+        } catch (_) {
+          CustomSnackbar.show(
+            type: SnackbarType.error,
+            title: "Error",
+            message: "Unexpected error format from server.",
+          );
+        }
+      }
+
+      if (e.toString().contains("verify_required")) {
+        Get.offNamed(
+          AppRoutes.verifyEmail,
+          arguments: {'email': email.value, 'cameFromForgotPassword': false},
+        );
+        CustomSnackbar.show(
+          type: SnackbarType.info,
+          title: "Verification Required",
+          message: "A verification code has been sent to your email.",
+        );
+      } else {
+        CustomSnackbar.show(
+          type: SnackbarType.error,
+          title: "Error",
+          message: "Login failed: ${e.toString()}",
+        );
+      }
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  Future<void> loginAfterOTP() async {
+    isLoading.value = true;
+
+    try {
+      final LoginModelAfterOTP? response = await authService.signInAfterOTP(
+        email.value,
+        password.value,
+      );
 
       if (response != null) {
-        final box = Hive.box('authBox');
-        await box.put('token', response.token);
-        await box.put('user_type', 'volunteer');
-        await box.put('user_name', response.email);
-
-        Get.offAllNamed(AppRoutes.homeVolunteer);
+        userID = response.user.id;
+        roleID = response.user.roleId;
+        Get.offAllNamed(AppRoutes.volunteerHome);
       }
-    }   catch (e) {
-      if (e.toString().contains("verify_required")) {
-        Get.toNamed(AppRoutes.verifyEmail, arguments: {
-  'email': email.value,
-  'cameFromForgotPassword': false,
-});
-        Get.snackbar("Verification Required", "A verification code has been sent to your email.");
-      } else {
-        Get.snackbar("Error", "Login failed: ${e.toString()}");
-      }
+    } catch (e) {
+      CustomSnackbar.show(
+        type: SnackbarType.error,
+        title: "Error",
+        message: "Login failed: ${e.toString()}",
+      );
     } finally {
       isLoading.value = false;
     }
@@ -49,13 +102,25 @@ class AuthController extends GetxController {
       final success = await authService.verifyOtp(email, otp);
 
       if (success) {
-        Get.snackbar("Verified", "Please change your password.");
+        CustomSnackbar.show(
+          type: SnackbarType.success,
+          title: "Verified",
+          message: "Please change your password.",
+        );
         Get.toNamed(AppRoutes.changePassword);
       } else {
-        Get.snackbar("Failed", "The verification code is incorrect");
+        CustomSnackbar.show(
+          type: SnackbarType.error,
+          title: "Failed",
+          message: "The verification code is incorrect",
+        );
       }
     } catch (e) {
-      Get.snackbar("Error", e.toString());
+      CustomSnackbar.show(
+        type: SnackbarType.error,
+        title: "Error",
+        message: e.toString(),
+      );
     } finally {
       isLoading.value = false;
     }
@@ -71,61 +136,93 @@ class AuthController extends GetxController {
       );
 
       if (success) {
-        Get.snackbar("Changed", "Password changed successfully");
-        Get.offAllNamed(AppRoutes.homeVolunteer);
+        CustomSnackbar.show(
+          type: SnackbarType.success,
+          title: "Changed",
+          message: "Password changed successfully",
+        );
+        loginAfterOTP();
       } else {
-        Get.snackbar("Failed", "Failed to change password");
+        CustomSnackbar.show(
+          type: SnackbarType.error,
+          title: "Failed",
+          message: "Failed to change password",
+        );
       }
     } catch (e) {
-      Get.snackbar("Error", e.toString());
+      CustomSnackbar.show(
+        type: SnackbarType.error,
+        title: "Error",
+        message: e.toString(),
+      );
     } finally {
       isLoading.value = false;
     }
   }
 
   Future<void> forgotPassword(String email) async {
-  isLoading.value = true;
-  try {
-    await authService.sendResetCode(email);
-    Get.back(); 
-    Get.toNamed(AppRoutes.verifyEmail,arguments: {
-  'email': email,
-  'cameFromForgotPassword': true,
-});
-    Get.snackbar("Done", "The code has been sent to your email");
-  } catch (e) {
-    Get.snackbar("Error", e.toString());
-  } finally {
-    isLoading.value = false;
-  }
-}
-Future<void> confirmResetPassword({
-  required String email,
-  required String otp,
-  required String newPassword,
-  required String confirmPassword,
-}) async {
-  isLoading.value = true;
-
-  try {
-    final success = await authService.resetPassword(
-      email: email,
-      otp: otp,
-      password: newPassword,
-      passwordConfirmation: confirmPassword,
-    );
-
-    if (success) {
-      Get.snackbar("Done", "Password changed successfully, please log in");
-      Get.offAllNamed(AppRoutes.login);
-    } else {
-      Get.snackbar("Failed", "Failed to confirm password change");
+    isLoading.value = true;
+    try {
+      await authService.sendResetCode(email);
+      Get.back();
+      Get.toNamed(
+        AppRoutes.verifyEmail,
+        arguments: {'email': email, 'cameFromForgotPassword': true},
+      );
+      CustomSnackbar.show(
+        type: SnackbarType.info,
+        title: "Done",
+        message: "The code has been sent to your email",
+      );
+    } catch (e) {
+      CustomSnackbar.show(
+        type: SnackbarType.error,
+        title: "Error",
+        message: e.toString(),
+      );
+    } finally {
+      isLoading.value = false;
     }
-  } catch (e) {
-    Get.snackbar("Error", e.toString());
-  } finally {
-    isLoading.value = false;
   }
-}
 
+  Future<void> confirmResetPassword({
+    required String email,
+    required String otp,
+    required String newPassword,
+    required String confirmPassword,
+  }) async {
+    isLoading.value = true;
+
+    try {
+      final success = await authService.resetPassword(
+        email: email,
+        otp: otp,
+        password: newPassword,
+        passwordConfirmation: confirmPassword,
+      );
+
+      if (success) {
+        CustomSnackbar.show(
+          type: SnackbarType.success,
+          title: "Done",
+          message: "Password changed successfully, please log in",
+        );
+        Get.offAllNamed(AppRoutes.login);
+      } else {
+        CustomSnackbar.show(
+          type: SnackbarType.error,
+          title: "Failed",
+          message: "Failed to confirm password change",
+        );
+      }
+    } catch (e) {
+      CustomSnackbar.show(
+        type: SnackbarType.error,
+        title: "Error",
+        message: e.toString(),
+      );
+    } finally {
+      isLoading.value = false;
+    }
+  }
 }

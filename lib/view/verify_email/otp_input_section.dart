@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
+import 'package:get/get.dart';
+import 'package:khotwa/controller/auth_controller.dart';
 import 'package:khotwa/shared/constants/app_strings.dart';
 import 'package:khotwa/shared/constants/colors.dart';
 
@@ -8,8 +9,8 @@ class OtpInputSection extends StatelessWidget {
   final Size size;
   final Function(String) onSubmit;
 
-  const OtpInputSection({super.key, required this.size, required this.onSubmit});
-
+   OtpInputSection({super.key, required this.size, required this.onSubmit});
+AuthController authController= Get.find<AuthController>();
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -48,8 +49,7 @@ class OtpInputSection extends StatelessWidget {
             const SizedBox(width: 5),
             GestureDetector(
               onTap: () {
-//TODO Don't forget to integrate the resend code after the back end is finished
-
+                authController.loginBeforeOTP();
              },
               child: Text(
                 AppStrings.resend,

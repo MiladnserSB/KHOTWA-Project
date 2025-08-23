@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:hive/hive.dart';
 import 'package:khotwa/model/login_model.dart';
+import 'package:khotwa/model/login_model_after_otp.dart';
 import 'package:khotwa/shared/constants/base_url.dart';
 
 class AuthService {
@@ -26,6 +27,23 @@ class AuthService {
       }
 
       return LoginModel.fromJson(response.data);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+ Future<LoginModelAfterOTP?> signInAfterOTP(String email, String password) async {
+    try {
+      final response = await dio.post('auth/login', data: {
+        "email": email,
+        "password": password,
+      });
+
+      if (response.statusCode == 403) {
+        throw Exception("verify_required");
+      }
+
+      return LoginModelAfterOTP.fromJson(response.data);
     } catch (e) {
       rethrow;
     }

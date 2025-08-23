@@ -3,9 +3,11 @@ import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:khotwa/Localizations/ArabicLocalization.dart';
 import 'package:khotwa/Localizations/EnglishLocalization.dart';
+import 'package:khotwa/bindings/splash_binding.dart';
 import 'package:khotwa/controller/Settings_Lang_Controller.dart';
 import 'package:khotwa/controller/theme_controller.dart';
 import 'package:khotwa/view/Home_Page/Animted_bottom/Animated_Bottom_Bar_Volunteer.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,6 +31,7 @@ class MyApp extends StatelessWidget {
 
     return Obx(() {
       return GetMaterialApp(
+        initialBinding: SplashBinding(),
         debugShowCheckedModeBanner: false,
         translations: MyTranslations(),
         locale: settingsController.locale.value, 
@@ -80,7 +83,7 @@ class MyTranslations extends Translations {
 
 
 
-  
+
 
 
 // initialRoute: AppRoutes.login,

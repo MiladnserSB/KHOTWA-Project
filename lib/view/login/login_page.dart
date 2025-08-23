@@ -29,18 +29,30 @@ class LoginPage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       SizedBox(height: size.height * 0.05),
-                      LoginVerifyChangeLogo(size: size, title: AppStrings.signinaccount),
+                      LoginVerifyChangeLogo(
+                        size: size,
+                        title: AppStrings.signinaccount,
+                      ),
                       SizedBox(height: size.height * 0.06),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 16.0),
                         child: LoginForm(size: size),
                       ),
                       SizedBox(height: size.height * 0.04),
-                      Obx(() => AuthCustomButton(
-                        title: authController.isLoading.value ? 'Logging in...' : AppStrings.signIn,
-                        // onPressed: authController.isLoading.value ? null : () => authController.login(),
-                        onPressed: (){Get.to(AnimatedBottomBarPageVolunteer());},
-                      )),
+                      Obx(
+                        () => AuthCustomButton(
+                          title: authController.isLoading.value
+                              ? 'Logging in...'
+                              : AppStrings.signIn,
+                          onPressed: authController.isLoading.value
+                              ? null
+                              // ignore: unnecessary_null_comparison
+                              : () => authController.otp.value != null
+                                    ? authController.loginAfterOTP()
+                                    : authController.loginBeforeOTP(),
+                          // onPressed: (){Get.to(AnimatedBottomBarPageVolunteer());},
+                        ),
+                      ),
                       SizedBox(height: size.height * 0.14),
                       const LoginTermsRow(),
                       SizedBox(height: size.height * 0.04),

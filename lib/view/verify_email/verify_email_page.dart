@@ -83,6 +83,7 @@ class VerifyEmailPage extends StatelessWidget {
                           final otpCode = auth.otp.value;
 
                           if (cameFromForgotPassword) {
+                            auth.otp.value = otpCode;
                             auth.verifyEmailWithOtp(userEmail, otpCode);
                           } else {
                             Get.toNamed(
