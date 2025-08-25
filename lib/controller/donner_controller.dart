@@ -1,10 +1,14 @@
 import 'package:get/get.dart';
+import 'package:khotwa/model/create_donation_model.dart';
+import 'package:khotwa/model/my_donations_model.dart';
 import 'package:khotwa/service/donner_service.dart';
-import 'package:khotwa/widgets/custom_snack_bar.dart'; 
+import 'package:khotwa/widgets/custom_snack_bar.dart';
+
 
 class DonorController extends GetxController {
   final DonationService _donationService = DonationService();
-  var myDonations = [].obs;
+
+  var myDonations = <DonationModel>[].obs;
   var isLoading = false.obs;
 
   @override
@@ -16,8 +20,8 @@ class DonorController extends GetxController {
   Future<void> fetchMyDonations() async {
     try {
       isLoading(true);
-      final donations = await _donationService.getMyDonations();
-      myDonations.assignAll(donations);
+      final donationsResponse = await _donationService.getMyDonations();
+      myDonations.assignAll(donationsResponse.data);
     } catch (e) {
       CustomSnackbar.show(
         type: SnackbarType.error,
@@ -29,32 +33,41 @@ class DonorController extends GetxController {
     }
   }
 
-  Future<void> createDonation(Map<String, dynamic> donationData) async {
+  Future<CreateDonationModel?> createDonation(Map<String, dynamic> donationData) async {
     try {
       isLoading(true);
-      await _donationService.createDonation(donationData);
+      final createdDonation = await _donationService.createDonation(donationData);
+
+      // Refresh donations
       await fetchMyDonations();
+
       CustomSnackbar.show(
         type: SnackbarType.success,
         title: 'Success',
-        message: 'Donation created successfully',
+        message: createdDonation.message,
       );
+
+      return createdDonation;
     } catch (e) {
       CustomSnackbar.show(
         type: SnackbarType.error,
         title: 'Error',
         message: 'Failed to create donation',
       );
+      return null;
     } finally {
       isLoading(false);
     }
   }
 
-  Future<void> confirmDonation(int donationId, Map<String, dynamic> paymentData) async {
+  Future<void> confirmDonation(Map<String, dynamic> paymentData) async {
     try {
       isLoading(true);
-      await _donationService.confirmDonation(donationId, paymentData);
+      await _donationService.confirmDonation(paymentData);
+
+      // Refresh donations
       await fetchMyDonations();
+
       CustomSnackbar.show(
         type: SnackbarType.success,
         title: 'Success',

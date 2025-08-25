@@ -6,7 +6,10 @@ import 'package:khotwa/Localizations/EnglishLocalization.dart';
 import 'package:khotwa/bindings/splash_binding.dart';
 import 'package:khotwa/controller/Settings_Lang_Controller.dart';
 import 'package:khotwa/controller/theme_controller.dart';
+import 'package:khotwa/view/Home_Page/Animted_bottom/Animated_Bottom_Bar_Donor.dart';
+import 'package:khotwa/view/Home_Page/Animted_bottom/Animated_Bottom_Bar_Visitor.dart';
 import 'package:khotwa/view/Home_Page/Animted_bottom/Animated_Bottom_Bar_Volunteer.dart';
+import 'package:khotwa/view/donner/donate/donate_page.dart';
 
 
 void main() async {
@@ -31,7 +34,7 @@ class MyApp extends StatelessWidget {
 
     return Obx(() {
       return GetMaterialApp(
-        initialBinding: SplashBinding(),
+        // initialBinding: SplashBinding(),
         debugShowCheckedModeBanner: false,
         translations: MyTranslations(),
         locale: settingsController.locale.value, 
@@ -65,7 +68,7 @@ class MyApp extends StatelessWidget {
         ),
 
         themeMode: themeController.themeMode, 
-        home: AnimatedBottomBarPageVolunteer(),
+        home: AnimatedBottomBarPageVisitor(),
       );
     });
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:khotwa/controller/donner_controller.dart';
 import 'package:khotwa/shared/constants/colors.dart';
 import 'package:khotwa/view/donner/my_donations/my_donations_page.dart';
 
@@ -19,6 +20,8 @@ class _DonateFormState extends State<DonateForm> {
   final TextEditingController amountController = TextEditingController();
 
   String? paymentMethod;
+
+  final DonorController donorControllerX = Get.put(DonorController());
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +48,7 @@ class _DonateFormState extends State<DonateForm> {
                 ),
                 const SizedBox(height: 24),
 
+                // Donor Name
                 TextFormField(
                   controller: donorController,
                   validator: (val) =>
@@ -59,6 +63,7 @@ class _DonateFormState extends State<DonateForm> {
                 ),
                 const SizedBox(height: 16),
 
+                // Email
                 TextFormField(
                   controller: emailController,
                   keyboardType: TextInputType.emailAddress,
@@ -82,6 +87,7 @@ class _DonateFormState extends State<DonateForm> {
                 ),
                 const SizedBox(height: 16),
 
+                // Amount
                 TextFormField(
                   controller: amountController,
                   keyboardType: TextInputType.number,
@@ -106,13 +112,12 @@ class _DonateFormState extends State<DonateForm> {
                 ),
                 const SizedBox(height: 16),
 
+                // Payment Method
                 DropdownButtonFormField<String>(
                   value: paymentMethod,
                   items: const [
-                    DropdownMenuItem(
-                        value: "card", child: Text("Card")),
-                    DropdownMenuItem(
-                        value: "cash", child: Text("Cash")),
+                    DropdownMenuItem(value: "card", child: Text("Card")),
+                    DropdownMenuItem(value: "cash", child: Text("Cash")),
                   ],
                   onChanged: (val) => setState(() => paymentMethod = val),
                   decoration: InputDecoration(
@@ -126,118 +131,31 @@ class _DonateFormState extends State<DonateForm> {
                 ),
                 const SizedBox(height: 24),
 
+                // Donate Button
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
-  style: ElevatedButton.styleFrom(
-    backgroundColor: primaryColor,
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(12),
-    ),
-    padding: const EdgeInsets.symmetric(vertical: 16),
-  ),
-  onPressed: () {
-    if (_formKey.currentState!.validate()) {
-      showDialog(
-        context: context,
-        builder: (context) {
-          final size = MediaQuery.of(context).size;
-          final theme = Theme.of(context);
-          return Dialog(
-            backgroundColor: theme.brightness == Brightness.dark
-                ? textBlack
-                : Colors.white,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: Padding(
-              padding: EdgeInsets.all(size.width * 0.06),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(Icons.warning_amber_rounded,
-                      size: size.width * 0.15, color: secondaryColor),
-                  SizedBox(height: size.height * 0.02),
-                  Text(
-                    'Donation Confirmation',
-                    style: TextStyle(
-                      fontSize: size.width * 0.05,
-                      fontWeight: FontWeight.bold,
-                      color: primaryColor,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: primaryColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                    ),
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        _showConfirmationDialog(context);
+                      }
+                    },
+                    child: const Text(
+                      "Donate Now",
+                      style: TextStyle(color: white, fontSize: 16),
                     ),
                   ),
-                  SizedBox(height: size.height * 0.015),
-                  Text(
-                    'Are you sure you want to donate for the event or project?',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: size.width * 0.04,
-                      color: theme.brightness == Brightness.dark
-                          ? Colors.white
-                          : textBlack,
-                    ),
-                  ),
-                  SizedBox(height: size.height * 0.03),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: secondaryColor,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                          child: Text(
-                            'Cancel',
-                            style: TextStyle(
-                              color: white,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: size.width * 0.03),
-                      Expanded(
-                        child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                            // Add donation submission logic here if needed
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: secondaryColor,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                          child: Text(
-                            'Donate',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
-      );
-    }
-  },
-  child: const Text(
-    "Donate Now",
-    style: TextStyle(color: white, fontSize: 16),
-  ),
-)
-,
                 ),
                 const SizedBox(height: 12),
 
+                // My Donations
                 SizedBox(
                   width: double.infinity,
                   child: OutlinedButton(
@@ -249,7 +167,7 @@ class _DonateFormState extends State<DonateForm> {
                       padding: const EdgeInsets.symmetric(vertical: 16),
                     ),
                     onPressed: () {
-                      Get.to(MyDonationsPage());
+                      Get.to(() => MyDonationsPage());
                     },
                     child: const Text(
                       "My Donations",
@@ -285,6 +203,119 @@ class _DonateFormState extends State<DonateForm> {
             ),
           );
         }
+      },
+    );
+  }
+
+  /// 🔹 Confirmation Dialog with API integration
+  void _showConfirmationDialog(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final theme = Theme.of(context);
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          backgroundColor:
+              theme.brightness == Brightness.dark ? textBlack : Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Padding(
+            padding: EdgeInsets.all(size.width * 0.06),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.warning_amber_rounded,
+                    size: size.width * 0.15, color: secondaryColor),
+                SizedBox(height: size.height * 0.02),
+                Text(
+                  'Donation Confirmation',
+                  style: TextStyle(
+                    fontSize: size.width * 0.05,
+                    fontWeight: FontWeight.bold,
+                    color: primaryColor,
+                  ),
+                ),
+                SizedBox(height: size.height * 0.015),
+                Text(
+                  'Are you sure you want to donate for the event or project?',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: size.width * 0.04,
+                    color: theme.brightness == Brightness.dark
+                        ? Colors.white
+                        : textBlack,
+                  ),
+                ),
+                SizedBox(height: size.height * 0.03),
+                Row(
+                  children: [
+                    // Cancel Button
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () => Navigator.of(context).pop(),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: secondaryColor,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        child: const Text(
+                          'Cancel',
+                          style: TextStyle(
+                            color: white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: size.width * 0.03),
+                    // Confirm Donate
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          Navigator.of(context).pop();
+
+                          // 1️⃣ Create donation
+                          final donation = await donorControllerX.createDonation({
+                            "amount": int.parse(amountController.text),
+                            "project_id": 1, // TODO: make dynamic if needed
+                            "event_id": 15, // TODO: make dynamic if needed
+                            "donor_name": donorController.text,
+                            "donor_email": emailController.text,
+                            "type": paymentMethod,
+                          });
+
+                          if (donation != null) {
+                            // 2️⃣ Confirm donation
+                            await donorControllerX.confirmDonation({
+                              "donation_id": donation.data.donationId ?? 0,
+                              "transaction_id": "pi_123456789", 
+                              "payment_status": "paid",
+                              "method": paymentMethod,
+                              "amount": int.parse(amountController.text),
+                            });
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: secondaryColor,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        child: const Text(
+                          'Donate',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
       },
     );
   }

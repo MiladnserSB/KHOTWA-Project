@@ -1,6 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:khotwa/shared/constants/colors.dart';
 
+class Donation {
+  final String title;
+  final String event;
+  final String donorName;
+  final String date;
+  final double amount;
+  final String paymentMethod;
+  final String status;
+
+  Donation({
+    required this.title,
+    required this.event,
+    required this.donorName,
+    required this.date,
+    required this.amount,
+    required this.paymentMethod,
+    required this.status,
+  });
+}
+
 class DonationCard extends StatelessWidget {
   final Donation donation;
   const DonationCard({super.key, required this.donation});
@@ -10,8 +30,11 @@ class DonationCard extends StatelessWidget {
     final isWide = MediaQuery.of(context).size.width > 600;
     final textScale = MediaQuery.of(context).textScaleFactor;
 
-    IconData paymentIcon =
-        donation.paymentMethod == "cash" ? Icons.handshake : Icons.credit_card;
+    IconData paymentIcon = donation.paymentMethod.contains("cash") 
+        ? Icons.handshake 
+        : Icons.credit_card;
+
+    Color statusColor = _getStatusColor(donation.status);
 
     return Card(
       elevation: 3,
@@ -97,13 +120,13 @@ class DonationCard extends StatelessWidget {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                   decoration: BoxDecoration(
-                    color: Colors.green.shade100,
+                    color: statusColor.withOpacity(0.2),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Text(
                     donation.status,
-                    style: const TextStyle(
-                      color: Colors.green,
+                    style: TextStyle(
+                      color: statusColor,
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
                     ),
@@ -116,25 +139,17 @@ class DonationCard extends StatelessWidget {
       ),
     );
   }
-}
 
-
-class Donation {
-  final String title;
-  final String event;
-  final String donorName;
-  final String date;
-  final double amount;
-  final String paymentMethod; // "cash" or "card"
-  final String status; // "Completed", "Pending", etc.
-
-  Donation({
-    required this.title,
-    required this.event,
-    required this.donorName,
-    required this.date,
-    required this.amount,
-    required this.paymentMethod,
-    required this.status,
-  });
+  Color _getStatusColor(String status) {
+    switch (status.toLowerCase()) {
+      case 'completed':
+        return Colors.green;
+      case 'pending':
+        return Colors.orange;
+      case 'failed':
+        return Colors.red;
+      default:
+        return Colors.grey;
+    }
+  }
 }
