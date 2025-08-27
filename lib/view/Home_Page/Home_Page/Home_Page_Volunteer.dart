@@ -95,12 +95,11 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
     final textColor = theme.brightness == Brightness.dark ? Colors.white : Colors.black;
 
     return Scaffold(
-      backgroundColor: theme.scaffoldBackgroundColor,
+      backgroundColor: theme.brightness == Brightness.dark ? theme.scaffoldBackgroundColor : thirdColor,
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Header
               Row(
@@ -127,7 +126,7 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
                     ),
                   ),
                   IconButton(
-                    icon: Icon(Icons.notifications, size: 28, color: _isPressed ? Color(0xFFDDA15E) : Colors.black),
+                    icon: Icon(Icons.notifications, size: 34, color:   Color(0xFFDDA15E) ),
                     onPressed: () {
                       setState(() {
                         _isPressed = !_isPressed;
@@ -140,61 +139,79 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
               const SizedBox(height: 20),
 
               // Search Field
-              TextField(
-                controller: _controller,
-                focusNode: _focusNode,
-                decoration: InputDecoration(
-                  hintText: 'search'.tr,
-                  filled: true,
-                  fillColor: Colors.grey[200],
-                  isDense: true,
-                  contentPadding: EdgeInsets.symmetric(vertical: 13, horizontal: 12),
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(20), borderSide: BorderSide.none),
-                  prefixIcon: const Icon(Icons.search, size: 22),
-                ),
-                style: TextStyle(fontSize: 16),
-              ),
+  TextField(
+  controller: _controller,
+  focusNode: _focusNode,
+  decoration: InputDecoration(
+    hintText: 'search'.tr,
+    hintStyle: TextStyle(color: Colors.black), 
+    filled: true,
+    fillColor:     theme.brightness == Brightness.dark ? thirdColor : Colors.white,
+    isDense: true,
+    contentPadding: EdgeInsets.symmetric(vertical: 13, horizontal: 12),
+    border: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(20), 
+      borderSide: BorderSide.none
+    ),
+    prefixIcon: const Icon(Icons.search, size: 22, color: Colors.black),
+  ),
+  style: TextStyle(fontSize: 18, color: Colors.black), 
+),
 
-              const SizedBox(height: 20),
 
-              // Persons List
-              SizedBox(
-                height: 150,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: personList.length,
-                  itemBuilder: (context, index) {
-                    final person = personList[index];
-                    String? medalText;
-                    if (index == 0) medalText = "🥇";
-                    if (index == 1) medalText = "🥈";
-                    if (index == 2) medalText = "🥉";
+              const SizedBox(height: 15),
 
-                    return Padding(
-                      padding: const EdgeInsets.only(right: 35),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (_) => ProfilePage()));
-                            },
-                            child: HomePersonCard(
-                              name: person['name'] ?? '',
-                              image: person['image'] ?? '',
-                            ),
-                          ),
-                          const SizedBox(height: 5),
-                          if (medalText != null)
-                            Text(medalText, style: const TextStyle(color: Colors.white, fontSize: 23)),
-                        ],
-                      ),
-                    );
-                  },
+Center(
+  child: Container(
+    height: 200,
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.center, 
+      children: List.generate(personList.length, (index) {
+        final person = personList[index];
+        String? medalText;
+        if (index == 0) medalText = "🥇";
+        if (index == 1) medalText = "🥈";
+        if (index == 2) medalText = "🥉";
+
+        return Padding(
+          padding: const EdgeInsets.all(9),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => ProfilePage()),
+                  );
+                },
+                child: HomePersonCard(
+                  name: person['name'] ?? '',
+                  image: person['image'] ?? '',
                 ),
               ),
+              const SizedBox(height: 5),
+              if (medalText != null)
+                Text(
+                  medalText,
+                  style: const TextStyle(color: Colors.white, fontSize: 23),
+                ),
+            ],
+          ),
+        );
+      }),
+    ),
+  ),
+),
 
-              const SizedBox(height: 20),
+
+
+
+
+
+
+
+              const SizedBox(height: 10),
 
               // My Events
               Row(
@@ -205,7 +222,7 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
                     onTap: () {
                       Navigator.push(context, MaterialPageRoute(builder: (_) => EventsAndProjectsPage()));
                     },
-                    child: Text("view all".tr, style: TextStyle(fontSize: 13, color: primaryColor, fontFamily: 'DG Heaven')),
+                    child: Text("view all".tr, style: TextStyle(fontSize: 13, color:  theme.brightness == Brightness.dark ? Colors.white : primaryColor, fontFamily: 'DG Heaven')),
                   ),
                 ],
               ), 
@@ -245,7 +262,7 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
                     onTap: () {
                       Navigator.push(context, MaterialPageRoute(builder: (_) => EventsAndProjectsPage()));
                     },
-                    child: Text("view all".tr, style: TextStyle(fontSize: 13, color: primaryColor, fontFamily: 'DG Heaven')),
+                    child: Text("view all".tr, style: TextStyle(fontSize: 13, color:  theme.brightness == Brightness.dark ? Colors.white : primaryColor, fontFamily: 'DG Heaven')),
                   ),
                 ],
               ),
@@ -285,7 +302,7 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
                     onTap: () {
                       Navigator.push(context, MaterialPageRoute(builder: (_) => EventsAndProjectsPage()));
                     },
-                    child: Text("view all".tr, style: TextStyle(fontSize: 13, color: primaryColor, fontFamily: 'DG Heaven')),
+                    child: Text("view all".tr, style: TextStyle(fontSize: 13, color:  theme.brightness == Brightness.dark ? Colors.white : primaryColor, fontFamily: 'DG Heaven')),
                   ),
                 ],
               ),

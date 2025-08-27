@@ -122,10 +122,10 @@ class _HomePageVisitorState extends State<HomePageVisitor> {
     final theme = Theme.of(context);
 
     return Scaffold(
-      backgroundColor: theme.scaffoldBackgroundColor,
+      backgroundColor: theme.brightness == Brightness.dark ? theme.scaffoldBackgroundColor : thirdColor,
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -165,13 +165,8 @@ class _HomePageVisitorState extends State<HomePageVisitor> {
                   ),
 
                   IconButton(
-                    icon: Icon(
-                      Icons.notifications,
-                      size: 28,
-                      color: _isPressed
-                          ? const Color(0xFFDDA15E)
-                          : theme.iconTheme.color,
-                    ),
+                                     icon: Icon(Icons.notifications, size: 34, color:   Color(0xFFDDA15E) ),
+
                     onPressed: () {
                       setState(() {
                         _isPressed = !_isPressed;
@@ -182,81 +177,70 @@ class _HomePageVisitorState extends State<HomePageVisitor> {
               ),
 
               const SizedBox(height: 20),
-
-              TextField(
-                controller: _controller,
-                focusNode: _focusNode,
-                decoration: InputDecoration(
-                  hintText: 'search'.tr,
-                  filled: true,
-                  fillColor:
-                      theme.inputDecorationTheme.fillColor ?? Colors.grey[200],
-                  isDense: true,
-                  contentPadding: const EdgeInsets.symmetric(
-                    vertical: 13,
-                    horizontal: 12,
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
-                    borderSide: BorderSide.none,
-                  ),
-                  prefixIcon: Icon(
-                    Icons.search,
-                    size: 22,
-                    color: theme.hintColor,
-                  ),
-                ),
-                style: TextStyle(
-                  fontSize: 16,
-                  color: theme.textTheme.bodyMedium?.color,
-                ),
-              ),
+  TextField(
+  controller: _controller,
+  focusNode: _focusNode,
+  decoration: InputDecoration(
+    hintText: 'search'.tr,
+    hintStyle: TextStyle(color: Colors.black), 
+    filled: true,
+    fillColor:     theme.brightness == Brightness.dark ? thirdColor : Colors.white,
+    isDense: true,
+    contentPadding: EdgeInsets.symmetric(vertical: 13, horizontal: 12),
+    border: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(20), 
+      borderSide: BorderSide.none
+    ),
+    prefixIcon: const Icon(Icons.search, size: 22, color: Colors.black),
+  ),
+  style: TextStyle(fontSize: 18, color: Colors.black), 
+),
 
               const SizedBox(height: 20),
 
-              SizedBox(
-                height: 150,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: personList.length,
-                  itemBuilder: (context, index) {
-                    final person = personList[index];
-                    String? medalText;
-                    if (index == 0) medalText = "🥇";
-                    if (index == 1) medalText = "🥈";
-                    if (index == 2) medalText = "🥉";
+   Center(
+  child: Container(
+    height: 200,
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.center, 
+      children: List.generate(personList.length, (index) {
+        final person = personList[index];
+        String? medalText;
+        if (index == 0) medalText = "🥇";
+        if (index == 1) medalText = "🥈";
+        if (index == 2) medalText = "🥉";
 
-                    return Padding(
-                      padding: const EdgeInsets.only(right: 35),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (_) => ProfilePage(),
-                                ),
-                              );
-                            },
-                            child: HomePersonCard(
-                              name: person['name'] ?? '',
-                              image: person['image'] ?? '',
-                            ),
-                          ),
-                          const SizedBox(height: 5),
-                          if (medalText != null)
-                            Text(
-                              medalText,
-                              style: const TextStyle(fontSize: 23),
-                            ),
-                        ],
-                      ),
-                    );
-                  },
+        return Padding(
+          padding: const EdgeInsets.all(9),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => ProfilePage()),
+                  );
+                },
+                child: HomePersonCard(
+                  name: person['name'] ?? '',
+                  image: person['image'] ?? '',
                 ),
               ),
+              const SizedBox(height: 5),
+              if (medalText != null)
+                Text(
+                  medalText,
+                  style: const TextStyle(color: Colors.white, fontSize: 23),
+                ),
+            ],
+          ),
+        );
+      }),
+    ),
+  ),
+),
+
 
               const SizedBox(height: 10),
 

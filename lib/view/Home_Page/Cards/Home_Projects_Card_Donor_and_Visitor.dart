@@ -4,7 +4,6 @@ import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:khotwa/shared/constants/colors.dart';
 import 'package:khotwa/view/Home_Page/Cards/donor_login_dialog.dart';
 import 'package:khotwa/view/event_and_projects/project_details/project_details_page.dart';
-import 'package:khotwa/view/login/login_page.dart';
 
 class HomeProjectsCardDonorAndVisitor extends StatelessWidget {
   final String name;
@@ -19,21 +18,18 @@ class HomeProjectsCardDonorAndVisitor extends StatelessWidget {
     required this.paid,
     required this.total,
   });
+
   String formatNumber(double number) {
     String langCode = Get.locale?.languageCode ?? 'en';
     if (langCode == 'ar') {
-      const arabicNumbers = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
-      return number
-          .toStringAsFixed(0)
-          .split('')
-          .map((e) {
-            if (RegExp(r'\d').hasMatch(e)) {
-              return arabicNumbers[int.parse(e)];
-            } else {
-              return e;
-            }
-          })
-          .join('');
+      const arabicNumbers = ['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'];
+      return number.toStringAsFixed(0).split('').map((e) {
+        if (RegExp(r'\d').hasMatch(e)) {
+          return arabicNumbers[int.parse(e)];
+        } else {
+          return e;
+        }
+      }).join('');
     } else {
       return number.toStringAsFixed(0);
     }
@@ -41,13 +37,14 @@ class HomeProjectsCardDonorAndVisitor extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     double progress = total > 0 ? paid / total : 0;
 
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 10),
       padding: EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: theme.brightness == Brightness.dark ? thirdColor : Colors.white,
         borderRadius: BorderRadius.circular(14),
         boxShadow: [
           BoxShadow(color: Colors.black12, blurRadius: 4, offset: Offset(0, 2)),
@@ -69,10 +66,10 @@ class HomeProjectsCardDonorAndVisitor extends StatelessWidget {
           SizedBox(height: 10),
           Text(
             name,
-            style: TextStyle(
-              fontSize: 14,
+            style: const TextStyle(
+              fontSize: 16,
               fontWeight: FontWeight.bold,
-              fontFamily: '._Acumin Variable Concept',
+              color: Colors.black,
             ),
           ),
           SizedBox(height: 6),
@@ -80,7 +77,7 @@ class HomeProjectsCardDonorAndVisitor extends StatelessWidget {
             organization,
             style: TextStyle(
               fontSize: 11,
-              color: Colors.grey[700],
+              color: Colors.black,
               fontFamily: '._Acumin Variable Concept',
             ),
           ),
@@ -184,7 +181,6 @@ class HomeProjectsCardDonorAndVisitor extends StatelessWidget {
                                         },
                                       );
                                     },
-
                                     style: ElevatedButton.styleFrom(
                                       backgroundColor: Color(0xFFDDA15E),
                                       padding: EdgeInsets.symmetric(
@@ -247,7 +243,6 @@ class HomeProjectsCardDonorAndVisitor extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-
                 child: Text(
                   'Details'.tr,
                   style: TextStyle(

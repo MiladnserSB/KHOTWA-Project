@@ -32,12 +32,15 @@ class HomeEventsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+      final theme = Theme.of(context); 
+
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
       width:  220,   
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(14),
-        color: Colors.white,
+        color:         theme.brightness == Brightness.dark ? thirdColor : Colors.white,
+
         boxShadow: const [
           BoxShadow(
             color: Colors.black12,

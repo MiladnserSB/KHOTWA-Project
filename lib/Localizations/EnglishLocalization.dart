@@ -138,8 +138,8 @@ class EnglishLocalization extends Translations {
   "due date": "Due Date",
   "assign": "Assign",
    "create new task": "Create New Task",
-  "no date selected": "لم يتم اختيار تاريخ",
-  "Select Date": "اختر التاريخ",
+  "no date selected": "No date selected",
+  "Select Date": "Select Date",
     },
   };
 }

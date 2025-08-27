@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:khotwa/shared/constants/colors.dart';
 import 'package:khotwa/view/event_and_projects/project_details/project_details_page.dart';
 
 class HomeProjectsCard extends StatelessWidget {
@@ -34,13 +35,15 @@ class HomeProjectsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+      final theme = Theme.of(context); 
+
     double progress = total > 0 ? paid / total : 0;
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 10),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color:         theme.brightness == Brightness.dark ? thirdColor : Colors.white,
         borderRadius: BorderRadius.circular(14),
         boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 4, offset: Offset(0,2))],
       ),
@@ -60,12 +63,13 @@ class HomeProjectsCard extends StatelessWidget {
           const SizedBox(height: 10),
           Text(
             name,
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold,color: Colors.black),
           ),
           const SizedBox(height: 6),
           Text(
             organization,
-            style: const TextStyle(fontSize: 12, color: Colors.grey),
+            style: const TextStyle(fontSize: 12, color:               Colors.black,
+),
           ),
           const SizedBox(height: 20),
           LinearProgressIndicator(
