@@ -139,7 +139,8 @@ class _AnimatedBottomBarPageVolunteerState
                       style: TextStyle(
                         color: theme.brightness == Brightness.dark
                             ? Colors.white
-                            : primaryColor,
+                            : Colors.black
+                            ,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -156,7 +157,7 @@ class _AnimatedBottomBarPageVolunteerState
                           style: TextStyle(
                             color: theme.brightness == Brightness.dark
                                 ? Colors.white
-                                : primaryColor,
+                                : Colors.black,
                           ),
                         ),
                       ),

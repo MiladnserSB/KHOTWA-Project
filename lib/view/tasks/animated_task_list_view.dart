@@ -51,6 +51,7 @@ class _AnimatedTaskListViewState extends State<AnimatedTaskListView>
   Widget build(BuildContext context) {
     super.build(context);
     return ListView.separated(
+      
       controller: _controller,
       physics: const BouncingScrollPhysics(),
       itemCount: widget.tasks.length,

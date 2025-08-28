@@ -128,16 +128,17 @@ class _AnimatedBottomBarPageSupervisorState
               onTap: () {
                 showDialog(
                   context: context,
-                   builder: (context) => AlertDialog(
+                  builder: (context) => AlertDialog(
                     backgroundColor: theme.brightness == Brightness.dark
-                        ? Color(0xFF696969)
+                        ? Color(0xFF202020)
                         : thirdColor,
                     title: Text(
                       "confirm logout".tr,
                       style: TextStyle(
                         color: theme.brightness == Brightness.dark
-                            ? Colors.black
-                            : primaryColor,
+                            ? Colors.white
+                            : Colors.black
+                            ,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -150,26 +151,29 @@ class _AnimatedBottomBarPageSupervisorState
                       TextButton(
                         onPressed: () => Navigator.pop(context),
                         child: Text(
-                          'cancel'.tr,
-                          style: TextStyle(color: primaryColor),
+                          "cancel".tr,
+                          style: TextStyle(
+                            color: theme.brightness == Brightness.dark
+                                ? Colors.white
+                                : Colors.black,
+                          ),
                         ),
                       ),
                       TextButton(
                         onPressed: () {
                           Navigator.of(context).pop();
                           setState(() {
-                            _selectedDrawerItem = 'logout'.tr;
+                            _selectedDrawerItem = 'logout';
                           });
                           Navigator.pushAndRemoveUntil(
                             context,
-                            MaterialPageRoute(builder: (context) => LoginPage()),
+                            MaterialPageRoute(
+                                builder: (context) => LoginPage()),
                             (route) => false,
                           );
                         },
-                        child: Text(
-                          'logout'.tr,
-                          style: const TextStyle(color: Colors.red),
-                        ),
+                        child: Text("logout".tr,
+                            style: const TextStyle(color: Colors.red)),
                       ),
                     ],
                   ),

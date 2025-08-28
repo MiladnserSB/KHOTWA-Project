@@ -31,7 +31,6 @@ class DatePickerSection extends StatelessWidget {
                       : "${dateVar.value!.toLocal()}".split(' ')[0],
                   style: const TextStyle(fontSize: 14, color: Colors.grey),
                 ),
-
               ),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
@@ -41,18 +40,18 @@ class DatePickerSection extends StatelessWidget {
                   ),
                 ),
                 onPressed: () async {
-                  DateTime? picked = await showDatePicker(
+                  final picked = await showDatePicker(
                     context: context,
                     initialDate: DateTime.now(),
                     firstDate: DateTime(2020),
                     lastDate: DateTime(2030),
                   );
-                  if (picked != null) {
-                    dateVar.value = picked;
-                  }
+                  if (picked != null) dateVar.value = picked;
                 },
-                child: Text("Select Date".tr,
-                    style:  TextStyle(color: Colors.white)),
+                child: Text(
+                  "Select Date".tr,
+                  style: const TextStyle(color: Colors.white),
+                ),
               ),
             ],
           ),

@@ -38,21 +38,26 @@ class TaskCard extends StatelessWidget {
           style: TextStyle(
             color: theme.brightness == Brightness.dark
                 ? Colors.white
-                : primaryColor,
+                : Colors.black,
           ),
         ),
         content: Text(
           content,
           style: TextStyle(
             color: theme.brightness == Brightness.dark
-                ? Colors.white
-                : primaryColor,
+                ? Colors.grey
+                : Colors.grey,
           ),
         ),
         actions: [
-          TextButton(
-            style: TextButton.styleFrom(foregroundColor: grey),
-            onPressed: () => Navigator.pop(context),
+          ElevatedButton(
+
+            style: ElevatedButton.styleFrom(
+              backgroundColor: secondaryColor,
+              foregroundColor: white,
+            ),
+            onPressed: () {
+Navigator.of(context).pop();            },
             child: Text("Cancel".tr),
           ),
           ElevatedButton(

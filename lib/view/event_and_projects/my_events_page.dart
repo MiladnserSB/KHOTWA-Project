@@ -40,7 +40,7 @@ class _MyEventsPageState extends State<MyEventsPage> {
               final theme = Theme.of(context); 
 
     return Scaffold(
-            backgroundColor: theme.scaffoldBackgroundColor,
+        backgroundColor:  theme.brightness == Brightness.dark ? Colors.black : thirdColor,
 
       body: SafeArea(
         
@@ -52,7 +52,7 @@ class _MyEventsPageState extends State<MyEventsPage> {
               SizedBox(height: size.height * 0.02),
               Center(
                 child: Text(
-                  'MY EVENTS',
+                  'My Events',
                   style: TextStyle(
                     fontSize: size.width * 0.06,
                     fontWeight: FontWeight.bold,
@@ -67,16 +67,21 @@ class _MyEventsPageState extends State<MyEventsPage> {
                       padding: const EdgeInsets.symmetric(horizontal: 12),
                       height: size.height * 0.06,
                       decoration: BoxDecoration(
-                        color: Colors.grey[100],
+                        color: Colors.white,
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: const Row(
                         children: [
                           SizedBox(width: 10),
+                          Icon(Icons.search,color: Colors.black,),
+                                                    SizedBox(width: 10),
+
                           Expanded(
                             child: TextField(
                               decoration: InputDecoration(
+                                counterStyle: TextStyle(color: Colors.black),
                                 hintText: 'Search...',
+                                hintStyle: TextStyle(color: Colors.black),
                                 border: InputBorder.none,
                               ),
                             ),
@@ -85,16 +90,7 @@ class _MyEventsPageState extends State<MyEventsPage> {
                       ),
                     ),
                   ),
-                  SizedBox(width: size.width * 0.03),
-                  Container(
-                    height: size.height * 0.06,
-                    width: size.height * 0.06,
-                    decoration: BoxDecoration(
-                      color: secondaryColor,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: const Icon(Icons.search, color: Colors.white),
-                  ),
+               
                 ],
               ),
               SizedBox(height: size.height * 0.02),
@@ -232,9 +228,9 @@ class EventCard extends StatelessWidget {
                   builder: (BuildContext context) {
                     final size = MediaQuery.of(context).size;
                     return Dialog(
-                      backgroundColor:   theme.brightness == Brightness.dark
-            ? textBlack
-            : Colors.white,
+                  backgroundColor: theme.brightness == Brightness.dark
+                        ? Color(0xFF202020)
+                        : thirdColor,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16),
                       ),
@@ -251,7 +247,8 @@ class EventCard extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: size.width * 0.05,
                                 fontWeight: FontWeight.bold,
-                                color: primaryColor,
+                                color:  theme.brightness == Brightness.dark ? Colors.white : Colors.black, // Scaffold
+
                               ),
                             ),
                             SizedBox(height: size.height * 0.015),
@@ -261,8 +258,8 @@ class EventCard extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: size.width * 0.04,
  color:   theme.brightness == Brightness.dark
-            ? Colors.white
-            : textBlack,                              ),
+            ? Colors.grey
+            : Colors.grey,                              ),
                             ),
                             SizedBox(height: size.height * 0.03),
                             Row(

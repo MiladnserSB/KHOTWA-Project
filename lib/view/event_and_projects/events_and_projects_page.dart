@@ -32,12 +32,16 @@ class _EventsAndProjectsPageState extends State<EventsAndProjectsPage>
 
   @override
   Widget build(BuildContext context) {
+            final theme = Theme.of(context); 
+
     final size = MediaQuery.of(context).size;
     final double itemHeight = size.height * 0.38;
 
     return DefaultTabController(
       length: 2,
       child: Scaffold(
+                backgroundColor:  theme.brightness == Brightness.dark ? Colors.black : thirdColor,
+
         body: SafeArea(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
@@ -45,59 +49,81 @@ class _EventsAndProjectsPageState extends State<EventsAndProjectsPage>
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(height: size.height * 0.02),
-                ButtonsTabBar(
-                  controller: _tabController,
-                  backgroundColor: secondaryColor,
-                  unselectedBackgroundColor: Colors.grey[200],
-                  unselectedLabelStyle: const TextStyle(color: Colors.black),
-                  labelStyle: const TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
-                  radius: 30,
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 60),
-                  tabs: const [
-                    Tab(text: 'Events'),
-                    Tab(text: 'Projects'),
-                  ],
-                ),
-                SizedBox(height: size.height * 0.02),
+             Container(
+  width: double.infinity, 
+  height: 50,
+  padding: const EdgeInsets.all(4),
+  decoration: BoxDecoration(
+    color:         theme.brightness == Brightness.dark ? Color.fromARGB(255, 77, 75, 75) : Colors.white,
+
+    borderRadius: BorderRadius.circular(30),
+  ),
+  child:Row(
+  children: [
+    Expanded(
+      child: ButtonsTabBar(
+        controller: _tabController,
+        backgroundColor: secondaryColor,
+        unselectedBackgroundColor: Colors.grey[200],
+        unselectedLabelStyle: const TextStyle(
+          color: Colors.black,
+          fontSize: 12, 
+          fontWeight: FontWeight.w600,
+        ),
+        labelStyle: const TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+          fontSize: 12, 
+        ),
+        radius: 16,
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 63, 
+          vertical: 8,
+        ),
+        tabs: const [
+          Tab(text: 'Events'),
+          Tab(text: 'Projects'),
+        ],
+      ),
+    ),
+  ],
+)
+
+
+)
+
+,
+                SizedBox(height: size.height * 0.04),
                 Row(
                   children: [
                     Expanded(
                       child: Container(
                         padding: const EdgeInsets.symmetric(horizontal: 12),
-                        height: size.height * 0.06,
+                        height: size.height * 0.05,
                         decoration: BoxDecoration(
-                          color: Colors.grey[100],
+                          color: Colors.white,
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: const Row(
                           children: [
                             SizedBox(width: 10),
-                            Expanded(
-                              child: TextField(
-                                decoration: InputDecoration(
-                                  hintText: 'Search...',
-                                  border: InputBorder.none,
-                                ),
+                            Icon(Icons.search,color: Colors.black,size: 20,),
+                                                    SizedBox(width: 10),
+                          Expanded(
+                            child: TextField(
+                              decoration: InputDecoration(
+                                counterStyle: TextStyle(color: Colors.black),
+                                hintText: 'Search...',
+                                hintStyle: TextStyle(color: Colors.black,fontSize: 15),
+                                border: InputBorder.none,
                               ),
                             ),
+                          ),
                           ],
                         ),
                       ),
                     ),
-                    SizedBox(width: size.width * 0.03),
-                    Container(
-                      height: size.height * 0.06,
-                      width: size.height * 0.06,
-                      decoration: BoxDecoration(
-                        color: secondaryColor,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: const Icon(Icons.search, color: Colors.white),
-                    ),
+                 
                   ],
                 ),
                 SizedBox(height: size.height * 0.02),
@@ -374,8 +400,8 @@ class ProjectCard extends StatelessWidget {
 
   final Size size;
   final double? elevation;
-  final double totalAmount; // Total amount for the project
-  final double donatedAmount; // Amount donated
+  final double totalAmount; 
+  final double donatedAmount;
 
   @override
   Widget build(BuildContext context) {
@@ -441,39 +467,38 @@ class ProjectCard extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(height: 24), // Add some space
+            SizedBox(height: 24), 
             Column(
               children: [
-                // Animated progress indicator
                 TweenAnimationBuilder<double>(
                   tween: Tween<double>(begin: 0, end: progress),
                   duration: const Duration(seconds: 1),
                   builder: (context, value, child) {
                     return Container(
-                      height: 8, // Set a custom height for the progress bar
+                      height: 8,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(
                           8,
-                        ), // Rounded corners
-                        color: Colors.grey[300], // Background color
+                        ),
+                        color: Colors.grey[300], 
                       ),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(
                           8,
-                        ), // Rounded corners for the progress indicator
+                        ), 
                         child: LinearProgressIndicator(
                           value: value,
                           backgroundColor:
-                              Colors.transparent, // Make background transparent
+                              Colors.transparent, 
                           valueColor: AlwaysStoppedAnimation<Color>(
                             Color.fromARGB(255, 22, 70, 26),
-                          ), // Customize your progress color
+                          ),
                         ),
                       ),
                     );
                   },
                 ),
-                SizedBox(height: 10), // Add some space
+                SizedBox(height: 10), 
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

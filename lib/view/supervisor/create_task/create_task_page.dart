@@ -16,19 +16,18 @@ class CreateTaskPage extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Scaffold(
-      backgroundColor: theme.scaffoldBackgroundColor,
+        backgroundColor:  theme.brightness == Brightness.dark ? Colors.black : thirdColor,
       appBar: AppBar(
+        
         title: Text(
           "create new task".tr,
           style: TextStyle(
             color: theme.brightness == Brightness.dark ? Colors.white : textBlack,
           ),
         ),
-        backgroundColor: theme.scaffoldBackgroundColor,
-        iconTheme: IconThemeData(
-          color: theme.brightness == Brightness.dark ? Colors.white : textBlack,
-        ),
-        elevation: 1,
+        backgroundColor:  theme.brightness == Brightness.dark ? Colors.black : thirdColor,
+       elevation: 1,
+  surfaceTintColor: Colors.transparent,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
@@ -122,7 +121,9 @@ class CreateTaskPage extends StatelessWidget {
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                 ),
                 onPressed: () => Get.back(),
-                child: Text("cancel".tr, style: const TextStyle(fontSize: 16)),
+
+                child: Text("cancel".tr, style:  TextStyle(fontSize: 16,color:          theme.brightness == Brightness.dark ? Colors.white : primaryColor,
+)),
               ),
             ),
           ],

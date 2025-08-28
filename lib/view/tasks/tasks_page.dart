@@ -15,29 +15,36 @@ class TasksPage extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Scaffold(
+              backgroundColor:  theme.brightness == Brightness.dark ? Colors.black : thirdColor,
+
       floatingActionButton: true
           ? FloatingActionButton(
               onPressed: () {
                 Get.to(CreateTaskPage());
               },
               backgroundColor: theme.scaffoldBackgroundColor,
-              // ignore: dead_code
               shape: CircleBorder(),
               child: Icon(Icons.add, color: secondaryColor),
             )
           : SizedBox(),
       appBar: AppBar(
-        iconTheme: const IconThemeData(color: white),
+        elevation: 1,
+  surfaceTintColor: Colors.transparent,
+        backgroundColor:         theme.brightness == Brightness.dark ? Colors.black : thirdColor,
+
         title: Text(
           "My Tasks".tr,
           style: TextStyle(
+            fontWeight: FontWeight.bold,
             color: theme.brightness == Brightness.dark
                 ? Colors.white
-                : secondaryColor,
+                : Colors.black,
           ),
+          
         ),
         centerTitle: true,
       ),
+      
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
