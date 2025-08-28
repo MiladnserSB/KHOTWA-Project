@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:khotwa/controller/auth_controller.dart';
 import 'package:khotwa/shared/constants/app_strings.dart';
+import 'package:khotwa/shared/constants/colors.dart';
 import 'package:khotwa/view/login/login_form.dart';
 import 'package:khotwa/view/login/login_terms_row.dart';
 import 'package:khotwa/view/Home_Page/Animted_bottom/Animated_Bottom_Bar_Volunteer.dart';
@@ -14,9 +15,13 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+              final theme = Theme.of(context); 
+
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
+backgroundColor:                     theme.brightness == Brightness.dark ? Colors.black : thirdColor,
+
       body: SafeArea(
         child: LayoutBuilder(
           builder: (context, constraints) {

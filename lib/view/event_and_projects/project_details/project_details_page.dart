@@ -39,9 +39,9 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
                   final theme = Theme.of(context); 
 
     return Scaffold(
-            backgroundColor: theme.scaffoldBackgroundColor,
+      backgroundColor: theme.brightness == Brightness.dark ? theme.scaffoldBackgroundColor : thirdColor,
       appBar: AppBar(
-            backgroundColor: theme.scaffoldBackgroundColor,
+      backgroundColor: theme.brightness == Brightness.dark ? theme.scaffoldBackgroundColor : thirdColor,
         elevation: 0,
         centerTitle: true,
         title: Text(
@@ -98,21 +98,31 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
             Row(
               children: [
                 Expanded(
-                  child: EventCardInformation(
+                  child:
+                  SizedBox(height: 100,child:  EventCardInformation(
                     icon: Icons.calendar_month,
                     title: 'Start Date',
-                    value: 'September 15, 2024',
+                    value: 'September/1/2024',
                     fontScale: scaleFactor,
-                  ),
+                  ),)
+                  
+                 
                 ),
-                SizedBox(width: size.width * 0.03),
+                SizedBox(width:12),
                 Expanded(
-                  child: EventCardInformation(
+                  child: 
+                  SizedBox(height: 100,child:     EventCardInformation(
                     icon: Icons.calendar_today,
                     title: 'End Date',
-                    value: 'October 30, 2024',
+                    value: 'October/3/2024',
                     fontScale: scaleFactor,
-                  ),
+                  ),)
+                  
+                  
+                  
+                  
+                  
+              
                 ),
               ],
             ),

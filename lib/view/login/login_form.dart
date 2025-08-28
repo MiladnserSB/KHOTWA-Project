@@ -17,14 +17,14 @@ class _LoginFormState extends State<LoginForm> {
   final AuthController authController = Get.find();
   bool isPasswordVisible = false;
 
-  final _formKey = GlobalKey<FormState>(); // ✅ added form key
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     final width = widget.size.width;
     final height = widget.size.height;
 
-    return Form( // ✅ wrap in Form
+    return Form( 
       key: _formKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,7 +46,7 @@ class _LoginFormState extends State<LoginForm> {
                 return "Enter a valid email";
               }
               return null;
-            }, // ✅ email validation
+            },
             decoration: InputDecoration(
               hintText: AppStrings.emailHint,
               filled: true,
@@ -75,7 +75,7 @@ class _LoginFormState extends State<LoginForm> {
                 return "Password must be at least 6 characters";
               }
               return null;
-            }, // ✅ password validation
+            },
             decoration: InputDecoration(
               hintText: AppStrings.passwordHint,
               filled: true,

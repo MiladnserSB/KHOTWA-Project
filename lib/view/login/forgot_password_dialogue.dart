@@ -18,14 +18,15 @@ class ForgotPasswordDialogue extends StatelessWidget {
     final height = mediaQuery.size.height;
 
     return Dialog(
+      backgroundColor: thirdColor,
       insetPadding: const EdgeInsets.symmetric(horizontal: 30, vertical: 24),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
       child: SingleChildScrollView(
         padding: const EdgeInsets.all(20.0),
         child: ConstrainedBox(
           constraints: BoxConstraints(
-            maxWidth: 400,
-            minHeight: height * 0.45,
+            maxWidth: 270,
+            minHeight: height * 0.20,
           ),
           child: Column(
 
@@ -36,15 +37,14 @@ class ForgotPasswordDialogue extends StatelessWidget {
               Text(
                 AppStrings.enterYourEmailPlease,
                 style: TextStyle(
-                  fontSize: width * 0.055,
+                  fontSize: width * 0.050,
                   fontWeight: FontWeight.bold,
  color:   theme.brightness == Brightness.dark
             ? Colors.white
             : textBlack,                ),
                 textAlign: TextAlign.center,
               ),
-              SizedBox(height: height * 0.100),
-              Align(
+ SizedBox(height: height * 0.05),              Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
                   AppStrings.email,
@@ -67,7 +67,7 @@ class ForgotPasswordDialogue extends StatelessWidget {
       return "Enter a valid email";
     }
     return null;
-  }, // ✅ email validation
+  },
   decoration: InputDecoration(
     hintText: AppStrings.emailHint,
     filled: true,
@@ -79,7 +79,7 @@ class ForgotPasswordDialogue extends StatelessWidget {
     hintStyle: TextStyle(color: Colors.grey.shade600),
   ),
 ),
-              SizedBox(height: height * 0.02),
+              SizedBox(height: height * 0.05),
               Row(
                 children: [
                   const Icon(Icons.warning_rounded, color: secondaryColor),
@@ -88,7 +88,7 @@ class ForgotPasswordDialogue extends StatelessWidget {
                     child: Text(
                       "We will send a recovery code to your email.",
                       style: TextStyle(
-                        fontSize: width * 0.035,
+                        fontSize: width * 0.030,
                         fontWeight: FontWeight.w400,
                         color: Colors.grey[700],
                       ),

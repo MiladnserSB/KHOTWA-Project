@@ -184,7 +184,7 @@ class _HomePageVisitorState extends State<HomePageVisitor> {
     hintText: 'search'.tr,
     hintStyle: TextStyle(color: Colors.black), 
     filled: true,
-    fillColor:     theme.brightness == Brightness.dark ? thirdColor : Colors.white,
+    fillColor : Colors.white,
     isDense: true,
     contentPadding: EdgeInsets.symmetric(vertical: 13, horizontal: 12),
     border: OutlineInputBorder(

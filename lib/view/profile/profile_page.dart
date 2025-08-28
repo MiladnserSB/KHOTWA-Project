@@ -13,24 +13,23 @@ class ProfilePage extends StatelessWidget {
     final isLargeScreen = MediaQuery.of(context).size.width > 600;
 
     return Scaffold(
-      backgroundColor: theme.scaffoldBackgroundColor,
-      appBar: AppBar(
-      backgroundColor: theme.scaffoldBackgroundColor,
-        elevation: isLargeScreen ? 1 : 0,
-        leading: BackButton( color: theme.brightness == Brightness.dark
-            ? Colors.white
-            : primaryColor,),
-      ),
-      body: SafeArea(
+        backgroundColor:  theme.brightness == Brightness.dark ? Colors.black : thirdColor,
+
+         
+      body: 
+      
+      SafeArea(
         child: Center(
           child: ConstrainedBox(
+          
             constraints: const BoxConstraints(maxWidth: 700),
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(20),
               child: ListView(
-                children: const [
+                children:  [
+                  
                   ProfilePageHeader(),
-                  SizedBox(height: 12),
+                  SizedBox(height: 40),
                   ProfilePageCategoriesInfoList(),
                 ],
               ),

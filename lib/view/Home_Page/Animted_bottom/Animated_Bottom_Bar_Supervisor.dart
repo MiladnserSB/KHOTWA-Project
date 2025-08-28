@@ -57,7 +57,7 @@ class _AnimatedBottomBarPageSupervisorState
     return Scaffold(
       key: _scaffoldKey,
       drawer: Drawer(
-        backgroundColor: theme.scaffoldBackgroundColor,
+        backgroundColor:  theme.brightness == Brightness.dark ? Colors.black : thirdColor,
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
@@ -128,17 +128,23 @@ class _AnimatedBottomBarPageSupervisorState
               onTap: () {
                 showDialog(
                   context: context,
-                  builder: (context) => AlertDialog(
-                    backgroundColor: theme.scaffoldBackgroundColor,
+                   builder: (context) => AlertDialog(
+                    backgroundColor: theme.brightness == Brightness.dark
+                        ? Color(0xFF696969)
+                        : thirdColor,
                     title: Text(
-                      'confirm logout'.tr,
+                      "confirm logout".tr,
                       style: TextStyle(
-                          color: primaryColor, fontWeight: FontWeight.bold),
+                        color: theme.brightness == Brightness.dark
+                            ? Colors.black
+                            : primaryColor,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     content: Text(
-                      'logout message'.tr,
+                      "logout message".tr,
                       style:
-                          TextStyle(color: theme.textTheme.bodyMedium?.color),
+                          TextStyle(color: Colors.grey),
                     ),
                     actions: [
                       TextButton(

@@ -56,6 +56,8 @@ class _DonorLoginDialogState extends State<DonorLoginDialog> {
 
   @override
   Widget build(BuildContext context) {
+          final theme = Theme.of(context); 
+
     final mediaQuery = MediaQuery.of(context);
     final width = mediaQuery.size.width;
     final height = mediaQuery.size.height;
@@ -79,14 +81,13 @@ class _DonorLoginDialogState extends State<DonorLoginDialog> {
       : height * 0.03;
 
     return Dialog(
-      backgroundColor: thirdColor, // Added background color
+      backgroundColor: theme.brightness == Brightness.dark ? const Color(0xFF202020) : thirdColor,
       insetPadding: EdgeInsets.symmetric(
         horizontal: isTablet ? width * 0.1 : width * 0.05,
         vertical: isLandscape ? height * 0.1 : height * 0.15,
       ),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
-        side: BorderSide(color: primaryColor, width: 2), // Added border
       ),
       child: ConstrainedBox(
         constraints: BoxConstraints(
@@ -99,6 +100,7 @@ class _DonorLoginDialogState extends State<DonorLoginDialog> {
             vertical: verticalPadding,
           ),
           child: Form(
+            
             key: _formKey,
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -110,8 +112,7 @@ class _DonorLoginDialogState extends State<DonorLoginDialog> {
                     style: TextStyle(
                       fontSize: isTablet ? 28 : 22 * textScaleFactor,
                       fontWeight: FontWeight.bold,
-                      color: primaryColor, // Added color
-                    ),
+color: theme.brightness == Brightness.dark ? Colors.white : primaryColor,                    ),
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -123,11 +124,16 @@ class _DonorLoginDialogState extends State<DonorLoginDialog> {
                   style: TextStyle(
                     fontSize: isTablet ? 18 : 16 * textScaleFactor,
                     fontWeight: FontWeight.w500,
-                    color: textBlack, // Added color
+                    color:       theme.brightness == Brightness.dark
+                        ? Colors.grey
+                        : Colors.black, // Added color
                   ),
                 ),
                 SizedBox(height: height * 0.01),
                 TextFormField(
+                    style: const TextStyle( 
+    color: Colors.black,
+  ),
                   controller: _nameController,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -151,7 +157,7 @@ class _DonorLoginDialogState extends State<DonorLoginDialog> {
                       vertical: isTablet ? 18 : 14,
                     ),
                     hintStyle: TextStyle(
-                      color: grey, // Changed to grey
+                      color: grey, // Changed to grey6
                       fontSize: isTablet ? 16 : 14,
                     ),
                     focusedBorder: OutlineInputBorder(
@@ -168,8 +174,9 @@ class _DonorLoginDialogState extends State<DonorLoginDialog> {
                   style: TextStyle(
                     fontSize: isTablet ? 18 : 16 * textScaleFactor,
                     fontWeight: FontWeight.w500,
-                    color: textBlack, // Added color
-                  ),
+  color:       theme.brightness == Brightness.dark
+                        ? Colors.grey
+                        : Colors.black,                   ),
                 ),
                 SizedBox(height: height * 0.01),
                 TextFormField(
@@ -184,11 +191,15 @@ class _DonorLoginDialogState extends State<DonorLoginDialog> {
                       return "Enter a valid email";
                     }
                     return null;
-                  },
+                  },  style: const TextStyle( 
+    color: Colors.black,
+  ),
                   decoration: InputDecoration(
+                    
                     hintText: 'Enter your email',
                     filled: true,
                     fillColor: white, // Changed to white
+                    
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                       borderSide: BorderSide(color: primaryColor), // Added border color
@@ -230,27 +241,41 @@ class _DonorLoginDialogState extends State<DonorLoginDialog> {
 
   List<Widget> _buildButtons(BuildContext context, bool isTablet, double width) {
     return [
-      TextButton(
-        onPressed: _isLoading ? null : () => Navigator.of(context).pop(),
-        style: TextButton.styleFrom(
+      ElevatedButton(
+               onPressed: _isLoading ? null : () => Navigator.of(context).pop(),
+
+        style: ElevatedButton.styleFrom(
+          backgroundColor: secondaryColor, // Changed to primaryColor
           padding: EdgeInsets.symmetric(
-            horizontal: isTablet ? 24 : 16,
+            horizontal: isTablet ? 24 : 20,
             vertical: isTablet ? 16 : 12,
           ),
-        ),
-        child: Text(
-          'Cancel',
-          style: TextStyle(
-            fontSize: isTablet ? 16 : 14,
-            color: grey, // Changed to grey
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
           ),
         ),
+        child: _isLoading
+            ? SizedBox(
+                width: isTablet ? 24 : 20,
+                height: isTablet ? 24 : 20,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  valueColor: AlwaysStoppedAnimation<Color>(white),
+                ),
+              )
+            : Text(
+                'Cancel',
+                style: TextStyle(
+                  fontSize: isTablet ? 16 : 14,
+                  color: white,
+                ),
+              ),
       ),
       SizedBox(width: width * 0.03),
       ElevatedButton(
         onPressed: _isLoading ? null : _submitForm,
         style: ElevatedButton.styleFrom(
-          backgroundColor: primaryColor, // Changed to primaryColor
+          backgroundColor: secondaryColor, // Changed to primaryColor
           padding: EdgeInsets.symmetric(
             horizontal: isTablet ? 24 : 20,
             vertical: isTablet ? 16 : 12,

@@ -58,7 +58,7 @@ class _AnimatedBottomBarPageVolunteerState
     return Scaffold(
       key: _scaffoldKey,
       drawer: Drawer(
-        backgroundColor: theme.scaffoldBackgroundColor,
+        backgroundColor:  theme.brightness == Brightness.dark ? Colors.black : thirdColor,
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
@@ -132,8 +132,8 @@ class _AnimatedBottomBarPageVolunteerState
                   context: context,
                   builder: (context) => AlertDialog(
                     backgroundColor: theme.brightness == Brightness.dark
-                        ? primaryColor
-                        : Colors.white,
+                        ? Color(0xFF202020)
+                        : thirdColor,
                     title: Text(
                       "confirm logout".tr,
                       style: TextStyle(
@@ -146,7 +146,7 @@ class _AnimatedBottomBarPageVolunteerState
                     content: Text(
                       "logout message".tr,
                       style:
-                          TextStyle(color: theme.textTheme.bodyMedium?.color),
+                          TextStyle(color: Colors.grey),
                     ),
                     actions: [
                       TextButton(

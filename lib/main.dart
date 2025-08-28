@@ -7,6 +7,7 @@ import 'package:khotwa/bindings/splash_binding.dart';
 import 'package:khotwa/controller/Settings_Lang_Controller.dart';
 import 'package:khotwa/controller/theme_controller.dart';
 import 'package:khotwa/view/Home_Page/Animted_bottom/Animated_Bottom_Bar_Donor.dart';
+import 'package:khotwa/view/Home_Page/Animted_bottom/Animated_Bottom_Bar_Supervisor.dart';
 import 'package:khotwa/view/Home_Page/Animted_bottom/Animated_Bottom_Bar_Visitor.dart';
 import 'package:khotwa/view/Home_Page/Animted_bottom/Animated_Bottom_Bar_Volunteer.dart';
 import 'package:khotwa/view/donner/donate/donate_page.dart';
@@ -68,7 +69,7 @@ class MyApp extends StatelessWidget {
         ),
 
         themeMode: themeController.themeMode, 
-        home: AnimatedBottomBarPageVisitor(),
+        home: AnimatedBottomBarPageVolunteer(),
       );
     });
   }

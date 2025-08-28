@@ -12,12 +12,15 @@ class ProfilePageHeader extends StatelessWidget {
     final textScale = MediaQuery.of(context).textScaleFactor;
 
     return Container(
-      color: theme.scaffoldBackgroundColor,
+
+      
+      color:  theme.brightness == Brightness.dark ? Colors.black : thirdColor,
 
       padding: const EdgeInsets.symmetric(horizontal:  16.0, vertical: 2),
       
       child: Row(
         children: [
+        
           const CircleAvatar(
             radius: 40,
             backgroundImage: AssetImage('assets/images/logo1.png'),
@@ -25,6 +28,7 @@ class ProfilePageHeader extends StatelessWidget {
           const SizedBox(width: 16.0),
           Expanded(
             child: Column(
+              
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(

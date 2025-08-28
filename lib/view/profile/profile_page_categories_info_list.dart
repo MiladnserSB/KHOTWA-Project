@@ -39,7 +39,7 @@ class ProfilePageCategoriesInfoList extends StatelessWidget {
       itemCount: infoItems.length,
       itemBuilder: (context, index) {
         return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 6.0),
+          padding: const EdgeInsets.symmetric(vertical: 10.0),
           child: GestureDetector(
             onTap: () {
               if (index == 4) {
@@ -61,11 +61,13 @@ class ProfilePageCategoriesInfoList extends StatelessWidget {
               }
             },
             child: Card(
+              color:          theme.brightness == Brightness.dark ? const Color.fromARGB(255, 1, 28, 2) : Colors.white,
+
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(16),
               ),
               elevation: 4,
-              shadowColor: Colors.black12,
+              
               margin: const EdgeInsets.symmetric(horizontal: 8),
               child: ListTile(
                 shape: RoundedRectangleBorder(
@@ -78,7 +80,7 @@ class ProfilePageCategoriesInfoList extends StatelessWidget {
                    color:   theme.brightness == Brightness.dark
             ? Colors.white
             : primaryColor,
-                  size: 26,
+                  size: 32,
                 ),
                 title: Text(
                   overflow: TextOverflow.ellipsis,
@@ -96,10 +98,12 @@ class ProfilePageCategoriesInfoList extends StatelessWidget {
                   style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                   overflow: TextOverflow.ellipsis,
                 ),
-                trailing: const Icon(
+                trailing: Icon(
                   Icons.arrow_forward_ios_rounded,
                   size: 18,
-                  color: Colors.grey,
+                  color: theme.brightness == Brightness.dark
+            ? Colors.white
+            : Colors.black,
                 ),
               ),
             ),

@@ -21,9 +21,9 @@ class SettingsPage extends StatelessWidget {
       final textColor = isDark ? Colors.white : Colors.black;
 
       return Scaffold(
-        backgroundColor: bgColor,
+        backgroundColor:  theme.brightness == Brightness.dark ? Colors.black : thirdColor,
         appBar: AppBar(
-          backgroundColor: bgColor,
+        backgroundColor:  theme.brightness == Brightness.dark ? Colors.black : thirdColor,
           title: Text(
             'settings'.tr,
             style: TextStyle(
@@ -53,6 +53,7 @@ class SettingsPage extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             SwitchListTile(
+              activeColor: secondaryColor,
               value: isDark,
               onChanged: (val) {
                 themeController.toggleTheme(val);

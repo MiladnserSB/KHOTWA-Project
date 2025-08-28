@@ -25,7 +25,7 @@ class ChangingPasswordPage extends StatelessWidget {
     final bool cameFromForgotPassword = args['cameFromForgotPassword'] ?? false;
 
     return Scaffold(
- backgroundColor: theme.scaffoldBackgroundColor,
+      backgroundColor: theme.brightness == Brightness.dark ? theme.scaffoldBackgroundColor : thirdColor,
        resizeToAvoidBottomInset: true,
       body: SafeArea(
         child: LayoutBuilder(

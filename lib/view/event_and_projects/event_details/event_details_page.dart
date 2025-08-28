@@ -3,32 +3,41 @@ import 'package:khotwa/shared/constants/colors.dart';
 import 'package:khotwa/view/event_and_projects/event_details/card_information_in_event.dart';
 import 'package:khotwa/view/event_and_projects/event_details/project_card_in_details_page.dart';
 
-
 class EventDetailsPage extends StatelessWidget {
   const EventDetailsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-                  final theme = Theme.of(context); 
+    final theme = Theme.of(context);
 
     return Scaffold(
-            backgroundColor: theme.scaffoldBackgroundColor,
+      backgroundColor: theme.brightness == Brightness.dark
+          ? theme.scaffoldBackgroundColor
+          : thirdColor,
       appBar: AppBar(
         centerTitle: true,
-            backgroundColor: theme.scaffoldBackgroundColor,
+        backgroundColor: theme.brightness == Brightness.dark
+            ? theme.scaffoldBackgroundColor
+            : thirdColor,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color:   theme.brightness == Brightness.dark
-            ? Colors.white
-            : textBlack,),
+          icon: Icon(
+            Icons.arrow_back,
+            color: theme.brightness == Brightness.dark
+                ? Colors.white
+                : textBlack,
+          ),
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(
           "Event Details",
-          style: TextStyle( color:   theme.brightness == Brightness.dark
-            ? Colors.white
-            : textBlack, fontWeight: FontWeight.bold),
+          style: TextStyle(
+            color: theme.brightness == Brightness.dark
+                ? Colors.white
+                : textBlack,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
       body: SafeArea(
@@ -59,58 +68,67 @@ class EventDetailsPage extends StatelessWidget {
                 "Join us in transforming an neglected urban space into a vibrant community garden. This project fosters local engagement, promotes sustainable living, and provides fresh produce for everyone.",
                 style: TextStyle(
                   fontSize: 14,
-                   color:   theme.brightness == Brightness.dark
-            ? Colors.white
-            : textBlack,
+                  color: theme.brightness == Brightness.dark
+                      ? Colors.white
+                      : textBlack,
                   height: 1.5,
                 ),
               ),
               const SizedBox(height: 24),
 
               // Info Cards
-              Column(
+              Row(
                 children: [
-                  Row(
-                    children: const [
-                      Expanded(
-                        child: CardInformationInEvent(
-                          icon: Icons.calendar_month,
-                          title: 'Start Date',
-                          value: 'September 15, 2024',
-                        ),
+                  Expanded(
+                    child: SizedBox(
+                      height: 100, 
+                      child: CardInformationInEvent(
+                        icon: Icons.calendar_month,
+                        title: 'Start Date',
+                        value: 'September/15/2024',
                       ),
-                      SizedBox(width: 12),
-                      Expanded(
-                        child: CardInformationInEvent(
-                          icon: Icons.calendar_today,
-                          title: 'End Date',
-                          value: 'October 30, 2024',
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
-                  SizedBox(height: size.height * 0.015),
-                  Row(
-                    children: const [
-                      Expanded(
-                        child: CardInformationInEvent(
-                          icon: Icons.access_time,
-                          title: 'Time',
-                          value: '9:00 AM - 4:00 PM\nDaily',
-                        ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: SizedBox(
+                      height: 100,
+                      child: CardInformationInEvent(
+                        icon: Icons.calendar_today,
+                        title: 'End Date',
+                        value: 'October/30/2024',
                       ),
-                      SizedBox(width: 12),
-                      Expanded(
-                        child: CardInformationInEvent(
-                          icon: Icons.location_on,
-                          title: 'Location',
-                          value: 'Central Park West Side',
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
                 ],
               ),
+              SizedBox(height: size.height * 0.015),
+              Row(
+                children: [
+                  Expanded(
+                    child: SizedBox(
+                      height: 100,
+                      child: CardInformationInEvent(
+                        icon: Icons.access_time,
+                        title: 'Time',
+                        value: '9:00 AM - 4:00 PM\nDaily',
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: SizedBox(
+                      height: 100,
+                      child: CardInformationInEvent(
+                        icon: Icons.location_on,
+                        title: 'Location',
+                        value: 'Central Park West Side',
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+
               const SizedBox(height: 24),
 
               // Status & Volunteers
@@ -192,4 +210,3 @@ class EventDetailsPage extends StatelessWidget {
     );
   }
 }
-

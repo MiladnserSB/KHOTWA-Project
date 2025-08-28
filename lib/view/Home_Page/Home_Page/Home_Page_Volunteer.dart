@@ -34,9 +34,21 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
   );
 
   final List<Map<String, String>> personList = [
-    {"name": "Robert Fox", "role": "Admin", "image": 'assets/images/person.jpg'},
-    {"name": "Theresa Webb", "role": "Advisor", "image": 'assets/images/person.jpg'},
-    {"name": "Kristin Watson", "role": "Serinan", "image": 'assets/images/person.jpg'},
+    {
+      "name": "Robert Fox",
+      "role": "Admin",
+      "image": 'assets/images/person.jpg',
+    },
+    {
+      "name": "Theresa Webb",
+      "role": "Advisor",
+      "image": 'assets/images/person.jpg',
+    },
+    {
+      "name": "Kristin Watson",
+      "role": "Serinan",
+      "image": 'assets/images/person.jpg',
+    },
   ];
 
   final List<Map<String, String>> myeventsList = [
@@ -47,9 +59,24 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
   ];
 
   final List<Map<String, dynamic>> projectsList = [
-    {"name": "education support", "organization": "organization charity", "paid": 15000.0, "total": 20000.0},
-    {"name": "refugee assistance", "organization": "organization relief", "paid": 8000.0, "total": 25000.0},
-    {"name": "community water well", "organization": "organization water", "paid": 40000.0, "total": 50000.0},
+    {
+      "name": "education support",
+      "organization": "organization charity",
+      "paid": 15000.0,
+      "total": 20000.0,
+    },
+    {
+      "name": "refugee assistance",
+      "organization": "organization relief",
+      "paid": 8000.0,
+      "total": 25000.0,
+    },
+    {
+      "name": "community water well",
+      "organization": "organization water",
+      "paid": 40000.0,
+      "total": 50000.0,
+    },
   ];
 
   @override
@@ -92,10 +119,14 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final textColor = theme.brightness == Brightness.dark ? Colors.white : Colors.black;
+    final textColor = theme.brightness == Brightness.dark
+        ? Colors.white
+        : Colors.black;
 
     return Scaffold(
-      backgroundColor: theme.brightness == Brightness.dark ? theme.scaffoldBackgroundColor : thirdColor,
+      backgroundColor: theme.brightness == Brightness.dark
+          ? theme.scaffoldBackgroundColor
+          : thirdColor,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
@@ -107,10 +138,18 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (_) => ProfilePage()));
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => ProfilePage()),
+                      );
                     },
                     child: ClipOval(
-                      child: Image.asset('assets/images/new.jpg', width: 50, height: 50, fit: BoxFit.cover),
+                      child: Image.asset(
+                        'assets/images/new.jpg',
+                        width: 50,
+                        height: 50,
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
                   Expanded(
@@ -120,13 +159,19 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
                         style: TextStyle(
                           fontSize: 35,
                           fontFamily: 'DG Heaven',
-                          color: theme.brightness == Brightness.dark ? secondaryColor : primaryColor,
+                          color: theme.brightness == Brightness.dark
+                              ? secondaryColor
+                              : primaryColor,
                         ),
                       ),
                     ),
                   ),
                   IconButton(
-                    icon: Icon(Icons.notifications, size: 34, color:   Color(0xFFDDA15E) ),
+                    icon: Icon(
+                      Icons.notifications,
+                      size: 34,
+                      color: Color(0xFFDDA15E),
+                    ),
                     onPressed: () {
                       setState(() {
                         _isPressed = !_isPressed;
@@ -139,77 +184,82 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
               const SizedBox(height: 20),
 
               // Search Field
-  TextField(
-  controller: _controller,
-  focusNode: _focusNode,
-  decoration: InputDecoration(
-    hintText: 'search'.tr,
-    hintStyle: TextStyle(color: Colors.black), 
-    filled: true,
-    fillColor:     theme.brightness == Brightness.dark ? thirdColor : Colors.white,
-    isDense: true,
-    contentPadding: EdgeInsets.symmetric(vertical: 13, horizontal: 12),
-    border: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(20), 
-      borderSide: BorderSide.none
-    ),
-    prefixIcon: const Icon(Icons.search, size: 22, color: Colors.black),
-  ),
-  style: TextStyle(fontSize: 18, color: Colors.black), 
-),
+              TextField(
+                controller: _controller,
+                focusNode: _focusNode,
+                decoration: InputDecoration(
+                  hintText: 'search'.tr,
+                  hintStyle: TextStyle(color: Colors.black),
+                  filled: true,
+                      fillColor : Colors.white,
 
+                  isDense: true,
+                  contentPadding: EdgeInsets.symmetric(
+                    vertical: 13,
+                    horizontal: 12,
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                    borderSide: BorderSide.none,
+                  ),
+                  prefixIcon: const Icon(
+                    Icons.search,
+                    size: 22,
+                    color: Colors.black,
+                  ),
+                ),
+                style: TextStyle(fontSize: 18, color: Colors.black),
+              ),
 
               const SizedBox(height: 15),
 
-Center(
-  child: Container(
-    height: 200,
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.center, 
-      children: List.generate(personList.length, (index) {
-        final person = personList[index];
-        String? medalText;
-        if (index == 0) medalText = "🥇";
-        if (index == 1) medalText = "🥈";
-        if (index == 2) medalText = "🥉";
+              Center(
+                child: Container(
+                  height: 200,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: List.generate(personList.length, (index) {
+                      final person = personList[index];
+                      String? medalText;
+                      if (index == 0) medalText = "🥇";
+                      if (index == 1) medalText = "🥈";
+                      if (index == 2) medalText = "🥉";
 
-        return Padding(
-          padding: const EdgeInsets.all(9),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (_) => ProfilePage()),
-                  );
-                },
-                child: HomePersonCard(
-                  name: person['name'] ?? '',
-                  image: person['image'] ?? '',
+                      return Padding(
+                        padding: const EdgeInsets.all(9),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => ProfilePage(),
+                                  ),
+                                );
+                              },
+                              child: HomePersonCard(
+                                name: person['name'] ?? '',
+                                image: person['image'] ?? '',
+                              ),
+                            ),
+                            const SizedBox(height: 5),
+                            if (medalText != null)
+                              Text(
+                                medalText,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 23,
+                                ),
+                              ),
+                          ],
+                        ),
+                      );
+                    }),
+                  ),
                 ),
               ),
-              const SizedBox(height: 5),
-              if (medalText != null)
-                Text(
-                  medalText,
-                  style: const TextStyle(color: Colors.white, fontSize: 23),
-                ),
-            ],
-          ),
-        );
-      }),
-    ),
-  ),
-),
-
-
-
-
-
-
-
 
               const SizedBox(height: 10),
 
@@ -217,15 +267,32 @@ Center(
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("my events".tr, style: subtitleStyle.copyWith(color: textColor)),
+                  Text(
+                    "my events".tr,
+                    style: subtitleStyle.copyWith(color: textColor),
+                  ),
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (_) => EventsAndProjectsPage()));
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => EventsAndProjectsPage(),
+                        ),
+                      );
                     },
-                    child: Text("view all".tr, style: TextStyle(fontSize: 13, color:  theme.brightness == Brightness.dark ? Colors.white : primaryColor, fontFamily: 'DG Heaven')),
+                    child: Text(
+                      "view all".tr,
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: theme.brightness == Brightness.dark
+                            ? Colors.white
+                            : primaryColor,
+                        fontFamily: 'DG Heaven',
+                      ),
+                    ),
                   ),
                 ],
-              ), 
+              ),
               const SizedBox(height: 10),
 
               SizedBox(
@@ -257,12 +324,29 @@ Center(
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("Recommended".tr, style: subtitleStyle.copyWith(color: textColor)),
+                  Text(
+                    "Recommended".tr,
+                    style: subtitleStyle.copyWith(color: textColor),
+                  ),
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (_) => EventsAndProjectsPage()));
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => EventsAndProjectsPage(),
+                        ),
+                      );
                     },
-                    child: Text("view all".tr, style: TextStyle(fontSize: 13, color:  theme.brightness == Brightness.dark ? Colors.white : primaryColor, fontFamily: 'DG Heaven')),
+                    child: Text(
+                      "view all".tr,
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: theme.brightness == Brightness.dark
+                            ? Colors.white
+                            : primaryColor,
+                        fontFamily: 'DG Heaven',
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -277,7 +361,11 @@ Center(
                   separatorBuilder: (_, __) => const SizedBox(width: 10),
                   itemBuilder: (context, index) {
                     final event = myeventsList[index];
-                    double scale = _calculateScale(_recommendedScroll, index, 240);
+                    double scale = _calculateScale(
+                      _recommendedScroll,
+                      index,
+                      240,
+                    );
                     return Transform.scale(
                       scale: scale,
                       child: HomeEventsCard(
@@ -297,12 +385,29 @@ Center(
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("top projects".tr, style: subtitleStyle.copyWith(color: textColor)),
+                  Text(
+                    "top projects".tr,
+                    style: subtitleStyle.copyWith(color: textColor),
+                  ),
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (_) => EventsAndProjectsPage()));
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => EventsAndProjectsPage(),
+                        ),
+                      );
                     },
-                    child: Text("view all".tr, style: TextStyle(fontSize: 13, color:  theme.brightness == Brightness.dark ? Colors.white : primaryColor, fontFamily: 'DG Heaven')),
+                    child: Text(
+                      "view all".tr,
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: theme.brightness == Brightness.dark
+                            ? Colors.white
+                            : primaryColor,
+                        fontFamily: 'DG Heaven',
+                      ),
+                    ),
                   ),
                 ],
               ),

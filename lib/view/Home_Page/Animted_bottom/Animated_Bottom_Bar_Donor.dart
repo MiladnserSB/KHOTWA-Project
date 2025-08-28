@@ -51,7 +51,7 @@ class _AnimatedBottomBarPageDonorState
     return Scaffold(
       key: _scaffoldKey,
       drawer: Drawer(
-        backgroundColor: theme.scaffoldBackgroundColor,
+        backgroundColor:  theme.brightness == Brightness.dark ? Colors.black : thirdColor,
         child: ListView(
           padding: EdgeInsets.zero,
           children: [

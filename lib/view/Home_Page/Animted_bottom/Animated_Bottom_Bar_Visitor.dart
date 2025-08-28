@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:khotwa/shared/constants/colors.dart';
 import 'package:khotwa/view/Home_Page/Home_Page/Home_Page_Visitor.dart';
 import 'package:khotwa/view/change_password/change_password_page.dart';
 import 'package:khotwa/view/login/login_page.dart';
@@ -13,6 +14,7 @@ class AnimatedBottomBarPageVisitor extends StatefulWidget {
 
 class _AnimatedBottomBarPageVisitorState
     extends State<AnimatedBottomBarPageVisitor> {
+      
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   int _selectedIndex = 2;
   String _selectedDrawerItem = '';
@@ -67,7 +69,7 @@ class _AnimatedBottomBarPageVisitorState
     return Scaffold(
       key: _scaffoldKey,
       drawer: Drawer(
-        backgroundColor: theme.scaffoldBackgroundColor,
+        backgroundColor:  theme.brightness == Brightness.dark ? Colors.black : thirdColor,
         child: ListView(
           padding: EdgeInsets.zero,
           children: [

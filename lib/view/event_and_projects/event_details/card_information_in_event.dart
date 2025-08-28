@@ -28,14 +28,14 @@ class CardInformationInEvent extends StatelessWidget {
         children: [
           Row(
             children: [
-              Icon(icon, size: 20, color: white),
+              Icon(icon, size: 20, color:primaryColor),
               const SizedBox(width: 8),
               Text(
                 title,
                 style: const TextStyle(
                   fontWeight: FontWeight.w500,
                   fontSize: 13,
-                  color: white,
+                  color: primaryColor,
                 ),
               ),
             ],

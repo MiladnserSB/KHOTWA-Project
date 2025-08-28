@@ -47,7 +47,7 @@ super.initState();
                       final theme = Theme.of(context); 
 
     return Scaffold(
-            backgroundColor: theme.scaffoldBackgroundColor,
+            backgroundColor:  theme.brightness == Brightness.dark ? Colors.black : thirdColor,
       appBar: AppBar(
         title: Text(
           widget.title,
@@ -62,6 +62,7 @@ super.initState();
         iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: SafeArea(
+        
         child: Padding(
           padding: const EdgeInsets.fromLTRB(16, 16, 16, 80),
           child: ListView.builder(
@@ -83,6 +84,8 @@ super.initState();
                   isEditing
                       ? TextField(
                           controller: controllers[index],
+                                  style: TextStyle(color:  theme.brightness == Brightness.dark ? Colors.white : Colors.black), 
+
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(),
                             contentPadding: EdgeInsets.symmetric(
@@ -95,7 +98,7 @@ super.initState();
                           padding: const EdgeInsets.only(top: 4.0),
                           child: Text(
                             controllers[index].text,
-                            style: TextStyle(fontSize: 18 * textScale),
+                            style: TextStyle(fontSize: 16 * textScale),
                           ),
                         ),
                   !isEditing
