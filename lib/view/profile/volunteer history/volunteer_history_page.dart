@@ -44,6 +44,8 @@ class VolunteerHistoryPage extends StatelessWidget {
     final joinedDateText = 'Joined: March 15, 2022'.tr;
 
     return Scaffold(
+            backgroundColor: theme.brightness == Brightness.dark ? textBlack : thirdColor,
+
       appBar: AppBar(
         title: Text(
           'Volunteer History'.tr,

@@ -96,7 +96,7 @@ class CreateTaskPage extends StatelessWidget {
               height: 48,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF0C261D),
+                  backgroundColor: secondaryColor,
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                 ),
                 onPressed: () {
