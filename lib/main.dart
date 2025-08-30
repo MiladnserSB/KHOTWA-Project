@@ -1,22 +1,20 @@
+
+
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:khotwa/Localizations/ArabicLocalization.dart';
 import 'package:khotwa/Localizations/EnglishLocalization.dart';
 import 'package:khotwa/Notification/Notification_Service.dart';
-import 'package:khotwa/bindings/splash_binding.dart';
 import 'package:khotwa/controller/Settings_Lang_Controller.dart';
 import 'package:khotwa/controller/theme_controller.dart';
 import 'package:khotwa/firebase_options.dart';
 import 'package:khotwa/shared/constants/colors.dart';
-import 'package:khotwa/view/Home_Page/Animted_bottom/Animated_Bottom_Bar_Donor.dart';
-import 'package:khotwa/view/Home_Page/Animted_bottom/Animated_Bottom_Bar_Supervisor.dart';
-import 'package:khotwa/view/Home_Page/Animted_bottom/Animated_Bottom_Bar_Visitor.dart';
-import 'package:khotwa/view/Home_Page/Animted_bottom/Animated_Bottom_Bar_Volunteer.dart';
-import 'package:khotwa/view/donner/donate/donate_page.dart';
-
+import 'package:khotwa/view/Home_Page/Home_Page/Home_Page_Donor.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -160,7 +158,7 @@ class MyApp extends StatelessWidget {
         ),
 
         themeMode: themeController.themeMode,
-        home: AnimatedBottomBarPageVisitor(),
+        home: HomePageDonor(),
       );
     });
   }
