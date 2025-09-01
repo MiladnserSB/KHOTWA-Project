@@ -1,5 +1,5 @@
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
+// import 'package:firebase_core/firebase_core.dart';
+// import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -9,31 +9,32 @@ import 'package:khotwa/Notification/Notification_Service.dart';
 import 'package:khotwa/bindings/splash_binding.dart';
 import 'package:khotwa/controller/Settings_Lang_Controller.dart';
 import 'package:khotwa/controller/theme_controller.dart';
-import 'package:khotwa/firebase_options.dart';
+// import 'package:khotwa/firebase_options.dart';
 import 'package:khotwa/shared/constants/colors.dart';
 import 'package:khotwa/view/Home_Page/Animted_bottom/Animated_Bottom_Bar_Donor.dart';
 import 'package:khotwa/view/Home_Page/Animted_bottom/Animated_Bottom_Bar_Supervisor.dart';
 import 'package:khotwa/view/Home_Page/Animted_bottom/Animated_Bottom_Bar_Visitor.dart';
 import 'package:khotwa/view/Home_Page/Animted_bottom/Animated_Bottom_Bar_Volunteer.dart';
 import 'package:khotwa/view/donner/donate/donate_page.dart';
+import 'package:khotwa/view/supervisor/feedback/feedback_page.dart';
 
 
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+// Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+//   WidgetsFlutterBinding.ensureInitialized();
+//   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  print("📩 إشعار في الخلفية (Background):");
-  print("   📄 العنوان: ${message.notification?.title}");
-  print("   📝 المحتوى: ${message.notification?.body}");
-}
-final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+//   print("📩 إشعار في الخلفية (Background):");
+//   print("   📄 العنوان: ${message.notification?.title}");
+//   print("   📝 المحتوى: ${message.notification?.body}");
+// }
+// final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  // await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   await Hive.initFlutter();
   await Hive.openBox('authBox');
@@ -50,7 +51,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-        NotificationService().init();
+        // NotificationService().init();
 
     final theme = Theme.of(context);
 
@@ -59,7 +60,7 @@ class MyApp extends StatelessWidget {
 
     return Obx(() {
       return GetMaterialApp(
-              navigatorKey: navigatorKey,
+              // navigatorKey: navigatorKey,
 
         debugShowCheckedModeBanner: false,
         translations: MyTranslations(),
@@ -160,7 +161,7 @@ class MyApp extends StatelessWidget {
         ),
 
         themeMode: themeController.themeMode,
-        home: AnimatedBottomBarPageVisitor(),
+        home: AnimatedBottomBarPageSupervisor(),
       );
     });
   }

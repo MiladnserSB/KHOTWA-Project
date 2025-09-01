@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
+import 'package:khotwa/model/events_model.dart';
 import '../shared/constants/base_url.dart';
 
 class VolunteerService extends GetxService {
@@ -193,4 +194,15 @@ class VolunteerService extends GetxService {
       throw Exception('Failed to load top projects: ${e.response?.statusCode}');
     }
   }
+  
+  Future<List<EventModel>> getAllEvents() async {
+  try {
+    final response = await dio.get('/api/admin/events');
+    final eventsModel = EventsModel.fromJson(response.data);
+    return eventsModel.data; // List<EventModel>
+  } on DioException catch (e) {
+    throw Exception('Failed to load all events: ${e.response?.statusCode}');
+  }
+}
+
 }

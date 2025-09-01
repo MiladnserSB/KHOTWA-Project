@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:khotwa/model/events_model.dart';
 import 'package:khotwa/service/volunteer_service.dart';
 
 class VolunteerController extends GetxController {
@@ -9,7 +10,7 @@ class VolunteerController extends GetxController {
   var myEvaluations = [].obs;
   var myBadges = [].obs;
   var isLoading = false.obs;
-
+  var allEvents = <EventModel>[].obs;
   @override
   void onInit() {
     fetchVolunteerData();
@@ -102,4 +103,19 @@ class VolunteerController extends GetxController {
       isLoading(false);
     }
   }
+
+ 
+
+Future<void> fetchAllEvents() async {
+  try {
+    isLoading(true);
+    final events = await _volunteerService.getAllEvents();
+    allEvents.assignAll(events);
+  } catch (e) {
+    Get.snackbar('Error', 'Failed to fetch all events');
+  } finally {
+    isLoading(false);
+  }
+}
+
 }
