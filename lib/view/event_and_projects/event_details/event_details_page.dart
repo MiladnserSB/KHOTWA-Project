@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:khotwa/shared/constants/colors.dart';
+import 'package:khotwa/view/Home_Page/Home_Page/Home_Page_Donor.dart';
 import 'package:khotwa/view/event_and_projects/event_details/card_information_in_event.dart';
 import 'package:khotwa/view/event_and_projects/event_details/project_card_in_details_page.dart';
+import 'package:khotwa/view/event_and_projects/scan_qr_page.dart';
 
 class EventDetailsPage extends StatelessWidget {
   const EventDetailsPage({super.key});
@@ -46,7 +48,6 @@ class EventDetailsPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Image Header
               ClipRRect(
                 borderRadius: BorderRadius.circular(16),
                 child: Image.asset(
@@ -57,31 +58,26 @@ class EventDetailsPage extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 16),
-
-              // Title & Description
               const Text(
                 "Local Community Garden Revitalization",
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
               Text(
-                "Join us in transforming an neglected urban space into a vibrant community garden. This project fosters local engagement, promotes sustainable living, and provides fresh produce for everyone.",
+                "Join us in transforming an urban space into a vibrant community garden...",
                 style: TextStyle(
                   fontSize: 14,
-                  color: theme.brightness == Brightness.dark
-                      ? Colors.white
-                      : textBlack,
+                  color:
+                      theme.brightness == Brightness.dark ? Colors.white : textBlack,
                   height: 1.5,
                 ),
               ),
               const SizedBox(height: 24),
-
-              // Info Cards
               Row(
                 children: [
                   Expanded(
                     child: SizedBox(
-                      height: 100, 
+                      height: 100,
                       child: CardInformationInEvent(
                         icon: Icons.calendar_month,
                         title: 'Start Date',
@@ -128,65 +124,29 @@ class EventDetailsPage extends StatelessWidget {
                   ),
                 ],
               ),
-
               const SizedBox(height: 24),
-
-              // Status & Volunteers
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade100,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: const [
-                        Icon(Icons.check_circle, color: Colors.green),
-                        SizedBox(width: 8),
-                        Text(
-                          "Status: Active",
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            color: Colors.green,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        const Icon(Icons.people, color: secondaryColor),
-                        const SizedBox(width: 6),
-                        Text(
-                          '150 / 200',
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: primaryColor,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 24),
-
               ProjectCard(
-                size: MediaQuery.of(context).size,
+                size: size,
                 imagePath: 'assets/images/Intro.png',
                 projectName: 'Clean Water Initiative',
                 progressPercentage: 0.68,
               ),
-
               const SizedBox(height: 30),
-
-              // Action Button
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton.icon(
-                  onPressed: () {},
-                  icon: const Icon(Icons.favorite_border),
+                  onPressed: () async {
+                    final result = await Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) =>  ScanQrPage()),
+                    );
+                    if (result != null) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("Scanned QR: $result")),
+                      );
+                    }
+                  },
+                  icon: const Icon(Icons.qr_code_scanner),
                   label: const Text(
                     'Join',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
@@ -201,7 +161,6 @@ class EventDetailsPage extends StatelessWidget {
                   ),
                 ),
               ),
-
               const SizedBox(height: 30),
             ],
           ),
