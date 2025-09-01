@@ -13,6 +13,11 @@ class EnglishLocalization extends Translations {
       "my events": "My Events",
       "home": "Home",
       "projects events": "Projects, Events",
+      "Projects":"Projects",
+      "Events":"Events",
+      "Target money":"Target money",
+      "Donated":"Donated",
+      "Remaining":"Remaining",
       "tasks": "Tasks",
       "profile": "Profile",
       "settings": "Settings",
@@ -43,6 +48,14 @@ class EnglishLocalization extends Translations {
       "organization water": "Water Foundation",
       "status accept": "Accept",
       "my events": "My Events",
+      "Start Date":"Start Date",
+      "End Date":"End Date",
+      "Event Details":"Event Details",
+      "Join":"Join",
+      "funded":"funded",
+      "Apology Confirmation":"Apology Confirmation",
+      "Are you sure you want to apologize for the event":
+      "Are you sure you want to apologize for the event",
       "Recommended": "Recommended",
       "top projects": "Top Projects",
       "view all": "View All",
@@ -74,6 +87,8 @@ class EnglishLocalization extends Translations {
       "Home": "Home",
       "Menu": "Menu",
       "Login": "Login",
+      "OR":"OR",
+      "continue as a guest":"continue as a guest",
       "Donate": "Donate",
       "Cart": "Cart",
       "Settings": "Settings",
@@ -140,6 +155,12 @@ class EnglishLocalization extends Translations {
    "create new task": "Create New Task",
   "no date selected": "No date selected",
   "Select Date": "Select Date",
+"Date":"Date",
+"Time":"Time",
+"Location":"Location",
+"Volunteers":"Volunteers",
+
+"Apologize":"Apologize"
     },
   };
 }
