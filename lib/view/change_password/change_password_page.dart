@@ -46,7 +46,7 @@ class ChangingPasswordPage extends StatelessWidget {
                       const SizedBox(height: 40),
                       LoginVerifyChangeLogo(
                         size: screen.size,
-                        title: AppStrings.changePass,
+                        title: "Changing Password".tr,
                       ),
 
                       const SizedBox(height: 36),
@@ -64,7 +64,7 @@ class ChangingPasswordPage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            AppStrings.weAreDone,
+                            "We are done".tr,
                             style: theme.textTheme.titleMedium?.copyWith(
                              
                                   color:  secondaryColor
@@ -84,22 +84,22 @@ class ChangingPasswordPage extends StatelessWidget {
                       SizedBox(height: screen.size.height * 0.075),
                       
                       AuthCustomButton(
-                        title: AppStrings.change,
+                        title: "Change".tr,
                         onPressed: () {
                           final newPass = newPasswordController.text.trim();
                           final confirmPass = confirmPasswordController.text.trim();
                           if (newPass.isEmpty || confirmPass.isEmpty) {
                             Get.snackbar(
-                              "Error",
-                              "Please enter the new password and its confirmation.",
+                              "Error".tr,
+                              "Please enter the new password and its confirmation.".tr,
                             );
                             return;
                           }
 
                           if (newPass != confirmPass) {
                             Get.snackbar(
-                              "Error",
-                              "Passwords do not match.",
+                              "Error".tr,
+                              "Passwords do not match.".tr,
                             );
                             return;
                           }
@@ -107,7 +107,7 @@ class ChangingPasswordPage extends StatelessWidget {
                           final authController = Get.find<AuthController>();
                           if (cameFromForgotPassword) {
                             if (otp.isEmpty) {
-                              Get.snackbar("Error", "OTP is missing.");
+                              Get.snackbar("Error".tr, "OTP is missing.".tr);
                               return;
                             }
                             authController.confirmResetPassword(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:khotwa/shared/constants/app_strings.dart';
 import 'package:khotwa/shared/constants/colors.dart';
 import 'package:khotwa/view/change_password/custom_text_form_field.dart';
@@ -30,7 +31,7 @@ class _ChangePasswordFormState extends State<ChangePasswordForm> {
         Align(
           alignment: Alignment.centerLeft,
           child: Text(
-            AppStrings.newPass,
+            "New password".tr,
             style: theme.textTheme.bodyLarge?.copyWith(
               fontWeight: FontWeight.w500,
               color: theme.brightness == Brightness.dark
@@ -46,13 +47,13 @@ class _ChangePasswordFormState extends State<ChangePasswordForm> {
           obscureText: !showPassword1,
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return "New password is required";
+              return "New password is required".tr;
             }
             if (value.length < 6) {
-              return "Password must be at least 6 characters";
+              return "Password must be at least 6 characters".tr;
             }
             return null;
-          }, // ✅ validation
+          }, 
           suffixIcon: IconButton(
             icon: Icon(
               showPassword1 ? Icons.visibility_off : Icons.visibility,
@@ -65,7 +66,7 @@ class _ChangePasswordFormState extends State<ChangePasswordForm> {
         Align(
           alignment: Alignment.centerLeft,
           child: Text(
-            AppStrings.confirmNewPass,
+            "Confirm New Password".tr,
             style: theme.textTheme.bodyLarge?.copyWith(
               fontWeight: FontWeight.w500,
               color: theme.brightness == Brightness.dark
@@ -81,13 +82,13 @@ class _ChangePasswordFormState extends State<ChangePasswordForm> {
           obscureText: !showPassword2,
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return "Please confirm your password";
+              return "Please confirm your password".tr;
             }
             if (value != widget.newPasswordController.text) {
-              return "Passwords do not match";
+              return "Passwords do not match".tr;
             }
             return null;
-          }, // ✅ confirm password validation
+          }, 
           suffixIcon: IconButton(
             icon: Icon(
               showPassword2 ? Icons.visibility_off : Icons.visibility,

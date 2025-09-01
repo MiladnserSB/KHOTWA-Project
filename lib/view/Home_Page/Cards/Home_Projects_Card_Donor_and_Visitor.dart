@@ -106,9 +106,36 @@ class HomeProjectsCardDonorAndVisitor extends StatelessWidget {
           ),
           SizedBox(height: 20),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+            
               ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ProjectDetailsPage(),
+                    ),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(0xFFDDA15E),
+                  padding: EdgeInsets.symmetric(horizontal: 25, vertical: 8),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                child: Text(
+                  'Details'.tr,
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: '._Acumin Variable Concept',
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+                ElevatedButton(
                 onPressed: () {
                   showDialog(
                     
@@ -131,7 +158,7 @@ class HomeProjectsCardDonorAndVisitor extends StatelessWidget {
                               ),
                               SizedBox(height: 15),
                               Text(
-                                "Login Required",
+                                "Login Required".tr,
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   fontSize: 18,
@@ -141,7 +168,7 @@ class HomeProjectsCardDonorAndVisitor extends StatelessWidget {
                               ),
                               SizedBox(height: 15),
                               Text(
-                                "Please log in to continue with the donation process.",
+                                "Please log in to continue with the donation process.".tr,
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   fontSize: 14,
@@ -169,7 +196,7 @@ class HomeProjectsCardDonorAndVisitor extends StatelessWidget {
                                       ),
                                     ),
                                     child: Text(
-                                      "Cancel",
+                                      "Cancel".tr,
                                       style: TextStyle(color: Colors.white),
                                     ),
                                   ),
@@ -193,7 +220,7 @@ class HomeProjectsCardDonorAndVisitor extends StatelessWidget {
                                       ),
                                     ),
                                     child: Text(
-                                      "Login",
+                                      "Login".tr,
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         color: Colors.white,
@@ -219,33 +246,6 @@ class HomeProjectsCardDonorAndVisitor extends StatelessWidget {
                 ),
                 child: Text(
                   'Donate'.tr,
-                  style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: '._Acumin Variable Concept',
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-              SizedBox(width: 5),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ProjectDetailsPage(),
-                    ),
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xFFDDA15E),
-                  padding: EdgeInsets.symmetric(horizontal: 25, vertical: 8),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                child: Text(
-                  'Details'.tr,
                   style: TextStyle(
                     fontSize: 13,
                     fontWeight: FontWeight.bold,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_utils/get_utils.dart';
 import 'package:khotwa/shared/constants/colors.dart';
 
 class DonorLoginDialog extends StatefulWidget {
@@ -34,8 +35,8 @@ class _DonorLoginDialogState extends State<DonorLoginDialog> {
         });
         Navigator.of(context).pop();
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Login successful!'),
+           SnackBar(
+            content: Text('Login successful!'.tr),
             backgroundColor: Colors.green,
           ),
         );
@@ -108,7 +109,7 @@ class _DonorLoginDialogState extends State<DonorLoginDialog> {
               children: [
                 Center(
                   child: Text(
-                    'Donor Login',
+                    'Donor Login'.tr,
                     style: TextStyle(
                       fontSize: isTablet ? 28 : 22 * textScaleFactor,
                       fontWeight: FontWeight.bold,
@@ -120,7 +121,7 @@ color: theme.brightness == Brightness.dark ? Colors.white : primaryColor,       
                 
                 // Name Field
                 Text(
-                  'Name',
+                  'Name'.tr,
                   style: TextStyle(
                     fontSize: isTablet ? 18 : 16 * textScaleFactor,
                     fontWeight: FontWeight.w500,
@@ -137,15 +138,15 @@ color: theme.brightness == Brightness.dark ? Colors.white : primaryColor,       
                   controller: _nameController,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return "Name is required";
+                      return "Name is required".tr;
                     }
                     if (value.length < 2) {
-                      return "Name must be at least 2 characters";
+                      return "Name must be at least 2 characters".tr;
                     }
                     return null;
                   },
                   decoration: InputDecoration(
-                    hintText: 'Enter your full name',
+                    hintText: 'Enter your full name'.tr,
                     filled: true,
                     fillColor: white, // Changed to white
                     border: OutlineInputBorder(
@@ -170,7 +171,7 @@ color: theme.brightness == Brightness.dark ? Colors.white : primaryColor,       
                 
                 // Email Field
                 Text(
-                  'Email',
+                  'Email'.tr,
                   style: TextStyle(
                     fontSize: isTablet ? 18 : 16 * textScaleFactor,
                     fontWeight: FontWeight.w500,
@@ -184,19 +185,19 @@ color: theme.brightness == Brightness.dark ? Colors.white : primaryColor,       
                   keyboardType: TextInputType.emailAddress,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return "Email is required";
+                      return "Email is required".tr;
                     }
                     final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+');
                     if (!emailRegex.hasMatch(value)) {
-                      return "Enter a valid email";
+                      return "Enter a valid email".tr;
                     }
                     return null;
-                  },  style: const TextStyle( 
+                  },  style:  TextStyle( 
     color: Colors.black,
   ),
                   decoration: InputDecoration(
                     
-                    hintText: 'Enter your email',
+                    hintText: 'Enter your email'.tr,
                     filled: true,
                     fillColor: white, // Changed to white
                     
@@ -264,7 +265,7 @@ color: theme.brightness == Brightness.dark ? Colors.white : primaryColor,       
                 ),
               )
             : Text(
-                'Cancel',
+                'Cancel'.tr,
                 style: TextStyle(
                   fontSize: isTablet ? 16 : 14,
                   color: white,
@@ -294,7 +295,7 @@ color: theme.brightness == Brightness.dark ? Colors.white : primaryColor,       
                 ),
               )
             : Text(
-                'Login',
+                'Login'.tr,
                 style: TextStyle(
                   fontSize: isTablet ? 16 : 14,
                   color: white,
