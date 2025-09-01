@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:khotwa/shared/constants/colors.dart';
 
 class SubmitButton extends StatelessWidget {
@@ -20,7 +21,7 @@ class SubmitButton extends StatelessWidget {
       child: ElevatedButton.icon(
         icon: const Icon(Icons.send, color: white),
         label: Text(
-          "Submit Feedback",
+          "Submit Feedback".tr,
           style: TextStyle(
             fontSize: 16 * fontScale,
             fontWeight: FontWeight.w600,

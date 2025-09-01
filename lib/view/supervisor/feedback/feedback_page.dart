@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:get/get.dart';
 import 'package:khotwa/shared/constants/colors.dart';
 import 'package:khotwa/view/supervisor/feedback/custom_text_field.dart';
 import 'package:khotwa/view/supervisor/feedback/submit_button.dart';
@@ -13,14 +14,12 @@ class VolunteerFeedbackPage extends StatefulWidget {
 }
 
 class _VolunteerFeedbackPageState extends State<VolunteerFeedbackPage> {
-  // ⭐ Numeric ratings
   double punctuality = 0;
   double workQuality = 0;
   double teamwork = 0;
   double initiative = 0;
   double discipline = 0;
 
-  // ✅ Boolean ratings
   bool? initiated;
   bool? mentored;
   bool? creativeContribution;
@@ -33,10 +32,9 @@ class _VolunteerFeedbackPageState extends State<VolunteerFeedbackPage> {
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  // Validator for warnings
   String? _warningValidator(String? value) {
     if (warningGiven && (value == null || value.trim().isEmpty)) {
-      return 'Please provide details for the warning';
+      return 'Please provide details for the warning'.tr;
     }
     return null;
   }
@@ -55,7 +53,7 @@ class _VolunteerFeedbackPageState extends State<VolunteerFeedbackPage> {
         centerTitle: true,
         iconTheme: IconThemeData(color: primaryColor),
         title: Text(
-          "Volunteer Feedback",
+          "Volunteer Feedback".tr,
           style: TextStyle(
             fontSize: 20 * fontScale,
             fontWeight: FontWeight.bold,
@@ -71,7 +69,6 @@ class _VolunteerFeedbackPageState extends State<VolunteerFeedbackPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // ⚠️ Warning Section
               Container(
                 padding: EdgeInsets.all(16 * fontScale),
                 decoration: BoxDecoration(
@@ -91,7 +88,7 @@ class _VolunteerFeedbackPageState extends State<VolunteerFeedbackPage> {
                             color: Colors.redAccent, size: 20 * fontScale),
                         SizedBox(width: 8 * fontScale),
                         Text(
-                          "Warning",
+                          "Warning".tr,
                           style: TextStyle(
                             fontSize: 16 * fontScale,
                             fontWeight: FontWeight.bold,
@@ -103,7 +100,7 @@ class _VolunteerFeedbackPageState extends State<VolunteerFeedbackPage> {
                     SizedBox(height: 12 * fontScale),
                     CustomTextField(
                       controller: warningController,
-                      hint: "Write warnings if any...",
+                      hint: "Write warnings if any".tr,
                       fontScale: fontScale,
                       maxLines: 3,
                       borderColor: Colors.red,
@@ -131,7 +128,7 @@ class _VolunteerFeedbackPageState extends State<VolunteerFeedbackPage> {
                         icon: Icon(Icons.warning_amber_rounded,
                             size: 18 * fontScale),
                         label: Text(
-                          warningGiven ? "Warning Given" : "Issue Warning",
+                          warningGiven ? "Warning Given".tr : "Issue Warning".tr,
                           style: TextStyle(
                             fontSize: 14 * fontScale,
                             fontWeight: FontWeight.w600,
@@ -150,7 +147,6 @@ class _VolunteerFeedbackPageState extends State<VolunteerFeedbackPage> {
               SizedBox(height: fieldSpacing * 1.5),
 
               if (widget.eventCompleted) ...[
-                // ⭐ Ratings Section
                 Container(
                   padding: EdgeInsets.all(16 * fontScale),
                   decoration: BoxDecoration(
@@ -168,7 +164,7 @@ class _VolunteerFeedbackPageState extends State<VolunteerFeedbackPage> {
                               color: primaryColor, size: 20 * fontScale),
                           SizedBox(width: 8 * fontScale),
                           Text(
-                            "Rate the Volunteer",
+                            "Rate the Volunteer".tr,
                             style: TextStyle(
                               fontSize: 16 * fontScale,
                               fontWeight: FontWeight.bold,
@@ -179,31 +175,31 @@ class _VolunteerFeedbackPageState extends State<VolunteerFeedbackPage> {
                       ),
                       SizedBox(height: 16 * fontScale),
 
-                      _buildStarRating("Punctuality", punctuality,
+                      _buildStarRating("Punctuality".tr, punctuality,
                           (val) => setState(() => punctuality = val), fontScale),
-                      _buildStarRating("Work Quality", workQuality,
+                      _buildStarRating("Work Quality".tr, workQuality,
                           (val) => setState(() => workQuality = val), fontScale),
-                      _buildStarRating("Teamwork", teamwork,
+                      _buildStarRating("Teamwork".tr, teamwork,
                           (val) => setState(() => teamwork = val), fontScale),
-                      _buildStarRating("Initiative", initiative,
+                      _buildStarRating("Initiative".tr, initiative,
                           (val) => setState(() => initiative = val), fontScale),
-                      _buildStarRating("Discipline", discipline,
+                      _buildStarRating("Discipline".tr, discipline,
                           (val) => setState(() => discipline = val), fontScale),
 
                       SizedBox(height: 16 * fontScale),
 
-                      _buildYesNo("Initiated", initiated,
+                      _buildYesNo("Initiated".tr, initiated,
                           (val) => setState(() => initiated = val), fontScale),
-                      _buildYesNo("Mentored", mentored,
+                      _buildYesNo("Mentored".tr, mentored,
                           (val) => setState(() => mentored = val), fontScale),
-                      _buildYesNo("Creative Contribution",
+                      _buildYesNo("Creative Contribution".tr,
                           creativeContribution,
                           (val) =>
                               setState(() => creativeContribution = val),
                           fontScale),
-                      _buildYesNo("Impactful", impactful,
+                      _buildYesNo("Impactful".tr, impactful,
                           (val) => setState(() => impactful = val), fontScale),
-                      _buildYesNo("Inspirational", inspirational,
+                      _buildYesNo("Inspirational".tr, inspirational,
                           (val) => setState(() => inspirational = val),
                           fontScale),
                     ],
@@ -230,7 +226,7 @@ class _VolunteerFeedbackPageState extends State<VolunteerFeedbackPage> {
                               color: secondaryColor, size: 20 * fontScale),
                           SizedBox(width: 8 * fontScale),
                           Text(
-                            "Notes",
+                            "Notes".tr,
                             style: TextStyle(
                               fontSize: 16 * fontScale,
                               fontWeight: FontWeight.bold,
@@ -242,7 +238,7 @@ class _VolunteerFeedbackPageState extends State<VolunteerFeedbackPage> {
                       SizedBox(height: 12 * fontScale),
                       CustomTextField(
                         controller: notesController,
-                        hint: "Write your notes here...",
+                        hint: "Write your notes here" .tr,
                         fontScale: fontScale,
                         maxLines: 4,
                         borderColor: secondaryColor,
@@ -253,7 +249,6 @@ class _VolunteerFeedbackPageState extends State<VolunteerFeedbackPage> {
 
                 SizedBox(height: fieldSpacing * 1.5),
 
-                // ✅ Submit Button
                 Container(
                   decoration: BoxDecoration(
                     boxShadow: [
@@ -298,8 +293,8 @@ class _VolunteerFeedbackPageState extends State<VolunteerFeedbackPage> {
     };
 
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Feedback submitted successfully!'),
+       SnackBar(
+        content: Text('Feedback submitted successfully!'.tr),
         backgroundColor: Colors.green,
       ),
     );
@@ -307,7 +302,6 @@ class _VolunteerFeedbackPageState extends State<VolunteerFeedbackPage> {
     print('Feedback Data: $feedbackData');
   }
 
-  // ===== Helpers =====
 
   Widget _buildStarRating(String label, double value,
       ValueChanged<double> onChanged, double fontScale) {
@@ -370,9 +364,9 @@ class _VolunteerFeedbackPageState extends State<VolunteerFeedbackPage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                _circleOption("Yes", true, value, onChanged, fontScale),
+                _circleOption("Yes".tr, true, value, onChanged, fontScale),
                 SizedBox(width: 20 * fontScale),
-                _circleOption("No", false, value, onChanged, fontScale),
+                _circleOption("No".tr, false, value, onChanged, fontScale),
               ],
             ),
           ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:buttons_tabbar/buttons_tabbar.dart';
+import 'package:get/get.dart';
 import 'package:khotwa/shared/constants/colors.dart';
 import 'package:khotwa/view/supervisor/attendence/attendence_list.dart';
 
@@ -18,7 +19,7 @@ class AttendancePage extends StatelessWidget {
           backgroundColor: white,
           centerTitle: true,
           title: Text(
-            "Volunteer Attendance",
+            "Volunteer Attendance".tr,
             style: TextStyle(
               fontSize: 20 * fontScale,
               fontWeight: FontWeight.bold,
@@ -40,13 +41,13 @@ class AttendancePage extends StatelessWidget {
               fontWeight: FontWeight.w600,
               fontSize: 14 * fontScale,
             ),
-            tabs: const [
-              Tab(text: 'Check In', icon: Icon(Icons.login)),
-              Tab(text: 'Check Out', icon: Icon(Icons.logout)),
+            tabs:  [
+              Tab(text: 'Check In'.tr, icon: Icon(Icons.login)),
+              Tab(text: 'Check Out'.tr, icon: Icon(Icons.logout)),
             ],
           ),
         ),
-        body: const TabBarView(
+        body:  TabBarView(
           children: [
             AttendanceList(checkIn: true,),
             AttendanceList(checkIn: false,),

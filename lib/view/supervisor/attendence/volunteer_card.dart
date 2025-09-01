@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_utils/get_utils.dart';
 import 'package:khotwa/shared/constants/colors.dart';
 
 class VolunteerCard extends StatelessWidget {
@@ -59,9 +60,11 @@ class VolunteerCard extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Checkbox(
+            
               value: checked,
               onChanged: onCheckChanged,
               activeColor: primaryColor,
+              checkColor: white,
             ),
            isCheckIn? OutlinedButton(
               onPressed: onFeedbackPressed,
@@ -73,7 +76,7 @@ class VolunteerCard extends StatelessWidget {
                 ),
               ),
               child: Text(
-                "Feedback",
+                "Feedback".tr,
                 style: TextStyle(
                   fontSize: 12 * fontScale,
                   fontWeight: FontWeight.w600,

@@ -70,7 +70,7 @@ class _AttendanceListState extends State<AttendanceList> {
         children: [
 
           AttendanceButton(
-            label: "QR Attendance",
+            label: "QR Attendance".tr,
             icon: Icons.qr_code,
             backgroundColor: secondaryColor,
             height: buttonHeight * 0.8,
@@ -101,7 +101,7 @@ class _AttendanceListState extends State<AttendanceList> {
           ),
           const SizedBox(height: 12),
           AttendanceButton(
-            label: "Submit Attendance",
+            label: "Submit Attendance".tr,
             backgroundColor: primaryColor,
             height: buttonHeight,
             onPressed: () {},

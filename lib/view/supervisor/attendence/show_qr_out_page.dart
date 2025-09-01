@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:khotwa/shared/constants/colors.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
@@ -15,8 +16,8 @@ class ShowQrOutPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: white,
       appBar: AppBar(
-        title: const Text(
-          'Check out QR',
+        title:  Text(
+          "Check out QR".tr,
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
@@ -29,7 +30,7 @@ class ShowQrOutPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'Scan this QR Checking out',
+                "Scan this QR Checking out".tr,
                 style: theme.textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.w600,
                   color: textBlack,
