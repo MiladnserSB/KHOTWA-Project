@@ -159,8 +159,14 @@ class EnglishLocalization extends Translations {
 "Time":"Time",
 "Location":"Location",
 "Volunteers":"Volunteers",
-
-"Apologize":"Apologize"
+"Project Details":"Project Details",
+"Status: Active":"Status: Active",
+"Upcoming Events":"Upcoming Events",
+"Donation Progress":"Donation Progress",
+"Apologize":"Apologize",
+"Target:":"Target:",
+"Collected:":"Collected:",
+"Donate Now":"Donate Now",
     },
   };
 }

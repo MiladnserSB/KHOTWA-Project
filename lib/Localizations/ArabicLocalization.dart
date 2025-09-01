@@ -159,6 +159,13 @@ class ArabicLocalization extends Translations {
       "Location": "الموقع",
       "Volunteers": "المتطوعين",
       "Apologize": "اعتذار",
-    },
+      "Project Details":"تفاصيل مشروع",
+      "Status: Active":"حالة نشطة",
+      "Upcoming Events":"الفعاليات القادمة",
+      "Donation Progress":"ميزانية التبرع",
+      "Collected:":"تم جمع",
+      "Target:":"الهدف",
+      "Donate Now":"تبرع الان",
+  }
   };
 }

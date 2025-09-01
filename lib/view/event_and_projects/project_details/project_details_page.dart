@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:khotwa/shared/constants/colors.dart';
 import 'package:khotwa/view/event_and_projects/events_and_projects_page.dart';
 import 'package:khotwa/view/event_and_projects/project_details/event_card_information.dart';
@@ -45,7 +46,7 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
         elevation: 0,
         centerTitle: true,
         title: Text(
-          'Project Details',
+          'Project Details'.tr,
           style: TextStyle(
  color:   theme.brightness == Brightness.dark
             ? Colors.white
@@ -101,7 +102,7 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
                   child:
                   SizedBox(height: 100,child:  EventCardInformation(
                     icon: Icons.calendar_month,
-                    title: 'Start Date',
+                    title: 'Start Date'.tr,
                     value: 'September/1/2024',
                     fontScale: scaleFactor,
                   ),)
@@ -113,7 +114,7 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
                   child: 
                   SizedBox(height: 100,child:     EventCardInformation(
                     icon: Icons.calendar_today,
-                    title: 'End Date',
+                    title: 'End Date'.tr,
                     value: 'October/3/2024',
                     fontScale: scaleFactor,
                   ),)
@@ -138,7 +139,7 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
                   const Icon(Icons.check_circle, color: Colors.green),
                   SizedBox(width: size.width * 0.02),
                   Text(
-                    "Status: Active",
+                    "Status: Active".tr,
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
                       color: Colors.green,
@@ -150,7 +151,7 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
             ),
             SizedBox(height: size.height * 0.03),
             Text(
-              "Upcoming Events",
+              "Upcoming Events".tr,
               style: TextStyle(
                 fontSize: 16 * scaleFactor,
                 fontWeight: FontWeight.bold,
@@ -198,7 +199,7 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
             ),
             SizedBox(height: size.height * 0.03),
             Text(
-              "Donation Progress",
+              "Donation Progress".tr,
               style: TextStyle(
                 fontSize: 16 * scaleFactor,
                 fontWeight: FontWeight.bold,
@@ -222,8 +223,10 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+
                 Text(
-                  "Collected: \$7,500",
+"${'Collected:'.tr} \$7,500"
+,
                   style: TextStyle(
  color:   theme.brightness == Brightness.dark
             ? Colors.white
@@ -232,7 +235,8 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
                   ),
                 ),
                 Text(
-                  "Target: \$10,000",
+
+"${'Target:'.tr} \$10,000",
                   style: TextStyle(
                     color: secondaryColor,
                     fontWeight: FontWeight.w600,
@@ -254,7 +258,7 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
                   ),
                 ),
                 child: Text(
-                  "Donate Now",
+                  "Donate Now".tr,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16 * scaleFactor,
