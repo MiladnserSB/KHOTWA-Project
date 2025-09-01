@@ -1,19 +1,23 @@
 import 'package:get/get.dart';
 import 'package:khotwa/model/events_model.dart';
+import 'package:khotwa/model/top_projects_model.dart';
 import 'package:khotwa/service/volunteer_service.dart';
 
 class VolunteerController extends GetxController {
-  final VolunteerService _volunteerService = VolunteerService();
-  
+ final VolunteerService _volunteerService = Get.put(VolunteerService());
   var myEvents = [].obs;
   var myTasks = [].obs;
   var myEvaluations = [].obs;
   var myBadges = [].obs;
   var isLoading = false.obs;
   var allEvents = <EventModel>[].obs;
+  var topProjects = <TopProject>[].obs;
+  var recommendedEvents = <EventModel>[].obs;
   @override
   void onInit() {
-    fetchVolunteerData();
+ Future.delayed(Duration(milliseconds: 100), () {
+      fetchTopProjects();
+    });
     super.onInit();
   }
 
@@ -115,6 +119,37 @@ Future<void> fetchAllEvents() async {
     Get.snackbar('Error', 'Failed to fetch all events');
   } finally {
     isLoading(false);
+  }
+}
+
+Future<void> fetchTopProjects() async {
+  try {
+    final List<TopProject> projects = await _volunteerService.getTopProjects();
+    print("We are done for here");
+    topProjects.assignAll(projects);
+  } catch (e) {
+    Get.snackbar('Error', 'Failed to fetch top projects: $e');
+
+  }
+}
+Future<void> fetchRecommendedEvents(int eventId) async {
+  try {
+    final dynamic events = await _volunteerService.getRecommendedEvents(eventId);
+    if (events is List) {
+      final List<EventModel> eventModels = events.map((item) {
+        if (item is EventModel) {
+          return item;
+        } else if (item is Map<String, dynamic>) {
+          return EventModel.fromJson(item);
+        } else {
+          throw Exception('Invalid event data format');
+        }
+      }).toList();
+      
+      recommendedEvents.assignAll(eventModels);
+    }
+  } catch (e) {
+    Get.snackbar('Error', 'Failed to fetch recommended events');
   }
 }
 

@@ -1,11 +1,7 @@
-// To parse this JSON data, do
-//
-//     final eventsModel = eventsModelFromJson(jsonString);
-
+import 'package:meta/meta.dart';
 import 'dart:convert';
 
 EventsModel eventsModelFromJson(String str) => EventsModel.fromJson(json.decode(str));
-
 String eventsModelToJson(EventsModel data) => json.encode(data.toJson());
 
 class EventsModel {
@@ -22,7 +18,8 @@ class EventsModel {
   factory EventsModel.fromJson(Map<String, dynamic> json) => EventsModel(
         status: json["status"],
         message: json["message"],
-        data: List<EventModel>.from(json["data"].map((x) => EventModel.fromJson(x))),
+        data: List<EventModel>.from(
+            json["data"].map((x) => EventModel.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -40,15 +37,20 @@ class EventModel {
   final String time;
   final int durationHours;
   final String location;
-  final double lat;
-  final double lng;
-  final String status;
+  final double? lat; // nullable
+  final double? lng; // nullable
+  final Status status;
+  final String? coverImage; // nullable
   final int requiredVolunteers;
+  final int currentVolunteers;
   final int registeredCount;
   final int projectId;
+  final String projectName;
   final DateTime createdAt;
   final DateTime updatedAt;
-  final Project project;
+  final String? qrToken; // nullable
+  final String? qrTokenExpiresAt; // nullable
+  final String? qrImagePath; // nullable
 
   EventModel({
     required this.id,
@@ -58,15 +60,20 @@ class EventModel {
     required this.time,
     required this.durationHours,
     required this.location,
-    required this.lat,
-    required this.lng,
+    this.lat,
+    this.lng,
     required this.status,
+    this.coverImage,
     required this.requiredVolunteers,
+    required this.currentVolunteers,
     required this.registeredCount,
     required this.projectId,
+    required this.projectName,
     required this.createdAt,
     required this.updatedAt,
-    required this.project,
+    this.qrToken,
+    this.qrTokenExpiresAt,
+    this.qrImagePath,
   });
 
   factory EventModel.fromJson(Map<String, dynamic> json) => EventModel(
@@ -79,75 +86,67 @@ class EventModel {
         location: json["location"],
         lat: json["lat"]?.toDouble(),
         lng: json["lng"]?.toDouble(),
-        status: json["status"],
+        status: statusValues.map[json["status"]]!,
+        coverImage: json["cover_image"],
         requiredVolunteers: json["required_volunteers"],
+        currentVolunteers: json["current_volunteers"],
         registeredCount: json["registered_count"],
         projectId: json["project_id"],
+        projectName: json["project_name"],
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),
-        project: Project.fromJson(json["project"]),
+        qrToken: json["qr_token"],
+        qrTokenExpiresAt: json["qr_token_expires_at"],
+        qrImagePath: json["qr_image_path"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "title": title,
         "description": description,
-        "date": "${date.year.toString().padLeft(4, '0')}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}",
+        "date": date.toIso8601String(),
         "time": time,
         "duration_hours": durationHours,
         "location": location,
         "lat": lat,
         "lng": lng,
-        "status": status,
+        "status": statusValues.reverse[status],
+        "cover_image": coverImage,
         "required_volunteers": requiredVolunteers,
+        "current_volunteers": currentVolunteers,
         "registered_count": registeredCount,
         "project_id": projectId,
+        "project_name": projectName,
         "created_at": createdAt.toIso8601String(),
         "updated_at": updatedAt.toIso8601String(),
-        "project": project.toJson(),
+        "qr_token": qrToken,
+        "qr_token_expires_at": qrTokenExpiresAt,
+        "qr_image_path": qrImagePath,
       };
 }
 
-class Project {
-  final int id;
-  final String name;
-  final String description;
-  final DateTime startDate;
-  final DateTime endDate;
-  final String status;
-  final DateTime createdAt;
-  final DateTime updatedAt;
+enum Status {
+  OPEN,
+  CLOSED,
+  COMPLETED,
+  UPCOMING
+}
 
-  Project({
-    required this.id,
-    required this.name,
-    required this.description,
-    required this.startDate,
-    required this.endDate,
-    required this.status,
-    required this.createdAt,
-    required this.updatedAt,
-  });
+final statusValues = EnumValues({
+  "open": Status.OPEN,
+  "closed": Status.CLOSED,
+  "completed": Status.COMPLETED,
+  "upcoming": Status.UPCOMING
+});
 
-  factory Project.fromJson(Map<String, dynamic> json) => Project(
-        id: json["id"],
-        name: json["name"],
-        description: json["description"],
-        startDate: DateTime.parse(json["start_date"]),
-        endDate: DateTime.parse(json["end_date"]),
-        status: json["status"],
-        createdAt: DateTime.parse(json["created_at"]),
-        updatedAt: DateTime.parse(json["updated_at"]),
-      );
+class EnumValues<T> {
+  Map<String, T> map;
+  late Map<T, String> reverseMap;
 
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "name": name,
-        "description": description,
-        "start_date": "${startDate.year.toString().padLeft(4, '0')}-${startDate.month.toString().padLeft(2, '0')}-${startDate.day.toString().padLeft(2, '0')}",
-        "end_date": "${endDate.year.toString().padLeft(4, '0')}-${endDate.month.toString().padLeft(2, '0')}-${endDate.day.toString().padLeft(2, '0')}",
-        "status": status,
-        "created_at": createdAt.toIso8601String(),
-        "updated_at": updatedAt.toIso8601String(),
-      };
+  EnumValues(this.map);
+
+  Map<T, String> get reverse {
+    reverseMap = map.map((k, v) => MapEntry(v, k));
+    return reverseMap;
+  }
 }

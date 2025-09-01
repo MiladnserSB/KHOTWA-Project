@@ -1,5 +1,5 @@
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
+// import 'package:firebase_core/firebase_core.dart';
+// import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
@@ -18,9 +18,9 @@ import 'package:khotwa/view/Home_Page/Animted_bottom/Animated_Bottom_Bar_Volunte
 import 'package:khotwa/view/donner/donate/donate_page.dart';
 
 
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+// Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+//   WidgetsFlutterBinding.ensureInitialized();
+//   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
 //   print("📩 إشعار في الخلفية (Background):");
 //   print("   📄 العنوان: ${message.notification?.title}");
@@ -160,7 +160,7 @@ class MyApp extends StatelessWidget {
         ),
 
         themeMode: themeController.themeMode,
-        home: AnimatedBottomBarPageVisitor(),
+        home: AnimatedBottomBarPageVolunteer(),
       );
     });
   }

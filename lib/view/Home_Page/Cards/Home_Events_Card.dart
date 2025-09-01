@@ -8,13 +8,13 @@ class HomeEventsCard extends StatelessWidget {
   final String image;
   final int volunteersCount;
   final String status;
-
+  final int requiredVolunteers;
   const HomeEventsCard({
     super.key,
     required this.title,
     required this.image,
     required this.volunteersCount,
-    required this.status,
+    required this.status, required this.requiredVolunteers,
   });
 
   Color _getStatusColor(String status) {
@@ -119,7 +119,7 @@ class HomeEventsCard extends StatelessWidget {
                 const Icon(Icons.group, size: 18, color: primaryColor),
                 const SizedBox(width: 6),
                 Text(
-"$volunteersCount/100 ${'Volunteers'.tr}",
+"$volunteersCount/$requiredVolunteers ${'Volunteers'.tr}",
                   style: const TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w500,

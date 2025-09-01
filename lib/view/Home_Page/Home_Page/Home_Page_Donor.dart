@@ -291,7 +291,7 @@ class _HomePageDonorState extends State<HomePageDonor> {
                         title: event['title']!,
                         image: event['image']!,
                         volunteersCount: 12,
-                        status: 'accept',
+                        status: 'accept',   requiredVolunteers: 1,
                       ),
                     );
                   },
@@ -347,7 +347,7 @@ class _HomePageDonorState extends State<HomePageDonor> {
                       child: HomeEventsCard(
                         title: event['title']!,
                         image: event['image']!,
-                        volunteersCount: 12,
+                        volunteersCount: 12,   requiredVolunteers: 1,
                         status: 'accept',
                       ),
                     );

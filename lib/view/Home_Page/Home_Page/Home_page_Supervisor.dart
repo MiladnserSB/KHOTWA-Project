@@ -292,7 +292,7 @@ class _HomePageSupervisorState extends State<HomePageSupervisor> {
                         title: event['title']!,
                         image: event['image']!,
                         volunteersCount: 12,
-                        status: 'accept',
+                        status: 'accept',   requiredVolunteers: 1,
                       ),
                     );
                   },
@@ -349,7 +349,7 @@ class _HomePageSupervisorState extends State<HomePageSupervisor> {
                         title: event['title']!,
                         image: event['image']!,
                         volunteersCount: 12,
-                        status: 'accept',
+                        status: 'accept',   requiredVolunteers: 1,
                       ),
                     );
                   },

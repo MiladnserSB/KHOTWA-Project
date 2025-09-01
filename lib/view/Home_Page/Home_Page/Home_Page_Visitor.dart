@@ -296,6 +296,7 @@ class _HomePageVisitorState extends State<HomePageVisitor> {
                         image: event['image']!,
                         volunteersCount: 12,
                         status: 'accept',
+                        requiredVolunteers: 1,
                       ),
                     );
                   },
@@ -360,7 +361,7 @@ class _HomePageVisitorState extends State<HomePageVisitor> {
                         title: event['title']!,
                         image: event['image']!,
                         volunteersCount: 12,
-                        status: 'accept',
+                        status: 'accept',   requiredVolunteers: 1,
                       ),
                     );
                   },

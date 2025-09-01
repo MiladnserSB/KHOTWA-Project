@@ -1,37 +1,60 @@
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:khotwa/model/events_model.dart';
+import 'package:khotwa/model/top_projects_model.dart';
 import '../shared/constants/base_url.dart';
 
 class VolunteerService extends GetxService {
   late Dio dio;
+  bool isInitialized = false;
 
   @override
   void onInit() {
     super.onInit();
-    dio = Dio(BaseOptions(
-      baseUrl: baseUrl,
-      connectTimeout: const Duration(seconds: 30),
-      receiveTimeout: const Duration(seconds: 30),
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-    ));
+    initializeDio();
+  }
 
-    dio.interceptors.add(InterceptorsWrapper(
-      onRequest: (options, handler) async {
-        final token = await _getToken();
-        if (token.isNotEmpty) {
-          options.headers['Authorization'] = 'Bearer $token';
-        }
-        return handler.next(options);
-      },
-    ));
+  void initializeDio() {
+    dio = Dio(
+      BaseOptions(
+        baseUrl: 'https://6223ead6bdbe.ngrok-free.app',
+        connectTimeout: const Duration(seconds: 30),
+        receiveTimeout: const Duration(seconds: 30),
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+      ),
+    );
+
+    dio.interceptors.add(
+      InterceptorsWrapper(
+        onRequest: (options, handler) async {
+          try {
+            final token = await _getToken();
+            if (token.isNotEmpty) {
+              options.headers['Authorization'] =
+                  'Bearer 11|rlOVAxsob1pHEmFLwZN87HGyZrhbGUIQVSF4gemAcc591461';
+            }
+          } catch (e) {
+            print('Error getting token: $e');
+          }
+          return handler.next(options);
+        },
+        onError: (error, handler) {
+          print('Dio error: ${error.message}');
+          return handler.next(error);
+        },
+      ),
+    );
+
+    isInitialized = true;
+    print('Dio initialized successfully');
   }
 
   Future<String> _getToken() async {
-    return '';
+
+    return '11|rlOVAxsob1pHEmFLwZN87HGyZrhbGUIQVSF4gemAcc591461';
   }
 
   // Events
@@ -101,15 +124,15 @@ class VolunteerService extends GetxService {
   }
 
   // Feedback
-  Future<Map<String, dynamic>> submitFeedback(int eventId, int rating, String comment) async {
+  Future<Map<String, dynamic>> submitFeedback(
+    int eventId,
+    int rating,
+    String comment,
+  ) async {
     try {
       final response = await dio.post(
         '/api/volunteer/feedback',
-        data: {
-          'event_id': eventId,
-          'rating': rating,
-          'comment': comment,
-        },
+        data: {'event_id': eventId, 'rating': rating, 'comment': comment},
       );
       return response.data;
     } on DioException catch (e) {
@@ -141,10 +164,7 @@ class VolunteerService extends GetxService {
     try {
       final response = await dio.post(
         '/api/volunteer/attendance/check-in',
-        data: {
-          'checkin_method': 'QR',
-          'qr_token': qrToken,
-        },
+        data: {'checkin_method': 'QR', 'qr_token': qrToken},
       );
       return response.data;
     } on DioException catch (e) {
@@ -156,10 +176,7 @@ class VolunteerService extends GetxService {
     try {
       final response = await dio.post(
         '/api/volunteer/attendance/check-out',
-        data: {
-          'checkin_method': 'QR',
-          'qr_token': qrToken,
-        },
+        data: {'checkin_method': 'QR', 'qr_token': qrToken},
       );
       return response.data;
     } on DioException catch (e) {
@@ -177,32 +194,68 @@ class VolunteerService extends GetxService {
     }
   }
 
-  Future<List<dynamic>> getRecommendedEvents() async {
+  Future<List<dynamic>> getRecommendedEvents(int eventId) async {
     try {
-      final response = await dio.get('/api/volunteer/events/recommended');
+      final response = await dio.get(
+        '/api/volunteer/events/recommended',
+
+        options: Options(
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization':
+            '${_getToken()}',
+          },
+        ),
+      );
       return response.data['data'] ?? [];
     } on DioException catch (e) {
-      throw Exception('Failed to load recommended events: ${e.response?.statusCode}');
+      throw Exception(
+        'Failed to load recommended events: ${e.response?.statusCode}',
+      );
     }
   }
 
-  Future<List<dynamic>> getTopProjects() async {
+  Future<List<TopProject>> getTopProjects() async {
     try {
-      final response = await dio.get('/api/volunteer/projects/top');
-      return response.data['data'] ?? [];
+      final response = await dio.get(
+        '/api/volunteer/projects/top',
+        options: Options(
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization':
+                '${_getToken()}',
+          },
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        final data = response.data;
+
+        if (data['status'] == true && data['data'] is List) {
+          // Convert the response to proper TopProject objects
+          return (data['data'] as List).map((json) {
+            return TopProject.fromJson(json);
+          }).toList();
+        } else {
+          throw Exception('API returned error: ${data['message']}');
+        }
+      } else {
+        throw Exception('HTTP ${response.statusCode}');
+      }
     } on DioException catch (e) {
-      throw Exception('Failed to load top projects: ${e.response?.statusCode}');
+      throw Exception('Failed to load top projects: ${e.message}');
     }
   }
-  
+
   Future<List<EventModel>> getAllEvents() async {
-  try {
-    final response = await dio.get('/api/admin/events');
-    final eventsModel = EventsModel.fromJson(response.data);
-    return eventsModel.data; // List<EventModel>
-  } on DioException catch (e) {
-    throw Exception('Failed to load all events: ${e.response?.statusCode}');
+    try {
+      final response = await dio.get('/api/admin/events');
+      final eventsModel = EventsModel.fromJson(response.data);
+      return eventsModel.data; // List<EventModel>
+    } on DioException catch (e) {
+      throw Exception('Failed to load all events: ${e.response?.statusCode}');
+    }
   }
-}
-
 }
