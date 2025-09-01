@@ -230,6 +230,25 @@ class ArabicLocalization extends Translations {
 "Check out QR":"تسجيل الخروج QR",
 "Scan this QR Checking out":"مسح QR لتسجيل الخروج",
 "Feedback":"تقييم",
+"Donate":"تبرع",
+  "Make a Difference Today": "اصنع فرقًا اليوم",
+  "Your benevolent gift fuels positive change in communities worldwide.": "هديتك الكريمة تغذي التغيير الإيجابي في المجتمعات حول العالم.",
+  "Every contribution, big or small, creates a ripple effect of hope and transformation.": "كل مساهمة، كبيرة كانت أم صغيرة، تخلق أثرًا متسلسلًا من الأمل والتحول.",
+  "Enter your name":"ادخل اسمك",
+  "Donor Name":"اسم المتبرع",
+   "Donation Amount":"مقدار التبرع",
+  "Enter valid amount":"ادخل مقدار صحيح",
+  "Enter donation amount":"ادخل مقدار التبرع",
+  "Cash":"كاش",
+  "Card":"بطاقة",
+  "Payment Method":"طريقة الدفع",
+  "Select a payment method":"اختيار طريقة الدفع",
+  "Donate Now":"تبرع الان",
+  "My Donations":"تبرعاتي",
+  "Donation Confirmation":"تأكيد التبرع",
+  "Are you sure you want to donate for the event or project?":"هل أنت متأكد أنك تريد التبرع للحدث أو المشروع؟",
+  "No donations found":"لم يتم العثور على التبرعات",
+
   }
   };
 }

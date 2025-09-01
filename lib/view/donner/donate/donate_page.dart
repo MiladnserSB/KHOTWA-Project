@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:khotwa/shared/constants/colors.dart';
 import 'package:khotwa/view/donner/donate/donate_form.dart';
 
@@ -17,8 +18,8 @@ class DonatePage extends StatelessWidget {
           icon: const Icon(Icons.arrow_back, color: textBlack),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text(
-          "Donate",
+        title:  Text(
+          "Donate".tr,
           style: TextStyle(
             color: textBlack,
             fontWeight: FontWeight.bold,

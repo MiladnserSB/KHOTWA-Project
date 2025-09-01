@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:khotwa/shared/constants/colors.dart';
 
 class Donation {
@@ -30,7 +31,7 @@ class DonationCard extends StatelessWidget {
     final isWide = MediaQuery.of(context).size.width > 600;
     final textScale = MediaQuery.of(context).textScaleFactor;
 
-    IconData paymentIcon = donation.paymentMethod.contains("cash") 
+    IconData paymentIcon = donation.paymentMethod.contains("cash".tr) 
         ? Icons.handshake 
         : Icons.credit_card;
 
