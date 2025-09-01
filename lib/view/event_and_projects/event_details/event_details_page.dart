@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:khotwa/shared/constants/colors.dart';
 import 'package:khotwa/view/Home_Page/Home_Page/Home_Page_Donor.dart';
 import 'package:khotwa/view/event_and_projects/event_details/card_information_in_event.dart';
@@ -33,7 +34,7 @@ class EventDetailsPage extends StatelessWidget {
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(
-          "Event Details",
+          "Event Details".tr,
           style: TextStyle(
             color: theme.brightness == Brightness.dark
                 ? Colors.white
@@ -80,7 +81,7 @@ class EventDetailsPage extends StatelessWidget {
                       height: 100,
                       child: CardInformationInEvent(
                         icon: Icons.calendar_month,
-                        title: 'Start Date',
+                        title: 'Start Date'.tr,
                         value: 'September/15/2024',
                       ),
                     ),
@@ -91,7 +92,7 @@ class EventDetailsPage extends StatelessWidget {
                       height: 100,
                       child: CardInformationInEvent(
                         icon: Icons.calendar_today,
-                        title: 'End Date',
+                        title: 'End Date'.tr,
                         value: 'October/30/2024',
                       ),
                     ),
@@ -106,7 +107,7 @@ class EventDetailsPage extends StatelessWidget {
                       height: 100,
                       child: CardInformationInEvent(
                         icon: Icons.access_time,
-                        title: 'Time',
+                        title: 'Time'.tr,
                         value: '9:00 AM - 4:00 PM\nDaily',
                       ),
                     ),
@@ -117,7 +118,7 @@ class EventDetailsPage extends StatelessWidget {
                       height: 100,
                       child: CardInformationInEvent(
                         icon: Icons.location_on,
-                        title: 'Location',
+                        title: 'Location'.tr,
                         value: 'Central Park West Side',
                       ),
                     ),
@@ -147,8 +148,8 @@ class EventDetailsPage extends StatelessWidget {
                     }
                   },
                   icon: const Icon(Icons.qr_code_scanner),
-                  label: const Text(
-                    'Join',
+                  label:  Text(
+                    'Join'.tr,
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                   ),
                   style: ElevatedButton.styleFrom(

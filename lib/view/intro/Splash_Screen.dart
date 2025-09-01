@@ -42,7 +42,7 @@ class _SplashScreenState extends State<SplashScreen> {
               ),
               const Spacer(),
               const FadeInTextAnimation(
-                text: "...خطوة صغيرة بتعمل أثر كبير",
+                text: "خطوة صغيرة بتعمل أثر كبير",
                 fontSize: 23,
                 color: Color(0xFFDDA15E),
                 delay: 800,

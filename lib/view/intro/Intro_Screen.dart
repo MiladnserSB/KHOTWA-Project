@@ -88,7 +88,7 @@ class _IntroScreenState extends State<IntroScreen> with TickerProviderStateMixin
                           ),
                           padding: const EdgeInsets.symmetric(vertical: 12),
                         ),
-                        child: const Text("login", style: TextStyle(
+                        child:  Text("login".tr, style: TextStyle(
                           fontFamily: '._Acumin Variable Concept',
                           fontSize: 18,
                         )),
@@ -120,7 +120,7 @@ class _IntroScreenState extends State<IntroScreen> with TickerProviderStateMixin
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 12.0),
                           child: Text(
-                            "OR",
+                            "OR".tr,
                             style: TextStyle(
                               fontFamily: '._Acumin Variable Concept',
                               color: Colors.white,
@@ -155,7 +155,7 @@ class _IntroScreenState extends State<IntroScreen> with TickerProviderStateMixin
                     child: GestureDetector(
                       onTap: () {Get.to(AnimatedBottomBarPageVisitor());},
                       child: Text(
-                        "continue as a guest",
+                        "continue as a guest".tr,
                         style: TextStyle(
                           fontFamily: '._Acumin Variable Concept',
                           color: Color(0xFFDDA15E),

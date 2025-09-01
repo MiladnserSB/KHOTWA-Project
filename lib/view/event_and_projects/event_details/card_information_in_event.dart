@@ -18,7 +18,7 @@ class CardInformationInEvent extends StatelessWidget {
     final size = MediaQuery.of(context).size;
 
     return Container(
-      padding: EdgeInsets.all(size.width * 0.035),
+      padding: EdgeInsets.all(size.width * 0.030),
       decoration: BoxDecoration(
         color: secondaryColor,
         borderRadius: BorderRadius.circular(12),

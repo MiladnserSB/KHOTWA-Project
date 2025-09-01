@@ -52,7 +52,7 @@ class _MyEventsPageState extends State<MyEventsPage> {
               SizedBox(height: size.height * 0.02),
               Center(
                 child: Text(
-                  'My Events',
+                  'my events'.tr,
                   style: TextStyle(
                     fontSize: size.width * 0.06,
                     fontWeight: FontWeight.bold,
@@ -70,7 +70,7 @@ class _MyEventsPageState extends State<MyEventsPage> {
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      child: const Row(
+                      child:  Row(
                         children: [
                           SizedBox(width: 10),
                           Icon(Icons.search,color: Colors.black,),
@@ -80,7 +80,7 @@ class _MyEventsPageState extends State<MyEventsPage> {
                             child: TextField(
                               decoration: InputDecoration(
                                 counterStyle: TextStyle(color: Colors.black),
-                                hintText: 'Search...',
+                                hintText: "search".tr,
                                 hintStyle: TextStyle(color: Colors.black),
                                 border: InputBorder.none,
                               ),
@@ -173,8 +173,8 @@ class EventCard extends StatelessWidget {
                       color: secondaryColor.withOpacity(0.2),
                       borderRadius: BorderRadius.circular(20),
                     ),
-                    child: const Text(
-                      'Active',
+                    child:  Text(
+                      'Active'.tr,
                       style: TextStyle(
                         color: secondaryColor,
                         fontWeight: FontWeight.w600,
@@ -195,25 +195,25 @@ class EventCard extends StatelessWidget {
                 vertical: size.height * 0.015,
               ),
               child: Column(
-                children: const [
+                children:  [
                   InfoRow(
                     icon: Icons.calendar_today,
-                    label: "Date",
+                    label: "Date".tr,
                     value: "16.04.2024 - 16.08.2024",
                   ),
                   InfoRow(
                     icon: LucideIcons.clock,
-                    label: "Time",
+                    label: "Time".tr,
                     value: "10:00 AM - 4:00 PM",
                   ),
                   InfoRow(
                     icon: Icons.location_on,
-                    label: "Location",
+                    label: "Location".tr,
                     value: "Kharkiv, Ukraine",
                   ),
                   InfoRow(
                     icon: Icons.volunteer_activism,
-                    label: "Volunteers",
+                    label: "Volunteers".tr,
                     value: "150 / 200",
                   ),
                 ],
@@ -221,7 +221,7 @@ class EventCard extends StatelessWidget {
             ),
             SizedBox(height: 20),
             DonateApologizeButton(
-              title: 'Apologize',
+              title: 'Apologize'.tr,
               onTap: () {
                 showDialog(
                   context: context,
@@ -243,7 +243,7 @@ class EventCard extends StatelessWidget {
                                 size: size.width * 0.15, color: secondaryColor),
                             SizedBox(height: size.height * 0.02),
                             Text(
-                              'Apology Confirmation',
+                              'Apology Confirmation'.tr,
                               style: TextStyle(
                                 fontSize: size.width * 0.05,
                                 fontWeight: FontWeight.bold,
@@ -253,7 +253,7 @@ class EventCard extends StatelessWidget {
                             ),
                             SizedBox(height: size.height * 0.015),
                             Text(
-                              'Are you sure you want to apologize for the event?',
+                              'Are you sure you want to apologize for the event'.tr,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: size.width * 0.04,
@@ -275,7 +275,7 @@ class EventCard extends StatelessWidget {
                                         borderRadius: BorderRadius.circular(10),
                                       ),
                                     ),
-                                    child: Text('Cancel',
+                                    child: Text('Cancel'.tr,
                                         style: TextStyle(color: white, fontWeight: FontWeight.bold)),
                                   ),
                                 ),
@@ -292,7 +292,7 @@ class EventCard extends StatelessWidget {
                                         borderRadius: BorderRadius.circular(10),
                                       ),
                                     ),
-                                    child: Text('Apologize',
+                                    child: Text('Apologize'.tr,
                                         style: TextStyle(color: Colors.white)),
                                   ),
                                 ),

@@ -119,7 +119,7 @@ class HomeEventsCard extends StatelessWidget {
                 const Icon(Icons.group, size: 18, color: primaryColor),
                 const SizedBox(width: 6),
                 Text(
-                  "$volunteersCount/100 volunteer",
+"$volunteersCount/100 ${'Volunteers'.tr}",
                   style: const TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w500,

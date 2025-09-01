@@ -6,6 +6,11 @@ import 'package:khotwa/view/event_and_projects/event_details/event_details_page.
 import 'package:khotwa/view/event_and_projects/project_details/project_details_page.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:buttons_tabbar/buttons_tabbar.dart';
+import 'package:intl/intl.dart';
+
+String formatNumber(num number, String locale) {
+  return NumberFormat.decimalPattern(locale).format(number);
+}
 
 class EventsAndProjectsPage extends StatefulWidget {
   const EventsAndProjectsPage({super.key});
@@ -49,7 +54,45 @@ class _EventsAndProjectsPageState extends State<EventsAndProjectsPage>
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(height: size.height * 0.02),
-             Container(
+           
+
+
+                SizedBox(height: size.height * 0.01),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        height: size.height * 0.05,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child:  Row(
+                          children: [
+                            SizedBox(width: 10),
+                            Icon(Icons.search,color: Colors.black,size: 20,),
+                                                    SizedBox(width: 10),
+                          Expanded(
+                            child: TextField(
+                              decoration: InputDecoration(
+                                counterStyle: TextStyle(color: Colors.black),
+                                hintText: 'search'.tr,
+                                hintStyle: TextStyle(color: Colors.black,fontSize: 15),
+                                border: InputBorder.none,
+                              ),
+                            ),
+                          ),
+                          ],
+                        ),
+                      ),
+                    ),
+                 
+                  ],
+                ),
+                                SizedBox(height: size.height * 0.03),
+
+                  Container(
   width: double.infinity, 
   height: 50,
   padding: const EdgeInsets.all(4),
@@ -80,9 +123,9 @@ class _EventsAndProjectsPageState extends State<EventsAndProjectsPage>
           horizontal: 63, 
           vertical: 8,
         ),
-        tabs: const [
-          Tab(text: 'Events'),
-          Tab(text: 'Projects'),
+        tabs:  [
+          Tab(text: 'Events'.tr),
+          Tab(text: 'Projects'.tr),
         ],
       ),
     ),
@@ -90,42 +133,7 @@ class _EventsAndProjectsPageState extends State<EventsAndProjectsPage>
 )
 
 
-)
-
-,
-                SizedBox(height: size.height * 0.04),
-                Row(
-                  children: [
-                    Expanded(
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 12),
-                        height: size.height * 0.05,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: const Row(
-                          children: [
-                            SizedBox(width: 10),
-                            Icon(Icons.search,color: Colors.black,size: 20,),
-                                                    SizedBox(width: 10),
-                          Expanded(
-                            child: TextField(
-                              decoration: InputDecoration(
-                                counterStyle: TextStyle(color: Colors.black),
-                                hintText: 'Search...',
-                                hintStyle: TextStyle(color: Colors.black,fontSize: 15),
-                                border: InputBorder.none,
-                              ),
-                            ),
-                          ),
-                          ],
-                        ),
-                      ),
-                    ),
-                 
-                  ],
-                ),
+),
                 SizedBox(height: size.height * 0.02),
                 Expanded(
                   child: TabBarView(
@@ -290,8 +298,8 @@ class EventCard extends StatelessWidget {
                       color: secondaryColor.withOpacity(0.2),
                       borderRadius: BorderRadius.circular(20),
                     ),
-                    child: const Text(
-                      'Active',
+                    child:  Text(
+                      'Active'.tr,
                       style: TextStyle(
                         color: secondaryColor,
                         fontWeight: FontWeight.w600,
@@ -312,25 +320,25 @@ class EventCard extends StatelessWidget {
                 vertical: size.height * 0.015,
               ),
               child: Column(
-                children: const [
+                children:  [
                   InfoRow(
                     icon: Icons.calendar_today,
-                    label: "Date",
+                    label: "Date".tr,
                     value: "16.04.2024 - 16.08.2024",
                   ),
                   InfoRow(
                     icon: LucideIcons.clock,
-                    label: "Time",
+                    label: "Time".tr,
                     value: "10:00 AM - 4:00 PM",
                   ),
                   InfoRow(
                     icon: Icons.location_on,
-                    label: "Location",
+                    label: "Location".tr,
                     value: "Kharkiv, Ukraine",
                   ),
                   InfoRow(
                     icon: Icons.volunteer_activism,
-                    label: "Volunteers",
+                    label: "Volunteers".tr,
                     value: "150 / 200",
                   ),
                 ],
@@ -448,20 +456,20 @@ class ProjectCard extends StatelessWidget {
                 vertical: size.height * 0.015,
               ),
               child: Column(
-                children: const [
+                children:  [
                   InfoRow(
                     icon: Icons.calendar_today,
-                    label: "Date",
+                    label: "Date".tr,
                     value: "16.04.2024 - 16.08.2024",
                   ),
                   InfoRow(
                     icon: LucideIcons.clock,
-                    label: "Time",
+                    label: "Time".tr,
                     value: "10:00 AM - 4:00 PM",
                   ),
                   InfoRow(
                     icon: Icons.monetization_on,
-                    label: "Target money",
+                    label: "Target money".tr,
                     value: "15000 \$",
                   ),
                 ],
@@ -502,24 +510,25 @@ class ProjectCard extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      '${donatedAmount.toStringAsFixed(2)} Donated',
-                      style: TextStyle(
-                        color: primaryColor,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Text(
-                      '${remainingAmount.toStringAsFixed(2)} Remaining',
-                      style: TextStyle(
-                        color: secondaryColor,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                Text(
+  '${formatNumber(donatedAmount, Get.locale?.languageCode ?? "en")} ${'Donated'.tr}',
+  style: TextStyle(
+    color: primaryColor,
+    fontWeight: FontWeight.bold,
+  ),
+),
+Text(
+  '${formatNumber(remainingAmount, Get.locale?.languageCode ?? "en")} ${'Remaining'.tr}',
+  style: TextStyle(
+    color: secondaryColor,
+    fontWeight: FontWeight.bold,
+  ),
+),
+
                   ],
                 ),
                 SizedBox(height: 20),
-                DonateApologizeButton(title: 'Donate', onTap: () {}),
+                DonateApologizeButton(title: 'Donate'.tr, onTap: () {}),
               ],
             ),
           ],

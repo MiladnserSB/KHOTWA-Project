@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:get/get_utils/get_utils.dart';
 import 'package:khotwa/shared/constants/colors.dart';
 
 class ProjectCard extends StatelessWidget {
@@ -82,15 +83,7 @@ class ProjectCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Label
-                  Text(
-                    'Support Level',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: size.width * 0.035,
-                      color: Colors.grey[700],
-                    ),
-                  ),
-                  const SizedBox(height: 6),
+              
                   // Progress bar
                   ClipRRect(
                     borderRadius: BorderRadius.circular(12),
@@ -106,7 +99,8 @@ class ProjectCard extends StatelessWidget {
                   const SizedBox(height: 8),
 
                   Text(
-                    '${(progressPercentage * 100).toInt()}% funded',
+'${(progressPercentage * 100).toInt()}% ${'funded'.tr}',
+
                     style: TextStyle(
                       fontSize: size.width * 0.038,
                       fontWeight: FontWeight.w600,
