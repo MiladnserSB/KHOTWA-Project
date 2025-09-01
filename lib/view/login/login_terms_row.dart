@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:khotwa/shared/constants/app_strings.dart';
 import 'package:khotwa/shared/constants/colors.dart';
 import 'package:khotwa/view/login/terms_dialogue.dart';
@@ -13,8 +14,8 @@ class LoginTermsRow extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(
-          AppStrings.checkOur,
+         Text(
+          "checkOur".tr,
           style: TextStyle(
             color: Colors.grey,
             fontSize: size.width * 0.04,
@@ -33,7 +34,7 @@ class LoginTermsRow extends StatelessWidget {
             builder: (_) => const TermsDialog(),
           ),
           child: Text(
-            AppStrings.termsPolicy,
+            "termsPolicy".tr,
             style: TextStyle(
               color: secondaryColor,
               fontSize: size.width * 0.04,
@@ -47,6 +48,7 @@ class LoginTermsRow extends StatelessWidget {
             ),
           ),
         ),
+       
       ],
     );
   }

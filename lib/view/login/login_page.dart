@@ -15,12 +15,14 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-              final theme = Theme.of(context); 
+    final theme = Theme.of(context);
 
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
-backgroundColor:                     theme.brightness == Brightness.dark ? Colors.black : thirdColor,
+      backgroundColor: theme.brightness == Brightness.dark
+          ? Colors.black
+          : thirdColor,
 
       body: SafeArea(
         child: LayoutBuilder(
@@ -36,7 +38,8 @@ backgroundColor:                     theme.brightness == Brightness.dark ? Color
                       SizedBox(height: size.height * 0.05),
                       LoginVerifyChangeLogo(
                         size: size,
-                        title: AppStrings.signinaccount,
+                        title:"Sign in your account".tr,
+                        
                       ),
                       SizedBox(height: size.height * 0.06),
                       Padding(
@@ -47,8 +50,8 @@ backgroundColor:                     theme.brightness == Brightness.dark ? Color
                       Obx(
                         () => AuthCustomButton(
                           title: authController.isLoading.value
-                              ? 'Logging in...'
-                              : AppStrings.signIn,
+                              ? 'Logging in...'.tr
+                              : "Sign in".tr,
                           onPressed: authController.isLoading.value
                               ? null
                               // ignore: unnecessary_null_comparison

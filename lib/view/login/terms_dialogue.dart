@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:khotwa/shared/constants/app_strings.dart';
 import 'package:khotwa/widgets/auth_custom_button.dart';
 import 'package:khotwa/shared/constants/colors.dart';
@@ -16,20 +17,21 @@ class TermsDialog extends StatelessWidget {
         child: ListView(
           children: [
             Text(
-              AppStrings.termsAndConditions,
+              "termsAndConditions".tr,
               style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 20),
-            const Text("1. Example term 1", style: TextStyle(fontSize: 16, color: textBlack)),
-            const SizedBox(height: 10),
-            const Text("2. Example term 2", style: TextStyle(fontSize: 16, color: textBlack)),
-            const SizedBox(height: 10),
-            const Text("3. Example term 3", style: TextStyle(fontSize: 16, color: textBlack)),
-            const SizedBox(height: 10),
-            const Text("4. Example term 4", style: TextStyle(fontSize: 16, color: textBlack)),
+            Text("1. Example term 1".tr, style: TextStyle(fontSize: 16, color: Colors.white)),
+SizedBox(height: 10),
+Text("2. Example term 2".tr, style: TextStyle(fontSize: 16, color: Colors.white)),
+SizedBox(height: 10),
+Text("3. Example term 3".tr, style: TextStyle(fontSize: 16, color: Colors.white)),
+SizedBox(height: 10),
+Text("4. Example term 4".tr, style: TextStyle(fontSize: 16, color: Colors.white)),
+
             const SizedBox(height: 20),
-            AuthCustomButton(title: AppStrings.close, onPressed: (){Navigator.of(context).pop();}),
+            AuthCustomButton(title:"close".tr, onPressed: (){Navigator.of(context).pop();}),
           ],
         ),
       ),

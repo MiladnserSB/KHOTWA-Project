@@ -192,6 +192,8 @@ class ArabicLocalization extends Translations {
 "Passwords do not match":"كلمات السر غير متطابقة",
 "Changing Password":"تغيير كلمة السر",
 "New password":"كلمة السر الجديدة",
+"Password is required":"كلمة السر ضرورية",
+"Password":"كلمة السر",
 "Change":"تغيير",
 "Confirm New Password":"تأكيد كلمة السر الجديدة",
 "We are done":"خلصنا",
@@ -248,7 +250,21 @@ class ArabicLocalization extends Translations {
   "Donation Confirmation":"تأكيد التبرع",
   "Are you sure you want to donate for the event or project?":"هل أنت متأكد أنك تريد التبرع للحدث أو المشروع؟",
   "No donations found":"لم يتم العثور على التبرعات",
-
+ "1. Example term 1": "١. مثال على البند ١",
+  "2. Example term 2": "٢. مثال على البند ٢",
+  "3. Example term 3": "٣. مثال على البند ٣",
+  "4. Example term 4": "٤. مثال على البند ٤",
+  "Sign in":"تسجيل الدخول",
+  "enterYourEmailPlease":"ادخل البريد الالكتروني",
+  "Sign in your account":" سجل دخول ",
+  "We will send a recovery code to your email.":"سنرسل رمز تأكيد الى بريدك الالكتروني",
+  "Logging in...":"جاري تسجيل الدخول",
+  "forgotPassword?":"هل نسيت كلمة المرور؟",
+  "checkOur":"تحقق لدينا",
+  "termsPolicy":"وفق شروط السياسة",
+  "close":"اغلاق",
+  "termsAndConditions":"الشروط والأحكام",
+  "send":"ارسال"
   }
   };
 }

@@ -30,20 +30,22 @@ class _LoginFormState extends State<LoginForm> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            AppStrings.email,
+            "Email".tr,
             style: TextStyle(fontSize: width * 0.042, fontWeight: FontWeight.w500),
           ),
           SizedBox(height: height * 0.01),
           TextFormField(
+            style: TextStyle(    color: Colors.black, 
+),
             onChanged: (value) => authController.email.value = value,
             keyboardType: TextInputType.emailAddress,
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return "Email is required";
+                return "Email is required".tr;
               }
               final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+');
               if (!emailRegex.hasMatch(value)) {
-                return "Enter a valid email";
+                return "Enter a valid email".tr;
               }
               return null;
             },
@@ -56,23 +58,26 @@ class _LoginFormState extends State<LoginForm> {
                 borderSide: BorderSide.none,
               ),
               hintStyle: TextStyle(color: Colors.grey.shade600),
+              focusColor: Colors.black,
             ),
           ),
           SizedBox(height: height * 0.02),
           Text(
-            AppStrings.password,
+            "Password".tr,
             style: TextStyle(fontSize: width * 0.042, fontWeight: FontWeight.w500),
           ),
           SizedBox(height: height * 0.01),
           TextFormField(
+                   style: TextStyle(    color: Colors.black, 
+),
             onChanged: (value) => authController.password.value = value,
             obscureText: !isPasswordVisible,
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return "Password is required";
+                return "Password is required".tr;
               }
               if (value.length < 6) {
-                return "Password must be at least 6 characters";
+                return "Password must be at least 6 characters".tr;
               }
               return null;
             },
@@ -107,7 +112,7 @@ class _LoginFormState extends State<LoginForm> {
                 );
               },
               child: Text(
-                AppStrings.forgotPassword,
+               "forgotPassword?".tr,
                 style: TextStyle(
                   decoration: TextDecoration.underline,
                   fontWeight: FontWeight.w600,
