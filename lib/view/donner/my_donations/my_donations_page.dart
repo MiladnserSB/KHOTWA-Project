@@ -19,8 +19,8 @@ class MyDonationsPage extends StatelessWidget {
           icon: const Icon(Icons.arrow_back, color: textBlack),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text(
-          "My Donations",
+        title:  Text(
+          "My Donations".tr,
           style: TextStyle(
             color: textBlack,
             fontWeight: FontWeight.bold,
@@ -47,9 +47,9 @@ class ResponsiveDonationsList extends StatelessWidget {
       }
 
       if (controller.myDonations.isEmpty) {
-        return const Center(
+        return  Center(
           child: Text(
-            "No donations found",
+            "No donations found".tr,
             style: TextStyle(fontSize: 16, color: grey),
           ),
         );
@@ -103,12 +103,12 @@ class ResponsiveDonationsList extends StatelessWidget {
 
   String _getStatusText(String paymentStatus) {
     switch (paymentStatus.toLowerCase()) {
-      case 'completed':
-      case 'success':
+      case "Completed":
+      case "success":
         return "Completed";
-      case 'pending':
+      case "Pending":
         return "Pending";
-      case 'failed':
+      case "Failed":
         return "Failed";
       default:
         return paymentStatus;

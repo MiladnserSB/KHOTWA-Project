@@ -39,12 +39,17 @@ class _DonateFormState extends State<DonateForm> {
                     color: thirdColor.withOpacity(0.5),
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: const Text(
-                    "Make a Difference Today\n\n"
-                    "Your benevolent gift fuels positive change in communities worldwide. "
-                    "Every contribution, big or small, creates a ripple effect of hope and transformation.",
-                    style: TextStyle(color: textBlack),
-                  ),
+                  child:Column(
+  crossAxisAlignment: CrossAxisAlignment.start,
+  children: [
+    Text("Make a Difference Today".tr, style: TextStyle(color: textBlack)),
+    SizedBox(height: 8),
+    Text("Your benevolent gift fuels positive change in communities worldwide.".tr, style: TextStyle(color: textBlack)),
+    SizedBox(height: 8),
+    Text("Every contribution, big or small, creates a ripple effect of hope and transformation.".tr, style: TextStyle(color: textBlack)),
+  ],
+)
+,
                 ),
                 const SizedBox(height: 24),
 
@@ -52,9 +57,9 @@ class _DonateFormState extends State<DonateForm> {
                 TextFormField(
                   controller: donorController,
                   validator: (val) =>
-                      val == null || val.isEmpty ? "Enter your name" : null,
+                      val == null || val.isEmpty ? "Enter your name".tr : null,
                   decoration: InputDecoration(
-                    labelText: "Donor Name",
+                    labelText: "Donor Name".tr,
                     hintText: "John Doe",
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
@@ -69,16 +74,16 @@ class _DonateFormState extends State<DonateForm> {
                   keyboardType: TextInputType.emailAddress,
                   validator: (val) {
                     if (val == null || val.isEmpty) {
-                      return "Enter your email";
+                      return "Enter your email".tr;
                     }
                     final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+');
                     if (!emailRegex.hasMatch(val)) {
-                      return "Enter a valid email";
+                      return "Enter a valid email".tr;
                     }
                     return null;
                   },
                   decoration: InputDecoration(
-                    labelText: "Email",
+                    labelText: "Email".tr,
                     hintText: "john.doe@example.com",
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
@@ -94,16 +99,16 @@ class _DonateFormState extends State<DonateForm> {
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   validator: (val) {
                     if (val == null || val.isEmpty) {
-                      return "Enter donation amount";
+                      return "Enter donation amount".tr;
                     }
                     final amount = int.tryParse(val);
                     if (amount == null || amount <= 0) {
-                      return "Enter valid amount";
+                      return "Enter valid amount".tr;
                     }
                     return null;
                   },
                   decoration: InputDecoration(
-                    labelText: "Donation Amount",
+                    labelText: "Donation Amount".tr,
                     hintText: "\$ 250.00",
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
@@ -115,19 +120,19 @@ class _DonateFormState extends State<DonateForm> {
                 // Payment Method
                 DropdownButtonFormField<String>(
                   value: paymentMethod,
-                  items: const [
-                    DropdownMenuItem(value: "card", child: Text("Card")),
-                    DropdownMenuItem(value: "cash", child: Text("Cash")),
+                  items:  [
+                    DropdownMenuItem(value: "card", child: Text("Card".tr)),
+                    DropdownMenuItem(value: "cash", child: Text("Cash".tr)),
                   ],
                   onChanged: (val) => setState(() => paymentMethod = val),
                   decoration: InputDecoration(
-                    labelText: "Payment Method",
+                    labelText: "Payment Method".tr,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
                   validator: (val) =>
-                      val == null ? "Select a payment method" : null,
+                      val == null ? "Select a payment method".tr : null,
                 ),
                 const SizedBox(height: 24),
 
@@ -147,8 +152,8 @@ class _DonateFormState extends State<DonateForm> {
                         _showConfirmationDialog(context);
                       }
                     },
-                    child: const Text(
-                      "Donate Now",
+                    child:  Text(
+                      "Donate Now".tr,
                       style: TextStyle(color: white, fontSize: 16),
                     ),
                   ),
@@ -169,8 +174,8 @@ class _DonateFormState extends State<DonateForm> {
                     onPressed: () {
                       Get.to(() => MyDonationsPage());
                     },
-                    child: const Text(
-                      "My Donations",
+                    child:  Text(
+                      "My Donations".tr,
                       style: TextStyle(color: primaryColor, fontSize: 16),
                     ),
                   ),
@@ -207,7 +212,6 @@ class _DonateFormState extends State<DonateForm> {
     );
   }
 
-  /// 🔹 Confirmation Dialog with API integration
   void _showConfirmationDialog(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final theme = Theme.of(context);
@@ -230,7 +234,7 @@ class _DonateFormState extends State<DonateForm> {
                     size: size.width * 0.15, color: secondaryColor),
                 SizedBox(height: size.height * 0.02),
                 Text(
-                  'Donation Confirmation',
+                  'Donation Confirmation'.tr,
                   style: TextStyle(
                     fontSize: size.width * 0.05,
                     fontWeight: FontWeight.bold,
@@ -239,7 +243,7 @@ class _DonateFormState extends State<DonateForm> {
                 ),
                 SizedBox(height: size.height * 0.015),
                 Text(
-                  'Are you sure you want to donate for the event or project?',
+                  'Are you sure you want to donate for the event or project?'.tr,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: size.width * 0.04,
@@ -261,8 +265,8 @@ class _DonateFormState extends State<DonateForm> {
                             borderRadius: BorderRadius.circular(10),
                           ),
                         ),
-                        child: const Text(
-                          'Cancel',
+                        child:  Text(
+                          'Cancel'.tr,
                           style: TextStyle(
                             color: white,
                             fontWeight: FontWeight.bold,
@@ -271,13 +275,11 @@ class _DonateFormState extends State<DonateForm> {
                       ),
                     ),
                     SizedBox(width: size.width * 0.03),
-                    // Confirm Donate
                     Expanded(
                       child: ElevatedButton(
                         onPressed: () async {
                           Navigator.of(context).pop();
 
-                          // 1️⃣ Create donation
                           final donation = await donorControllerX.createDonation({
                             "amount": int.parse(amountController.text),
                             "project_id": 1, // TODO: make dynamic if needed
@@ -288,7 +290,6 @@ class _DonateFormState extends State<DonateForm> {
                           });
 
                           if (donation != null) {
-                            // 2️⃣ Confirm donation
                             await donorControllerX.confirmDonation({
                               "donation_id": donation.data.donationId ?? 0,
                               "transaction_id": "pi_123456789", 
@@ -304,8 +305,8 @@ class _DonateFormState extends State<DonateForm> {
                             borderRadius: BorderRadius.circular(10),
                           ),
                         ),
-                        child: const Text(
-                          'Donate',
+                        child:  Text(
+                          'Donate'.tr,
                           style: TextStyle(color: Colors.white),
                         ),
                       ),
