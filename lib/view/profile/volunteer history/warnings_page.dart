@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:khotwa/shared/constants/colors.dart';
 
 class WarningsPage extends StatelessWidget {
@@ -24,8 +25,8 @@ class WarningsPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: const Text(
-          "Warnings",
+        title:  Text(
+          "Warnings".tr,
           style: TextStyle(
             color: textBlack,
             fontWeight: FontWeight.bold,
@@ -63,7 +64,7 @@ class WarningsPage extends StatelessWidget {
                     children: [
                       const Icon(Icons.person, size: 18, color: primaryColor),
                       const SizedBox(width: 6),
-                      Text("Supervisor: ${warning['supervisor']}"),
+Text("${'Supervisor:'.tr} ${warning['supervisor']}"),
                     ],
                   ),
                   const SizedBox(height: 6),
@@ -71,7 +72,7 @@ class WarningsPage extends StatelessWidget {
                     children: [
                       const Icon(Icons.event, size: 18, color: secondaryColor),
                       const SizedBox(width: 6),
-                      Text("Event: ${warning['event']}"),
+Text("${'Event:'.tr} ${warning['event']}"),
                     ],
                   ),
                 ],

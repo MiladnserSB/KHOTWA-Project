@@ -264,7 +264,14 @@ class ArabicLocalization extends Translations {
   "termsPolicy":"وفق شروط السياسة",
   "close":"اغلاق",
   "termsAndConditions":"الشروط والأحكام",
-  "send":"ارسال"
+  "send":"ارسال",
+  "Campaign History":"تاريخ الحملة",
+  "Supervisor:":"المشرف",
+  "Event:":"الفعالية",
+  "Notifications":"الاشعارات",
+  "Notification Details":"تفاصيل الاشعارات",
+    "Received:": "تاريخ الاستلام:"
+
   }
   };
 }

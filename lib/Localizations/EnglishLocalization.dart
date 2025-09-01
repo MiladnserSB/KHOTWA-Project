@@ -265,6 +265,14 @@ class EnglishLocalization extends Translations {
 "termsAndConditions":"termsAndConditions",
 "close":"close",
 "send":"send",
+"Campaign History":"Campaign History",
+"Supervisor:":"Supervisor:",
+"Event:":"Events:",
+"Notifications":"Notifications",
+"Notification Details":"Notification Details",
+  "Received:": "Received:"
+
+
 
 
     },

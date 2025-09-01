@@ -35,7 +35,7 @@ class VolunteerHistoryPage extends StatelessWidget {
   ];
 
   @override
-  Widget build(BuildContext ctx) {
+  Widget build(BuildContext context) {
     final totalTime = dataList.fold<int>(
       0,
       (acc, item) => acc + (item['hours'] as int),
@@ -44,16 +44,19 @@ class VolunteerHistoryPage extends StatelessWidget {
     final personName = 'Ahmed Ali'.tr;
     final joinedDateText = 'Joined: March 15, 2022'.tr;
 
+    final theme = Theme.of(context);
+
     return Scaffold(
-      backgroundColor: thirdColor,
+      backgroundColor:
+          theme.brightness == Brightness.dark ? Colors.black : thirdColor,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        leading: BackButton(color: primaryColor),
+        leading: const BackButton(color: primaryColor),
         title: Text(
           'Volunteer History'.tr,
           style: const TextStyle(
-            color: primaryColor,
+            color: fourthColor,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -64,7 +67,7 @@ class VolunteerHistoryPage extends StatelessWidget {
         elevation: 6,
         onPressed: () {
           Navigator.push(
-            ctx,
+            context,
             MaterialPageRoute(builder: (_) => WarningsPage()),
           );
         },
@@ -140,10 +143,10 @@ class VolunteerHistoryPage extends StatelessWidget {
                     ),
                     Column(
                       children: [
-                        const Text(
-                          "Hours",
-                          style: TextStyle(
-                              color: grey,
+                        Text(
+                          "Volunteer Hours".tr,
+                          style: const TextStyle(
+                              color: fourthColor,
                               fontWeight: FontWeight.w600,
                               fontSize: 13),
                         ),
@@ -166,40 +169,21 @@ class VolunteerHistoryPage extends StatelessWidget {
               ),
               const SizedBox(height: 24),
 
-              // /// Stats Section
-              // Text(
-              //   "Participation Statistics".tr,
-              //   style: const TextStyle(
-              //     fontSize: 18,
-              //     fontWeight: FontWeight.bold,
-              //     color: primaryColor,
-              //   ),
-              // ),
-              // const SizedBox(height: 16),
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //   children: [
-              //     _buildStatCard("Completed",
-              //         "${dataList.where((i) => !i['isCurrent']).length}", Icons.check, Colors.green),
-              //     _buildStatCard("Active",
-              //         "${dataList.where((i) => i['isCurrent']).length}", Icons.play_arrow, secondaryColor),
-              //     _buildStatCard("Avg Rating", "4.8", Icons.star, Colors.amber),
-              //   ],
-              // ),
               const SizedBox(height: 32),
 
-              /// Campaigns Section
               Text(
                 "Campaign History".tr,
                 style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
-                  color: primaryColor,
+                  color: fourthColor,
                 ),
               ),
               const SizedBox(height: 12),
 
-              ...dataList.map((item) => _buildCampaignCard(item)).toList(),
+              ...dataList
+                  .map((item) => _buildCampaignCard(context, item))
+                  .toList(),
             ],
           ),
         ),
@@ -252,10 +236,12 @@ class VolunteerHistoryPage extends StatelessWidget {
     );
   }
 
-  Widget _buildCampaignCard(Map<String, dynamic> item) {
+  Widget _buildCampaignCard(BuildContext context, Map<String, dynamic> item) {
+    final theme = Theme.of(context);
+
     return GestureDetector(
-      onTap: (){
-        Get.to(EventDetailsPage());
+      onTap: () {
+        Get.to(() => EventDetailsPage());
       },
       child: Container(
         margin: const EdgeInsets.only(bottom: 16),
@@ -285,18 +271,27 @@ class VolunteerHistoryPage extends StatelessWidget {
           ),
           title: Text(
             item['campaign'],
-            style: const TextStyle(
-                fontWeight: FontWeight.w600, color: textBlack, fontSize: 15),
+            style: TextStyle(
+              fontWeight: FontWeight.w600,
+              color: theme.brightness == Brightness.dark
+                  ? primaryColor
+                  : primaryColor,
+              fontSize: 15,
+            ),
           ),
           subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 4),
-              Text("Role: ${item['role']}  •  Hours: ${item['hours']}",
-                  style: const TextStyle(fontSize: 12, color: grey)),
+              Text(
+                "${'Role:'.tr} ${item['role']}  •  ${'Hours:'.tr} ${item['hours']}",
+                style: const TextStyle(fontSize: 12, color: grey),
+              ),
               const SizedBox(height: 4),
-              Text("Date: ${item['date']}",
-                  style: const TextStyle(fontSize: 12, color: grey)),
+              Text(
+                "${'Date:'.tr} ${item['date']}",
+                style: const TextStyle(fontSize: 12, color: grey),
+              ),
             ],
           ),
           trailing: Container(
@@ -308,7 +303,7 @@ class VolunteerHistoryPage extends StatelessWidget {
               borderRadius: BorderRadius.circular(12),
             ),
             child: Text(
-              item['isCurrent'] ? "Active" : "Completed",
+              item['isCurrent'] ? "Active".tr : "Completed".tr,
               style: TextStyle(
                 fontSize: 11,
                 fontWeight: FontWeight.bold,

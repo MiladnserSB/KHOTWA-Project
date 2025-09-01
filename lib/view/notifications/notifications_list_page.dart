@@ -3,8 +3,6 @@ import 'package:get/get.dart';
 import 'package:khotwa/shared/constants/colors.dart';
 import 'package:khotwa/view/notifications/notifications_details_page.dart';
 
-
-
 class NotificationsListPage extends StatelessWidget {
   final List<Map<String, String>> notifications = [
     {
@@ -12,33 +10,42 @@ class NotificationsListPage extends StatelessWidget {
       "description": "You’ve been added to the Health Awareness Campaign.",
       "eventName": "Health Awareness Campaign",
       "supervisor": "Dr. Sarah Lee",
-      "time": "2 hrs ago"
+      "time": "2 hrs ago",
     },
     {
       "title": "Feedback Request",
       "description": "Please provide feedback for the Community Workshop.",
       "eventName": "Community Workshop",
       "supervisor": "John Carter",
-      "time": "Yesterday"
+      "time": "Yesterday",
     },
     {
       "title": "Schedule Update",
       "description": "The timing for the Blood Donation Drive has changed.",
       "eventName": "Blood Donation Drive",
       "supervisor": "Dr. Ali Khan",
-      "time": "Aug 28"
+      "time": "Aug 28",
     },
   ];
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Scaffold(
-      backgroundColor: thirdColor,
+      backgroundColor: theme.brightness == Brightness.dark
+          ? Colors.black
+          : thirdColor,
       appBar: AppBar(
-        leading: IconButton(onPressed: (){Get.back();}, icon: Icon(Icons.arrow_back, color: white,)),
+        leading: IconButton(
+          onPressed: () {
+            Get.back();
+          },
+          icon: Icon(Icons.arrow_back, color: white),
+        ),
         backgroundColor: primaryColor,
-        title: const Text(
-          "Notifications",
+        title: Text(
+          "Notifications".tr,
           style: TextStyle(color: white, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
@@ -97,10 +104,7 @@ class NotificationsListPage extends StatelessWidget {
                           const SizedBox(height: 8),
                           Text(
                             notification["description"]!,
-                            style: const TextStyle(
-                              color: grey,
-                              fontSize: 14,
-                            ),
+                            style: const TextStyle(color: grey, fontSize: 14),
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -111,10 +115,12 @@ class NotificationsListPage extends StatelessWidget {
                               Text(
                                 notification["time"]!,
                                 style: const TextStyle(
-                                    fontSize: 12, color: grey),
+                                  fontSize: 12,
+                                  color: grey,
+                                ),
                               ),
                             ],
-                          )
+                          ),
                         ],
                       ),
                     ),

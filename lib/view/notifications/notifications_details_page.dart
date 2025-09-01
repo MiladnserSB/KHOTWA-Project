@@ -20,13 +20,16 @@ class NotificationDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+        final theme = Theme.of(context);
+
     return Scaffold(
-      backgroundColor: thirdColor,
-      appBar: AppBar(
+ backgroundColor: theme.brightness == Brightness.dark
+                        ?Colors.black
+                        : thirdColor,      appBar: AppBar(
         leading: IconButton(onPressed: (){Get.back();}, icon: Icon(Icons.arrow_back, color: white,)),
         backgroundColor: primaryColor,
-        title: const Text(
-          "Notification Details",
+        title:  Text(
+          "Notification Details".tr,
           style: TextStyle(color: white, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
@@ -64,7 +67,7 @@ class NotificationDetailsPage extends StatelessWidget {
                       const SizedBox(width: 8),
                       Expanded(
                         child: Text(
-                          "Event: $eventName",
+                          "${'Event:'.tr} $eventName",
                           style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
@@ -81,8 +84,7 @@ class NotificationDetailsPage extends StatelessWidget {
                       const SizedBox(width: 8),
                       Expanded(
                         child: Text(
-                          "Supervisor: $supervisor",
-                          style: const TextStyle(
+"${'Supervisor:'.tr} $supervisor",                          style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
                             color: textBlack,
@@ -95,8 +97,7 @@ class NotificationDetailsPage extends StatelessWidget {
                   Align(
                     alignment: Alignment.bottomRight,
                     child: Text(
-                      "Received: $time",
-                      style: const TextStyle(fontSize: 14, color: grey),
+"${'Received:'.tr} $time",                      style: const TextStyle(fontSize: 14, color: grey),
                     ),
                   ),
                 ],
