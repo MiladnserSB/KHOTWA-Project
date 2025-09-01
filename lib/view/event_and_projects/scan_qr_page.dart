@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
 class ScanQrPage extends StatefulWidget {
@@ -23,7 +24,7 @@ class _ScanQrPageState extends State<ScanQrPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Scan QR Code"),
+        title:  Text("Scan QR Code".tr),
         centerTitle: true,
         actions: [
           IconButton(
@@ -46,7 +47,7 @@ class _ScanQrPageState extends State<ScanQrPage> {
                 for (final barcode in capture.barcodes) {
                   final String? rawValue = barcode.rawValue;
                   if (rawValue != null) {
-                    log("Scanned: $rawValue");
+log("${'Scanned:'.tr} $rawValue");
                     setState(() => scannedData = rawValue);
                     Navigator.pop(context, rawValue);
                   }
@@ -59,13 +60,13 @@ class _ScanQrPageState extends State<ScanQrPage> {
             child: Center(
               child: scannedData != null
                   ? Text(
-                      "Result: $scannedData",
+"${'Result:'.tr} $scannedData",
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                       ),
                     )
-                  : const Text("Scan a code"),
+                  :  Text("Scan a code".tr),
             ),
           )
         ],

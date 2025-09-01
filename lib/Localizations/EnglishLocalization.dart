@@ -167,6 +167,40 @@ class EnglishLocalization extends Translations {
 "Target:":"Target:",
 "Collected:":"Collected:",
 "Donate Now":"Donate Now",
+"Scan QR Code":"Scan QR Code",
+"Scan a code":"Scan a code",
+"Result:":"Result:",
+"Scanned:":"Scanned:",
+"Login Required":"Login Required",
+"Please log in to continue with the donation process.":"Please log in to continue with the donation process.",
+"Login successful!":"Login successful!",
+"Donor Login":"Donor Login",
+"Name":"Name",
+"Email":"Email",
+"Enter your full name":"Enter your full name",
+"Name must be at least 2 characters":"Name must be at least 2 characters",
+"Name is required":"Name is required",
+"Email is required":"Email is required",
+"Enter a valid email":"Enter a valid email",
+"Enter your email":"Enter your email",
+"Error":"Error",
+"Passwords do not match.":"Passwords do not match.",
+"OTP is missing.":"OTP is missing.",
+"Please enter the new password and its confirmation.":"Please enter the new password and its confirmation.",
+"New password is required":"New password is required",
+"Password must be at least 6 characters":"Password must be at least 6 characters",
+"Please confirm your password":"Please confirm your password",
+"Passwords do not match":"Passwords do not match",
+"Changing Password":"Changing Password",
+"New password":"New password",
+"Change":"Change",
+"Confirm New Password":"Confirm New Password",
+"We are done":"We are done",
+
+
+
+
+
     },
   };
 }
