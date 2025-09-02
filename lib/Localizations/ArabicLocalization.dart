@@ -270,7 +270,16 @@ class ArabicLocalization extends Translations {
   "Event:":"الفعالية",
   "Notifications":"الاشعارات",
   "Notification Details":"تفاصيل الاشعارات",
-    "Received:": "تاريخ الاستلام:"
+    "Received:": "تاريخ الاستلام:",
+"EmailVerification":"تأكيد الايميل",
+"Enter the 5-Digit":"ادخل رمز من 5 أرقام",
+"Resend":"اعادة ارسال الرمز",
+"Don't Recieve Code":"لم يتم استلام الرمز",
+"WeAreAlmostThere":"نحن على وشك الوصول",
+"Verify":"تأكيد",
+"OK":"نعم",
+"Check Your Email Please!":"!تفحص بريدك",
+  "A code was sent to @email.\nPlease open your inbox and enter it where needed.": "تم إرسال رمز إلى @email.\nيرجى فتح بريدك الوارد وإدخاله في المكان المطلوب."
 
   }
   };

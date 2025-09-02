@@ -270,7 +270,16 @@ class EnglishLocalization extends Translations {
 "Event:":"Events:",
 "Notifications":"Notifications",
 "Notification Details":"Notification Details",
-  "Received:": "Received:"
+  "Received:": "Received:",
+"EmailVerification":"EmailVerification",
+"Enter the 5-Digit":"Enter the 5-Digit",
+"Resend":"Resend",
+"Don't Recieve Code":"Don't Recieve Code",
+"WeAreAlmostThere":"WeAreAlmostThere",
+"Verify":"Verify",
+"OK":"OK",
+"Check Your Email Please!":"Check Your Email Please!",
+  "A code was sent to @email.\nPlease open your inbox and enter it where needed.": "A code was sent to @email.\nPlease open your inbox and enter it where needed.",
 
 
 
