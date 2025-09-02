@@ -102,16 +102,16 @@ class _MapScreenChooseLocationState extends State<MapScreenChooseLocation> {
     // String? _autocompleteSelection;
     OutlineInputBorder inputBorder = OutlineInputBorder(
       borderSide: BorderSide(
-        color: theme.brightness == Brightness.dark ? primaryColor
-            : secondaryColor,
+        color: theme.brightness == Brightness.dark ? primaryColor : secondaryColor,
       ),
+      borderRadius: BorderRadius.circular(12),
     );
     OutlineInputBorder inputFocusBorder = OutlineInputBorder(
       borderSide: BorderSide(
-        color: theme.brightness == Brightness.dark  ? primaryColor
-            : secondaryColor,
-        width: 3.0,
+        color: theme.brightness == Brightness.dark ? primaryColor : secondaryColor,
+        width: 2.0,
       ),
+      borderRadius: BorderRadius.circular(12),
     );
     return Stack(
       children: [
@@ -207,6 +207,7 @@ class _MapScreenChooseLocationState extends State<MapScreenChooseLocation> {
                     hintText: widget.hintText,
                     border: inputBorder,
                     focusedBorder: inputFocusBorder,
+                    enabledBorder: inputBorder,
 
                     fillColor: Colors.white,
                     filled: true,
