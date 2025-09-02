@@ -56,7 +56,7 @@ class VolunteerHistoryPage extends StatelessWidget {
         title: Text(
           'Volunteer History'.tr,
           style: const TextStyle(
-            color: fourthColor,
+            // color: fourthColor,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -146,7 +146,7 @@ class VolunteerHistoryPage extends StatelessWidget {
                         Text(
                           "Volunteer Hours".tr,
                           style: const TextStyle(
-                              color: fourthColor,
+                              // color: fourthColor,
                               fontWeight: FontWeight.w600,
                               fontSize: 13),
                         ),
@@ -176,7 +176,7 @@ class VolunteerHistoryPage extends StatelessWidget {
                 style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
-                  color: fourthColor,
+                  // color: fourthColor,
                 ),
               ),
               const SizedBox(height: 12),
@@ -241,7 +241,7 @@ class VolunteerHistoryPage extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        Get.to(() => EventDetailsPage());
+        // Get.to(() => EventDetailsPage());
       },
       child: Container(
         margin: const EdgeInsets.only(bottom: 16),

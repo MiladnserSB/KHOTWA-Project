@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:khotwa/model/events_model.dart';
+import 'package:khotwa/model/projects_model.dart';
 import 'package:khotwa/model/top_projects_model.dart';
 import '../shared/constants/base_url.dart';
 
@@ -17,7 +18,7 @@ class VolunteerService extends GetxService {
   void initializeDio() {
     dio = Dio(
       BaseOptions(
-        baseUrl: 'https://6223ead6bdbe.ngrok-free.app',
+        baseUrl: 'https://19d956813463.ngrok-free.app',
         connectTimeout: const Duration(seconds: 30),
         receiveTimeout: const Duration(seconds: 30),
         headers: {
@@ -194,7 +195,7 @@ class VolunteerService extends GetxService {
     }
   }
 
-  Future<List<dynamic>> getRecommendedEvents(int eventId) async {
+  Future<List<dynamic>> getRecommendedEvents() async {
     try {
       final response = await dio.get(
         '/api/volunteer/events/recommended',
@@ -251,9 +252,38 @@ class VolunteerService extends GetxService {
 
   Future<List<EventModel>> getAllEvents() async {
     try {
-      final response = await dio.get('/api/admin/events');
+      final response = await dio.get('/api/volunteer/events',
+        options: Options(
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization':
+                '${_getToken()}',
+          },
+        ),
+      );
       final eventsModel = EventsModel.fromJson(response.data);
-      return eventsModel.data; // List<EventModel>
+      return eventsModel.data; 
+    } on DioException catch (e) {
+      throw Exception('Failed to load all events: ${e.response?.statusCode}');
+    }
+  }
+
+
+    Future<List<ProjectModel>> getAllProjects() async {
+    try {
+      final response = await dio.get('/api/volunteer/projects',
+        options: Options(
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization':
+                '${_getToken()}',
+          },
+        ),
+      );
+      final projectsModel = ProjectsModel.fromJson(response.data);
+      return projectsModel.data; 
     } on DioException catch (e) {
       throw Exception('Failed to load all events: ${e.response?.statusCode}');
     }

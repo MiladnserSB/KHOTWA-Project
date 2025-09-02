@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:khotwa/model/events_model.dart';
+import 'package:khotwa/model/projects_model.dart';
 import 'package:khotwa/model/top_projects_model.dart';
 import 'package:khotwa/service/volunteer_service.dart';
 
@@ -12,6 +13,7 @@ class VolunteerController extends GetxController {
   var isLoading = false.obs;
   var allEvents = <EventModel>[].obs;
   var topProjects = <TopProject>[].obs;
+  var allProjects = <ProjectModel>[].obs;
   var recommendedEvents = <EventModel>[].obs;
   @override
   void onInit() {
@@ -121,7 +123,17 @@ Future<void> fetchAllEvents() async {
     isLoading(false);
   }
 }
-
+Future<void> fetchAllProjects() async {
+  try {
+    isLoading(true);
+    final projects = await _volunteerService.getAllProjects();
+    allProjects.assignAll(projects);
+  } catch (e) {
+    Get.snackbar('Error', 'Failed to fetch all projects');
+  } finally {
+    isLoading(false);
+  }
+}
 Future<void> fetchTopProjects() async {
   try {
     final List<TopProject> projects = await _volunteerService.getTopProjects();
@@ -132,9 +144,9 @@ Future<void> fetchTopProjects() async {
 
   }
 }
-Future<void> fetchRecommendedEvents(int eventId) async {
+Future<void> fetchRecommendedEvents() async {
   try {
-    final dynamic events = await _volunteerService.getRecommendedEvents(eventId);
+    final dynamic events = await _volunteerService.getRecommendedEvents();
     if (events is List) {
       final List<EventModel> eventModels = events.map((item) {
         if (item is EventModel) {

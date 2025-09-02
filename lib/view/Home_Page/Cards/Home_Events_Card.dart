@@ -140,10 +140,10 @@ class HomeEventsCard extends StatelessWidget {
               textStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
             ),
             onPressed: () {
-              Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => EventDetailsPage()),
-    );
+    //           Navigator.push(
+    //   context,
+    //   MaterialPageRoute(builder: (context) => EventDetailsPage()),
+    // );
             },
            
               child:  Text('View Details'.tr,style:TextStyle(color:  Colors.white))),

@@ -90,7 +90,7 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
     // Load recommended events if we have any event ID to use as reference
     if (_volunteerController.topProjects.isNotEmpty) {
       // Use the first project's ID or any other logic to get an event ID
-      await _volunteerController.fetchRecommendedEvents(_volunteerController.topProjects.first.id);
+      await _volunteerController.fetchRecommendedEvents();
     }
   }
 
@@ -389,7 +389,7 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
                         scale: scale,
                         child: GestureDetector(
                           onTap: (){
-                            Get.to(EventDetailsPage());
+                            // Get.to(EventDetailsPage());
                           },
                           child: HomeEventsCard(
                             title: event.title ?? "No title",

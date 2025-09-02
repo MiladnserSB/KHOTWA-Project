@@ -1,18 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:khotwa/maps/maps_screen.dart';
+import 'package:khotwa/model/events_model.dart';
 import 'package:khotwa/shared/constants/colors.dart';
 import 'package:khotwa/view/Home_Page/Home_Page/Home_Page_Donor.dart';
 import 'package:khotwa/view/event_and_projects/event_details/card_information_in_event.dart';
+import 'package:khotwa/view/event_and_projects/event_details/map_location_page.dart';
 import 'package:khotwa/view/event_and_projects/event_details/project_card_in_details_page.dart';
 import 'package:khotwa/view/event_and_projects/scan_qr_page.dart';
+import 'package:intl/intl.dart'; // For date formatting
+
 
 class EventDetailsPage extends StatelessWidget {
-  const EventDetailsPage({super.key});
+  final EventModel event; // Add EventModel parameter
+
+  const EventDetailsPage({super.key, required this.event}); // Update constructor
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final theme = Theme.of(context);
+
+    // Format the event date
+    final formattedDate = DateFormat('MMMM/dd/yyyy').format(event.date);
 
     return Scaffold(
       backgroundColor: theme.brightness == Brightness.dark
@@ -51,21 +61,35 @@ class EventDetailsPage extends StatelessWidget {
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(16),
-                child: Image.asset(
-                  'assets/images/logo1.png',
-                  width: double.infinity,
-                  height: size.height * 0.25,
-                  fit: BoxFit.cover,
-                ),
+                child: event.coverImage != null
+                    ? Image.network(
+                        event.coverImage!,
+                        width: double.infinity,
+                        height: size.height * 0.25,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) =>
+                            Image.asset(
+                          'assets/images/logo1.png',
+                          width: double.infinity,
+                          height: size.height * 0.25,
+                          fit: BoxFit.cover,
+                        ),
+                      )
+                    : Image.asset(
+                        'assets/images/logo1.png',
+                        width: double.infinity,
+                        height: size.height * 0.25,
+                        fit: BoxFit.cover,
+                      ),
               ),
               const SizedBox(height: 16),
-              const Text(
-                "Local Community Garden Revitalization",
+              Text(
+                event.title,
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
               Text(
-                "Join us in transforming an urban space into a vibrant community garden...",
+                event.description,
                 style: TextStyle(
                   fontSize: 14,
                   color:
@@ -82,7 +106,7 @@ class EventDetailsPage extends StatelessWidget {
                       child: CardInformationInEvent(
                         icon: Icons.calendar_month,
                         title: 'Start Date'.tr,
-                        value: 'September/15/2024',
+                        value: formattedDate,
                       ),
                     ),
                   ),
@@ -93,7 +117,7 @@ class EventDetailsPage extends StatelessWidget {
                       child: CardInformationInEvent(
                         icon: Icons.calendar_today,
                         title: 'End Date'.tr,
-                        value: 'October/30/2024',
+                        value: formattedDate, // Use the same date if no end date
                       ),
                     ),
                   ),
@@ -108,7 +132,7 @@ class EventDetailsPage extends StatelessWidget {
                       child: CardInformationInEvent(
                         icon: Icons.access_time,
                         title: 'Time'.tr,
-                        value: '9:00 AM - 4:00 PM\nDaily',
+                        value: event.time,
                       ),
                     ),
                   ),
@@ -116,10 +140,23 @@ class EventDetailsPage extends StatelessWidget {
                   Expanded(
                     child: SizedBox(
                       height: 100,
-                      child: CardInformationInEvent(
-                        icon: Icons.location_on,
-                        title: 'Location'.tr,
-                        value: 'Central Park West Side',
+                      child: GestureDetector(
+                        onTap: (){
+                          Get.to(LocationDisplayScreen(
+      center: LatLong(event.lat!, event.lng!),
+      locationName: "سوريا",
+      limitLocation: "سوريا",
+      locationPinIconColor: Colors.red,
+      eventName:event.title,
+      eventTime: event.time,
+      eventDate: event.date.toString(),
+    ),);
+                        },
+                        child: CardInformationInEvent(
+                          icon: Icons.location_on,
+                          title: 'Location'.tr,
+                          value: event.location,
+                        ),
                       ),
                     ),
                   ),
@@ -128,16 +165,16 @@ class EventDetailsPage extends StatelessWidget {
               const SizedBox(height: 24),
               ProjectCard(
                 size: size,
-                imagePath: 'assets/images/Intro.png',
-                projectName: 'Clean Water Initiative',
-                progressPercentage: 0.68,
+                imagePath: 'assets/images/Intro.png', // Keep default or use from event if available
+                projectName: event.projectName,
+                progressPercentage: 0.68, // Default value
               ),
               const SizedBox(height: 30),
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton.icon(
                   onPressed: () async {
-                    // final result = await Navigator.push(
+                  // final result = await Navigator.push(
                     //   context,
                     //   MaterialPageRoute(builder: (context) =>  ScanQrPage()),
                     // );
@@ -145,10 +182,10 @@ class EventDetailsPage extends StatelessWidget {
                     //   ScaffoldMessenger.of(context).showSnackBar(
                     //     SnackBar(content: Text("Scanned QR: $result")),
                     //   );
-                    // }
+                    
                   },
                   icon: const Icon(Icons.qr_code_scanner),
-                  label:  Text(
+                  label: Text(
                     'Join'.tr,
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                   ),

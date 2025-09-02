@@ -105,7 +105,7 @@ class _MyEventsPageState extends State<MyEventsPage> {
                     return Transform.scale(
                       scale: scale,
                       child: GestureDetector(
-                         onTap: (){Get.to(EventDetailsPage());},
+                        //  onTap: (){Get.to(EventDetailsPage());},
                         child: EventCard(
                           size: size,
                           elevation: scale > 0.98 ? 10 : 2,

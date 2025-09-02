@@ -164,15 +164,7 @@ class MyApp extends StatelessWidget {
         ),
 
         themeMode: themeController.themeMode,
-        home:LocationDisplayScreen(
-      center: LatLong(33.5138, 36.2922),
-      locationName: "دمشق, سوريا",
-      limitLocation: "سوريا",
-      locationPinIconColor: Colors.red,
-      eventName: "حفل موسيقي",
-      eventTime: "7:00 مساءً",
-      eventDate: "15 ديسمبر 2023",
-    ),
+        home: AnimatedBottomBarPageVolunteer()
       );
     });
   }
