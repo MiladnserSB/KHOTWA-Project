@@ -7,20 +7,17 @@ class ProfilePageHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-                  final theme = Theme.of(context); 
+    final theme = Theme.of(context);
 
     final textScale = MediaQuery.of(context).textScaleFactor;
 
     return Container(
+      color: theme.brightness == Brightness.dark ? Colors.black : thirdColor,
 
-      
-      color:  theme.brightness == Brightness.dark ? Colors.black : thirdColor,
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 2),
 
-      padding: const EdgeInsets.symmetric(horizontal:  16.0, vertical: 2),
-      
       child: Row(
         children: [
-        
           const CircleAvatar(
             radius: 40,
             backgroundImage: AssetImage('assets/images/logo1.png'),
@@ -28,7 +25,6 @@ class ProfilePageHeader extends StatelessWidget {
           const SizedBox(width: 16.0),
           Expanded(
             child: Column(
-              
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
@@ -36,9 +32,9 @@ class ProfilePageHeader extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 18 * textScale,
                     fontWeight: FontWeight.bold,
-                    color:   theme.brightness == Brightness.dark
-            ? Colors.white
-            : primaryColor,
+                    color: theme.brightness == Brightness.dark
+                        ? Colors.white
+                        : Colors.black,
                   ),
                 ),
                 const SizedBox(height: 4),
@@ -46,9 +42,9 @@ class ProfilePageHeader extends StatelessWidget {
                   'Miladalnser@gmail.com',
                   style: TextStyle(
                     fontSize: 15 * textScale,
-                    color:   theme.brightness == Brightness.dark
-            ? Colors.white
-            : primaryColor,
+                    color: theme.brightness == Brightness.dark
+                        ? Colors.white
+                        : Colors.black,
                   ),
                 ),
               ],

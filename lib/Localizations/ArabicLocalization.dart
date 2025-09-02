@@ -279,7 +279,15 @@ class ArabicLocalization extends Translations {
 "Verify":"تأكيد",
 "OK":"نعم",
 "Check Your Email Please!":"!تفحص بريدك",
-  "A code was sent to @email.\nPlease open your inbox and enter it where needed.": "تم إرسال رمز إلى @email.\nيرجى فتح بريدك الوارد وإدخاله في المكان المطلوب."
+  "A code was sent to @email.\nPlease open your inbox and enter it where needed.": "تم إرسال رمز إلى @email.\nيرجى فتح بريدك الوارد وإدخاله في المكان المطلوب.",
+   "Details about you":"تفاصيل شخصية عنك",
+  "Your volunteering details":"تفاصيل عن تطوعك",
+  "Your skills and experience":"مهاراتك وتجاربك",
+  "Emergency contact details":"معلومات اتصال الطوارئ",
+  "History of your volunteering":"سجلك التطوعي",
+  "Success":"بنجاح",
+  "Profile saved":"تم حفظ معلوماتك",
+  "My Profile":"ملفي الشخصي"
 
   }
   };

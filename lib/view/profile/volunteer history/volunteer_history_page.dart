@@ -47,16 +47,25 @@ class VolunteerHistoryPage extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Scaffold(
-      backgroundColor:
-          theme.brightness == Brightness.dark ? Colors.black : thirdColor,
+      backgroundColor: theme.brightness == Brightness.dark
+          ? Colors.black
+          : thirdColor,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: theme.brightness == Brightness.dark
+            ? primaryColor
+            : secondaryColor,
         elevation: 0,
-        leading: const BackButton(color: primaryColor),
+        leading: BackButton(
+          color: theme.brightness == Brightness.dark
+              ? Colors.white
+              : Colors.black,
+        ),
         title: Text(
           'Volunteer History'.tr,
-          style: const TextStyle(
-            // color: fourthColor,
+          style: TextStyle(
+            color: theme.brightness == Brightness.dark
+                ? Colors.white
+                : Colors.black,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -79,11 +88,12 @@ class VolunteerHistoryPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              /// Profile Header
               Container(
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: white,
+                  color: theme.brightness == Brightness.dark
+                      ? thirdColor
+                      : Colors.white,
                   borderRadius: BorderRadius.circular(20),
                   boxShadow: [
                     BoxShadow(
@@ -116,7 +126,9 @@ class VolunteerHistoryPage extends StatelessWidget {
                           const SizedBox(height: 6),
                           Container(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 12, vertical: 4),
+                              horizontal: 12,
+                              vertical: 4,
+                            ),
                             decoration: BoxDecoration(
                               color: secondaryColor.withOpacity(0.2),
                               borderRadius: BorderRadius.circular(12),
@@ -133,10 +145,7 @@ class VolunteerHistoryPage extends StatelessWidget {
                           const SizedBox(height: 6),
                           Text(
                             joinedDateText,
-                            style: const TextStyle(
-                              fontSize: 12,
-                              color: grey,
-                            ),
+                            style: const TextStyle(fontSize: 12, color: grey),
                           ),
                         ],
                       ),
@@ -146,9 +155,10 @@ class VolunteerHistoryPage extends StatelessWidget {
                         Text(
                           "Volunteer Hours".tr,
                           style: const TextStyle(
-                              // color: fourthColor,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 13),
+                            color: fourthColor,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 13,
+                          ),
                         ),
                         const SizedBox(height: 8),
                         CircleAvatar(
@@ -157,9 +167,10 @@ class VolunteerHistoryPage extends StatelessWidget {
                           child: Text(
                             "$totalTime",
                             style: const TextStyle(
-                                color: white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18),
+                              color: white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
                           ),
                         ),
                       ],
@@ -167,16 +178,19 @@ class VolunteerHistoryPage extends StatelessWidget {
                   ],
                 ),
               ),
-              const SizedBox(height: 24),
 
               const SizedBox(height: 32),
 
-              Text(
-                "Campaign History".tr,
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  // color: fourthColor,
+              Center(
+                child: Text(
+                  "Campaign History".tr,
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: theme.brightness == Brightness.dark
+                        ? Colors.white
+                        : Colors.black,
+                  ),
                 ),
               ),
               const SizedBox(height: 12),
@@ -191,12 +205,18 @@ class VolunteerHistoryPage extends StatelessWidget {
     );
   }
 
-  Widget _buildStatCard(String title, String value, IconData icon, Color color) {
+  Widget _buildStatCard(
+    String title,
+    String value,
+    IconData icon,
+    Color color,
+    dynamic theme,
+  ) {
     return Container(
       width: 100,
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: white,
+        color: theme.brightness == Brightness.dark ? thirdColor : Colors.white,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
@@ -241,12 +261,14 @@ class VolunteerHistoryPage extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        // Get.to(() => EventDetailsPage());
+        // Get.to(() => EventDetailsPage(event: null,));
       },
       child: Container(
         margin: const EdgeInsets.only(bottom: 16),
         decoration: BoxDecoration(
-          color: white,
+          color: theme.brightness == Brightness.dark
+              ? thirdColor
+              : Colors.white,
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
@@ -257,16 +279,20 @@ class VolunteerHistoryPage extends StatelessWidget {
           ],
         ),
         child: ListTile(
-          contentPadding:
-              const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+          contentPadding: const EdgeInsets.symmetric(
+            vertical: 12,
+            horizontal: 16,
+          ),
           leading: CircleAvatar(
             radius: 28,
-            backgroundColor:
-                item['isCurrent'] ? secondaryColor : primaryColor,
+            backgroundColor: item['isCurrent'] ? secondaryColor : primaryColor,
             child: Text(
               item['rate'].toString(),
               style: const TextStyle(
-                  fontWeight: FontWeight.bold, color: white, fontSize: 16),
+                fontWeight: FontWeight.bold,
+                color: white,
+                fontSize: 16,
+              ),
             ),
           ),
           title: Text(

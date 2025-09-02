@@ -280,6 +280,16 @@ class EnglishLocalization extends Translations {
 "OK":"OK",
 "Check Your Email Please!":"Check Your Email Please!",
   "A code was sent to @email.\nPlease open your inbox and enter it where needed.": "A code was sent to @email.\nPlease open your inbox and enter it where needed.",
+  "Details about you":"Details about you",
+  "Your volunteering details":"Your volunteering details",
+  "Your skills and experience":"Your skills and experience",
+  "Emergency contact details":"Emergency contact details",
+  "History of your volunteering":"History of your volunteering",
+  "Profile saved":"Profile saved",
+  "Success":"Success",
+  "My Profile":"My Profile"
+
+  
 
 
 

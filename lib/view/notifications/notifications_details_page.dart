@@ -20,28 +20,42 @@ class NotificationDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-        final theme = Theme.of(context);
+    final theme = Theme.of(context);
 
     return Scaffold(
- backgroundColor: theme.brightness == Brightness.dark
-                        ?Colors.black
-                        : thirdColor,      appBar: AppBar(
-        leading: IconButton(onPressed: (){Get.back();}, icon: Icon(Icons.arrow_back, color: white,)),
-        backgroundColor: primaryColor,
-        title:  Text(
+      backgroundColor: theme.brightness == Brightness.dark
+          ? Colors.black
+          : thirdColor,
+      appBar: AppBar(
+        leading: IconButton(
+          onPressed: () {
+            Get.back();
+          },
+          icon: Icon(Icons.arrow_back, color:    theme.brightness == Brightness.dark
+                ? Colors.white
+                : Colors.black,),
+        ),
+        backgroundColor:   theme.brightness == Brightness.dark
+                ? primaryColor
+                : secondaryColor,
+        title: Text(
           "Notification Details".tr,
-          style: TextStyle(color: white, fontWeight: FontWeight.bold),
+          style: TextStyle(color:    theme.brightness == Brightness.dark
+                ? Colors.white
+                : Colors.black, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
       body: Center(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16.0),
           child: Card(
             elevation: 6,
-            color: white,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+            color:     theme.brightness == Brightness.dark
+                ? thirdColor
+                : Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(24),
+            ),
             child: Padding(
               padding: const EdgeInsets.all(20.0),
               child: Column(
@@ -49,24 +63,27 @@ class NotificationDetailsPage extends StatelessWidget {
                 children: [
                   Text(
                     title,
-                    style: const TextStyle(
+                    style:  TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
-                      color: textBlack,
+                      color:     theme.brightness == Brightness.dark
+                ? primaryColor
+                : secondaryColor,
                     ),
                   ),
                   const SizedBox(height: 12),
                   Text(
                     description,
-                    style: const TextStyle(fontSize: 16, color: grey),
+                    style: const TextStyle(fontSize: 16, color: Colors.black),
                   ),
                   const SizedBox(height: 20),
                   Row(
                     children: [
-                      const Icon(Icons.event, color: secondaryColor),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: Text(
+                       Icon(Icons.event, color:   theme.brightness == Brightness.dark
+                ? primaryColor
+                : secondaryColor,size: 25,),
+                      const SizedBox(width: 2),
+                      Text(
                           "${'Event:'.tr} $eventName",
                           style: const TextStyle(
                             fontSize: 16,
@@ -74,17 +91,20 @@ class NotificationDetailsPage extends StatelessWidget {
                             color: textBlack,
                           ),
                         ),
-                      ),
+                      
                     ],
                   ),
                   const SizedBox(height: 12),
                   Row(
                     children: [
-                      const Icon(Icons.person, color: secondaryColor),
+                       Icon(Icons.person, color:   theme.brightness == Brightness.dark
+                ? primaryColor
+                : secondaryColor,size: 25,),
                       const SizedBox(width: 8),
                       Expanded(
                         child: Text(
-"${'Supervisor:'.tr} $supervisor",                          style: const TextStyle(
+                          "${'Supervisor:'.tr} $supervisor",
+                          style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
                             color: textBlack,
@@ -97,7 +117,8 @@ class NotificationDetailsPage extends StatelessWidget {
                   Align(
                     alignment: Alignment.bottomRight,
                     child: Text(
-"${'Received:'.tr} $time",                      style: const TextStyle(fontSize: 14, color: grey),
+                      "${'Received:'.tr} $time",
+                      style: const TextStyle(fontSize: 14, color: grey),
                     ),
                   ),
                 ],

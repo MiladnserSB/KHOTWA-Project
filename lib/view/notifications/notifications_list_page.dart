@@ -41,12 +41,21 @@ class NotificationsListPage extends StatelessWidget {
           onPressed: () {
             Get.back();
           },
-          icon: Icon(Icons.arrow_back, color: white),
+          icon: Icon(Icons.arrow_back,   color: theme.brightness == Brightness.dark
+                ? Colors.white
+                : Colors.black,),
         ),
-        backgroundColor: primaryColor,
+        backgroundColor: theme.brightness == Brightness.dark
+            ? primaryColor
+            : secondaryColor,
         title: Text(
           "Notifications".tr,
-          style: TextStyle(color: white, fontWeight: FontWeight.bold),
+          style: TextStyle(
+            color: theme.brightness == Brightness.dark
+                ? Colors.white
+                : Colors.black,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         centerTitle: true,
       ),
@@ -84,7 +93,9 @@ class NotificationsListPage extends StatelessWidget {
                   },
                   child: Card(
                     elevation: 4,
-                    color: white,
+                    color:   theme.brightness == Brightness.dark
+                ? thirdColor
+                : Colors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20),
                     ),
@@ -95,8 +106,10 @@ class NotificationsListPage extends StatelessWidget {
                         children: [
                           Text(
                             notification["title"]!,
-                            style: const TextStyle(
-                              color: textBlack,
+                            style:  TextStyle(
+                              color:    theme.brightness == Brightness.dark
+                ? primaryColor
+                : secondaryColor,
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                             ),
@@ -104,7 +117,7 @@ class NotificationsListPage extends StatelessWidget {
                           const SizedBox(height: 8),
                           Text(
                             notification["description"]!,
-                            style: const TextStyle(color: grey, fontSize: 14),
+                            style: const TextStyle(color: Colors.black, fontSize: 14),
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -116,7 +129,7 @@ class NotificationsListPage extends StatelessWidget {
                                 notification["time"]!,
                                 style: const TextStyle(
                                   fontSize: 12,
-                                  color: grey,
+                                  color: Colors.grey,
                                 ),
                               ),
                             ],

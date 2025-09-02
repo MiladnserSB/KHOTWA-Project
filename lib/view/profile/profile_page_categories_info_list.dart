@@ -9,19 +9,27 @@ class ProfilePageCategoriesInfoList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return buildProfileListCategories(context);
   }
 
   Widget buildProfileListCategories(BuildContext context) {
-                      final theme = Theme.of(context); 
+    final theme = Theme.of(context);
 
     final List<Map<String, String>> infoItems = [
-      {'title': 'Personal Information'.tr, 'subtitle': 'Details about you'},
-      {'title': 'Volunteer Info'.tr, 'subtitle': 'Your volunteering details'},
-      {'title': 'Experience and Skills'.tr, 'subtitle': 'Your skills and experience'},
-      {'title': 'Emergency Contact'.tr, 'subtitle': 'Emergency contact details'},
-      {'title': 'Volunteer History'.tr, 'subtitle': 'History of your volunteering'},
+      {'title': 'Personal Information'.tr, 'subtitle': 'Details about you'.tr},
+      {'title': 'Volunteer Info'.tr, 'subtitle': 'Your volunteering details'.tr},
+      {
+        'title': 'Experience and Skills'.tr,
+        'subtitle': 'Your skills and experience'.tr,
+      },
+      {
+        'title': 'Emergency Contact'.tr,
+        'subtitle': 'Emergency contact details'.tr,
+      },
+      {
+        'title': 'Volunteer History'.tr,
+        'subtitle': 'History of your volunteering'.tr,
+      },
     ];
 
     final List<IconData> icons = [
@@ -33,7 +41,6 @@ class ProfilePageCategoriesInfoList extends StatelessWidget {
     ];
 
     return ListView.builder(
-      
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       itemCount: infoItems.length,
@@ -45,7 +52,7 @@ class ProfilePageCategoriesInfoList extends StatelessWidget {
               if (index == 4) {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (_) =>  VolunteerHistoryPage()),
+                  MaterialPageRoute(builder: (_) => VolunteerHistoryPage()),
                 );
               } else {
                 final sectionFields = getCategoryPage(index);
@@ -61,25 +68,29 @@ class ProfilePageCategoriesInfoList extends StatelessWidget {
               }
             },
             child: Card(
-              color:          theme.brightness == Brightness.dark ? const Color.fromARGB(255, 1, 28, 2) : Colors.white,
+              color: theme.brightness == Brightness.dark
+                  ? fifth 
+                  : Colors.white,
 
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(16),
               ),
               elevation: 4,
-              
+
               margin: const EdgeInsets.symmetric(horizontal: 8),
               child: ListTile(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16),
                 ),
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 20.0,
+                  vertical: 12.0,
+                ),
                 leading: Icon(
                   icons[index],
-                   color:   theme.brightness == Brightness.dark
-            ? Colors.white
-            : primaryColor,
+                  color:            theme.brightness == Brightness.dark
+                        ? Colors.white
+                        : secondaryColor,
                   size: 32,
                 ),
                 title: Text(
@@ -88,22 +99,24 @@ class ProfilePageCategoriesInfoList extends StatelessWidget {
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 16,
-                    color:     theme.brightness == Brightness.dark
-            ? Colors.white
-            : textBlack,
+                    color: theme.brightness == Brightness.dark
+                        ? Colors.white
+                        : textBlack,
                   ),
                 ),
                 subtitle: Text(
                   infoItems[index]['subtitle']!,
-                  style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                    fontSize: 14,
+                  ),
                   overflow: TextOverflow.ellipsis,
                 ),
                 trailing: Icon(
                   Icons.arrow_forward_ios_rounded,
-                  size: 18,
+                  size:15 ,
                   color: theme.brightness == Brightness.dark
-            ? Colors.white
-            : Colors.black,
+                      ? Colors.white
+                      : Colors.black,
                 ),
               ),
             ),
@@ -133,7 +146,10 @@ class ProfilePageCategoriesInfoList extends StatelessWidget {
         ];
       case 2:
         return [
-          {'label': 'Previous Experience'.tr, 'value': 'Blood donation volunteer'},
+          {
+            'label': 'Previous Experience'.tr,
+            'value': 'Blood donation volunteer',
+          },
           {'label': 'Skills'.tr, 'value': 'First aid, Event organizing'},
           {'label': 'Motivation'.tr, 'value': 'Helping my community'},
         ];

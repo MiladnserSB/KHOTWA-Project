@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:khotwa/shared/constants/colors.dart';
 import 'package:khotwa/view/profile/profile_page_categories_info_list.dart';
 import 'package:khotwa/view/profile/profile_page_header.dart';
@@ -8,25 +9,30 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-                  final theme = Theme.of(context); 
+    final theme = Theme.of(context);
 
     final isLargeScreen = MediaQuery.of(context).size.width > 600;
 
     return Scaffold(
-        backgroundColor:  theme.brightness == Brightness.dark ? Colors.black : thirdColor,
+      appBar: AppBar(title: Text("My Profile".tr,style: TextStyle(fontWeight: FontWeight.bold)),
+        backgroundColor:   theme.brightness == Brightness.dark
+                        ? primaryColor
+                        : secondaryColor,      centerTitle: true,
+leading:  BackButton(color:   theme.brightness == Brightness.dark
+                        ? Colors.white
+                        : Colors.black,),      ),
+      backgroundColor: theme.brightness == Brightness.dark
+          ? Colors.black
+          : thirdColor,
 
-         
-      body: 
-      
-      SafeArea(
+      body: SafeArea(
         child: Center(
           child: ConstrainedBox(
-          
             constraints: const BoxConstraints(maxWidth: 700),
             child: Padding(
               padding: const EdgeInsets.all(20),
               child: ListView(
-                children:  [
+                children: [
                   
                   ProfilePageHeader(),
                   SizedBox(height: 40),

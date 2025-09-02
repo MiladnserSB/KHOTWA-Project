@@ -20,15 +20,17 @@ class WarningsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+            final theme = Theme.of(context);
+
     return Scaffold(
-      backgroundColor: thirdColor,
+      backgroundColor:   theme.brightness == Brightness.dark ? Colors.black:thirdColor,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: secondaryColor,
         elevation: 0,
         title:  Text(
           "Warnings".tr,
           style: TextStyle(
-            color: textBlack,
+            color:   theme.brightness == Brightness.dark ? Colors.white : Colors.black,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -40,6 +42,7 @@ class WarningsPage extends StatelessWidget {
         itemBuilder: (context, index) {
           final warning = warnings[index];
           return Card(
+            color:  theme.brightness == Brightness.dark ? thirdColor : Colors.white,
             elevation: 6,
             shadowColor: Colors.red.withOpacity(0.4),
             shape: RoundedRectangleBorder(
@@ -64,7 +67,7 @@ class WarningsPage extends StatelessWidget {
                     children: [
                       const Icon(Icons.person, size: 18, color: primaryColor),
                       const SizedBox(width: 6),
-Text("${'Supervisor:'.tr} ${warning['supervisor']}"),
+Text("${'Supervisor:'.tr} ${warning['supervisor']}",style: TextStyle(color: Colors.black),),
                     ],
                   ),
                   const SizedBox(height: 6),
@@ -72,7 +75,7 @@ Text("${'Supervisor:'.tr} ${warning['supervisor']}"),
                     children: [
                       const Icon(Icons.event, size: 18, color: secondaryColor),
                       const SizedBox(width: 6),
-Text("${'Event:'.tr} ${warning['event']}"),
+Text("${'Event:'.tr} ${warning['event']}",style: TextStyle(color: Colors.black)),
                     ],
                   ),
                 ],
