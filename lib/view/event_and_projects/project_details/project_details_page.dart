@@ -3,9 +3,13 @@ import 'package:get/get.dart';
 import 'package:khotwa/shared/constants/colors.dart';
 import 'package:khotwa/view/event_and_projects/events_and_projects_page.dart';
 import 'package:khotwa/view/event_and_projects/project_details/event_card_information.dart';
+import 'package:khotwa/model/projects_model.dart'; // Import your ProjectModel
+import 'package:intl/intl.dart';
 
 class ProjectDetailsPage extends StatefulWidget {
-  const ProjectDetailsPage({super.key});
+  final ProjectModel project; // Add ProjectModel parameter
+
+  const ProjectDetailsPage({super.key, required this.project}); // Update constructor
 
   @override
   State<ProjectDetailsPage> createState() => _ProjectDetailsPageState();
@@ -32,32 +36,61 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
     return scale.clamp(0.9, 0.99);
   }
 
+  String _formatDate(DateTime date) {
+    return DateFormat('MMMM/dd/yyyy').format(date);
+  }
+
+  String _getStatusText(Status status) {
+    switch (status) {
+      case Status.ACTIVE:
+        return 'Active'.tr;
+      case Status.COMPLETED:
+        return 'Completed'.tr;
+      case Status.POSTPONED:
+        return 'Postponed'.tr;
+      default:
+        return 'Unknown'.tr;
+    }
+  }
+
+  Color _getStatusColor(Status status) {
+    switch (status) {
+      case Status.ACTIVE:
+        return Colors.green;
+      case Status.COMPLETED:
+        return Colors.blue;
+      case Status.POSTPONED:
+        return Colors.orange;
+      default:
+        return Colors.grey;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final scaleFactor = size.width / 375; // base width = iPhone 11
     final itemWidth = size.width * 0.75;
-                  final theme = Theme.of(context); 
+    final theme = Theme.of(context);
+    
+    final double progress = widget.project.donatedAmount / widget.project.targetDonation;
 
     return Scaffold(
       backgroundColor: theme.brightness == Brightness.dark ? theme.scaffoldBackgroundColor : thirdColor,
       appBar: AppBar(
-      backgroundColor: theme.brightness == Brightness.dark ? theme.scaffoldBackgroundColor : thirdColor,
+        backgroundColor: theme.brightness == Brightness.dark ? theme.scaffoldBackgroundColor : thirdColor,
         elevation: 0,
         centerTitle: true,
         title: Text(
           'Project Details'.tr,
           style: TextStyle(
- color:   theme.brightness == Brightness.dark
-            ? Colors.white
-            : textBlack,            fontWeight: FontWeight.bold,
+            color: theme.brightness == Brightness.dark ? Colors.white : textBlack,
+            fontWeight: FontWeight.bold,
             fontSize: 18 * scaleFactor,
           ),
         ),
         leading: IconButton(
-          icon:  Icon(Icons.arrow_back,  color:   theme.brightness == Brightness.dark
-            ? Colors.white
-            : textBlack,),
+          icon: Icon(Icons.arrow_back, color: theme.brightness == Brightness.dark ? Colors.white : textBlack),
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
@@ -69,16 +102,31 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
             SizedBox(height: size.height * 0.02),
             ClipRRect(
               borderRadius: BorderRadius.circular(16),
-              child: Image.asset(
-                'assets/images/logo1.png',
-                width: double.infinity,
-                height: size.height * 0.25,
-                fit: BoxFit.cover,
-              ),
+              child: widget.project.coverImage != null
+                ? Image.network(
+                    widget.project.coverImage!,
+                    width: double.infinity,
+                    height: size.height * 0.25,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Image.asset(
+                        'assets/images/logo1.png',
+                        width: double.infinity,
+                        height: size.height * 0.25,
+                        fit: BoxFit.cover,
+                      );
+                    },
+                  )
+                : Image.asset(
+                    'assets/images/logo1.png',
+                    width: double.infinity,
+                    height: size.height * 0.25,
+                    fit: BoxFit.cover,
+                  ),
             ),
             SizedBox(height: size.height * 0.02),
             Text(
-              "Local Community Garden Revitalization",
+              widget.project.name,
               style: TextStyle(
                 fontSize: 20 * scaleFactor,
                 fontWeight: FontWeight.bold,
@@ -86,12 +134,10 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
             ),
             SizedBox(height: size.height * 0.01),
             Text(
-              "Join us in transforming a neglected urban space into a vibrant community garden. This project fosters local engagement, promotes sustainable living, and provides fresh produce for everyone.",
+              widget.project.description,
               style: TextStyle(
                 fontSize: 14 * scaleFactor,
-                 color:   theme.brightness == Brightness.dark
-            ? Colors.white
-            : textBlack,
+                color: theme.brightness == Brightness.dark ? Colors.white : textBlack,
                 height: 1.5,
               ),
             ),
@@ -99,31 +145,27 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
             Row(
               children: [
                 Expanded(
-                  child:
-                  SizedBox(height: 100,child:  EventCardInformation(
-                    icon: Icons.calendar_month,
-                    title: 'Start Date'.tr,
-                    value: 'September/1/2024',
-                    fontScale: scaleFactor,
-                  ),)
-                  
-                 
+                  child: SizedBox(
+                    height: 100,
+                    child: EventCardInformation(
+                      icon: Icons.calendar_month,
+                      title: 'Start Date'.tr,
+                      value: _formatDate(widget.project.startDate),
+                      fontScale: scaleFactor,
+                    ),
+                  ),
                 ),
-                SizedBox(width:12),
+                SizedBox(width: 12),
                 Expanded(
-                  child: 
-                  SizedBox(height: 100,child:     EventCardInformation(
-                    icon: Icons.calendar_today,
-                    title: 'End Date'.tr,
-                    value: 'October/3/2024',
-                    fontScale: scaleFactor,
-                  ),)
-                  
-                  
-                  
-                  
-                  
-              
+                  child: SizedBox(
+                    height: 100,
+                    child: EventCardInformation(
+                      icon: Icons.calendar_today,
+                      title: 'End Date'.tr,
+                      value: _formatDate(widget.project.endDate),
+                      fontScale: scaleFactor,
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -131,18 +173,18 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
             Container(
               padding: EdgeInsets.all(size.width * 0.04),
               decoration: BoxDecoration(
-                color: Colors.green.withOpacity(0.08),
+                color: _getStatusColor(widget.project.status).withOpacity(0.1),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Row(
                 children: [
-                  const Icon(Icons.check_circle, color: Colors.green),
+                  Icon(Icons.info, color: _getStatusColor(widget.project.status)),
                   SizedBox(width: size.width * 0.02),
                   Text(
-                    "Status: Active".tr,
+                    "${"Status:".tr} ${_getStatusText(widget.project.status)}",
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
-                      color: Colors.green,
+                      color: _getStatusColor(widget.project.status),
                       fontSize: 14 * scaleFactor,
                     ),
                   ),
@@ -151,50 +193,61 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
             ),
             SizedBox(height: size.height * 0.03),
             Text(
-              "Upcoming Events".tr,
+              "Project Statistics".tr,
               style: TextStyle(
                 fontSize: 16 * scaleFactor,
                 fontWeight: FontWeight.bold,
-                color:   theme.brightness == Brightness.dark
-            ? Colors.white
-            : textBlack,
+                color: theme.brightness == Brightness.dark ? Colors.white : textBlack,
               ),
             ),
             SizedBox(height: size.height * 0.015),
-            SizedBox(
-              height: size.height * 0.50,
-              child: ListView.separated(
-                controller: _scrollController,
-                scrollDirection: Axis.horizontal,
-                physics: const BouncingScrollPhysics(),
-                itemCount: 10,
-                separatorBuilder: (_, __) => const SizedBox(width: 16),
-                itemBuilder: (context, index) {
-                  final scale = _calculateScale(index, itemWidth);
-                  return TweenAnimationBuilder<double>(
-                    tween: Tween(begin: 1.0, end: scale),
-                    duration: const Duration(milliseconds: 250),
-                    curve: Curves.easeOut,
-                    builder: (context, value, child) {
-                      return Transform.scale(
-                        scale: value,
-                        alignment: Alignment.center,
-                        child: SizedBox(
-                          height: size.height * 0.6,
-                          width: itemWidth,
-                          child: Material(
-                            elevation: value > 0.98 ? 10 : 2,
-                            borderRadius: BorderRadius.circular(24),
-                            // child: EventCard(
-                            //   size: Size(itemWidth, size.height * 0.5),
-                            //   elevation: 0, title: '',
-                            // ),
-                          ),
-                        ),
-                      );
-                    },
-                  );
-                },
+            Container(
+              padding: EdgeInsets.all(size.width * 0.04),
+              decoration: BoxDecoration(
+                color: theme.brightness == Brightness.dark 
+                  ? Colors.grey[800] 
+                  : Colors.grey[100],
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Column(
+                children: [
+                  _buildStatRow(
+                    "Target Donation".tr,
+                    "\$${widget.project.targetDonation}",
+                    Icons.monetization_on,
+                    context,
+                  ),
+                  _buildStatRow(
+                    "Donated Amount".tr,
+                    "\$${widget.project.donatedAmount}",
+                    Icons.attach_money,
+                    context,
+                  ),
+                  _buildStatRow(
+                    "Remaining Amount".tr,
+                    "\$${widget.project.remainingAmount}",
+                    Icons.money_off,
+                    context,
+                  ),
+                  _buildStatRow(
+                    "Total Donations".tr,
+                    widget.project.totalDonations.toString(),
+                    Icons.payments,
+                    context,
+                  ),
+                  _buildStatRow(
+                    "Total Volunteers".tr,
+                    widget.project.totalVolunteers.toString(),
+                    Icons.people,
+                    context,
+                  ),
+                  _buildStatRow(
+                    "Total Events".tr,
+                    widget.project.totalEvents.toString(),
+                    Icons.event,
+                    context,
+                  ),
+                ],
               ),
             ),
             SizedBox(height: size.height * 0.03),
@@ -203,15 +256,14 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
               style: TextStyle(
                 fontSize: 16 * scaleFactor,
                 fontWeight: FontWeight.bold,
- color:   theme.brightness == Brightness.dark
-            ? Colors.white
-            : textBlack,              ),
+                color: theme.brightness == Brightness.dark ? Colors.white : textBlack,
+              ),
             ),
             SizedBox(height: size.height * 0.015),
             ClipRRect(
               borderRadius: BorderRadius.circular(12),
               child: LinearProgressIndicator(
-                value: 0.75,
+                value: progress,
                 minHeight: 12,
                 backgroundColor: Colors.grey[300],
                 valueColor: const AlwaysStoppedAnimation<Color>(
@@ -223,20 +275,16 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-
                 Text(
-"${'Collected:'.tr} \$7,500"
-,
+                  "${'Collected:'.tr} \$${widget.project.donatedAmount}",
                   style: TextStyle(
- color:   theme.brightness == Brightness.dark
-            ? Colors.white
-            : primaryColor,                    fontWeight: FontWeight.w600,
+                    color: theme.brightness == Brightness.dark ? Colors.white : primaryColor,
+                    fontWeight: FontWeight.w600,
                     fontSize: 14 * scaleFactor,
                   ),
                 ),
                 Text(
-
-"${'Target:'.tr} \$10,000",
+                  "${'Target:'.tr} \$${widget.project.targetDonation}",
                   style: TextStyle(
                     color: secondaryColor,
                     fontWeight: FontWeight.w600,
@@ -249,7 +297,9 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  // Handle donation button press
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: secondaryColor,
                   padding: EdgeInsets.symmetric(vertical: size.height * 0.02),
@@ -270,6 +320,38 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
             SizedBox(height: size.height * 0.04),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildStatRow(String label, String value, IconData icon, BuildContext context) {
+    final theme = Theme.of(context);
+    final size = MediaQuery.of(context).size;
+    
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: size.height * 0.008),
+      child: Row(
+        children: [
+          Icon(icon, size: 20, color: theme.brightness == Brightness.dark ? Colors.white70 : Colors.grey[700]),
+          SizedBox(width: size.width * 0.03),
+          Expanded(
+            child: Text(
+              label,
+              style: TextStyle(
+                color: theme.brightness == Brightness.dark ? Colors.white70 : Colors.grey[700],
+                fontSize: 14,
+              ),
+            ),
+          ),
+          Text(
+            value,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: theme.brightness == Brightness.dark ? Colors.white : Colors.black,
+              fontSize: 14,
+            ),
+          ),
+        ],
       ),
     );
   }
