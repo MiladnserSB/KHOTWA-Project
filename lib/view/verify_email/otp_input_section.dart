@@ -13,14 +13,16 @@ class OtpInputSection extends StatelessWidget {
 AuthController authController= Get.find<AuthController>();
   @override
   Widget build(BuildContext context) {
+            final theme = Theme.of(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Align(
           alignment: Alignment.centerLeft,
           child: Text(
-            AppStrings.enterThe5Digit,
-            style: TextStyle(color: textBlack, fontSize: size.width * 0.038),
+            "Enter the 5-Digit".tr,
+            style: TextStyle(color:  theme.brightness == Brightness.dark ? Colors.white : Colors.black, fontSize: size.width * 0.038),
           ),
         ),
         SizedBox(height: size.height * 0.015),
@@ -43,8 +45,8 @@ AuthController authController= Get.find<AuthController>();
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Text(
-              AppStrings.dontRecieveCode,
-              style: TextStyle(color: Colors.black54, fontSize: size.width * 0.035),
+              "Don't Recieve Code".tr,
+              style: TextStyle(color:  theme.brightness == Brightness.dark ? Colors.white : Colors.black, fontSize: size.width * 0.035),
             ),
             const SizedBox(width: 5),
             GestureDetector(
@@ -52,7 +54,7 @@ AuthController authController= Get.find<AuthController>();
                 authController.loginBeforeOTP();
              },
               child: Text(
-                AppStrings.resend,
+                "Resend".tr,
                 style: TextStyle(
                   color: secondaryColor,
                   fontWeight: FontWeight.bold,

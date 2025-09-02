@@ -13,6 +13,8 @@ class VerifyEmailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+        final theme = Theme.of(context);
+
     final auth = Get.find<AuthController>();
     final info = Get.arguments as Map<String, dynamic>? ?? {};
     final userEmail = info['email'] ?? '';
@@ -27,6 +29,8 @@ class VerifyEmailPage extends StatelessWidget {
     });
 
     return Scaffold(
+      backgroundColor: theme.brightness == Brightness.dark ? Colors.black : thirdColor,
+
       resizeToAvoidBottomInset: true,
       body: SafeArea(
         child: LayoutBuilder(
@@ -47,13 +51,14 @@ class VerifyEmailPage extends StatelessWidget {
                       SizedBox(height: screenSize.height * 0.05),
                       LoginVerifyChangeLogo(
                         size: screenSize,
-                        title: AppStrings.emailVerification,
+                        title: "EmailVerification".tr,
+                        
                       ),
                       SizedBox(height: screenSize.height * 0.04),
                       OtpInputSection(
                         size: screenSize,
                         onSubmit: (code) {
-                          auth.otp.value = code;
+                          // auth.otp.value = code;
                         },
                       ),
                       SizedBox(height: screenSize.height * 0.12),
@@ -61,7 +66,7 @@ class VerifyEmailPage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            AppStrings.weAreAlmostThere,
+                           "WeAreAlmostThere".tr,
                             style: TextStyle(
                               color: secondaryColor,
                               fontWeight: FontWeight.bold,
@@ -78,7 +83,7 @@ class VerifyEmailPage extends StatelessWidget {
                       ),
                       SizedBox(height: screenSize.height * 0.1),
                       AuthCustomButton(
-                        title: AppStrings.verify,
+                        title: "Verify".tr,
                         onPressed: () {
                           final otpCode = auth.otp.value;
 
@@ -112,16 +117,17 @@ class VerifyEmailPage extends StatelessWidget {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        title: const Text('Check Your Email Please!'),
+        title:  Text('Check Your Email Please!'.tr),
         content: Text(
-          'A code was sent to $email.\nPlease open your inbox and enter it where needed.',
+          'A code was sent to @email.\nPlease open your inbox and enter it where needed.'
+    .trParams({"email": email}),
           style: TextStyle(fontSize: dim.width * 0.04),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
             child: Text(
-              'OK',
+              'OK'.tr,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 color: secondaryColor,
