@@ -267,7 +267,7 @@ class _AnimatedListViewState extends State<AnimatedListView>
             scale: scale,
             child: GestureDetector(
               onTap: () {
-                // Get.to(() => ProjectDetailsPage(project: project));
+                Get.to(() => ProjectDetailsPage(project: project));
               },
               child: ProjectCard(
                 size: widget.size,
