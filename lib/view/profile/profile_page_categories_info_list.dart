@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:khotwa/shared/constants/colors.dart';
 import 'package:khotwa/view/profile/profile_category_details.dart';
-import 'package:khotwa/view/profile/volunteer%20history/volunteer_history_page.dart';
 
 class ProfilePageCategoriesInfoList extends StatelessWidget {
   const ProfilePageCategoriesInfoList({super.key});
@@ -50,10 +49,10 @@ class ProfilePageCategoriesInfoList extends StatelessWidget {
           child: GestureDetector(
             onTap: () {
               if (index == 4) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => VolunteerHistoryPage()),
-                );
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(builder: (_) => VolunteerHistoryPage()),
+                // );
               } else {
                 final sectionFields = getCategoryPage(index);
                 Navigator.push(
