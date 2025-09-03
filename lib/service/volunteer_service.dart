@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:khotwa/model/events_model.dart';
 import 'package:khotwa/model/projects_model.dart';
+import 'package:khotwa/model/tasks_model.dart';
 import 'package:khotwa/model/top_projects_model.dart';
 import '../shared/constants/base_url.dart';
 
@@ -18,7 +19,7 @@ class VolunteerService extends GetxService {
   void initializeDio() {
     dio = Dio(
       BaseOptions(
-        baseUrl: 'https://19d956813463.ngrok-free.app',
+        baseUrl: 'https://5c9e89e40ad4.ngrok-free.app',
         connectTimeout: const Duration(seconds: 30),
         receiveTimeout: const Duration(seconds: 30),
         headers: {
@@ -34,8 +35,7 @@ class VolunteerService extends GetxService {
           try {
             final token = await _getToken();
             if (token.isNotEmpty) {
-              options.headers['Authorization'] =
-                  'Bearer 11|rlOVAxsob1pHEmFLwZN87HGyZrhbGUIQVSF4gemAcc591461';
+              options.headers['Authorization'] = 'Bearer $token';
             }
           } catch (e) {
             print('Error getting token: $e');
@@ -54,19 +54,27 @@ class VolunteerService extends GetxService {
   }
 
   Future<String> _getToken() async {
-
     return '11|rlOVAxsob1pHEmFLwZN87HGyZrhbGUIQVSF4gemAcc591461';
   }
 
-  // Events
-  Future<List<dynamic>> getMyEvents() async {
-    try {
-      final response = await dio.get('/api/volunteer/events');
-      return response.data['data'] ?? [];
-    } on DioException catch (e) {
-      throw Exception('Failed to load events: ${e.response?.statusCode}');
-    }
+ Future<List<EventModel>> getMyEvents() async {
+  try {
+    final token = await _getToken();
+    final response = await dio.get(
+      '/api/volunteer/events',
+      options: Options(headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      }),
+    );
+    final eventsModel = EventsModel.fromJson(response.data);
+    return eventsModel.data;
+  } on DioException catch (e) {
+    throw Exception('Failed to load events: ${e.response?.statusCode}');
   }
+}
+
 
   Future<Map<String, dynamic>> registerForEvent(int eventId) async {
     try {
@@ -92,29 +100,38 @@ class VolunteerService extends GetxService {
     }
   }
 
-  // Tasks
-  Future<List<dynamic>> getMyTasks() async {
-    try {
-      final response = await dio.get('/api/volunteer/tasks');
-      return response.data['data'] ?? [];
-    } on DioException catch (e) {
-      throw Exception('Failed to load tasks: ${e.response?.statusCode}');
-    }
-  }
+  Future<List<TaskModel>> getMyTasks() async {
+  try {
+    final token = await _getToken();
+    final response = await dio.get(
+      '/api/volunteer/tasks',
+      options: Options(
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      ),
+    );
 
-  Future<Map<String, dynamic>> markTaskCompleted(int taskId) async {
-    try {
-      final response = await dio.post(
-        '/api/volunteer/tasks/$taskId/completion',
-        data: {'completion_state': 'completed'},
-      );
-      return response.data;
-    } on DioException catch (e) {
-      throw Exception('Failed to complete task: ${e.response?.statusCode}');
-    }
-  }
+    final tasksModel = TasksModel.fromJson(response.data);
 
-  // Evaluations
+    if (!tasksModel.status) {
+      throw Exception('Failed to load tasks: ${tasksModel.message}');
+    }
+
+    // Return the list of TaskModel
+    return tasksModel.data;
+  } on DioException catch (e) {
+    print("Dio error: ${e.message}");
+    throw Exception('Failed to load tasks: ${e.response?.statusCode}');
+  } catch (e) {
+    print("General error: $e");
+    throw Exception('Failed to load tasks');
+  }
+}
+
+
   Future<List<dynamic>> getMyEvaluations() async {
     try {
       final response = await dio.get('/api/volunteer/evaluations');
@@ -204,8 +221,7 @@ class VolunteerService extends GetxService {
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
-            'Authorization':
-            '${_getToken()}',
+            'Authorization': '${_getToken()}',
           },
         ),
       );
@@ -225,8 +241,7 @@ class VolunteerService extends GetxService {
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
-            'Authorization':
-                '${_getToken()}',
+            'Authorization': '${_getToken()}',
           },
         ),
       );
@@ -252,40 +267,64 @@ class VolunteerService extends GetxService {
 
   Future<List<EventModel>> getAllEvents() async {
     try {
-      final response = await dio.get('/api/volunteer/events',
+      final response = await dio.get(
+        '/api/volunteer/events',
         options: Options(
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
-            'Authorization':
-                '${_getToken()}',
+            'Authorization': '${_getToken()}',
           },
         ),
       );
       final eventsModel = EventsModel.fromJson(response.data);
-      return eventsModel.data; 
+      return eventsModel.data;
     } on DioException catch (e) {
       throw Exception('Failed to load all events: ${e.response?.statusCode}');
     }
   }
 
-
-    Future<List<ProjectModel>> getAllProjects() async {
+  Future<List<ProjectModel>> getAllProjects() async {
     try {
-      final response = await dio.get('/api/volunteer/projects',
+      final response = await dio.get(
+        '/api/volunteer/projects',
+        options: Options(
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': '${_getToken()}',
+          },
+        ),
+      );
+      final projectsModel = ProjectsModel.fromJson(response.data);
+      return projectsModel.data;
+    } on DioException catch (e) {
+      throw Exception('Failed to load all events: ${e.response?.statusCode}');
+    }
+  }
+
+  Future<Map<String, dynamic>> updateTaskStatus(
+    int taskId,
+    String action,
+  ) async {
+    try {
+      final response = await dio.post(
+        '/api/volunteer/tasks/$taskId/status',
+        data: {'action': action},
         options: Options(
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
             'Authorization':
-                '${_getToken()}',
+                'Bearer 11|rlOVAxsob1pHEmFLwZN87HGyZrhbGUIQVSF4gemAcc591461',
           },
         ),
       );
-      final projectsModel = ProjectsModel.fromJson(response.data);
-      return projectsModel.data; 
+      return response.data;
     } on DioException catch (e) {
-      throw Exception('Failed to load all events: ${e.response?.statusCode}');
+      throw Exception(
+        'Failed to update task status: ${e.response?.statusCode}',
+      );
     }
   }
 }

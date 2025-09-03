@@ -51,6 +51,7 @@ dependencies:
   latlong2:
   flutter_map: ^4.0.0
   permission_handler:
+  flutter_svg: ^2.0.9
 
 dev_dependencies:
   flutter_test:

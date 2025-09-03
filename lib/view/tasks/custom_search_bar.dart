@@ -3,32 +3,61 @@ import 'package:get/get.dart';
 import 'package:khotwa/shared/constants/colors.dart';
 
 class CustomSearchBar extends StatelessWidget {
-  const CustomSearchBar({super.key});
+  final TextEditingController controller;
+  final Function(String)? onChanged;
+  final String hintText;
+
+  const CustomSearchBar({
+    super.key,
+    required this.controller,
+    this.onChanged,
+    this.hintText = 'search',
+  });
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final theme = Theme.of(context);
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12),
       height: size.height * 0.06,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: theme.brightness == Brightness.dark ? Colors.grey[800] : Colors.white,
         borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: theme.brightness == Brightness.dark ? Colors.grey[600]! : Colors.grey[300]!,
+          width: 1,
+        ),
       ),
-      child:  Row(
+      child: Row(
         children: [
-          Icon(Icons.search, color: Colors.black),
-          SizedBox(width: 10),
+          Icon(Icons.search, color: theme.brightness == Brightness.dark ? Colors.white : Colors.black),
+          const SizedBox(width: 10),
           Expanded(
             child: TextField(
+              controller: controller,
+              onChanged: onChanged,
               decoration: InputDecoration(
-                hintText: 'search'.tr,
+                hintText: hintText.tr,
                 border: InputBorder.none,
-                hintStyle: TextStyle(color: Colors.black)
+                hintStyle: TextStyle(
+                  color: theme.brightness == Brightness.dark ? Colors.grey[400] : Colors.grey[600],
+                ),
+              ),
+              style: TextStyle(
+                color: theme.brightness == Brightness.dark ? Colors.white : Colors.black,
               ),
             ),
           ),
+          if (controller.text.isNotEmpty)
+            IconButton(
+              icon: Icon(Icons.clear, size: 20),
+              onPressed: () {
+                controller.clear();
+                if (onChanged != null) onChanged!('');
+              },
+            ),
         ],
       ),
     );

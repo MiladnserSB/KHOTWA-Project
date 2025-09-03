@@ -9,6 +9,7 @@ import 'package:khotwa/view/Home_Page/Cards/Home_Projects_Card.dart';
 import 'package:khotwa/view/event_and_projects/event_details/event_details_page.dart';
 import 'package:khotwa/view/event_and_projects/events_and_projects_page.dart';
 import 'package:khotwa/view/profile/profile_page.dart';
+import 'package:khotwa/widgets/custom_progress_indicator.dart';
 
 class HomePageVolunteer extends StatefulWidget {
   const HomePageVolunteer({super.key});
@@ -20,7 +21,9 @@ class HomePageVolunteer extends StatefulWidget {
 class _HomePageVolunteerState extends State<HomePageVolunteer> {
   final FocusNode _focusNode = FocusNode();
   final TextEditingController _controller = TextEditingController();
-  final VolunteerController _volunteerController = Get.put(VolunteerController());
+  final VolunteerController _volunteerController = Get.put(
+    VolunteerController(),
+  );
 
   final ScrollController _myEventScrollController = ScrollController();
   final ScrollController _recommendedScrollController = ScrollController();
@@ -80,16 +83,14 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
         _projectScroll = _projectScrollController.offset;
       });
     });
-    
+
     // Load data when the page initializes
     _loadData();
   }
 
   Future<void> _loadData() async {
     await _volunteerController.fetchTopProjects();
-    // Load recommended events if we have any event ID to use as reference
     if (_volunteerController.topProjects.isNotEmpty) {
-      // Use the first project's ID or any other logic to get an event ID
       await _volunteerController.fetchRecommendedEvents();
     }
   }
@@ -257,7 +258,6 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
 
               const SizedBox(height: 10),
 
-              // My Events
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -289,29 +289,56 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
               ),
               const SizedBox(height: 10),
 
-              SizedBox(
-                height: 330,
-                child: ListView.separated(
-                  controller: _myEventScrollController,
-                  scrollDirection: Axis.horizontal,
-                  itemCount: myeventsList.length,
-                  separatorBuilder: (_, __) => const SizedBox(width: 10),
-                  itemBuilder: (context, index) {
-                    final event = myeventsList[index];
-                    double scale = _calculateScale(_myEventScroll, index, 220);
-                    return Transform.scale(
-                      scale: scale,
-                      child: HomeEventsCard(
-                        title: event['title']!,
-                        image: event['image']!,
-                        volunteersCount: 12,
-                        status: 'status accept',
-                        requiredVolunteers: 1,
-                      ),
-                    );
-                  },
-                ),
-              ),
+              Obx(() {
+                if (_volunteerController.isLoading.value &&
+                    _volunteerController.myEvents.isEmpty) {
+                  return SizedBox(
+                    height: 330,
+                    child: Center(
+                      child: CustomProgressIndicator(), 
+                    ),
+                  );
+                }
+
+                if (_volunteerController.myEvents.isEmpty) {
+                  return SizedBox(
+                    height: 330,
+                    child: Center(
+                      child: CustomProgressIndicator(),
+                    ),
+                  );
+                }
+
+                return SizedBox(
+                  height: 330,
+                  child: ListView.separated(
+                    controller: _myEventScrollController,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: _volunteerController.myEvents.length,
+                    separatorBuilder: (context, index) =>
+                        const SizedBox(width: 10),
+                    itemBuilder: (context, index) {
+                      final event = _volunteerController.myEvents[index];
+                      double scale = _calculateScale(
+                        _myEventScroll,
+                        index,
+                        220,
+                      );
+
+                      return Transform.scale(
+                        scale: scale,
+                        child: HomeEventsCard(
+                          title: event.title,
+                          image: event.coverImage ?? 'assets/images/new.jpg',
+                          volunteersCount: event.currentVolunteers,
+                          requiredVolunteers: event.requiredVolunteers,
+                          status: event.status.toString().split('.').last,
+                        ),
+                      );
+                    },
+                  ),
+                );
+              }),
 
               const SizedBox(height: 25),
 
@@ -349,13 +376,11 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
 
               // Recommended Events from API
               Obx(() {
-                if (_volunteerController.isLoading.value && 
+                if (_volunteerController.isLoading.value &&
                     _volunteerController.recommendedEvents.isEmpty) {
                   return SizedBox(
                     height: 330,
-                    child: Center(
-                      child: CircularProgressIndicator(color: primaryColor),
-                    ),
+                    child: CustomProgressIndicator(),
                   );
                 }
 
@@ -363,10 +388,7 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
                   return SizedBox(
                     height: 330,
                     child: Center(
-                      child: Text(
-                        'No recommended events available',
-                        style: TextStyle(color: Colors.grey, fontSize: 16),
-                      ),
+                      child: CustomProgressIndicator(),
                     ),
                   );
                 }
@@ -379,7 +401,8 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
                     itemCount: _volunteerController.recommendedEvents.length,
                     separatorBuilder: (_, __) => const SizedBox(width: 10),
                     itemBuilder: (context, index) {
-                      final event = _volunteerController.recommendedEvents[index];
+                      final event =
+                          _volunteerController.recommendedEvents[index];
                       double scale = _calculateScale(
                         _recommendedScroll,
                         index,
@@ -388,7 +411,7 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
                       return Transform.scale(
                         scale: scale,
                         child: GestureDetector(
-                          onTap: (){
+                          onTap: () {
                             // Get.to(EventDetailsPage());
                           },
                           child: HomeEventsCard(
@@ -441,12 +464,12 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
 
               // Top Projects from API
               Obx(() {
-                if (_volunteerController.isLoading.value && 
+                if (_volunteerController.isLoading.value &&
                     _volunteerController.topProjects.isEmpty) {
                   return SizedBox(
                     height: 350,
                     child: Center(
-                      child: CircularProgressIndicator(color: primaryColor),
+                      child: CustomProgressIndicator(),
                     ),
                   );
                 }
@@ -455,10 +478,7 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
                   return SizedBox(
                     height: 350,
                     child: Center(
-                      child: Text(
-                        'No projects available',
-                        style: TextStyle(color: Colors.grey, fontSize: 16),
-                      ),
+                      child: CustomProgressIndicator(),
                     ),
                   );
                 }
@@ -472,8 +492,12 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
                     separatorBuilder: (_, __) => const SizedBox(width: 10),
                     itemBuilder: (context, index) {
                       final project = _volunteerController.topProjects[index];
-                      double scale = _calculateScale(_projectScroll, index, 260);
-                      
+                      double scale = _calculateScale(
+                        _projectScroll,
+                        index,
+                        260,
+                      );
+
                       return Transform.scale(
                         scale: scale,
                         child: HomeProjectsCard(

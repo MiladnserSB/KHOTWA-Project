@@ -17,9 +17,7 @@ class VolunteerController extends GetxController {
   var recommendedEvents = <EventModel>[].obs;
   @override
   void onInit() {
- Future.delayed(Duration(milliseconds: 100), () {
-      fetchTopProjects();
-    });
+ 
     super.onInit();
   }
 
@@ -40,8 +38,15 @@ class VolunteerController extends GetxController {
   }
 
   Future<void> fetchMyEvents() async {
+    try {
+    isLoading(true);
     final events = await _volunteerService.getMyEvents();
     myEvents.assignAll(events);
+    }catch (e) {
+    Get.snackbar('Error', 'Failed to fetch My events');
+  } finally {
+    isLoading(false);
+  }
   }
 
   Future<void> fetchMyTasks() async {
@@ -97,19 +102,20 @@ class VolunteerController extends GetxController {
     }
   }
 
-  Future<void> markTaskCompleted(int taskId) async {
-    try {
-      isLoading(true);
-      await _volunteerService.markTaskCompleted(taskId);
-      await fetchMyTasks();
-      Get.snackbar('Success', 'Task marked as completed');
-    } catch (e) {
-      Get.snackbar('Error', 'Failed to update task');
-    } finally {
-      isLoading(false);
-    }
-  }
+  // Add this to your VolunteerController class
 
+Future<void> updateTaskStatus(int taskId, String action) async {
+  try {
+    isLoading(true);
+    await _volunteerService.updateTaskStatus(taskId, action);
+    await fetchMyTasks(); 
+    Get.snackbar('Success', 'Task status updated successfully');
+  } catch (e) {
+    Get.snackbar('Error', 'Failed to update task status: $e');
+  } finally {
+    isLoading(false);
+  }
+}
  
 
 Future<void> fetchAllEvents() async {

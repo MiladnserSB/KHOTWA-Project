@@ -1,25 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:khotwa/controller/volunteer_controller.dart';
+import 'package:khotwa/model/tasks_model.dart';
 import 'package:khotwa/shared/constants/colors.dart';
 
 class TaskCard extends StatelessWidget {
-  final String title;
-  final String description;
-  final String assignedDate;
-  final String dueDate;
-  final String eventName;
-  final String supervisorName;
-  final String status;
+  final TaskModel task;
+  final String displayedStatus;
 
   const TaskCard({
     super.key,
-    required this.title,
-    required this.description,
-    required this.assignedDate,
-    required this.dueDate,
-    required this.eventName,
-    required this.supervisorName,
-    required this.status,
+    required this.task,
+    required this.displayedStatus,
   });
 
   void _showConfirmationDialog(
@@ -51,13 +43,13 @@ class TaskCard extends StatelessWidget {
         ),
         actions: [
           ElevatedButton(
-
             style: ElevatedButton.styleFrom(
               backgroundColor: secondaryColor,
               foregroundColor: white,
             ),
             onPressed: () {
-Navigator.of(context).pop();            },
+              Navigator.of(context).pop();
+            },
             child: Text("Cancel".tr),
           ),
           ElevatedButton(
@@ -76,16 +68,47 @@ Navigator.of(context).pop();            },
     );
   }
 
+  // Method to handle task status update
+  void _handleTaskAction(String action, BuildContext context) {
+    final controller = Get.find<VolunteerController>();
+    
+    _showConfirmationDialog(
+      context,
+      "Update Status".tr,
+      "Are you sure you want to ${action.tr} this task?".tr,
+      () {
+        controller.updateTaskStatus(task.id, action).then((_) {
+          // Show success message
+          Get.snackbar(
+            "Success".tr,
+            "Task status updated successfully".tr,
+            backgroundColor: Colors.green,
+            colorText: Colors.white,
+          );
+        }).catchError((error) {
+          // Show error message
+          Get.snackbar(
+            "Error".tr,
+            "Failed to update task status: $error".tr,
+            backgroundColor: Colors.red,
+            colorText: Colors.white,
+          );
+        });
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final controller = Get.find<VolunteerController>();
 
     Color statusColor;
-    switch (status.toLowerCase()) {
-      case 'in progress':
+    switch (task.status.toLowerCase()) {
+      case 'in_progress':
         statusColor = Colors.green;
         break;
-      case 'pending':
+      case 'not_started':
         statusColor = Colors.orange;
         break;
       case 'completed':
@@ -108,7 +131,7 @@ Navigator.of(context).pop();            },
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  title,
+                  task.title,
                   style: TextStyle(
                     fontSize: baseFont + 2,
                     fontWeight: FontWeight.bold,
@@ -119,7 +142,7 @@ Navigator.of(context).pop();            },
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  description,
+                  task.description,
                   style: TextStyle(
                     fontSize: baseFont,
                     color: theme.brightness == Brightness.dark
@@ -130,20 +153,25 @@ Navigator.of(context).pop();            },
                 const SizedBox(height: 12),
                 _infoRow(
                   Icons.calendar_today,
-                  "${'Assigned'.tr}: $assignedDate",
+                  "${'Assigned'.tr}: ${task.startDate != null ? task.startDate.toString().split(' ')[0] : 'N/A'}",
                   baseFont,
                   theme,
                 ),
-                _infoRow(Icons.event, "${'Due'.tr}: $dueDate", baseFont, theme),
                 _infoRow(
-                  Icons.location_on_outlined,
-                  "${'Event'.tr}: $eventName",
-                  baseFont,
-                  theme,
+                  Icons.event, 
+                  "${'Due'.tr}: ${task.dueDate.toString().split(' ')[0]}", 
+                  baseFont, 
+                  theme
                 ),
                 _infoRow(
                   Icons.person,
-                  "${'Supervisor'.tr}: $supervisorName",
+                  "${'Supervisor ID'.tr}: ${task.assignedBy}",
+                  baseFont,
+                  theme,
+                ),
+                _infoRow(
+                  Icons.timer,
+                  "${'Volunteer Hours'.tr}: ${task.volunteerHours}",
                   baseFont,
                   theme,
                 ),
@@ -151,61 +179,95 @@ Navigator.of(context).pop();            },
                 const SizedBox(height: 10),
                 Chip(
                   label: Text(
-                    status,
+                    displayedStatus,
                     style: TextStyle(fontSize: baseFont, color: statusColor),
                   ),
                   backgroundColor: statusColor.withOpacity(0.1),
                 ),
                 const SizedBox(height: 12),
-                Row(
-                  children: [
-                    Expanded(
-                      child: OutlinedButton(
-                        style: OutlinedButton.styleFrom(
-                          backgroundColor: primaryColor,
-                          side: BorderSide(color: secondaryColor),
-                        ),
-                        onPressed: () {
-                          _showConfirmationDialog(
-                            context,
-                            "Update Status".tr,
-                            "Are you sure you want to update the task status?"
-                                .tr,
-                            () {
-                              // handle update
-                            },
-                          );
-                        },
-                        child: Text(
-                          "Update Status".tr,
-                          style: TextStyle(color: white, fontSize: baseFont),
+                
+                // Show different buttons based on the task status
+                if (task.status.toLowerCase() == 'not_started')
+                  Row(
+                    children: [
+                      Expanded(
+                        child: OutlinedButton(
+                          style: OutlinedButton.styleFrom(
+                            backgroundColor: primaryColor,
+                            side: BorderSide(color: secondaryColor),
+                          ),
+                          onPressed: controller.isLoading.value 
+                            ? null 
+                            : () => _handleTaskAction('accept', context),
+                          child: Text(
+                            "Accept".tr,
+                            style: TextStyle(color: white, fontSize: baseFont),
+                          ),
                         ),
                       ),
-                    ),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: ElevatedButton(
-                        onPressed: () {
-                          _showConfirmationDialog(
-                            context,
-                            "Decline Task".tr,
-                            "Are you sure you want to decline this task?".tr,
-                            () {
-                              // handle decline
-                            },
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.redAccent,
-                        ),
-                        child: Text(
-                          "Decline Task".tr,
-                          style: TextStyle(color: white, fontSize: baseFont),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed: controller.isLoading.value 
+                            ? null 
+                            : () => _handleTaskAction('reject', context),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.redAccent,
+                          ),
+                          child: Text(
+                            "Reject".tr,
+                            style: TextStyle(color: white, fontSize: baseFont),
+                          ),
                         ),
                       ),
+                    ],
+                  )
+                else if (task.status.toLowerCase() == 'in_progress')
+                  Row(
+                    children: [
+                      Expanded(
+                        child: OutlinedButton(
+                          style: OutlinedButton.styleFrom(
+                            backgroundColor: primaryColor,
+                            side: BorderSide(color: secondaryColor),
+                          ),
+                          onPressed: controller.isLoading.value 
+                            ? null 
+                            : () => _handleTaskAction('complete', context),
+                          child: Text(
+                            "Complete".tr,
+                            style: TextStyle(color: white, fontSize: baseFont),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed: controller.isLoading.value 
+                            ? null 
+                            : () => _handleTaskAction('withdraw', context),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.redAccent,
+                          ),
+                          child: Text(
+                            "Withdraw".tr,
+                            style: TextStyle(color: white, fontSize: baseFont),
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
+                else if (task.status.toLowerCase() == 'completed')
+                  Center(
+                    child: Text(
+                      "Task Completed".tr,
+                      style: TextStyle(
+                        fontSize: baseFont,
+                        color: Colors.green,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ],
-                ),
+                  ),
               ],
             );
           },

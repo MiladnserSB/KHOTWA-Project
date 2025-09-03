@@ -110,10 +110,10 @@ class HomeProjectsCard extends StatelessWidget {
           const SizedBox(height: 20),
           ElevatedButton(
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => ProjectDetailsPage()),
-              );
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(builder: (context) => ProjectDetailsPage()),
+              // );
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFFDDA15E),
