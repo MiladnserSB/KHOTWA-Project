@@ -210,7 +210,7 @@ class EventCard extends StatelessWidget {
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Text(
-                      statusValues.reverse[event.status]!.capitalize!,
+                   (statusValues.reverse[event.status] ?? 'unknown').capitalize!,
                       style: const TextStyle(
                         color: secondaryColor,
                         fontWeight: FontWeight.w600,

@@ -175,14 +175,14 @@ class EventDetailsPage extends StatelessWidget {
                 child: ElevatedButton.icon(
                   onPressed: () async {
                   // final result = await Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(builder: (context) =>  ScanQrPage()),
-                    // );
-                    // if (result != null) {
-                    //   ScaffoldMessenger.of(context).showSnackBar(
-                    //     SnackBar(content: Text("Scanned QR: $result")),
-                    //   );
-                    
+                  //     context,
+                  //     MaterialPageRoute(builder: (context) =>  ScanQrPage()),
+                  //   );
+                  //   if (result != null) {
+                  //     ScaffoldMessenger.of(context).showSnackBar(
+                  //       SnackBar(content: Text("Scanned QR: $result")),
+                  //     );
+                  // }
                   },
                   icon: const Icon(Icons.qr_code_scanner),
                   label: Text(

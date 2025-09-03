@@ -21,7 +21,7 @@ class VolunteerController extends GetxController {
   var isProfileLoading = false.obs;
   @override
   void onInit() {
- 
+    fetchProfile();
     super.onInit();
   }
 

@@ -70,6 +70,7 @@ class VolunteerService extends GetxService {
       }),
     );
     final eventsModel = EventsModel.fromJson(response.data);
+    print(response.data);
     return eventsModel.data;
   } on DioException catch (e) {
     throw Exception('Failed to load events: ${e.response?.statusCode}');
