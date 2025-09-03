@@ -301,6 +301,7 @@ class EnglishLocalization extends Translations {
    "Total Donations":"Total Donations",
    "Remaining Amount":"Remaining Amount",
    "Donated Amount":"Donated Amount",
+   "No results found":"No results found",
    
   
 

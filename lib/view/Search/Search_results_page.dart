@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:khotwa/controller/Search_controller.dart'; // الملف بنفس الاسم
+import 'package:khotwa/shared/constants/colors.dart';
 import 'package:khotwa/view/event_and_projects/event_details/event_details_page.dart';
 import 'package:khotwa/view/event_and_projects/project_details/project_details_page.dart';
 import 'package:khotwa/view/event_and_projects/events_and_projects_page.dart';
@@ -14,10 +15,15 @@ class SearchResultsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+        final theme = Theme.of(context);
+
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
-      appBar: AppBar(title: Text("Search Results".tr)),
+      backgroundColor: theme.brightness == Brightness.dark ? Colors.black : thirdColor,
+     appBar: AppBar(title: Text("Search Results".tr,style: TextStyle(color: theme.brightness == Brightness.dark ? Colors.white : Colors.black,),),backgroundColor:
+      theme.brightness == Brightness.dark ? primaryColor :secondaryColor,leading: BackButton(color: theme.brightness == Brightness.dark ? Colors.white : Colors.black,),
+       ),
       body: Padding(
         padding: const EdgeInsets.all(12.0),
         child: Obx(() {

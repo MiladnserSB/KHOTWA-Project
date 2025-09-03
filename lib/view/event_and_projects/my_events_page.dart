@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:khotwa/controller/Search_controller.dart';
 import 'package:khotwa/controller/volunteer_controller.dart';
 import 'package:khotwa/model/events_model.dart';
 import 'package:khotwa/shared/constants/colors.dart';
+import 'package:khotwa/view/Search/Search_results_page.dart';
 import 'package:khotwa/view/event_and_projects/donate_apologize_button.dart';
 import 'package:khotwa/view/event_and_projects/event_details/event_details_page.dart';
 import 'package:khotwa/widgets/custom_progress_indicator.dart';
@@ -114,38 +116,53 @@ class _MyEventsPageState extends State<MyEventsPage> {
   }
 
   Widget _buildSearchBar(Size size) {
-    return Row(
-      children: [
-        Expanded(
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            height: size.height * 0.06,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Row(
-              children: [
-                const Icon(Icons.search, color: Colors.black),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: TextField(
-                    decoration: InputDecoration(
-                      hintText: "search".tr,
-                      hintStyle: const TextStyle(color: Colors.black54),
-                      border: InputBorder.none,
-                    ),
-                  ),
-                ),
-              ],
-            ),
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12),
+      height: size.height * 0.06,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Row(
+        children: [
+          const Icon(Icons.search, color: Colors.black),
+          const SizedBox(width: 10),
+          Expanded(
+            child: TextField(
+                                  style: const TextStyle(color: Colors.black),
+                                  onChanged: (value) {
+                                    final searchController =
+                                        Get.isRegistered<AppSearchController>()
+                                        ? Get.find<AppSearchController>()
+                                        : Get.put(AppSearchController());
+
+                                    searchController.search(value);
+                                  },
+                                  onSubmitted: (value) {
+                                    final searchController =
+                                        Get.find<AppSearchController>();
+                                    searchController.search(value);
+
+                                    Get.to(() => SearchResultsPage());
+                                  },
+                                  decoration: InputDecoration(
+                                    hintText: 'search'.tr,
+                                    hintStyle: const TextStyle(
+                                      color: Colors.grey,
+                                    ),
+                                    border: InputBorder.none,
+                                  ),
+                                ),
           ),
-        ),
-      ],
+
+
+
+          
+        ],
+      ),
     );
   }
 }
-
 
 class EventCard extends StatelessWidget {
   const EventCard({
@@ -161,8 +178,6 @@ class EventCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return Card(
       elevation: elevation,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -210,7 +225,8 @@ class EventCard extends StatelessWidget {
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Text(
-                   (statusValues.reverse[event.status] ?? 'unknown').capitalize!,
+                      (statusValues.reverse[event.status] ?? 'unknown')
+                          .capitalize!,
                       style: const TextStyle(
                         color: secondaryColor,
                         fontWeight: FontWeight.w600,
@@ -261,7 +277,6 @@ class EventCard extends StatelessWidget {
             DonateApologizeButton(
               title: 'Apologize'.tr,
               onTap: () {
-                // 🔥 hook to controller.withdrawFromEvent(event.id)
                 Get.find<VolunteerController>().withdrawFromEvent(event.id);
               },
             ),
@@ -271,7 +286,6 @@ class EventCard extends StatelessWidget {
     );
   }
 }
-
 
 class InfoRow extends StatelessWidget {
   const InfoRow({

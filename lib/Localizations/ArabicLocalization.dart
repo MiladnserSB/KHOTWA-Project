@@ -301,6 +301,7 @@ class ArabicLocalization extends Translations {
      "Total Volunteers":"كامل عدد المتطوعين",
      "Total Events":"عدد الفعاليات",
      "Donated Amount":"مبلغ التبرع",
+     "No results found":"لا يوجد نتائج"
      
 
 
