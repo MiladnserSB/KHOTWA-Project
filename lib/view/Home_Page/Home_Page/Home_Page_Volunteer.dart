@@ -8,6 +8,7 @@ import 'package:khotwa/view/Home_Page/Cards/Home_Person_Card.dart';
 import 'package:khotwa/view/Home_Page/Cards/Home_Projects_Card.dart';
 import 'package:khotwa/view/event_and_projects/event_details/event_details_page.dart';
 import 'package:khotwa/view/event_and_projects/events_and_projects_page.dart';
+import 'package:khotwa/view/notifications/notifications_list_page.dart';
 import 'package:khotwa/view/profile/profile_page.dart';
 import 'package:khotwa/widgets/custom_progress_indicator.dart';
 
@@ -151,9 +152,7 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
                         style: TextStyle(
                           fontSize: 35,
                           fontFamily: 'DG Heaven',
-                          color: theme.brightness == Brightness.dark
-                              ? secondaryColor
-                              : primaryColor,
+                          color: secondaryColor
                         ),
                       ),
                     ),
@@ -161,13 +160,18 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
                   IconButton(
                     icon: Icon(
                       Icons.notifications,
-                      size: 34,
-                      color: Color(0xFFDDA15E),
+                      size: 30,
+                      color: theme.brightness == Brightness.dark
+        ? Colors.white
+        : Colors.black,
                     ),
                     onPressed: () {
-                      setState(() {
-                        _isPressed = !_isPressed;
-                      });
+                   Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => NotificationsListPage(),
+                                  ),
+                                );
                     },
                   ),
                 ],
@@ -475,7 +479,7 @@ if (_volunteerController.myEvents.isEmpty) {
                 }
 
                 return SizedBox(
-                  height: 350,
+                  height: 370,
                   child: ListView.separated(
                     controller: _projectScrollController,
                     scrollDirection: Axis.horizontal,

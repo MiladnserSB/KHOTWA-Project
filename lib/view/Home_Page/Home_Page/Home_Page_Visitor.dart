@@ -5,6 +5,7 @@ import 'package:khotwa/view/Home_Page/Cards/Home_Events_Card.dart';
 import 'package:khotwa/view/Home_Page/Cards/Home_Person_Card.dart';
 import 'package:khotwa/view/Home_Page/Cards/Home_Projects_Card_Donor_and_Visitor.dart';
 import 'package:khotwa/view/event_and_projects/events_and_projects_page.dart';
+import 'package:khotwa/view/notifications/notifications_list_page.dart';
 import 'package:khotwa/view/profile/profile_page.dart';
 
 class HomePageVisitor extends StatefulWidget {
@@ -122,7 +123,9 @@ class _HomePageVisitorState extends State<HomePageVisitor> {
     final theme = Theme.of(context);
 
     return Scaffold(
-      backgroundColor: theme.brightness == Brightness.dark ? theme.scaffoldBackgroundColor : thirdColor,
+      backgroundColor: theme.brightness == Brightness.dark
+          ? theme.scaffoldBackgroundColor
+          : thirdColor,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
@@ -151,96 +154,112 @@ class _HomePageVisitorState extends State<HomePageVisitor> {
 
                   Expanded(
                     child: Center(
-                      child: Text(
+                      child:Text(
                         'Khotwa'.tr,
                         style: TextStyle(
                           fontSize: 35,
                           fontFamily: 'DG Heaven',
-                          color: theme.brightness == Brightness.dark
-                              ? secondaryColor
-                              : primaryColor,
+                          color: secondaryColor
                         ),
                       ),
                     ),
                   ),
-
                   IconButton(
-                                     icon: Icon(Icons.notifications, size: 34, color:   Color(0xFFDDA15E) ),
-
+                    icon: Icon(
+                      Icons.notifications,
+                      size: 30,
+                      color: theme.brightness == Brightness.dark
+        ? Colors.white
+        : Colors.black,
+                    ),
                     onPressed: () {
-                      setState(() {
-                        _isPressed = !_isPressed;
-                      });
+                   Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => NotificationsListPage(),
+                                  ),
+                                );
                     },
                   ),
                 ],
               ),
 
               const SizedBox(height: 20),
-  TextField(
-  controller: _controller,
-  focusNode: _focusNode,
-  decoration: InputDecoration(
-    hintText: 'search'.tr,
-    hintStyle: TextStyle(color: Colors.black), 
-    filled: true,
-    fillColor : Colors.white,
-    isDense: true,
-    contentPadding: EdgeInsets.symmetric(vertical: 13, horizontal: 12),
-    border: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(20), 
-      borderSide: BorderSide.none
-    ),
-    prefixIcon: const Icon(Icons.search, size: 22, color: Colors.black),
-  ),
-  style: TextStyle(fontSize: 18, color: Colors.black), 
-),
+              TextField(
+                controller: _controller,
+                focusNode: _focusNode,
+                decoration: InputDecoration(
+                  hintText: 'search'.tr,
+                  hintStyle: TextStyle(color: Colors.black),
+                  filled: true,
+                  fillColor: Colors.white,
+                  isDense: true,
+                  contentPadding: EdgeInsets.symmetric(
+                    vertical: 13,
+                    horizontal: 12,
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                    borderSide: BorderSide.none,
+                  ),
+                  prefixIcon: const Icon(
+                    Icons.search,
+                    size: 22,
+                    color: Colors.black,
+                  ),
+                ),
+                style: TextStyle(fontSize: 18, color: Colors.black),
+              ),
 
               const SizedBox(height: 20),
 
-   Center(
-  child: Container(
-    height: 200,
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.center, 
-      children: List.generate(personList.length, (index) {
-        final person = personList[index];
-        String? medalText;
-        if (index == 0) medalText = "🥇";
-        if (index == 1) medalText = "🥈";
-        if (index == 2) medalText = "🥉";
+              Center(
+                child: Container(
+                  height: 200,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: List.generate(personList.length, (index) {
+                      final person = personList[index];
+                      String? medalText;
+                      if (index == 0) medalText = "🥇";
+                      if (index == 1) medalText = "🥈";
+                      if (index == 2) medalText = "🥉";
 
-        return Padding(
-          padding: const EdgeInsets.all(9),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (_) => ProfilePage()),
-                  );
-                },
-                child: HomePersonCard(
-                  name: person['name'] ?? '',
-                  image: person['image'] ?? '',
+                      return Padding(
+                        padding: const EdgeInsets.all(9),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => ProfilePage(),
+                                  ),
+                                );
+                              },
+                              child: HomePersonCard(
+                                name: person['name'] ?? '',
+                                image: person['image'] ?? '',
+                              ),
+                            ),
+                            const SizedBox(height: 5),
+                            if (medalText != null)
+                              Text(
+                                medalText,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 23,
+                                ),
+                              ),
+                          ],
+                        ),
+                      );
+                    }),
+                  ),
                 ),
               ),
-              const SizedBox(height: 5),
-              if (medalText != null)
-                Text(
-                  medalText,
-                  style: const TextStyle(color: Colors.white, fontSize: 23),
-                ),
-            ],
-          ),
-        );
-      }),
-    ),
-  ),
-),
-
 
               const SizedBox(height: 10),
 
@@ -361,7 +380,8 @@ class _HomePageVisitorState extends State<HomePageVisitor> {
                         title: event['title']!,
                         image: event['image']!,
                         volunteersCount: 12,
-                        status: 'accept',   requiredVolunteers: 1,
+                        status: 'accept',
+                        requiredVolunteers: 1,
                       ),
                     );
                   },
@@ -407,7 +427,7 @@ class _HomePageVisitorState extends State<HomePageVisitor> {
               const SizedBox(height: 10),
 
               SizedBox(
-                height: 360,
+                height: 370,
                 child: ListView.separated(
                   controller: _projectScrollController,
                   scrollDirection: Axis.horizontal,

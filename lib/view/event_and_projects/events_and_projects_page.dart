@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:khotwa/controller/Search_controller.dart';
 import 'package:khotwa/controller/volunteer_controller.dart';
 import 'package:khotwa/model/events_model.dart';
 import 'package:khotwa/model/projects_model.dart';
  // Import your ProjectModel
 import 'package:khotwa/shared/constants/colors.dart';
+import 'package:khotwa/view/Search/Search_results_page.dart';
 import 'package:khotwa/view/event_and_projects/donate_apologize_button.dart';
 import 'package:khotwa/view/event_and_projects/event_details/event_details_page.dart';
 import 'package:khotwa/view/event_and_projects/project_details/project_details_page.dart';
@@ -115,14 +117,31 @@ class _EventsAndProjectsPageState extends State<EventsAndProjectsPage>
                             Icon(Icons.search,color: Colors.black,size: 20,),
                             SizedBox(width: 10),
                             Expanded(
-                              child: TextField(
-                                decoration: InputDecoration(
-                                  counterStyle: TextStyle(color: Colors.black),
-                                  hintText: 'search'.tr,
-                                  hintStyle: TextStyle(color: Colors.black,fontSize: 15),
-                                  border: InputBorder.none,
+                              child:TextField(
+                                  style: const TextStyle(color: Colors.black),
+                                  onChanged: (value) {
+                                    final searchController =
+                                        Get.isRegistered<AppSearchController>()
+                                        ? Get.find<AppSearchController>()
+                                        : Get.put(AppSearchController());
+
+                                    searchController.search(value);
+                                  },
+                                  onSubmitted: (value) {
+                                    final searchController =
+                                        Get.find<AppSearchController>();
+                                    searchController.search(value);
+
+                                    Get.to(() => SearchResultsPage());
+                                  },
+                                  decoration: InputDecoration(
+                                    hintText: 'search'.tr,
+                                    hintStyle: const TextStyle(
+                                      color: Colors.grey,
+                                    ),
+                                    border: InputBorder.none,
+                                  ),
                                 ),
-                              ),
                             ),
                           ],
                         ),

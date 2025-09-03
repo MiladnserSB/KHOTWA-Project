@@ -292,7 +292,16 @@ class EnglishLocalization extends Translations {
   "No results found":"No results found",
   "Search Results":"Search Results",
     "about_us": "About Us",
-   "We are a volunteer organization dedicated to making a positive impact in our community.\n\nOur mission is to provide support and assistance to those in need, and to create opportunities for individuals to get involved and make a difference.":   "We are a volunteer organization dedicated to making a positive impact in our community.\n\nOur mission is to provide support and assistance to those in need, and to create opportunities for individuals to get involved and make a difference."
+   "We are a volunteer organization dedicated to making a positive impact in our community.\n\nOur mission is to provide support and assistance to those in need, and to create opportunities for individuals to get involved and make a difference.":   "We are a volunteer organization dedicated to making a positive impact in our community.\n\nOur mission is to provide support and assistance to those in need, and to create opportunities for individuals to get involved and make a difference.",
+   
+   "Target Donation":"Target Donation",
+   "Project Statistics":"Project Statistics",
+   "Total Events":"Total Events",
+   "Total Volunteers":"Total Volunteers",
+   "Total Donations":"Total Donations",
+   "Remaining Amount":"Remaining Amount",
+   "Donated Amount":"Donated Amount",
+   
   
 
   
