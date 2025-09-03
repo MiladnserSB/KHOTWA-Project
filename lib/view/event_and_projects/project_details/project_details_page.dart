@@ -40,31 +40,42 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
     return DateFormat('MMMM/dd/yyyy').format(date);
   }
 
-  String _getStatusText(Status status) {
-    switch (status) {
-      case Status.ACTIVE:
-        return 'Active'.tr;
-      case Status.COMPLETED:
-        return 'Completed'.tr;
-      case Status.POSTPONED:
-        return 'Postponed'.tr;
-      default:
-        return 'Unknown'.tr;
-    }
+String _getStatusText(String status) {
+  switch (status.toLowerCase()) {
+    case "open":
+      return 'Open'.tr;
+    case "closed":
+      return 'Closed'.tr;
+    case "completed":
+      return 'Completed'.tr;
+    case "upcoming":
+      return 'Upcoming'.tr;
+    case "active":
+      return 'Active'.tr;
+    case "postponed":
+      return 'Postponed'.tr;
+    default:
+      return 'Unknown'.tr;
   }
+}
 
-  Color _getStatusColor(Status status) {
-    switch (status) {
-      case Status.ACTIVE:
-        return Colors.green;
-      case Status.COMPLETED:
-        return Colors.blue;
-      case Status.POSTPONED:
-        return Colors.orange;
-      default:
-        return Colors.grey;
-    }
+Color _getStatusColor(String status) {
+  switch (status.toLowerCase()) {
+    case "open":
+    case "active":
+      return Colors.green;
+    case "closed":
+      return Colors.red;
+    case "completed":
+      return Colors.blue;
+    case "upcoming":
+      return Colors.orange;
+    case "postponed":
+      return Colors.orange;
+    default:
+      return Colors.grey;
   }
+}
 
   @override
   Widget build(BuildContext context) {

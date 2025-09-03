@@ -215,6 +215,7 @@ class VolunteerService extends GetxService {
 
   Future<List<dynamic>> getRecommendedEvents() async {
     try {
+       final token = await _getToken();
       final response = await dio.get(
         '/api/volunteer/events/recommended',
 
@@ -222,7 +223,7 @@ class VolunteerService extends GetxService {
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
-            'Authorization': '${_getToken()}',
+            'Authorization': 'Bearer $token',
           },
         ),
       );
@@ -236,13 +237,14 @@ class VolunteerService extends GetxService {
 
   Future<List<TopProject>> getTopProjects() async {
     try {
+       final token = await _getToken();
       final response = await dio.get(
         '/api/volunteer/projects/top',
         options: Options(
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
-            'Authorization': '${_getToken()}',
+            'Authorization': 'Bearer $token',
           },
         ),
       );
@@ -268,13 +270,14 @@ class VolunteerService extends GetxService {
 
   Future<List<EventModel>> getAllEvents() async {
     try {
+       final token = await _getToken();
       final response = await dio.get(
         '/api/volunteer/events',
         options: Options(
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
-            'Authorization': '${_getToken()}',
+            'Authorization': 'Bearer $token',
           },
         ),
       );
@@ -287,17 +290,20 @@ class VolunteerService extends GetxService {
 
   Future<List<ProjectModel>> getAllProjects() async {
     try {
+       final token = await _getToken();
       final response = await dio.get(
         '/api/volunteer/projects',
         options: Options(
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
-            'Authorization': '${_getToken()}',
+            'Authorization': 'Bearer $token',
           },
         ),
       );
+      print("Here 1");
       final projectsModel = ProjectsModel.fromJson(response.data);
+      print("Here 2");
       return projectsModel.data;
     } on DioException catch (e) {
       throw Exception('Failed to load all events: ${e.response?.statusCode}');

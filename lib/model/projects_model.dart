@@ -34,76 +34,79 @@ class ProjectsModel {
 }
 
 class ProjectModel {
-    final int id;
-    final String name;
-    final String description;
-    final DateTime startDate;
-    final DateTime endDate;
-    final Status status;
-    final dynamic coverImage;
-    final int targetDonation;
-    final int donatedAmount;
-    final int remainingAmount;
-    final int totalDonations;
-    final int totalVolunteers;
-    final int totalEvents;
-    final DateTime createdAt;
-    final DateTime updatedAt;
+  final int id;
+  final String name;
+  final String description;
+  final DateTime startDate;
+  final DateTime endDate;
+  final String status;
+  final dynamic coverImage;
+  final double targetDonation; // <-- was int, make it double
+  final int donatedAmount;
+  final int remainingAmount;
+  final int totalDonations;
+  final int totalVolunteers;
+  final int totalEvents;
+  final DateTime createdAt;
+  final DateTime updatedAt;
 
-    ProjectModel({
-        required this.id,
-        required this.name,
-        required this.description,
-        required this.startDate,
-        required this.endDate,
-        required this.status,
-        required this.coverImage,
-        required this.targetDonation,
-        required this.donatedAmount,
-        required this.remainingAmount,
-        required this.totalDonations,
-        required this.totalVolunteers,
-        required this.totalEvents,
-        required this.createdAt,
-        required this.updatedAt,
-    });
+  ProjectModel({
+    required this.id,
+    required this.name,
+    required this.description,
+    required this.startDate,
+    required this.endDate,
+    required this.status,
+    required this.coverImage,
+    required this.targetDonation,
+    required this.donatedAmount,
+    required this.remainingAmount,
+    required this.totalDonations,
+    required this.totalVolunteers,
+    required this.totalEvents,
+    required this.createdAt,
+    required this.updatedAt,
+  });
 
-    factory ProjectModel.fromJson(Map<String, dynamic> json) => ProjectModel(
-        id: json["id"],
-        name: json["name"]!,
-        description: json["description"],
-        startDate: DateTime.parse(json["start_date"]),
-        endDate: DateTime.parse(json["end_date"]),
-        status: statusValues.map[json["status"]]!,
-        coverImage: json["cover_image"],
-        targetDonation: json["target_donation"],
-        donatedAmount: json["donated_amount"],
-        remainingAmount: json["remaining_amount"],
-        totalDonations: json["total_donations"],
-        totalVolunteers: json["total_volunteers"],
-        totalEvents: json["total_events"],
-        createdAt: DateTime.parse(json["created_at"]),
-        updatedAt: DateTime.parse(json["updated_at"]),
-    );
+  factory ProjectModel.fromJson(Map<String, dynamic> json) => ProjectModel(
+    id: json["id"],
+    name: json["name"]!,
+    description: json["description"],
+    startDate: DateTime.parse(json["start_date"]),
+    endDate: DateTime.parse(json["end_date"]),
+     status: (json["status"] as String?)?.toLowerCase() ?? "unknown",
+    coverImage: json["cover_image"],
+    // parse string/number to double safely
+    targetDonation: double.tryParse(json["target_donation"]?.toString() ?? "") ?? 0.0,
+    donatedAmount: int.tryParse(json["donated_amount"]?.toString() ?? "") ?? 0,
+    remainingAmount: int.tryParse(json["remaining_amount"]?.toString() ?? "") ?? 0,
+    totalDonations: int.tryParse(json["total_donations"]?.toString() ?? "") ?? 0,
+    totalVolunteers: int.tryParse(json["total_volunteers"]?.toString() ?? "") ?? 0,
+    totalEvents: int.tryParse(json["total_events"]?.toString() ?? "") ?? 0,
+    createdAt: DateTime.parse(json["created_at"]),
+    updatedAt: DateTime.parse(json["updated_at"]),
+  );
 
-    Map<String, dynamic> toJson() => {
-        "id": id,
-        "name": name,
-        "description": description,
-        "start_date": startDate.toIso8601String(),
-        "end_date": endDate.toIso8601String(),
-        "status": statusValues.reverse[status],
-        "cover_image": coverImage,
-        "target_donation": targetDonation,
-        "donated_amount": donatedAmount,
-        "remaining_amount": remainingAmount,
-        "total_donations": totalDonations,
-        "total_volunteers": totalVolunteers,
-        "total_events": totalEvents,
-        "created_at": createdAt.toIso8601String(),
-        "updated_at": updatedAt.toIso8601String(),
-    };
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "name": name,
+    "description": description,
+    "start_date": startDate.toIso8601String(),
+    "end_date": endDate.toIso8601String(),
+    "status": statusValues.reverse[status],
+    "cover_image": coverImage,
+    // if your API expects string with 2 decimals, send this:
+    "target_donation": targetDonation.toStringAsFixed(2),
+    "donated_amount": donatedAmount,
+    "remaining_amount": remainingAmount,
+    "total_donations": totalDonations,
+    "total_volunteers": totalVolunteers,
+    "total_events": totalEvents,
+    "created_at": createdAt.toIso8601String(),
+    "updated_at": updatedAt.toIso8601String(),
+  };
 }
+
 
 
 

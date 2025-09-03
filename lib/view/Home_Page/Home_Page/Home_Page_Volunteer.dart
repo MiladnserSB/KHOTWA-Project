@@ -410,7 +410,7 @@ if (_volunteerController.myEvents.isEmpty) {
                             title: event.title ?? "No title",
                             image: event.coverImage ?? 'assets/images/new.jpg',
                             volunteersCount: event.currentVolunteers ?? 0,
-                            status: event.status.name ?? '-',
+                            status: event.status ?? '-',
                             requiredVolunteers: event.requiredVolunteers ?? 0,
                           ),
                         ),

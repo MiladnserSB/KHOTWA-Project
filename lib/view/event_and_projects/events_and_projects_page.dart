@@ -15,7 +15,42 @@ import 'package:intl/intl.dart';
 String formatNumber(num number, String locale) {
   return NumberFormat.decimalPattern(locale).format(number);
 }
+String _getStatusText(String status) {
+  switch (status.toLowerCase()) {
+    case "open":
+      return 'Open'.tr;
+    case "closed":
+      return 'Closed'.tr;
+    case "completed":
+      return 'Completed'.tr;
+    case "upcoming":
+      return 'Upcoming'.tr;
+    case "active":
+      return 'Active'.tr;
+    case "postponed":
+      return 'Postponed'.tr;
+    default:
+      return 'Unknown'.tr;
+  }
+}
 
+Color _getStatusColor(String status) {
+  switch (status.toLowerCase()) {
+    case "open":
+    case "active":
+      return Colors.green;
+    case "closed":
+      return Colors.red;
+    case "completed":
+      return Colors.blue;
+    case "upcoming":
+      return Colors.orange;
+    case "postponed":
+      return Colors.orange;
+    default:
+      return Colors.grey;
+  }
+}
 class EventsAndProjectsPage extends StatefulWidget {
   const EventsAndProjectsPage({super.key});
 
@@ -32,9 +67,11 @@ class _EventsAndProjectsPageState extends State<EventsAndProjectsPage>
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
-    // Fetch all events and projects when the page initializes
-    _volunteerController.fetchAllEvents();
-    _volunteerController.fetchAllProjects();
+    _loadData();
+  }
+  Future<void> _loadData() async {
+    await _volunteerController.fetchAllEvents();
+     await _volunteerController.fetchAllProjects();
   }
 
   @override
@@ -45,6 +82,7 @@ class _EventsAndProjectsPageState extends State<EventsAndProjectsPage>
 
   @override
   Widget build(BuildContext context) {
+    
     final theme = Theme.of(context); 
     final size = MediaQuery.of(context).size;
     final double itemHeight = size.height * 0.38;
@@ -301,35 +339,8 @@ class EventCard extends StatelessWidget {
     return DateFormat('dd.MM.yyyy').format(date);
   }
 
-  String _getStatusText(String status) {
-    switch (status) {
-      case 'open':
-        return 'Open'.tr;
-      case 'closed':
-        return 'Closed'.tr;
-      case 'completed':
-        return 'Completed'.tr;
-      case 'upcoming':
-        return 'Upcoming'.tr;
-      default:
-        return 'Unknown'.tr;
-    }
-  }
+ 
 
-  Color _getStatusColor(String status) {
-    switch (status) {
-     case 'open':
-        return Colors.green;
-         case 'closed':
-        return Colors.red;
-    case 'completed':
-        return Colors.blue;
-        case 'upcoming':
-        return Colors.orange;
-      default:
-        return Colors.grey;
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -344,26 +355,26 @@ class EventCard extends StatelessWidget {
             ClipRRect(
               borderRadius: BorderRadius.circular(12),
               child: event.coverImage != null
-                ? Image.network(
-                    event.coverImage!,
-                    height: size.height * 0.4,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Image.asset(
-                        'assets/images/Intro.png',
-                        height: size.height * 0.4,
-                        width: double.infinity,
-                        fit: BoxFit.cover,
-                      );
-                    },
-                  )
-                : Image.asset(
-                    'assets/images/Intro.png',
-                    height: size.height * 0.4,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                  ),
+                  ? Image.network(
+                      event.coverImage!,
+                      height: size.height * 0.4,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Image.asset(
+                          'assets/images/Intro.png',
+                          height: size.height * 0.4,
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                        );
+                      },
+                    )
+                  : Image.asset(
+                      'assets/images/Intro.png',
+                      height: size.height * 0.4,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                    ),
             ),
             Padding(
               padding: EdgeInsets.all(size.width * 0.04),
@@ -386,13 +397,13 @@ class EventCard extends StatelessWidget {
                       vertical: 5,
                     ),
                     decoration: BoxDecoration(
-                      color: _getStatusColor(event.status.name).withOpacity(0.2),
+                      color: _getStatusColor(event.status).withOpacity(0.2),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Text(
-                      _getStatusText(event.status.name),
+                      _getStatusText(event.status),
                       style: TextStyle(
-                        color: _getStatusColor(event.status.name),
+                        color: _getStatusColor(event.status),
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -532,7 +543,10 @@ class ProjectCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double progress = project.donatedAmount / project.targetDonation;
+    final double target = project.targetDonation;
+  final double progress = target > 0
+      ? (project.donatedAmount / target)
+      : 0.0;
 
     return Card(
       elevation: elevation,
@@ -587,13 +601,13 @@ class ProjectCard extends StatelessWidget {
                     vertical: 5,
                   ),
                   decoration: BoxDecoration(
-                    color: _getStatusColor(project.status.name).withOpacity(0.2),
+                    color: _getStatusColor(project.status).withOpacity(0.2),
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Text(
-                    _getStatusText(project.status.name),
+                    _getStatusText(project.status),
                     style: TextStyle(
-                      color: _getStatusColor(project.status.name),
+                      color: _getStatusColor(project.status),
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -686,4 +700,5 @@ class ProjectCard extends StatelessWidget {
       ),
     );
   }
+  
 }

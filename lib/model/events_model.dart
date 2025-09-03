@@ -39,7 +39,7 @@ class EventModel {
   final String location;
   final double? lat; // nullable
   final double? lng; // nullable
-  final Status status;
+  final String status;
   final String? coverImage; // nullable
   final int requiredVolunteers;
   final int currentVolunteers;
@@ -86,7 +86,7 @@ class EventModel {
         location: json["location"],
         lat: json["lat"]?.toDouble(),
         lng: json["lng"]?.toDouble(),
-        status: statusValues.map[json["status"]]!,
+      status: (json["status"] as String?)?.toLowerCase() ?? "unknown",
         coverImage: json["cover_image"],
         requiredVolunteers: json["required_volunteers"],
         currentVolunteers: json["current_volunteers"],
@@ -129,7 +129,7 @@ enum Status {
   OPEN,
   CLOSED,
   COMPLETED,
-  UPCOMING
+  UPCOMING, ACTIVE
 }
 
 final statusValues = EnumValues({
