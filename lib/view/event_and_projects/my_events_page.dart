@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:khotwa/controller/volunteer_controller.dart';
+import 'package:khotwa/model/events_model.dart';
 import 'package:khotwa/shared/constants/colors.dart';
 import 'package:khotwa/view/event_and_projects/donate_apologize_button.dart';
 import 'package:khotwa/view/event_and_projects/event_details/event_details_page.dart';
+import 'package:khotwa/widgets/custom_progress_indicator.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
 class MyEventsPage extends StatefulWidget {
@@ -14,6 +17,8 @@ class MyEventsPage extends StatefulWidget {
 
 class _MyEventsPageState extends State<MyEventsPage> {
   final ScrollController _scrollController = ScrollController();
+  final VolunteerController _controller = Get.find<VolunteerController>();
+
   double currentScroll = 0.0;
 
   @override
@@ -37,13 +42,12 @@ class _MyEventsPageState extends State<MyEventsPage> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final double itemHeight = size.height * 0.38;
-              final theme = Theme.of(context); 
+    final theme = Theme.of(context);
 
     return Scaffold(
-        backgroundColor:  theme.brightness == Brightness.dark ? Colors.black : thirdColor,
-
+      backgroundColor:
+          theme.brightness == Brightness.dark ? Colors.black : thirdColor,
       body: SafeArea(
-        
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
           child: Column(
@@ -60,60 +64,47 @@ class _MyEventsPageState extends State<MyEventsPage> {
                 ),
               ),
               SizedBox(height: size.height * 0.02),
-              Row(
-                children: [
-                  Expanded(
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12),
-                      height: size.height * 0.06,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child:  Row(
-                        children: [
-                          SizedBox(width: 10),
-                          Icon(Icons.search,color: Colors.black,),
-                                                    SizedBox(width: 10),
-
-                          Expanded(
-                            child: TextField(
-                              decoration: InputDecoration(
-                                counterStyle: TextStyle(color: Colors.black),
-                                hintText: "search".tr,
-                                hintStyle: TextStyle(color: Colors.black),
-                                border: InputBorder.none,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-               
-                ],
-              ),
+              // 🔍 search bar
+              _buildSearchBar(size),
               SizedBox(height: size.height * 0.02),
+
+              // 🔥 Event list
               Expanded(
-                child: ListView.separated(
-                  controller: _scrollController,
-                  physics: const BouncingScrollPhysics(),
-                  itemCount: 10,
-                  separatorBuilder: (_, __) => const SizedBox(height: 20),
-                  itemBuilder: (context, index) {
-                    double scale = _calculateScale(index, itemHeight);
-                    return Transform.scale(
-                      scale: scale,
-                      child: GestureDetector(
-                        //  onTap: (){Get.to(EventDetailsPage());},
-                        child: EventCard(
-                          size: size,
-                          elevation: scale > 0.98 ? 10 : 2,
-                        ),
-                      ),
+                child: Obx(() {
+                  if (_controller.isLoading.value) {
+                    return const Center(child: CustomProgressIndicator());
+                  }
+
+                  if (_controller.myEvents.isEmpty) {
+                    return Center(
+                      child: Text("No events found".tr,
+                          style: const TextStyle(fontSize: 16)),
                     );
-                  },
-                ),
+                  }
+
+                  return ListView.separated(
+                    controller: _scrollController,
+                    physics: const BouncingScrollPhysics(),
+                    itemCount: _controller.myEvents.length,
+                    separatorBuilder: (_, __) => const SizedBox(height: 20),
+                    itemBuilder: (context, index) {
+                      final event = _controller.myEvents[index] as EventModel;
+                      double scale = _calculateScale(index, itemHeight);
+
+                      return Transform.scale(
+                        scale: scale,
+                        child: GestureDetector(
+                          onTap: () => Get.to(EventDetailsPage(event: event)),
+                          child: EventCard(
+                            size: size,
+                            event: event,
+                            elevation: scale > 0.98 ? 10 : 2,
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                }),
               ),
             ],
           ),
@@ -121,17 +112,56 @@ class _MyEventsPageState extends State<MyEventsPage> {
       ),
     );
   }
+
+  Widget _buildSearchBar(Size size) {
+    return Row(
+      children: [
+        Expanded(
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            height: size.height * 0.06,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Row(
+              children: [
+                const Icon(Icons.search, color: Colors.black),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: TextField(
+                    decoration: InputDecoration(
+                      hintText: "search".tr,
+                      hintStyle: const TextStyle(color: Colors.black54),
+                      border: InputBorder.none,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 }
 
+
 class EventCard extends StatelessWidget {
-  const EventCard({super.key, required this.size, this.elevation = 2});
+  const EventCard({
+    super.key,
+    required this.size,
+    required this.event,
+    this.elevation = 2,
+  });
 
   final Size size;
+  final EventModel event;
   final double elevation;
 
   @override
   Widget build(BuildContext context) {
-                            final theme = Theme.of(context); 
+    final theme = Theme.of(context);
 
     return Card(
       elevation: elevation,
@@ -143,12 +173,19 @@ class EventCard extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(12),
-              child: Image.asset(
-                'assets/images/Intro.png',
-                height: size.height * 0.2,
-                width: double.infinity,
-                fit: BoxFit.cover,
-              ),
+              child: event.coverImage != null
+                  ? Image.network(
+                      event.coverImage!,
+                      height: size.height * 0.2,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                    )
+                  : Image.asset(
+                      'assets/images/Intro.png',
+                      height: size.height * 0.2,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                    ),
             ),
             Padding(
               padding: EdgeInsets.all(size.width * 0.04),
@@ -156,26 +193,25 @@ class EventCard extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Text(
-                      'Event Title Goes Here',
+                      event.title,
                       style: TextStyle(
                         fontSize: size.width * 0.045,
                         fontWeight: FontWeight.bold,
                         fontFamily: 'Acumin',
                       ),
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                   Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 10,
-                      vertical: 5,
-                    ),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                     decoration: BoxDecoration(
                       color: secondaryColor.withOpacity(0.2),
                       borderRadius: BorderRadius.circular(20),
                     ),
-                    child:  Text(
-                      'Active'.tr,
-                      style: TextStyle(
+                    child: Text(
+                      statusValues.reverse[event.status]!.capitalize!,
+                      style: const TextStyle(
                         color: secondaryColor,
                         fontWeight: FontWeight.w600,
                       ),
@@ -195,115 +231,38 @@ class EventCard extends StatelessWidget {
                 vertical: size.height * 0.015,
               ),
               child: Column(
-                children:  [
+                children: [
                   InfoRow(
                     icon: Icons.calendar_today,
                     label: "Date".tr,
-                    value: "16.04.2024 - 16.08.2024",
+                    value:
+                        "${event.date.toLocal().toString().split(' ')[0]} (${event.durationHours}h)",
                   ),
                   InfoRow(
                     icon: LucideIcons.clock,
                     label: "Time".tr,
-                    value: "10:00 AM - 4:00 PM",
+                    value: event.time,
                   ),
                   InfoRow(
                     icon: Icons.location_on,
                     label: "Location".tr,
-                    value: "Kharkiv, Ukraine",
+                    value: event.location,
                   ),
                   InfoRow(
                     icon: Icons.volunteer_activism,
                     label: "Volunteers".tr,
-                    value: "150 / 200",
+                    value:
+                        "${event.currentVolunteers} / ${event.requiredVolunteers}",
                   ),
                 ],
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             DonateApologizeButton(
               title: 'Apologize'.tr,
               onTap: () {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    final size = MediaQuery.of(context).size;
-                    return Dialog(
-                  backgroundColor: theme.brightness == Brightness.dark
-                        ? Color(0xFF202020)
-                        : thirdColor,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.all(size.width * 0.06),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(Icons.warning_amber_rounded,
-                                size: size.width * 0.15, color: secondaryColor),
-                            SizedBox(height: size.height * 0.02),
-                            Text(
-                              'Apology Confirmation'.tr,
-                              style: TextStyle(
-                                fontSize: size.width * 0.05,
-                                fontWeight: FontWeight.bold,
-                                color:  theme.brightness == Brightness.dark ? Colors.white : Colors.black, // Scaffold
-
-                              ),
-                            ),
-                            SizedBox(height: size.height * 0.015),
-                            Text(
-                              'Are you sure you want to apologize for the event'.tr,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: size.width * 0.04,
- color:   theme.brightness == Brightness.dark
-            ? Colors.grey
-            : Colors.grey,                              ),
-                            ),
-                            SizedBox(height: size.height * 0.03),
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: ElevatedButton(
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: secondaryColor,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                    ),
-                                    child: Text('Cancel'.tr,
-                                        style: TextStyle(color: white, fontWeight: FontWeight.bold)),
-                                  ),
-                                ),
-                                SizedBox(width: size.width * 0.03),
-                                Expanded(
-                                  child: ElevatedButton(
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                      // Apologize logic goes here
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: secondaryColor,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                    ),
-                                    child: Text('Apologize'.tr,
-                                        style: TextStyle(color: Colors.white)),
-                                  ),
-                                ),
-                              ],
-                            )
-                          ],
-                        ),
-                      ),
-                    );
-                  },
-                );
+                // 🔥 hook to controller.withdrawFromEvent(event.id)
+                Get.find<VolunteerController>().withdrawFromEvent(event.id);
               },
             ),
           ],
@@ -312,6 +271,7 @@ class EventCard extends StatelessWidget {
     );
   }
 }
+
 
 class InfoRow extends StatelessWidget {
   const InfoRow({

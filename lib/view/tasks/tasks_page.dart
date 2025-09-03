@@ -20,7 +20,7 @@ class TasksPage extends StatefulWidget {
 class _TasksPageState extends State<TasksPage> {
   final VolunteerController _volunteerController = Get.find<VolunteerController>();
   final TextEditingController _searchController = TextEditingController();
-  List<TaskModel> _filteredTasks = [];
+  var _filteredTasks = <Rx<TaskModel>>[];
 
   @override
   void initState() {
@@ -28,14 +28,14 @@ class _TasksPageState extends State<TasksPage> {
     if (_volunteerController.myTasks.isEmpty) {
       _loadTasks();
     } else {
-      _filteredTasks = _getTasksFromController();
+      _filteredTasks = _volunteerController.myTasks;
     }
   }
 
   Future<void> _loadTasks() async {
     await _volunteerController.fetchMyTasks();
     setState(() {
-      _filteredTasks = _getTasksFromController();
+      _filteredTasks = _volunteerController.myTasks;
     });
   }
 
@@ -45,37 +45,17 @@ class _TasksPageState extends State<TasksPage> {
     super.dispose();
   }
 
-  List<TaskModel> _getTasksFromController() {
-    return _volunteerController.myTasks.map((taskData) {
-      if (taskData is TaskModel) {
-        return taskData;
-      } else if (taskData is Map<String, dynamic>) {
-        return TaskModel.fromJson(taskData);
-      } else {
-        return TaskModel(
-          id: 0,
-          title: 'Unknown Task',
-          description: '',
-          volunteerId: 0,
-          assignedBy: 0,
-          status: 'unknown',
-          dueDate: DateTime.now(),
-          volunteerHours: 0,
-        );
-      }
-    }).toList();
-  }
-
   void _filterTasks(String query) {
     if (query.isEmpty) {
       setState(() {
-        _filteredTasks = _getTasksFromController();
+        _filteredTasks = _volunteerController.myTasks;
       });
       return;
     }
 
-    final tasks = _getTasksFromController();
-    final filtered = tasks.where((task) {
+    final tasks = _volunteerController.myTasks;
+    final filtered = tasks.where((rxTask) {
+      final task = rxTask.value;
       return task.title.toLowerCase().contains(query.toLowerCase()) ||
           task.description.toLowerCase().contains(query.toLowerCase()) ||
           task.status.toLowerCase().contains(query.toLowerCase());
@@ -136,32 +116,22 @@ class _TasksPageState extends State<TasksPage> {
               onChanged: _filterTasks,
             ),
             const SizedBox(height: 16),
-            Expanded(
-              child: Obx(() {
-                if (_volunteerController.isLoading.value) {
-                  return const Center(child: CustomProgressIndicator());
-                }
-
-                final tasks = _filteredTasks;
-
-                if (tasks.isEmpty) {
-                  return const Center(child: CustomProgressIndicator());
-                }
-
-                return AnimatedTaskListView(
-                  size: size,
-                  itemHeight: size.height * 0.35,
-                  tasks: tasks
-                      .map(
-                        (task) => TaskCard(
-                          task: task,
-                          displayedStatus: _getStatusDisplayText(task.status),
-                        ),
-                      )
-                      .toList(),
-                );
-              }),
+        Expanded(
+  child: _volunteerController.isLoading.value
+      ? const Center(child: CustomProgressIndicator())
+      : _filteredTasks.isEmpty
+          ? const Center(child: Text("No tasks found"))
+          : AnimatedTaskListView(
+              size: size,
+              itemHeight: size.height * 0.35,
+              tasks: _filteredTasks
+                  .map((taskRx) => TaskCard(
+                        task: taskRx,
+                      ))
+                  .toList(),
             ),
+),
+
           ],
         ),
       ),

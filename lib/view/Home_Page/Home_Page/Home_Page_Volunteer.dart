@@ -58,12 +58,7 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
     },
   ];
 
-  final List<Map<String, String>> myeventsList = [
-    {'title': 'community world', 'image': 'assets/images/new.jpg'},
-    {'title': 'food drive', 'image': 'assets/images/new.jpg'},
-    {'title': 'community world', 'image': 'assets/images/new.jpg'},
-    {'title': 'food drive', 'image': 'assets/images/new.jpg'},
-  ];
+ 
 
   @override
   void initState() {
@@ -93,6 +88,7 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
     if (_volunteerController.topProjects.isNotEmpty) {
       await _volunteerController.fetchRecommendedEvents();
     }
+     await _volunteerController.fetchMyEvents();
   }
 
   @override
@@ -290,24 +286,20 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
               const SizedBox(height: 10),
 
               Obx(() {
-                if (_volunteerController.isLoading.value &&
-                    _volunteerController.myEvents.isEmpty) {
-                  return SizedBox(
-                    height: 330,
-                    child: Center(
-                      child: CustomProgressIndicator(), 
-                    ),
-                  );
-                }
+               if (_volunteerController.isLoading.value) {
+  return SizedBox(
+    height: 330,
+    child: Center(child: CustomProgressIndicator()),
+  );
+}
 
-                if (_volunteerController.myEvents.isEmpty) {
-                  return SizedBox(
-                    height: 330,
-                    child: Center(
-                      child: CustomProgressIndicator(),
-                    ),
-                  );
-                }
+if (_volunteerController.myEvents.isEmpty) {
+  return SizedBox(
+    height: 330,
+    child: Center(child: Text("No events found")),
+  );
+}
+
 
                 return SizedBox(
                   height: 330,
@@ -462,7 +454,6 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
               ),
               const SizedBox(height: 10),
 
-              // Top Projects from API
               Obx(() {
                 if (_volunteerController.isLoading.value &&
                     _volunteerController.topProjects.isEmpty) {
