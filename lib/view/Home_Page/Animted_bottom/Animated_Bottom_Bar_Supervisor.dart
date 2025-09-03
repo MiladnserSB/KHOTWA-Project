@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:khotwa/shared/constants/colors.dart';
+import 'package:khotwa/view/Home_Page/Animted_bottom/About_page.dart';
 import 'package:khotwa/view/Home_Page/Home_Page/Home_Page_Volunteer.dart';
 import 'package:khotwa/view/event_and_projects/events_and_projects_page.dart';
 import 'package:khotwa/view/event_and_projects/my_events_page.dart';
@@ -57,7 +58,9 @@ class _AnimatedBottomBarPageSupervisorState
     return Scaffold(
       key: _scaffoldKey,
       drawer: Drawer(
-        backgroundColor:  theme.brightness == Brightness.dark ? Colors.black : thirdColor,
+        backgroundColor: theme.brightness == Brightness.dark
+            ? Colors.black
+            : thirdColor,
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
@@ -108,7 +111,7 @@ class _AnimatedBottomBarPageSupervisorState
             _buildDrawerItem(
               icon: Icons.info_outline,
               label: 'about us'.tr,
-              page: const Placeholder(),
+              page: const AboutPage(),
             ),
             ListTile(
               leading: Icon(
@@ -137,15 +140,13 @@ class _AnimatedBottomBarPageSupervisorState
                       style: TextStyle(
                         color: theme.brightness == Brightness.dark
                             ? Colors.white
-                            : Colors.black
-                            ,
+                            : Colors.black,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     content: Text(
                       "logout message".tr,
-                      style:
-                          TextStyle(color: Colors.grey),
+                      style: TextStyle(color: Colors.grey),
                     ),
                     actions: [
                       TextButton(
@@ -168,12 +169,15 @@ class _AnimatedBottomBarPageSupervisorState
                           Navigator.pushAndRemoveUntil(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => LoginPage()),
+                              builder: (context) => LoginPage(),
+                            ),
                             (route) => false,
                           );
                         },
-                        child: Text("logout".tr,
-                            style: const TextStyle(color: Colors.red)),
+                        child: Text(
+                          "logout".tr,
+                          style: const TextStyle(color: Colors.red),
+                        ),
                       ),
                     ],
                   ),
@@ -190,13 +194,14 @@ class _AnimatedBottomBarPageSupervisorState
       bottomNavigationBar: Container(
         padding: const EdgeInsets.symmetric(vertical: 10),
         decoration: BoxDecoration(
-          color: theme.bottomNavigationBarTheme.backgroundColor ??
+          color:
+              theme.bottomNavigationBarTheme.backgroundColor ??
               theme.scaffoldBackgroundColor,
           boxShadow: [
             BoxShadow(
               color: isDark ? Colors.white10 : Colors.black12,
               blurRadius: 4,
-            )
+            ),
           ],
         ),
         child: Row(
@@ -225,8 +230,9 @@ class _AnimatedBottomBarPageSupervisorState
                       color: isSelected
                           ? const Color(0xFFDDA15E)
                           : theme.textTheme.bodyMedium?.color,
-                      fontWeight:
-                          isSelected ? FontWeight.bold : FontWeight.normal,
+                      fontWeight: isSelected
+                          ? FontWeight.bold
+                          : FontWeight.normal,
                     ),
                   ),
                 ],
@@ -238,8 +244,11 @@ class _AnimatedBottomBarPageSupervisorState
     );
   }
 
-  Widget _buildDrawerItem(
-      {required IconData icon, required String label, required Widget page}) {
+  Widget _buildDrawerItem({
+    required IconData icon,
+    required String label,
+    required Widget page,
+  }) {
     final theme = Theme.of(context);
     return ListTile(
       leading: Icon(
@@ -254,8 +263,9 @@ class _AnimatedBottomBarPageSupervisorState
           color: _selectedDrawerItem == label
               ? const Color(0xFFDDA15E)
               : theme.textTheme.bodyMedium?.color,
-          fontWeight:
-              _selectedDrawerItem == label ? FontWeight.bold : FontWeight.normal,
+          fontWeight: _selectedDrawerItem == label
+              ? FontWeight.bold
+              : FontWeight.normal,
         ),
       ),
       onTap: () {

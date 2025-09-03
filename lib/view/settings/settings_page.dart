@@ -23,19 +23,23 @@ class SettingsPage extends StatelessWidget {
       return Scaffold(
         backgroundColor:  theme.brightness == Brightness.dark ? Colors.black : thirdColor,
         appBar: AppBar(
-        backgroundColor:  theme.brightness == Brightness.dark ? Colors.black : thirdColor,
+        backgroundColor:  theme.brightness == Brightness.dark ? primaryColor : secondaryColor,
           title: Text(
             'settings'.tr,
             style: TextStyle(
-              color: textColor,
+            
+              color:     theme.brightness == Brightness.dark ? Colors.white : Colors.black,
+      
               fontWeight: FontWeight.bold,
-              fontSize: MediaQuery.of(context).size.width * 0.05,
+              
+              fontSize: 20,
             ),
           ),
           centerTitle: true,
           elevation: 0,
-          iconTheme: IconThemeData(color: textColor),
-        ),
+leading:   BackButton(color:   theme.brightness == Brightness.dark
+                        ? Colors.white
+                        : Colors.black,),         ),
         body: ListView(
           padding: EdgeInsets.symmetric(
             horizontal: MediaQuery.of(context).size.width * 0.05,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:khotwa/shared/constants/colors.dart';
+import 'package:khotwa/view/Home_Page/Animted_bottom/About_page.dart';
 import 'package:khotwa/view/Home_Page/Home_Page/Home_Page_Donor.dart';
 import 'package:khotwa/view/change_password/change_password_page.dart';
 import 'package:khotwa/view/settings/settings_page.dart';
@@ -14,7 +15,7 @@ class AnimatedBottomBarPageDonor extends StatefulWidget {
 class _AnimatedBottomBarPageDonorState
     extends State<AnimatedBottomBarPageDonor> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  int _selectedIndex = 1; 
+  int _selectedIndex = 1;
   String _selectedDrawerItem = '';
 
   final List<_NavItem> _items = [
@@ -51,7 +52,9 @@ class _AnimatedBottomBarPageDonorState
     return Scaffold(
       key: _scaffoldKey,
       drawer: Drawer(
-        backgroundColor:  theme.brightness == Brightness.dark ? Colors.black : thirdColor,
+        backgroundColor: theme.brightness == Brightness.dark
+            ? Colors.black
+            : thirdColor,
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
@@ -70,15 +73,27 @@ class _AnimatedBottomBarPageDonorState
                     backgroundImage: AssetImage('assets/images/person.jpg'),
                   ),
                   const SizedBox(height: 10),
-                  Text('user name'.tr,
-                      style: TextStyle(color: Colors.white, fontSize: 18)),
-                  Text('user email'.tr,
-                      style: TextStyle(color: Colors.white70, fontSize: 14)),
+                  Text(
+                    'user name'.tr,
+                    style: TextStyle(color: Colors.white, fontSize: 18),
+                  ),
+                  Text(
+                    'user email'.tr,
+                    style: TextStyle(color: Colors.white70, fontSize: 14),
+                  ),
                 ],
               ),
             ),
-            _buildDrawerItem(icon: Icons.settings, label: 'settings'.tr, page: SettingsPage()),
-            _buildDrawerItem(icon: Icons.info_outline, label: 'about us'.tr, page: const Placeholder()),
+            _buildDrawerItem(
+              icon: Icons.settings,
+              label: 'settings'.tr,
+              page: SettingsPage(),
+            ),
+            _buildDrawerItem(
+              icon: Icons.info_outline,
+              label: 'about us'.tr,
+              page: const AboutPage(),
+            ),
           ],
         ),
       ),
@@ -89,13 +104,14 @@ class _AnimatedBottomBarPageDonorState
       bottomNavigationBar: Container(
         padding: const EdgeInsets.symmetric(vertical: 10),
         decoration: BoxDecoration(
-          color: theme.bottomNavigationBarTheme.backgroundColor ??
+          color:
+              theme.bottomNavigationBarTheme.backgroundColor ??
               theme.scaffoldBackgroundColor,
           boxShadow: [
             BoxShadow(
               color: isDark ? Colors.white10 : Colors.black12,
               blurRadius: 4,
-            )
+            ),
           ],
         ),
         child: Row(
@@ -108,20 +124,25 @@ class _AnimatedBottomBarPageDonorState
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(item.icon,
+                  Icon(
+                    item.icon,
+                    color: isSelected
+                        ? const Color(0xFFDDA15E)
+                        : theme.iconTheme.color,
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    item.label,
+                    style: TextStyle(
+                      fontSize: 12,
                       color: isSelected
                           ? const Color(0xFFDDA15E)
-                          : theme.iconTheme.color),
-                  const SizedBox(height: 4),
-                  Text(item.label,
-                      style: TextStyle(
-                          fontSize: 12,
-                          color: isSelected
-                              ? const Color(0xFFDDA15E)
-                              : theme.textTheme.bodyMedium?.color,
-                          fontWeight: isSelected
-                              ? FontWeight.bold
-                              : FontWeight.normal)),
+                          : theme.textTheme.bodyMedium?.color,
+                      fontWeight: isSelected
+                          ? FontWeight.bold
+                          : FontWeight.normal,
+                    ),
+                  ),
                 ],
               ),
             );
@@ -131,21 +152,30 @@ class _AnimatedBottomBarPageDonorState
     );
   }
 
-  Widget _buildDrawerItem({required IconData icon, required String label, required Widget page}) {
+  Widget _buildDrawerItem({
+    required IconData icon,
+    required String label,
+    required Widget page,
+  }) {
     final theme = Theme.of(context);
     return ListTile(
-      leading: Icon(icon,
+      leading: Icon(
+        icon,
+        color: _selectedDrawerItem == label
+            ? const Color(0xFFDDA15E)
+            : theme.iconTheme.color,
+      ),
+      title: Text(
+        label,
+        style: TextStyle(
           color: _selectedDrawerItem == label
               ? const Color(0xFFDDA15E)
-              : theme.iconTheme.color),
-      title: Text(label,
-          style: TextStyle(
-              color: _selectedDrawerItem == label
-                  ? const Color(0xFFDDA15E)
-                  : theme.textTheme.bodyMedium?.color,
-              fontWeight: _selectedDrawerItem == label
-                  ? FontWeight.bold
-                  : FontWeight.normal)),
+              : theme.textTheme.bodyMedium?.color,
+          fontWeight: _selectedDrawerItem == label
+              ? FontWeight.bold
+              : FontWeight.normal,
+        ),
+      ),
       onTap: () {
         setState(() {
           _selectedDrawerItem = label;

@@ -289,6 +289,11 @@ class EnglishLocalization extends Translations {
   "Success":"Success",
   "My Profile":"My Profile",
   "Event Location":"Event Location",
+  "No results found":"No results found",
+  "Search Results":"Search Results",
+    "about_us": "About Us",
+   "We are a volunteer organization dedicated to making a positive impact in our community.\n\nOur mission is to provide support and assistance to those in need, and to create opportunities for individuals to get involved and make a difference.":   "We are a volunteer organization dedicated to making a positive impact in our community.\n\nOur mission is to provide support and assistance to those in need, and to create opportunities for individuals to get involved and make a difference."
+  
 
   
 

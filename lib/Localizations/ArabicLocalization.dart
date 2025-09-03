@@ -289,6 +289,10 @@ class ArabicLocalization extends Translations {
   "Profile saved":"تم حفظ معلوماتك",
   "My Profile":"ملفي الشخصي",
   "Event Location":"موقع الفعالية",
+    "No results found":"لا يوجد نتائج بحث",
+  "Search Results":"نتائج البحث",
+    "about_us": "من نحن",
+     "We are a volunteer organization dedicated to making a positive impact in our community.\n\nOur mission is to provide support and assistance to those in need, and to create opportunities for individuals to get involved and make a difference.": "نحن منظمة تطوعية مكرسة لإحداث تأثير إيجابي في مجتمعنا.\n\nمهمتنا هي تقديم الدعم والمساعدة لأولائك الذين هم في حاجة، وخلق فرص للأفراد للمشاركة والمساهمة في صنع فرق حقيقي."
 
   }
   };

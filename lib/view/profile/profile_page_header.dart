@@ -30,7 +30,7 @@ class ProfilePageHeader extends StatelessWidget {
                 Text(
                   'Milad AlNser'.tr,
                   style: TextStyle(
-                    fontSize: 18 * textScale,
+                    fontSize: 16 * textScale,
                     fontWeight: FontWeight.bold,
                     color: theme.brightness == Brightness.dark
                         ? Colors.white
@@ -41,7 +41,7 @@ class ProfilePageHeader extends StatelessWidget {
                 Text(
                   'Miladalnser@gmail.com',
                   style: TextStyle(
-                    fontSize: 15 * textScale,
+                    fontSize: 13 * textScale,
                     color: theme.brightness == Brightness.dark
                         ? Colors.white
                         : Colors.black,
