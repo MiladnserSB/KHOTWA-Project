@@ -287,7 +287,8 @@ class EnglishLocalization extends Translations {
   "History of your volunteering":"History of your volunteering",
   "Profile saved":"Profile saved",
   "Success":"Success",
-  "My Profile":"My Profile"
+  "My Profile":"My Profile",
+  "Event Location":"Event Location",
 
   
 

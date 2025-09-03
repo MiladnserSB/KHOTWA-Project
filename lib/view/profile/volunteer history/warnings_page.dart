@@ -25,7 +25,9 @@ class WarningsPage extends StatelessWidget {
     return Scaffold(
       backgroundColor:   theme.brightness == Brightness.dark ? Colors.black:thirdColor,
       appBar: AppBar(
-        backgroundColor: secondaryColor,
+        backgroundColor:  theme.brightness == Brightness.dark
+                ? primaryColor
+                : secondaryColor,
         elevation: 0,
         title:  Text(
           "Warnings".tr,

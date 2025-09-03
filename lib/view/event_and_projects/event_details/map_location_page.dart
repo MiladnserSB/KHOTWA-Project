@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:khotwa/maps/maps_screen.dart';
 import 'package:khotwa/shared/constants/colors.dart';
 
@@ -49,7 +50,7 @@ class _LocationDisplayScreenState extends State<LocationDisplayScreen> {
     
     return Scaffold(
       appBar: AppBar(
-        title: Text("Event Location"),
+        title: Text("Event Location".tr),
         backgroundColor: theme.brightness == Brightness.dark
             ? primaryColor
             : secondaryColor,

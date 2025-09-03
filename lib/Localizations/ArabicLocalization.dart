@@ -287,7 +287,8 @@ class ArabicLocalization extends Translations {
   "History of your volunteering":"سجلك التطوعي",
   "Success":"بنجاح",
   "Profile saved":"تم حفظ معلوماتك",
-  "My Profile":"ملفي الشخصي"
+  "My Profile":"ملفي الشخصي",
+  "Event Location":"موقع الفعالية",
 
   }
   };
