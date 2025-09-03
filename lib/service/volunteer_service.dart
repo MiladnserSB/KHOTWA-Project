@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:khotwa/model/events_model.dart';
+import 'package:khotwa/model/profile_model.dart';
 import 'package:khotwa/model/projects_model.dart';
 import 'package:khotwa/model/tasks_model.dart';
 import 'package:khotwa/model/top_projects_model.dart';
@@ -61,7 +62,7 @@ class VolunteerService extends GetxService {
   try {
     final token = await _getToken();
     final response = await dio.get(
-      '/api/volunteer/events',
+      '/api/volunteer/events-registered',
       options: Options(headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
@@ -327,4 +328,29 @@ class VolunteerService extends GetxService {
       );
     }
   }
+
+Future<ProfileModel> getProfile() async {
+  try {
+    final token = await _getToken();
+    final response = await dio.get(
+      '/api/volunteer/profile',
+      options: Options(
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      ),
+    );
+
+    if (response.statusCode == 200 && response.data['status'] == true) {
+      return ProfileModel.fromJson(response.data);
+    } else {
+      throw Exception('Failed to load profile: ${response.data['message']}');
+    }
+  } on DioException catch (e) {
+    throw Exception('Failed to load profile: ${e.response?.statusCode}');
+  }
+}
+
+
 }

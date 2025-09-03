@@ -1,13 +1,15 @@
 import 'package:get/get.dart';
 import 'package:khotwa/model/events_model.dart';
+import 'package:khotwa/model/profile_model.dart';
 import 'package:khotwa/model/projects_model.dart';
+import 'package:khotwa/model/tasks_model.dart';
 import 'package:khotwa/model/top_projects_model.dart';
 import 'package:khotwa/service/volunteer_service.dart';
 
 class VolunteerController extends GetxController {
  final VolunteerService _volunteerService = Get.put(VolunteerService());
   var myEvents = [].obs;
-  var myTasks = [].obs;
+  var myTasks = <Rx<TaskModel>>[].obs;
   var myEvaluations = [].obs;
   var myBadges = [].obs;
   var isLoading = false.obs;
@@ -15,6 +17,8 @@ class VolunteerController extends GetxController {
   var topProjects = <TopProject>[].obs;
   var allProjects = <ProjectModel>[].obs;
   var recommendedEvents = <EventModel>[].obs;
+  var profile = Rxn<ProfileModel>(); // Observable Profile
+  var isProfileLoading = false.obs;
   @override
   void onInit() {
  
@@ -51,7 +55,8 @@ class VolunteerController extends GetxController {
 
   Future<void> fetchMyTasks() async {
     final tasks = await _volunteerService.getMyTasks();
-    myTasks.assignAll(tasks);
+    myTasks.assignAll(tasks.map((t) => t.obs));
+
   }
 
   Future<void> fetchMyEvaluations() async {
@@ -102,20 +107,36 @@ class VolunteerController extends GetxController {
     }
   }
 
-  // Add this to your VolunteerController class
 
 Future<void> updateTaskStatus(int taskId, String action) async {
   try {
     isLoading(true);
     await _volunteerService.updateTaskStatus(taskId, action);
-    await fetchMyTasks(); 
-    Get.snackbar('Success', 'Task status updated successfully');
+
+    final index = myTasks.indexWhere((t) => t.value.id == taskId);
+    if (index != -1) {
+      final taskRx = myTasks[index];
+      String newStatus = taskRx.value.status;
+
+      switch (action) {
+        case 'accept': newStatus = 'in_progress'; break;
+        case 'reject': newStatus = 'rejected'; break;
+        case 'complete': newStatus = 'completed'; break;
+        case 'withdraw': newStatus = 'withdrawn'; break;
+      }
+
+      taskRx.value = taskRx.value.copyWith(status: newStatus);
+    }
+
+    Get.snackbar('Success'.tr, 'Task status updated successfully'.tr);
   } catch (e) {
-    Get.snackbar('Error', 'Failed to update task status: $e');
+    Get.snackbar('Error'.tr, 'Failed to update task status'.tr);
   } finally {
     isLoading(false);
   }
 }
+
+
  
 
 Future<void> fetchAllEvents() async {
@@ -133,6 +154,7 @@ Future<void> fetchAllProjects() async {
   try {
     isLoading(true);
     final projects = await _volunteerService.getAllProjects();
+    print("we fetch the prjects");
     allProjects.assignAll(projects);
   } catch (e) {
     Get.snackbar('Error', 'Failed to fetch all projects');
@@ -171,4 +193,16 @@ Future<void> fetchRecommendedEvents() async {
   }
 }
 
+
+Future<void> fetchProfile() async {
+    try {
+      isProfileLoading(true);
+      final fetchedProfile = await _volunteerService.getProfile();
+      profile.value = fetchedProfile;
+    } catch (e) {
+      Get.snackbar('Error', 'Failed to fetch profile');
+    } finally {
+      isProfileLoading(false);
+    }
+  }
 }
