@@ -14,25 +14,22 @@ class AppSearchController extends GetxController {
   var filteredAllProjects = <ProjectModel>[].obs;
   RxList<Rx<TaskModel>> filteredMyTasks = <Rx<TaskModel>>[].obs;
 
- void searchMyEvents(String text) {
-  query.value = text.trim().toLowerCase();
+  void searchMyEvents(String text) {
+    query.value = text.trim().toLowerCase();
 
- 
+    filteredMyEvents.assignAll(
+      _volunteerController.myEvents
+          .where((event) => event.title.toLowerCase().contains(query.value))
+          .toList(),
+    );
 
-  filteredMyEvents.assignAll(
-    _volunteerController.myEvents
-        .where((event) => event.title.toLowerCase().contains(query.value))
-        .toList(),
-  );
-
-  filteredAllEvents.clear();
-  filteredAllProjects.clear();
-  filteredMyTasks.clear();
-}
-
+    filteredAllEvents.clear();
+    filteredAllProjects.clear();
+    filteredMyTasks.clear();
+  }
 
   void searchAllEventsAndAllProjects(String text) {
-  query.value = text.trim().toLowerCase();
+    query.value = text.trim().toLowerCase();
 
     filteredAllEvents.assignAll(
       _volunteerController.allEvents
@@ -40,36 +37,74 @@ class AppSearchController extends GetxController {
           .toList(),
     );
 
-
     filteredAllProjects.assignAll(
       _volunteerController.allProjects
           .where((project) => project.name.toLowerCase().contains(query.value))
           .toList(),
     );
 
+    filteredMyEvents.assignAll(
+      _volunteerController.myEvents
+          .where((event) => event.title.toLowerCase().contains(query.value))
+          .toList(),
+    );
 
+    filteredMyTasks.clear();
+  }
 
+  void searchMyTasks(String text) {
+    query.value = text.trim().toLowerCase();
+
+    if (_volunteerController.myTasks.isEmpty) {
+      filteredMyTasks.clear();
+      return;
+    }
+
+    filteredMyTasks.assignAll(
+      _volunteerController.myTasks
+          .where(
+            (taskRx) => taskRx.value.title.toLowerCase().contains(query.value),
+          )
+          .toList(),
+    );
+
+    filteredAllEvents.clear();
+    filteredAllProjects.clear();
     filteredMyEvents.clear();
-    filteredMyTasks.clear();
   }
-
- void searchMyTasks(String text) {
+void searchMyTasksAndAllprojectsAndAllEvents(String text) {
   query.value = text.trim().toLowerCase();
-
-  if (_volunteerController.myTasks.isEmpty) {
-    filteredMyTasks.clear();
-    return;
-  }
-
-  filteredMyTasks.assignAll(
-    _volunteerController.myTasks
-        .where((taskRx) => taskRx.value.title.toLowerCase().contains(query.value))
+  
+filteredMyEvents.assignAll(
+    _volunteerController.myEvents
+        .where((event) => event.title.toLowerCase().contains(query.value))
+        .toList(),
+  );
+  filteredAllEvents.assignAll(
+    _volunteerController.allEvents
+        .where((event) => event.title.toLowerCase().contains(query.value))
         .toList(),
   );
 
-  filteredAllEvents.clear();
-  filteredAllProjects.clear();
-  filteredMyEvents.clear();
+  filteredAllProjects.assignAll(
+    _volunteerController.allProjects
+        .where((project) => project.name.toLowerCase().contains(query.value))
+        .toList(),
+  );
+
+  
+
+  if (_volunteerController.myTasks.isEmpty) {
+    filteredMyTasks.clear();
+  } else {
+    filteredMyTasks.assignAll(
+      _volunteerController.myTasks
+          .where(
+            (taskRx) => taskRx.value.title.toLowerCase().contains(query.value),
+          )
+          .toList(),
+    );
+  }
 }
 
 }

@@ -26,7 +26,7 @@ class ProfilePageHeader extends StatelessWidget {
             children: [
               ListTile(
                 leading: const Icon(Icons.photo_library),
-                title: const Text('Choose from Gallery'),
+                title:  Text('Choose from Gallery'.tr),
                 onTap: () async {
                   Navigator.pop(ctx);
                   final XFile? pickedFile =
@@ -38,7 +38,7 @@ class ProfilePageHeader extends StatelessWidget {
               ),
               ListTile(
                 leading: const Icon(Icons.camera_alt),
-                title: const Text('Take a Photo'),
+                title:  Text('Take a Photo'.tr),
                 onTap: () async {
                   Navigator.pop(ctx);
                   final XFile? pickedFile =

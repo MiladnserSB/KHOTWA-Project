@@ -62,8 +62,8 @@ class _ProfileCategoryDetailsState extends State<ProfileCategoryDetails> {
         await volunteerController.updateProfile(updatedData);
       } else {
         Get.snackbar(
-          'No changes',
-          'Nothing was updated',
+          'No changes'.tr,
+          'Nothing was updated'.tr,
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: Colors.white,
           colorText: Colors.black,
@@ -88,16 +88,20 @@ class _ProfileCategoryDetailsState extends State<ProfileCategoryDetails> {
         title: Text(
           widget.title,
           style: TextStyle(
-            color:
-                theme.brightness == Brightness.dark ? Colors.white : Colors.black,
+            color: theme.brightness == Brightness.dark
+                ? Colors.white
+                : Colors.black,
             fontWeight: FontWeight.bold,
           ),
         ),
-        backgroundColor:
-            theme.brightness == Brightness.dark ? primaryColor : secondaryColor,
+        backgroundColor: theme.brightness == Brightness.dark
+            ? primaryColor
+            : secondaryColor,
         elevation: 2,
         leading: BackButton(
-          color: theme.brightness == Brightness.dark ? Colors.white : Colors.black,
+          color: theme.brightness == Brightness.dark
+              ? Colors.white
+              : Colors.black,
         ),
       ),
       body: SafeArea(
@@ -142,7 +146,11 @@ class _ProfileCategoryDetailsState extends State<ProfileCategoryDetails> {
                       duration: const Duration(milliseconds: 350),
                       child: isEditing
                           ? _buildEditableField(
-                              field, controllers[index], theme, textScale)
+                              field,
+                              controllers[index],
+                              theme,
+                              textScale,
+                            )
                           : Container(
                               key: ValueKey('view_$index'),
                               padding: const EdgeInsets.symmetric(vertical: 8),
@@ -164,8 +172,9 @@ class _ProfileCategoryDetailsState extends State<ProfileCategoryDetails> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: changeEditSaveState,
-        backgroundColor:
-            theme.brightness == Brightness.dark ? primaryColor : secondaryColor,
+        backgroundColor: theme.brightness == Brightness.dark
+            ? primaryColor
+            : secondaryColor,
         label: AnimatedSwitcher(
           duration: const Duration(milliseconds: 250),
           child: Text(
@@ -189,8 +198,12 @@ class _ProfileCategoryDetailsState extends State<ProfileCategoryDetails> {
     );
   }
 
-  Widget _buildEditableField(Map<String, dynamic> field,
-      TextEditingController controller, ThemeData theme, double textScale) {
+  Widget _buildEditableField(
+    Map<String, dynamic> field,
+    TextEditingController controller,
+    ThemeData theme,
+    double textScale,
+  ) {
     final type = field['type'] ?? 'text';
     final options = (field['options'] as List?) ?? [];
 
@@ -207,10 +220,9 @@ class _ProfileCategoryDetailsState extends State<ProfileCategoryDetails> {
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
           ),
           items: opts
-              .map((opt) => DropdownMenuItem<String>(
-                    value: opt,
-                    child: Text(opt),
-                  ))
+              .map(
+                (opt) => DropdownMenuItem<String>(value: opt, child: Text(opt)),
+              )
               .toList(),
           onChanged: (val) {
             setState(() => controller.text = val ?? '');
@@ -218,8 +230,10 @@ class _ProfileCategoryDetailsState extends State<ProfileCategoryDetails> {
         );
 
       case 'multiselect':
-        final selectedValues =
-            controller.text.split(", ").where((e) => e.isNotEmpty).toList();
+        final selectedValues = controller.text
+            .split(", ")
+            .where((e) => e.isNotEmpty)
+            .toList();
         return Wrap(
           spacing: 8,
           children: options.map<Widget>((opt) {
@@ -228,8 +242,9 @@ class _ProfileCategoryDetailsState extends State<ProfileCategoryDetails> {
               label: Text(opt),
               selected: isSelected,
               selectedColor: secondaryColor,
-              labelStyle:
-                  TextStyle(color: isSelected ? Colors.white : Colors.black),
+              labelStyle: TextStyle(
+                color: isSelected ? Colors.white : Colors.black,
+              ),
               onSelected: (selected) {
                 setState(() {
                   if (selected) {
@@ -259,15 +274,19 @@ class _ProfileCategoryDetailsState extends State<ProfileCategoryDetails> {
             prefixIcon: Icon(Icons.edit, color: primaryColor),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide:
-                  BorderSide(color: primaryColor.withOpacity(0.6), width: 1.3),
+              borderSide: BorderSide(
+                color: primaryColor.withOpacity(0.6),
+                width: 1.3,
+              ),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
               borderSide: BorderSide(color: primaryColor, width: 1.8),
             ),
-            contentPadding:
-                const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 14,
+              vertical: 14,
+            ),
           ),
         );
     }

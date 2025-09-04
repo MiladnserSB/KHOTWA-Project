@@ -135,7 +135,7 @@ class _EventsAndProjectsPageState extends State<EventsAndProjectsPage>
                                   decoration: InputDecoration(
                                     hintText: 'search'.tr,
                                     hintStyle: const TextStyle(
-                                      color: Colors.grey,
+                                      color: Colors.black,
                                     ),
                                     border: InputBorder.none,
                                   ),

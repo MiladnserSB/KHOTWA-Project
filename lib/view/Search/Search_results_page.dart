@@ -62,7 +62,7 @@ class SearchResultsPage extends StatelessWidget {
                 ...myTasks.map(
                   (taskRx) => Padding(
                     padding: const EdgeInsets.only(bottom: 12.0),
-                    child: TaskCard(task: taskRx), // taskRx هو Rx<TaskModel>
+                    child: TaskCard(task: taskRx), 
                   ),
                 ),
                 const SizedBox(height: 20),

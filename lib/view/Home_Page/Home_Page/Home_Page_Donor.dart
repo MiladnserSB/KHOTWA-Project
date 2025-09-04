@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:khotwa/controller/Search_controller.dart';
 import 'package:khotwa/shared/constants/colors.dart';
 import 'package:khotwa/view/Home_Page/Cards/Home_Events_Card.dart';
 import 'package:khotwa/view/Home_Page/Cards/Home_Person_Card.dart';
 import 'package:khotwa/view/Home_Page/Cards/Home_Projects_Card_Donor_and_Visitor.dart';
+import 'package:khotwa/view/Search/Search_results_page.dart';
 import 'package:khotwa/view/event_and_projects/events_and_projects_page.dart';
 import 'package:khotwa/view/login/login_page.dart';
 import 'package:khotwa/view/notifications/notifications_list_page.dart';
@@ -190,6 +192,17 @@ class _HomePageDonorState extends State<HomePageDonor> {
               TextField(
                 controller: _controller,
                 focusNode: _focusNode,
+                 onChanged: (value) {
+                  final searchController =
+                      Get.isRegistered<AppSearchController>()
+                      ? Get.find<AppSearchController>()
+                      : Get.put(AppSearchController());
+
+                  searchController.searchMyTasksAndAllprojectsAndAllEvents(value);
+                },
+                onSubmitted: (value) {
+                  Get.to(() => SearchResultsPage());
+                },
                 decoration: InputDecoration(
                   hintText: 'search'.tr,
                   hintStyle: TextStyle(color: Colors.black),

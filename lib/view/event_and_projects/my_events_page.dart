@@ -132,22 +132,19 @@ class _MyEventsPageState extends State<MyEventsPage> {
           Expanded(
             child: TextField(
               style: const TextStyle(color: Colors.black),
-               onChanged: (value) {
-                                    final searchController =
-                                        Get.isRegistered<AppSearchController>()
-                                        ? Get.find<AppSearchController>()
-                                        : Get.put(AppSearchController());
+              onChanged: (value) {
+                final searchController = Get.isRegistered<AppSearchController>()
+                    ? Get.find<AppSearchController>()
+                    : Get.put(AppSearchController());
 
-                                    searchController.searchMyEvents(value);
-                                  },
-                                  onSubmitted: (value) {
-                                  
-
-                                    Get.to(() => SearchResultsPage());
-                                  },
+                searchController.searchMyEvents(value);
+              },
+              onSubmitted: (value) {
+                Get.to(() => SearchResultsPage());
+              },
               decoration: InputDecoration(
                 hintText: 'search'.tr,
-                hintStyle: const TextStyle(color: Colors.grey),
+                hintStyle: const TextStyle(color: Colors.black),
                 border: InputBorder.none,
               ),
             ),
@@ -223,7 +220,7 @@ class EventCard extends StatelessWidget {
                     child: Text(
                       (statusValues.reverse[event.status] ?? 'unknown')
                           .capitalize!,
-                      style:  TextStyle(
+                      style: TextStyle(
                         color: secondaryColor,
                         fontWeight: FontWeight.w600,
                       ),

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:khotwa/controller/Search_controller.dart';
 import 'package:khotwa/controller/volunteer_controller.dart';
 import 'package:khotwa/model/events_model.dart';
 import 'package:khotwa/shared/constants/colors.dart';
 import 'package:khotwa/view/Home_Page/Cards/Home_Events_Card.dart';
 import 'package:khotwa/view/Home_Page/Cards/Home_Person_Card.dart';
 import 'package:khotwa/view/Home_Page/Cards/Home_Projects_Card.dart';
+import 'package:khotwa/view/Search/Search_results_page.dart';
 import 'package:khotwa/view/event_and_projects/event_details/event_details_page.dart';
 import 'package:khotwa/view/event_and_projects/events_and_projects_page.dart';
 import 'package:khotwa/view/notifications/notifications_list_page.dart';
@@ -59,8 +61,6 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
     },
   ];
 
- 
-
   @override
   void initState() {
     super.initState();
@@ -89,7 +89,7 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
     if (_volunteerController.topProjects.isNotEmpty) {
       await _volunteerController.fetchRecommendedEvents();
     }
-     await _volunteerController.fetchMyEvents();
+    await _volunteerController.fetchMyEvents();
   }
 
   @override
@@ -152,7 +152,7 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
                         style: TextStyle(
                           fontSize: 35,
                           fontFamily: 'DG Heaven',
-                          color: secondaryColor
+                          color: secondaryColor,
                         ),
                       ),
                     ),
@@ -162,16 +162,16 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
                       Icons.notifications,
                       size: 30,
                       color: theme.brightness == Brightness.dark
-        ? Colors.white
-        : Colors.black,
+                          ? Colors.white
+                          : Colors.black,
                     ),
                     onPressed: () {
-                   Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (_) => NotificationsListPage(),
-                                  ),
-                                );
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => NotificationsListPage(),
+                        ),
+                      );
                     },
                   ),
                 ],
@@ -179,10 +179,20 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
 
               const SizedBox(height: 20),
 
-              // Search Field
               TextField(
                 controller: _controller,
                 focusNode: _focusNode,
+                onChanged: (value) {
+                  final searchController =
+                      Get.isRegistered<AppSearchController>()
+                      ? Get.find<AppSearchController>()
+                      : Get.put(AppSearchController());
+
+                  searchController.searchMyTasksAndAllprojectsAndAllEvents(value);
+                },
+                onSubmitted: (value) {
+                  Get.to(() => SearchResultsPage());
+                },
                 decoration: InputDecoration(
                   hintText: 'search'.tr,
                   hintStyle: TextStyle(color: Colors.black),
@@ -290,20 +300,19 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
               const SizedBox(height: 10),
 
               Obx(() {
-               if (_volunteerController.isLoading.value) {
-  return SizedBox(
-    height: 330,
-    child: Center(child: CustomProgressIndicator()),
-  );
-}
+                if (_volunteerController.isLoading.value) {
+                  return SizedBox(
+                    height: 330,
+                    child: Center(child: CustomProgressIndicator()),
+                  );
+                }
 
-if (_volunteerController.myEvents.isEmpty) {
-  return SizedBox(
-    height: 330,
-    child: Center(child: Text("No events found")),
-  );
-}
-
+                if (_volunteerController.myEvents.isEmpty) {
+                  return SizedBox(
+                    height: 330,
+                    child: Center(child: Text("No events found")),
+                  );
+                }
 
                 return SizedBox(
                   height: 330,
@@ -383,9 +392,7 @@ if (_volunteerController.myEvents.isEmpty) {
                 if (_volunteerController.recommendedEvents.isEmpty) {
                   return SizedBox(
                     height: 330,
-                    child: Center(
-                      child: CustomProgressIndicator(),
-                    ),
+                    child: Center(child: CustomProgressIndicator()),
                   );
                 }
 
@@ -463,18 +470,14 @@ if (_volunteerController.myEvents.isEmpty) {
                     _volunteerController.topProjects.isEmpty) {
                   return SizedBox(
                     height: 350,
-                    child: Center(
-                      child: CustomProgressIndicator(),
-                    ),
+                    child: Center(child: CustomProgressIndicator()),
                   );
                 }
 
                 if (_volunteerController.topProjects.isEmpty) {
                   return SizedBox(
                     height: 350,
-                    child: Center(
-                      child: CustomProgressIndicator(),
-                    ),
+                    child: Center(child: CustomProgressIndicator()),
                   );
                 }
 
