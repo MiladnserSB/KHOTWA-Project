@@ -21,7 +21,8 @@ class VolunteerController extends GetxController {
    var registeredEvents = <int, bool>{}.obs;
   var profile = Rxn<ProfileModel>(); 
   var isProfileLoading = false.obs;
-
+  var checkInStatus = <int, bool>{}.obs;
+  var checkOutStatus = <int, bool>{}.obs;  
   @override
   void onInit() {
     fetchProfile();
@@ -228,5 +229,37 @@ Future<void> updateProfile(Map<String, dynamic> profileData) async {
     isProfileLoading(false);
   }
 }
+Future<void> handleCheckIn(int eventId, String qrToken) async {
+  try {
+    isLoading(true);
+    final result = await _volunteerService.checkIn(qrToken);
+    if (result['status'] == true) {
+      checkInStatus[eventId] = true;
+      Get.snackbar('Success', result['message'] ?? 'Checked in successfully');
+    } else {
+      Get.snackbar('Error', result['message'] ?? 'Failed to check in');
+    }
+  } catch (e) {
+    Get.snackbar('Error', 'Check-in failed: $e');
+  } finally {
+    isLoading(false);
+  }
+}
 
+Future<void> handleCheckOut(int eventId, String qrToken) async {
+  try {
+    isLoading(true);
+    final result = await _volunteerService.checkOut(qrToken);
+    if (result['status'] == true) {
+      checkOutStatus[eventId] = true;
+      Get.snackbar('Success', result['message'] ?? 'Checked out successfully');
+    } else {
+      Get.snackbar('Error', result['message'] ?? 'Failed to check out');
+    }
+  } catch (e) {
+    Get.snackbar('Error', 'Check-out failed: $e');
+  } finally {
+    isLoading(false);
+  }
+}
 }

@@ -9,6 +9,8 @@ import 'package:khotwa/shared/constants/colors.dart';
 import 'package:khotwa/view/event_and_projects/event_details/card_information_in_event.dart';
 import 'package:khotwa/view/event_and_projects/event_details/map_location_page.dart';
 import 'package:khotwa/view/event_and_projects/event_details/project_card_in_details_page.dart';
+import 'package:khotwa/view/event_and_projects/scan_qr_page.dart';
+import 'package:khotwa/view/login/login_page.dart';
 
 class EventDetailsPage extends StatelessWidget {
   final EventModel event;
@@ -36,16 +38,18 @@ class EventDetailsPage extends StatelessWidget {
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back,
-            color:
-                theme.brightness == Brightness.dark ? Colors.white : textBlack,
+            color: theme.brightness == Brightness.dark
+                ? Colors.white
+                : textBlack,
           ),
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(
           "Event Details".tr,
           style: TextStyle(
-            color:
-                theme.brightness == Brightness.dark ? Colors.white : textBlack,
+            color: theme.brightness == Brightness.dark
+                ? Colors.white
+                : textBlack,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -66,11 +70,11 @@ class EventDetailsPage extends StatelessWidget {
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) =>
                             Image.asset(
-                          'assets/images/logo1.png',
-                          width: double.infinity,
-                          height: size.height * 0.25,
-                          fit: BoxFit.cover,
-                        ),
+                              'assets/images/logo1.png',
+                              width: double.infinity,
+                              height: size.height * 0.25,
+                              fit: BoxFit.cover,
+                            ),
                       )
                     : Image.asset(
                         'assets/images/logo1.png',
@@ -83,8 +87,10 @@ class EventDetailsPage extends StatelessWidget {
 
               Text(
                 event.title,
-                style:
-                    const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                style: const TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               const SizedBox(height: 8),
 
@@ -179,52 +185,116 @@ class EventDetailsPage extends StatelessWidget {
               ),
               const SizedBox(height: 30),
 
+              /// 🔹 Action Button
               Obx(() {
-  ;
-  final isLoading = volunteerController.isLoading.value;
-  final isRegistered = volunteerController.isRegisteredFor(event.id);
+                final isLoading = volunteerController.isLoading.value;
+                final isRegistered = volunteerController.isRegisteredFor(
+                  event.id,
+                );
 
-  if (roleID != 2 && roleID != 3) {
-    return const SizedBox.shrink();
-  }
+                if (roleID != 2 && roleID != 3) {
+                  return const SizedBox.shrink();
+                }
 
-  String buttonText = '';
-  VoidCallback? onPressed;
+                String buttonText = '';
+                VoidCallback? onPressed;
 
-  if ((event.status == 'upcoming') && !isRegistered) {
-    buttonText = 'Register'.tr;
-    onPressed = () => volunteerController.registerForEvent(event.id);
-  } else if (event.status == 'open' && isRegistered) {
-    buttonText = 'Withdraw'.tr;
-    onPressed = () => volunteerController.withdrawFromEvent(event.id);
-  }
+                // Upcoming event
+                if (event.status == 'upcoming') {
+                  final eventStart = DateTime(
+                    event.date.year,
+                    event.date.month,
+                    event.date.day,
+                  );
+                  final now = DateTime.now();
+                  final hoursUntilStart = eventStart.difference(now).inHours;
 
-  if (buttonText.isEmpty) return const SizedBox.shrink();
+                  if (!isRegistered &&
+                      event.currentVolunteers < event.requiredVolunteers) {
+                    buttonText = 'Join'.tr;
+                    onPressed = () =>
+                        volunteerController.registerForEvent(event.id);
+                  } else if (isRegistered) {
+                    if (hoursUntilStart > 24) {
+                      buttonText = 'Withdraw'.tr;
+                      onPressed = () =>
+                          volunteerController.withdrawFromEvent(event.id);
+                    } else {
+                      buttonText = 'Registered'.tr;
+                      onPressed = null;
+                    }
+                  }
+                }
+                // Open event
+                else if (event.status == 'open' && isRegistered) {
+                  if (roleID == 2) {
+                    buttonText = 'Scan QR'.tr;
+                    onPressed = () async {
+                      final result = await Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => ScanQrPage()),
+                      );
+                      if (result != null) {
+                        final volunteerController =
+                            Get.find<VolunteerController>();
 
-  return SizedBox(
-    width: double.infinity,
-    child: ElevatedButton(
-      onPressed: isLoading ? null : onPressed,
-      style: ElevatedButton.styleFrom(
-        backgroundColor: secondaryColor,
-        foregroundColor: white,
-        padding: const EdgeInsets.symmetric(vertical: 14),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-      ),
-      child: isLoading
-          ? const CircularProgressIndicator(color: white)
-          : Text(
-              buttonText,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-              ),
-            ),
-    ),
-  );
-}),
+                        // Example: if user has not checked in yet, do check-in
+                        if (volunteerController.checkInStatus[event.id] !=
+                            true) {
+                          await volunteerController.handleCheckIn(
+                            event.id,
+                            result,
+                          );
+                        }
+                        // If already checked in, then do check-out
+                        else if (volunteerController.checkOutStatus[event.id] !=
+                            true) {
+                          await volunteerController.handleCheckOut(
+                            event.id,
+                            result,
+                          );
+                        } else {
+                          Get.snackbar(
+                            'Info',
+                            'You are already checked in and checked out for this event.',
+                          );
+                        }
+                      }
+                    };
+                  } else if (roleID == 3) {
+                    buttonText = 'Attendance'.tr;
+                    onPressed = () =>
+                        Get.toNamed('/attendence_page', arguments: event);
+                  }
+                }
+
+                // Closed/completed → no button
+                if (buttonText.isEmpty) return const SizedBox.shrink();
+
+                return SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: isLoading ? null : onPressed,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: secondaryColor,
+                      foregroundColor: white,
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    child: isLoading
+                        ? const CircularProgressIndicator(color: white)
+                        : Text(
+                            buttonText,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
+                          ),
+                  ),
+                );
+              }),
 
               const SizedBox(height: 30),
             ],

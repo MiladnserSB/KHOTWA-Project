@@ -25,9 +25,7 @@ class CustomSearchBar extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 12),
       height: size.height * 0.06,
       decoration: BoxDecoration(
-        color: theme.brightness == Brightness.dark
-            ? Colors.white
-            : Colors.black,
+        color: Colors.white,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
           color: theme.brightness == Brightness.dark
@@ -40,9 +38,7 @@ class CustomSearchBar extends StatelessWidget {
         children: [
           Icon(
             Icons.search,
-            color: theme.brightness == Brightness.dark
-                ? Colors.black
-                : Colors.white,
+            color: Colors.black,
           ),
           const SizedBox(width: 10),
           Expanded(
@@ -62,15 +58,12 @@ class CustomSearchBar extends StatelessWidget {
                 hintText: hintText.tr,
                 border: InputBorder.none,
                 hintStyle: TextStyle(
-                  color: theme.brightness == Brightness.dark
-                      ? Colors.black
-                      : Colors.white,
+                  color: Colors.black
+                      ,
                 ),
               ),
               style: TextStyle(
-                color: theme.brightness == Brightness.dark
-                    ? Colors.black
-                    : Colors.white,
+                color: Colors.black,
               ),
             ),
           ),

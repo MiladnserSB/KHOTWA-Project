@@ -206,29 +206,62 @@ class VolunteerService extends GetxService {
     }
   }
 
-  Future<Map<String, dynamic>> checkIn(String qrToken) async {
-    try {
-      final response = await dio.post(
-        '/api/volunteer/attendance/check-in',
-        data: {'checkin_method': 'QR', 'qr_token': qrToken},
-      );
-      return response.data;
-    } on DioException catch (e) {
-      throw Exception('Failed to check in: ${e.response?.statusCode}');
-    }
-  }
+ Future<Map<String, dynamic>> checkIn(String qrToken) async {
+  try {
+    final token = await _getToken();
+    final response = await dio.post(
+      '/api/volunteer/attendance/check-in',
+      data: {
+        'checkin_method': 'QR',
+        'qr_token': qrToken,
+      },
+      options: Options(
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      ),
+    );
 
-  Future<Map<String, dynamic>> checkOut(String qrToken) async {
-    try {
-      final response = await dio.post(
-        '/api/volunteer/attendance/check-out',
-        data: {'checkin_method': 'QR', 'qr_token': qrToken},
-      );
+    if (response.statusCode == 200) {
       return response.data;
-    } on DioException catch (e) {
-      throw Exception('Failed to check out: ${e.response?.statusCode}');
+    } else {
+      throw Exception('Failed to check in: ${response.statusMessage}');
     }
+  } on DioException catch (e) {
+    throw Exception('Failed to check in: ${e.response?.statusCode}');
   }
+}
+
+Future<Map<String, dynamic>> checkOut(String qrToken) async {
+  try {
+    final token = await _getToken();
+    final response = await dio.post(
+      '/api/volunteer/attendance/check-out',
+      data: {
+        'checkin_method': 'QR',
+        'qr_token': qrToken,
+      },
+      options: Options(
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      ),
+    );
+
+    if (response.statusCode == 200) {
+      return response.data;
+    } else {
+      throw Exception('Failed to check out: ${response.statusMessage}');
+    }
+  } on DioException catch (e) {
+    throw Exception('Failed to check out: ${e.response?.statusCode}');
+  }
+}
+
 
   // Additional features
   Future<List<dynamic>> getVolunteerLog() async {
