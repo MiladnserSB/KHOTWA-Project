@@ -68,11 +68,10 @@ class TaskCard extends StatelessWidget {
 
   void _handleTaskAction(String action, BuildContext context) {
     final controller = Get.find<VolunteerController>();
-
     _showConfirmationDialog(
       context,
       "Update Status".tr,
-      "Are you sure you want to ${action.tr} this task?".tr,
+      'Are you sure you want to do this action'.tr,
       () {
         controller.updateTaskStatus(task.value.id, action);
       },
@@ -80,7 +79,7 @@ class TaskCard extends StatelessWidget {
   }
 
   String _getStatusDisplayText(String status) {
-    if (status.toLowerCase() == 'not_started') {
+    if (status.toLowerCase() == 'not_started'.tr) {
       return 'not started'.tr;
     }
     return status.tr;
@@ -166,7 +165,6 @@ class TaskCard extends StatelessWidget {
               ),
               const SizedBox(height: 10),
 
-              // ✅ reactive chip
               Chip(
                 label: Text(
                   _getStatusDisplayText(t.status),
@@ -225,7 +223,7 @@ class TaskCard extends StatelessWidget {
                             ? null
                             : () => _handleTaskAction('complete', context),
                         child: Text(
-                          "Complete".tr,
+                          "Completed".tr,
                           style: TextStyle(color: white, fontSize: baseFont),
                         ),
                       ),

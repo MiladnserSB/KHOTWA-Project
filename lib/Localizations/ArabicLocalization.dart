@@ -118,7 +118,7 @@ class ArabicLocalization extends Translations {
       "Warnings": "التحذيرات",
       "Participated and Current Campaigns": "المشاركات والحملات الحالية",
       "Active": "نشط",
-      "Completed": "مكتمل",
+      "Completed": "اكمال",
       "Hours: ": " عدد الساعات: ",
       "Role: ": "الدور: ",
       //task
@@ -301,10 +301,16 @@ class ArabicLocalization extends Translations {
      "Total Volunteers":"كامل عدد المتطوعين",
      "Total Events":"عدد الفعاليات",
      "Donated Amount":"مبلغ التبرع",
-     "No results found":"لا يوجد نتائج"
-     
-
-
+     "No results found":"لا يوجد نتائج",
+     "Are you sure you want to do this action":"هل متأكد من اتمام هذه العملية ",
+     "not started":"لم تبدأ بعد",
+     "Supervisor ID":"رقم المشرف",
+     "Withdraw":"انسحاب",
+     "Task Completed":"تمت المهمة",
+    "Accept":"قبول",
+    "Reject":"رفض",
+"in_progress":"قيد الانجاز",
+"not_started":"لم تبدأ بعد"
   }
   };
 }

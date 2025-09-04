@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:khotwa/controller/Search_controller.dart';
 import 'package:khotwa/shared/constants/colors.dart';
+import 'package:khotwa/view/Search/Search_results_page.dart';
 
 class CustomSearchBar extends StatelessWidget {
   final TextEditingController controller;
@@ -23,30 +25,52 @@ class CustomSearchBar extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 12),
       height: size.height * 0.06,
       decoration: BoxDecoration(
-        color: theme.brightness == Brightness.dark ? Colors.grey[800] : Colors.white,
+        color: theme.brightness == Brightness.dark
+            ? Colors.white
+            : Colors.black,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: theme.brightness == Brightness.dark ? Colors.grey[600]! : Colors.grey[300]!,
+          color: theme.brightness == Brightness.dark
+              ? Colors.grey[600]!
+              : Colors.grey[300]!,
           width: 1,
         ),
       ),
       child: Row(
         children: [
-          Icon(Icons.search, color: theme.brightness == Brightness.dark ? Colors.white : Colors.black),
+          Icon(
+            Icons.search,
+            color: theme.brightness == Brightness.dark
+                ? Colors.black
+                : Colors.white,
+          ),
           const SizedBox(width: 10),
           Expanded(
             child: TextField(
               controller: controller,
-              onChanged: onChanged,
+              onChanged: (value) {
+                final searchController = Get.isRegistered<AppSearchController>()
+                    ? Get.find<AppSearchController>()
+                    : Get.put(AppSearchController());
+
+                searchController.searchMyTasks(value);
+              },
+              onSubmitted: (value) {
+                Get.to(() => SearchResultsPage());
+              },
               decoration: InputDecoration(
                 hintText: hintText.tr,
                 border: InputBorder.none,
                 hintStyle: TextStyle(
-                  color: theme.brightness == Brightness.dark ? Colors.grey[400] : Colors.grey[600],
+                  color: theme.brightness == Brightness.dark
+                      ? Colors.black
+                      : Colors.white,
                 ),
               ),
               style: TextStyle(
-                color: theme.brightness == Brightness.dark ? Colors.white : Colors.black,
+                color: theme.brightness == Brightness.dark
+                    ? Colors.black
+                    : Colors.white,
               ),
             ),
           ),

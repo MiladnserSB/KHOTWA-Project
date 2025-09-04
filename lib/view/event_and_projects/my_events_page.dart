@@ -47,8 +47,9 @@ class _MyEventsPageState extends State<MyEventsPage> {
     final theme = Theme.of(context);
 
     return Scaffold(
-      backgroundColor:
-          theme.brightness == Brightness.dark ? Colors.black : thirdColor,
+      backgroundColor: theme.brightness == Brightness.dark
+          ? Colors.black
+          : thirdColor,
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
@@ -70,7 +71,6 @@ class _MyEventsPageState extends State<MyEventsPage> {
               _buildSearchBar(size),
               SizedBox(height: size.height * 0.02),
 
-              // 🔥 Event list
               Expanded(
                 child: Obx(() {
                   if (_controller.isLoading.value) {
@@ -79,8 +79,10 @@ class _MyEventsPageState extends State<MyEventsPage> {
 
                   if (_controller.myEvents.isEmpty) {
                     return Center(
-                      child: Text("No events found".tr,
-                          style: const TextStyle(fontSize: 16)),
+                      child: Text(
+                        "No events found".tr,
+                        style: const TextStyle(fontSize: 16),
+                      ),
                     );
                   }
 
@@ -129,35 +131,27 @@ class _MyEventsPageState extends State<MyEventsPage> {
           const SizedBox(width: 10),
           Expanded(
             child: TextField(
-                                  style: const TextStyle(color: Colors.black),
-                                  onChanged: (value) {
+              style: const TextStyle(color: Colors.black),
+               onChanged: (value) {
                                     final searchController =
                                         Get.isRegistered<AppSearchController>()
                                         ? Get.find<AppSearchController>()
                                         : Get.put(AppSearchController());
 
-                                    searchController.search(value);
+                                    searchController.searchMyEvents(value);
                                   },
                                   onSubmitted: (value) {
-                                    final searchController =
-                                        Get.find<AppSearchController>();
-                                    searchController.search(value);
+                                  
 
                                     Get.to(() => SearchResultsPage());
                                   },
-                                  decoration: InputDecoration(
-                                    hintText: 'search'.tr,
-                                    hintStyle: const TextStyle(
-                                      color: Colors.grey,
-                                    ),
-                                    border: InputBorder.none,
-                                  ),
-                                ),
+              decoration: InputDecoration(
+                hintText: 'search'.tr,
+                hintStyle: const TextStyle(color: Colors.grey),
+                border: InputBorder.none,
+              ),
+            ),
           ),
-
-
-
-          
         ],
       ),
     );
@@ -218,8 +212,10 @@ class EventCard extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 5,
+                    ),
                     decoration: BoxDecoration(
                       color: secondaryColor.withOpacity(0.2),
                       borderRadius: BorderRadius.circular(20),
@@ -227,7 +223,7 @@ class EventCard extends StatelessWidget {
                     child: Text(
                       (statusValues.reverse[event.status] ?? 'unknown')
                           .capitalize!,
-                      style: const TextStyle(
+                      style:  TextStyle(
                         color: secondaryColor,
                         fontWeight: FontWeight.w600,
                       ),

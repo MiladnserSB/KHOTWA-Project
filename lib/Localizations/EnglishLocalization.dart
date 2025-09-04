@@ -47,6 +47,8 @@ class EnglishLocalization extends Translations {
       "organization relief": "Relief Group",
       "organization water": "Water Foundation",
       "status accept": "Accept",
+      "Accept":"Accept",
+      "Reject":"Reject",
       "my events": "My Events",
       "Start Date":"Start Date",
       "End Date":"End Date",
@@ -302,6 +304,14 @@ class EnglishLocalization extends Translations {
    "Remaining Amount":"Remaining Amount",
    "Donated Amount":"Donated Amount",
    "No results found":"No results found",
+   "Are you sure you want to do this action":"Are you sure you want to do this action",
+   "not started":"not started",
+   "Supervisor ID":"Supervisor ID",
+   "Withdraw":"Withdraw",
+   "Task Completed":"Task Completed",
+"in_progress":"in progress",
+"not_started":"not started",
+
    
   
 

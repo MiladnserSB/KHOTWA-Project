@@ -69,7 +69,7 @@ class HomeProjectsCard extends StatelessWidget {
             style: TextStyle(
               fontSize: 16, 
               fontWeight: FontWeight.bold,
-              color: theme.brightness == Brightness.dark ? Colors.white : Colors.black,
+              color: Colors.black
             ),
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
@@ -80,7 +80,7 @@ class HomeProjectsCard extends StatelessWidget {
             organization,
             style: TextStyle(
               fontSize: 12, 
-              color: theme.brightness == Brightness.dark ? Colors.grey[300] : Colors.black,
+              color: Colors.black
             ),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,

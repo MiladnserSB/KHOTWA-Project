@@ -125,12 +125,10 @@ class _EventsAndProjectsPageState extends State<EventsAndProjectsPage>
                                         ? Get.find<AppSearchController>()
                                         : Get.put(AppSearchController());
 
-                                    searchController.search(value);
+                                    searchController.searchAllEventsAndAllProjects(value);
                                   },
                                   onSubmitted: (value) {
-                                    final searchController =
-                                        Get.find<AppSearchController>();
-                                    searchController.search(value);
+                                  
 
                                     Get.to(() => SearchResultsPage());
                                   },

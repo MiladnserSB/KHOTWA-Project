@@ -408,7 +408,7 @@ if (_volunteerController.myEvents.isEmpty) {
                         scale: scale,
                         child: GestureDetector(
                           onTap: () {
-                            // Get.to(EventDetailsPage());
+                            // Get.to(EventDetailsPage(event: null,));
                           },
                           child: HomeEventsCard(
                             title: event.title ?? "No title",
