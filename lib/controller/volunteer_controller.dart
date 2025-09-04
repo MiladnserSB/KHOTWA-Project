@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:khotwa/model/event_evaluations_model.dart';
 import 'package:khotwa/model/events_model.dart';
 import 'package:khotwa/model/profile_model.dart';
 import 'package:khotwa/model/projects_model.dart';
@@ -23,6 +24,8 @@ class VolunteerController extends GetxController {
   var isProfileLoading = false.obs;
   var checkInStatus = <int, bool>{}.obs;
   var checkOutStatus = <int, bool>{}.obs;  
+  var eventFeedback = Rxn<EventEvaluationModel>();
+var isFeedbackLoading = false.obs;
   @override
   void onInit() {
     fetchProfile();
@@ -67,26 +70,43 @@ class VolunteerController extends GetxController {
   }
 
 Future<void> registerForEvent(int eventId) async {
-    try {
-      isLoading.value = true;
-      // TODO: call your API here
-      await Future.delayed(const Duration(seconds: 1));
-      registeredEvents[eventId] = true;
-    } finally {
-      isLoading.value = false;
-    }
-  }
+  try {
+    isLoading.value = true;
+    final result = await _volunteerService.registerForEvent(eventId);
 
-  Future<void> withdrawFromEvent(int eventId) async {
-    try {
-      isLoading.value = true;
-      // TODO: call your API here
-      await Future.delayed(const Duration(seconds: 1));
-      registeredEvents[eventId] = false;
-    } finally {
-      isLoading.value = false;
+    if (result['status'] == true) {
+      registeredEvents[eventId] = true;
+      Get.snackbar('Success', result['message'] ?? 'Registered successfully');
+      await fetchMyEvents(); 
+    } else {
+      Get.snackbar('Error', result['message'] ?? 'Failed to register');
     }
+  } catch (e) {
+    Get.snackbar('Error', 'Failed to register for event: $e');
+  } finally {
+    isLoading.value = false;
   }
+}
+
+Future<void> withdrawFromEvent(int eventId) async {
+  try {
+    isLoading.value = true;
+    final result = await _volunteerService.withdrawFromEvent(eventId);
+
+    if (result['status'] == true) {
+      registeredEvents[eventId] = false;
+      Get.snackbar('Success', result['message'] ?? 'Withdrawn successfully');
+      await fetchMyEvents(); 
+    } else {
+      Get.snackbar('Error', result['message'] ?? 'Failed to withdraw');
+    }
+  } catch (e) {
+    Get.snackbar('Error', 'Failed to withdraw from event: $e');
+  } finally {
+    isLoading.value = false;
+  }
+}
+
 
 bool isRegisteredFor(int eventId) {
   return myEvents.any((event) => event.id == eventId);
@@ -262,4 +282,35 @@ Future<void> handleCheckOut(int eventId, String qrToken) async {
     isLoading(false);
   }
 }
+
+
+Future<void> fetchEventFeedback(int eventId) async {
+  try {
+    isFeedbackLoading(true);
+
+    final result = await _volunteerService.getEventFeedback(eventId);
+    eventFeedback.value = result.data;
+
+    Get.snackbar('Success', result.message);
+  } catch (e) {
+    Get.snackbar('Error', 'Failed to load feedback: $e');
+  } finally {
+    isFeedbackLoading(false);
+  }
+}
+Future<void> submitEventFeedback(int eventId, int rating, String comment) async {
+  try {
+    isLoading(true);
+    final result = await _volunteerService.submitEventFeedback(eventId, rating, comment);
+
+    eventFeedback.value = result.data;
+
+    Get.snackbar('Success', result.message);
+  } catch (e) {
+    Get.snackbar('Error', 'Failed to submit feedback: $e');
+  } finally {
+    isLoading(false);
+  }
+}
+
 }

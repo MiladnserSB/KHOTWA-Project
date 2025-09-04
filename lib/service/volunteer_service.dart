@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:get/get.dart' hide FormData, MultipartFile;
 import 'package:khotwa/model/badgets_model.dart';
+import 'package:khotwa/model/event_evaluations_model.dart';
 import 'package:khotwa/model/events_model.dart';
 import 'package:khotwa/model/profile_model.dart';
 import 'package:khotwa/model/projects_model.dart';
@@ -80,45 +81,46 @@ class VolunteerService extends GetxService {
     }
   }
 
-  Future<Map<String, dynamic>> registerForEvent(int eventId) async {
-    try {
-       final token = await _getToken();
-      final response = await dio.post(
-        '/api/volunteer/event-register',
-        data: {'event_id': eventId},
-        options: Options(
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer $token',
-          },
-        ),
-      );
-      return response.data;
-    } on DioException catch (e) {
-      throw Exception('Failed to register: ${e.response?.statusCode}');
-    }
+Future<Map<String, dynamic>> registerForEvent(int eventId) async {
+  try {
+    final token = await _getToken();
+    final response = await dio.post(
+      '/api/volunteer/event-register',
+      data: {'event_id': eventId},
+      options: Options(
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      ),
+    );
+    return response.data;
+  } on DioException catch (e) {
+    throw Exception('Failed to register: ${e.response?.statusCode} - ${e.response?.data}');
   }
+}
 
-  Future<Map<String, dynamic>> withdrawFromEvent(int eventId) async {
-    try {
-       final token = await _getToken();
-      final response = await dio.post(
-        '/api/volunteer/event-withdraw',
-        data: {'event_id': eventId},
-        options: Options(
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer $token',
-          },
-        ),
-      );
-      return response.data;
-    } on DioException catch (e) {
-      throw Exception('Failed to withdraw: ${e.response?.statusCode}');
-    }
+Future<Map<String, dynamic>> withdrawFromEvent(int eventId) async {
+  try {
+    final token = await _getToken();
+    final response = await dio.post(
+      '/api/volunteer/event-withdraw',
+      data: {'event_id': eventId},
+      options: Options(
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      ),
+    );
+    return response.data;
+  } on DioException catch (e) {
+    throw Exception('Failed to withdraw: ${e.response?.statusCode} - ${e.response?.data}');
   }
+}
+
 
   Future<List<TaskModel>> getMyTasks() async {
     try {
@@ -177,14 +179,6 @@ class VolunteerService extends GetxService {
     }
   }
 
-  Future<List<dynamic>> getEventFeedback(int eventId) async {
-    try {
-      final response = await dio.get('/api/volunteer/feedback/event/$eventId');
-      return response.data['data'] ?? [];
-    } on DioException catch (e) {
-      throw Exception('Failed to load feedback: ${e.response?.statusCode}');
-    }
-  }
 
   Future<List<dynamic>> getMyBadges() async {
     try {
@@ -473,6 +467,67 @@ Future<Map<String, dynamic>> checkOut(String qrToken) async {
     }
   } on DioException catch (e) {
     throw Exception('Failed to update profile: ${e.response?.statusCode}');
+  }
+}
+
+Future<EventEvaluationsModel> getEventFeedback(int eventId) async {
+  try {
+    final token = await _getToken();
+
+    final response = await dio.get(
+      '/api/volunteer/feedback/event/$eventId',
+      options: Options(
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      ),
+    );
+
+    if (response.statusCode == 200) {
+      return EventEvaluationsModel.fromJson(response.data);
+    } else {
+      throw Exception('Failed to fetch event feedback: ${response.statusMessage}');
+    }
+  } on DioException catch (e) {
+    throw Exception(
+      'Failed to fetch event feedback: ${e.response?.statusCode} - ${e.response?.data}',
+    );
+  }
+}
+Future<EventEvaluationsModel> submitEventFeedback(
+  int eventId,
+  int rating,
+  String comment,
+) async {
+  try {
+    final token = await _getToken();
+
+    final response = await dio.post(
+      '/api/volunteer/feedback',
+      data: {
+        "event_id": eventId,
+        "rating": rating,
+        "comment": comment,
+      },
+      options: Options(
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      ),
+    );
+
+    if (response.statusCode == 200) {
+      return EventEvaluationsModel.fromJson(response.data);
+    } else {
+      throw Exception('Failed to submit feedback: ${response.statusMessage}');
+    }
+  } on DioException catch (e) {
+    throw Exception(
+      'Failed to submit feedback: ${e.response?.statusCode} - ${e.response?.data}',
+    );
   }
 }
 
