@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:khotwa/controller/volunteer_controller.dart';
 import 'package:khotwa/model/badgets_model.dart';
+import 'package:khotwa/shared/constants/base_url.dart';
 import 'package:khotwa/shared/constants/colors.dart';
 import 'package:khotwa/view/profile/volunteer%20history/warnings_page.dart';
 
@@ -48,7 +49,6 @@ class VolunteerHistoryPage extends StatelessWidget {
     final joinedDateText = 'Joined: March 15, 2022'.tr;
     final theme = Theme.of(context);
 
-    controller.fetchMyBadgets();
 
     return Scaffold(
       backgroundColor: theme.brightness == Brightness.dark
@@ -241,7 +241,7 @@ class VolunteerHistoryPage extends StatelessWidget {
                           children: [
                             CircleAvatar(
                               radius: 28,
-                              backgroundImage: NetworkImage(badge.iconUrl),
+                              backgroundImage: NetworkImage(baseUrl+ badge.iconUrl),
                               backgroundColor: secondaryColor.withOpacity(0.1),
                             ),
                             const SizedBox(height: 8),

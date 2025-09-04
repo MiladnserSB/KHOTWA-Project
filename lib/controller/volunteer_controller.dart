@@ -5,6 +5,7 @@ import 'package:khotwa/model/projects_model.dart';
 import 'package:khotwa/model/tasks_model.dart';
 import 'package:khotwa/model/top_projects_model.dart';
 import 'package:khotwa/service/volunteer_service.dart';
+import 'package:khotwa/shared/constants/base_url.dart';
 
 class VolunteerController extends GetxController {
  final VolunteerService _volunteerService = Get.put(VolunteerService());
@@ -131,8 +132,6 @@ Future<void> updateTaskStatus(int taskId, String action) async {
 }
 
 
- 
-
 Future<void> fetchAllEvents() async {
   try {
     isLoading(true);
@@ -179,7 +178,7 @@ Future<void> fetchRecommendedEvents() async {
           throw Exception('Invalid event data format');
         }
       }).toList();
-      
+
       recommendedEvents.assignAll(eventModels);
     }
   } catch (e) {
@@ -200,20 +199,34 @@ Future<void> fetchProfile() async {
     }
   }
 
+
     Future<void> uploadProfileImage(String filePath) async {
     try {
       isProfileLoading(true);
-      final result = await _volunteerService.uploadProfileImage(filePath);
-
-      // Refresh profile after successful upload
+      print(filePath);
+      final result = await _volunteerService.uploadProfileImage( filePath);
+print("done for upload here");
       await fetchProfile();
 
       Get.snackbar('Success', result['message'] ?? 'Profile image updated');
     } catch (e) {
-      Get.snackbar('Error', 'Failed to upload profile image');
+      print(e.toString());
+      Get.snackbar('Error', 'Failed to upload profile image ${e.toString()} ',);
     } finally {
       isProfileLoading(false);
     }
   }
+Future<void> updateProfile(Map<String, dynamic> profileData) async {
+  try {
+    isProfileLoading(true);
+    final updatedProfile = await _volunteerService.updateProfile(profileData);
+    profile.value = updatedProfile; // update observable profile
+    Get.snackbar('Success', updatedProfile.message);
+  } catch (e) {
+    Get.snackbar('Error', 'Failed to update profile: $e');
+  } finally {
+    isProfileLoading(false);
+  }
+}
 
 }
