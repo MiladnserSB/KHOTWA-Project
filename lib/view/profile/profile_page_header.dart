@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:khotwa/controller/volunteer_controller.dart';
 import 'package:khotwa/model/profile_model.dart';
+import 'package:khotwa/shared/constants/base_url.dart';
 import 'package:khotwa/shared/constants/colors.dart';
 
 class ProfilePageHeader extends StatelessWidget {
@@ -43,6 +44,7 @@ class ProfilePageHeader extends StatelessWidget {
                   final XFile? pickedFile =
                       await _picker.pickImage(source: ImageSource.camera);
                   if (pickedFile != null) {
+                    print(pickedFile.path);
                     await controller.uploadProfileImage(pickedFile.path);
                   }
                 },
@@ -59,9 +61,7 @@ class ProfilePageHeader extends StatelessWidget {
     final theme = Theme.of(context);
     final textScale = MediaQuery.of(context).textScaleFactor;
 
-    String imageUrl = profile.profileImageUrl.startsWith("http")
-        ? profile.profileImageUrl
-        : "http://your-api-domain.com${profile.profileImageUrl}";
+    String imageUrl = profile.profileImageUrl;
 
     return Container(
       color: theme.brightness == Brightness.dark ? Colors.black : thirdColor,
@@ -77,9 +77,11 @@ class ProfilePageHeader extends StatelessWidget {
                   child: CircularProgressIndicator(),
                 );
               }
+                print(baseUrl+ imageUrl);
               return CircleAvatar(
                 radius: 40,
-                backgroundImage: NetworkImage(imageUrl),
+
+                backgroundImage: NetworkImage(baseUrl+ imageUrl),
                 onBackgroundImageError: (_, __) {},
               );
             }),

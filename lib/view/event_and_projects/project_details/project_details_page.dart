@@ -170,7 +170,7 @@ Color _getStatusColor(String status) {
                 SizedBox(width: 12),
                 Expanded(
                   child: SizedBox(
-                    height: 100,
+                    height: 105,
                     child: EventCardInformation(
                       icon: Icons.calendar_today,
                       title: 'End Date'.tr,

@@ -108,28 +108,84 @@ class ProfilePageCategoriesInfoList extends StatelessWidget {
     );
   }
 
-  List<Map<String, String>> getCategoryPage(int index) {
-    switch (index) {
-      case 0:
-        return [
-          {'label': 'Full Name'.tr, 'value': profile.fullName},
-          {'label': 'Email'.tr, 'value': profile.email},
-          {'label': 'Phone'.tr, 'value': profile.phone},
-          {'label': 'City'.tr, 'value': profile.cityId?.toString() ?? ''},
-        ];
-      case 1:
-        return [
-          {'label': 'Education Level'.tr, 'value': profile.educationLevel},
-          {'label': 'University'.tr, 'value': profile.university},
-          {'label': 'Total Hours'.tr, 'value': '${profile.totalVolunteerHours}'},
-        ];
-      case 2:
-        return [
-          {'label': 'Skills'.tr, 'value': profile.skills.join(", ")},
-          {'label': 'Badges'.tr, 'value': profile.badges.join(", ")},
-        ];
-      default:
-        return [];
-    }
+List<Map<String, dynamic>> getCategoryPage(int index) {
+  switch (index) {
+    case 0: // Personal Info
+      return [
+        {'label': 'Full Name'.tr, 'key': 'full_name', 'value': profile.fullName},
+        {'label': 'Email'.tr, 'key': 'email', 'value': profile.email},
+        {'label': 'Phone'.tr, 'key': 'phone', 'value': profile.phone},
+        {
+          'label': 'Gender'.tr,
+          'key': 'gender',
+          'value': profile.gender,
+          'type': 'select',
+          'options': ['male', 'female']
+        },
+        {'label': 'Birth Date'.tr, 'key': 'date_of_birth', 'value': profile.birthDate},
+        {'label': 'City'.tr, 'key': 'city', 'value': profile.city ?? ''},
+        {'label': 'Address'.tr, 'key': 'address', 'value': profile.address},
+        {'label': 'Study'.tr, 'key': 'study', 'value': profile.educationLevel},
+        {'label': 'Career'.tr, 'key': 'career', 'value': profile.university},
+      ];
+
+    case 1: // Volunteer Info
+      return [
+        {'label': 'Interests'.tr, 'key': 'interests', 'value': profile.interests.join(", ")},
+        {'label': 'Availability'.tr, 'key': 'availability', 'value': profile.availability.join(", ")},
+        {
+          'label': 'Preferred Time'.tr,
+          'key': 'preferred_time',
+          'value': profile.preferredTime,
+          'type': 'select',
+          'options': [
+            '1-2 hours per week',
+            '3-5 hours per week',
+            '6-10 hours per week',
+            'more than 10 hours per week'
+          ]
+        },
+        {'label': 'Volunteer Years'.tr, 'key': 'volunteering_years', 'value': '${profile.volunteeringYears}'},
+      ];
+
+    case 2: // Experience & Skills
+      return [
+        {'label': 'Motivation'.tr, 'key': 'motivation', 'value': profile.motivation},
+        {
+          'label': 'Skills'.tr,
+          'key': 'skills',
+          'value': profile.skills.join(", "),
+          'type': 'multiselect',
+          'options': [
+            'Teamwork',
+            'Communication',
+            'Leadership',
+            'Problem Solving',
+            'Creativity',
+            'Event Planning',
+            'First Aid',
+            'Technical Support',
+            'Project Management'
+          ]
+        },
+      ];
+
+    case 3: // Emergency Contact
+      return [
+        {'label': 'Name'.tr, 'key': 'emergency_contact_name', 'value': profile.emergencyContactName},
+        {'label': 'Phone'.tr, 'key': 'emergency_contact_phone', 'value': profile.emergencyContactPhone},
+        {
+          'label': 'Relationship'.tr,
+          'key': 'emergency_contact_relationship',
+          'value': profile.emergencyContactRelationship,
+          'type': 'select',
+          'options': ['Parent', 'Spouse', 'Friend']
+        },
+      ];
+
+    default:
+      return [];
   }
+}
+
 }

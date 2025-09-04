@@ -21,7 +21,7 @@ class VolunteerService extends GetxService {
   void initializeDio() {
     dio = Dio(
       BaseOptions(
-        baseUrl: 'https://fcee4070d058.ngrok-free.app',
+        baseUrl: baseUrl,
         connectTimeout: const Duration(seconds: 30),
         receiveTimeout: const Duration(seconds: 30),
         headers: {
@@ -386,15 +386,14 @@ class VolunteerService extends GetxService {
   Future<Map<String, dynamic>> uploadProfileImage(String filePath) async {
     try {
       final token = await _getToken();
+    
+     FormData formData = FormData.fromMap({
+  'image': await MultipartFile.fromFile(
+    filePath,
+    filename: filePath.split('/').last.split('\\').last,
+  ),
+});
 
-      FormData formData = FormData.fromMap({
-        'files': [
-          await MultipartFile.fromFile(
-            filePath,
-            filename: filePath.split('/').last,
-          ),
-        ],
-      });
 
       final response = await dio.post(
         '/api/volunteer/profile/image',
@@ -402,9 +401,9 @@ class VolunteerService extends GetxService {
         options: Options(
           headers: {
             'Accept': 'application/json',
+            'Content-Type': 'multipart/form-data',
             'Authorization': 'Bearer $token',
           },
-          contentType: 'multipart/form-data',
         ),
       );
 
@@ -417,4 +416,31 @@ class VolunteerService extends GetxService {
       throw Exception('Failed to upload image: ${e.response?.statusCode}');
     }
   }
+
+  Future<ProfileModel> updateProfile(Map<String, dynamic> profileData) async {
+  try {
+    final token = await _getToken();
+
+    final response = await dio.put(
+      '/api/volunteer/profile',
+      data: profileData,
+      options: Options(
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      ),
+    );
+
+    if (response.statusCode == 200 && response.data['status'] == true) {
+      return ProfileModel.fromJson(response.data);
+    } else {
+      throw Exception('Failed to update profile: ${response.data['message']}');
+    }
+  } on DioException catch (e) {
+    throw Exception('Failed to update profile: ${e.response?.statusCode}');
+  }
+}
+
 }
