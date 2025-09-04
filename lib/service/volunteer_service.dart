@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:get/get.dart';
+import 'package:get/get.dart' hide FormData, MultipartFile;
+import 'package:khotwa/model/badgets_model.dart';
 import 'package:khotwa/model/events_model.dart';
 import 'package:khotwa/model/profile_model.dart';
 import 'package:khotwa/model/projects_model.dart';
@@ -20,7 +21,7 @@ class VolunteerService extends GetxService {
   void initializeDio() {
     dio = Dio(
       BaseOptions(
-        baseUrl: 'https://5c9e89e40ad4.ngrok-free.app',
+        baseUrl: 'https://fcee4070d058.ngrok-free.app',
         connectTimeout: const Duration(seconds: 30),
         receiveTimeout: const Duration(seconds: 30),
         headers: {
@@ -58,31 +59,40 @@ class VolunteerService extends GetxService {
     return '11|rlOVAxsob1pHEmFLwZN87HGyZrhbGUIQVSF4gemAcc591461';
   }
 
- Future<List<EventModel>> getMyEvents() async {
-  try {
-    final token = await _getToken();
-    final response = await dio.get(
-      '/api/volunteer/events-registered',
-      options: Options(headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer $token',
-      }),
-    );
-    final eventsModel = EventsModel.fromJson(response.data);
-    print(response.data);
-    return eventsModel.data;
-  } on DioException catch (e) {
-    throw Exception('Failed to load events: ${e.response?.statusCode}');
+  Future<List<EventModel>> getMyEvents() async {
+    try {
+      final token = await _getToken();
+      final response = await dio.get(
+        '/api/volunteer/events-registered',
+        options: Options(
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $token',
+          },
+        ),
+      );
+      final eventsModel = EventsModel.fromJson(response.data);
+      print(response.data);
+      return eventsModel.data;
+    } on DioException catch (e) {
+      throw Exception('Failed to load events: ${e.response?.statusCode}');
+    }
   }
-}
-
 
   Future<Map<String, dynamic>> registerForEvent(int eventId) async {
     try {
+       final token = await _getToken();
       final response = await dio.post(
         '/api/volunteer/event-register',
         data: {'event_id': eventId},
+        options: Options(
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $token',
+          },
+        ),
       );
       return response.data;
     } on DioException catch (e) {
@@ -92,9 +102,17 @@ class VolunteerService extends GetxService {
 
   Future<Map<String, dynamic>> withdrawFromEvent(int eventId) async {
     try {
+       final token = await _getToken();
       final response = await dio.post(
         '/api/volunteer/event-withdraw',
         data: {'event_id': eventId},
+        options: Options(
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $token',
+          },
+        ),
       );
       return response.data;
     } on DioException catch (e) {
@@ -103,36 +121,35 @@ class VolunteerService extends GetxService {
   }
 
   Future<List<TaskModel>> getMyTasks() async {
-  try {
-    final token = await _getToken();
-    final response = await dio.get(
-      '/api/volunteer/tasks',
-      options: Options(
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $token',
-        },
-      ),
-    );
+    try {
+      final token = await _getToken();
+      final response = await dio.get(
+        '/api/volunteer/tasks',
+        options: Options(
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $token',
+          },
+        ),
+      );
 
-    final tasksModel = TasksModel.fromJson(response.data);
+      final tasksModel = TasksModel.fromJson(response.data);
 
-    if (!tasksModel.status) {
-      throw Exception('Failed to load tasks: ${tasksModel.message}');
+      if (!tasksModel.status) {
+        throw Exception('Failed to load tasks: ${tasksModel.message}');
+      }
+
+      // Return the list of TaskModel
+      return tasksModel.data;
+    } on DioException catch (e) {
+      print("Dio error: ${e.message}");
+      throw Exception('Failed to load tasks: ${e.response?.statusCode}');
+    } catch (e) {
+      print("General error: $e");
+      throw Exception('Failed to load tasks');
     }
-
-    // Return the list of TaskModel
-    return tasksModel.data;
-  } on DioException catch (e) {
-    print("Dio error: ${e.message}");
-    throw Exception('Failed to load tasks: ${e.response?.statusCode}');
-  } catch (e) {
-    print("General error: $e");
-    throw Exception('Failed to load tasks');
   }
-}
-
 
   Future<List<dynamic>> getMyEvaluations() async {
     try {
@@ -169,17 +186,26 @@ class VolunteerService extends GetxService {
     }
   }
 
-  // Badges
   Future<List<dynamic>> getMyBadges() async {
     try {
-      final response = await dio.get('/api/volunteer/badges');
-      return response.data['data'] ?? [];
+      final token = await _getToken();
+      final response = await dio.get(
+        '/api/volunteer/badges',
+        options: Options(
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $token',
+          },
+        ),
+      );
+      final badgetsModel = BadgetsModel.fromJson(response.data);
+      return badgetsModel.data;
     } on DioException catch (e) {
       throw Exception('Failed to load badges: ${e.response?.statusCode}');
     }
   }
 
-  // Attendance
   Future<Map<String, dynamic>> checkIn(String qrToken) async {
     try {
       final response = await dio.post(
@@ -216,7 +242,7 @@ class VolunteerService extends GetxService {
 
   Future<List<dynamic>> getRecommendedEvents() async {
     try {
-       final token = await _getToken();
+      final token = await _getToken();
       final response = await dio.get(
         '/api/volunteer/events/recommended',
 
@@ -238,7 +264,7 @@ class VolunteerService extends GetxService {
 
   Future<List<TopProject>> getTopProjects() async {
     try {
-       final token = await _getToken();
+      final token = await _getToken();
       final response = await dio.get(
         '/api/volunteer/projects/top',
         options: Options(
@@ -271,7 +297,7 @@ class VolunteerService extends GetxService {
 
   Future<List<EventModel>> getAllEvents() async {
     try {
-       final token = await _getToken();
+      final token = await _getToken();
       final response = await dio.get(
         '/api/volunteer/events',
         options: Options(
@@ -291,7 +317,7 @@ class VolunteerService extends GetxService {
 
   Future<List<ProjectModel>> getAllProjects() async {
     try {
-       final token = await _getToken();
+      final token = await _getToken();
       final response = await dio.get(
         '/api/volunteer/projects',
         options: Options(
@@ -302,9 +328,7 @@ class VolunteerService extends GetxService {
           },
         ),
       );
-      print("Here 1");
       final projectsModel = ProjectsModel.fromJson(response.data);
-      print("Here 2");
       return projectsModel.data;
     } on DioException catch (e) {
       throw Exception('Failed to load all events: ${e.response?.statusCode}');
@@ -336,28 +360,61 @@ class VolunteerService extends GetxService {
     }
   }
 
-Future<ProfileModel> getProfile() async {
-  try {
-    final token = await _getToken();
-    final response = await dio.get(
-      '/api/volunteer/profile',
-      options: Options(
-        headers: {
-          'Accept': 'application/json',
-          'Authorization': 'Bearer $token',
-        },
-      ),
-    );
+  Future<ProfileModel> getProfile() async {
+    try {
+      final token = await _getToken();
+      final response = await dio.get(
+        '/api/volunteer/profile',
+        options: Options(
+          headers: {
+            'Accept': 'application/json',
+            'Authorization': 'Bearer $token',
+          },
+        ),
+      );
 
-    if (response.statusCode == 200 && response.data['status'] == true) {
-      return ProfileModel.fromJson(response.data);
-    } else {
-      throw Exception('Failed to load profile: ${response.data['message']}');
+      if (response.statusCode == 200 && response.data['status'] == true) {
+        return ProfileModel.fromJson(response.data);
+      } else {
+        throw Exception('Failed to load profile: ${response.data['message']}');
+      }
+    } on DioException catch (e) {
+      throw Exception('Failed to load profile: ${e.response?.statusCode}');
     }
-  } on DioException catch (e) {
-    throw Exception('Failed to load profile: ${e.response?.statusCode}');
   }
-}
 
+  Future<Map<String, dynamic>> uploadProfileImage(String filePath) async {
+    try {
+      final token = await _getToken();
 
+      FormData formData = FormData.fromMap({
+        'files': [
+          await MultipartFile.fromFile(
+            filePath,
+            filename: filePath.split('/').last,
+          ),
+        ],
+      });
+
+      final response = await dio.post(
+        '/api/volunteer/profile/image',
+        data: formData,
+        options: Options(
+          headers: {
+            'Accept': 'application/json',
+            'Authorization': 'Bearer $token',
+          },
+          contentType: 'multipart/form-data',
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        return response.data;
+      } else {
+        throw Exception('Failed to upload image: ${response.statusMessage}');
+      }
+    } on DioException catch (e) {
+      throw Exception('Failed to upload image: ${e.response?.statusCode}');
+    }
+  }
 }

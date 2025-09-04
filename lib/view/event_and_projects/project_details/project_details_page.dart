@@ -79,13 +79,14 @@ Color _getStatusColor(String status) {
 
   @override
   Widget build(BuildContext context) {
+ 
     final size = MediaQuery.of(context).size;
     final scaleFactor = size.width / 375; // base width = iPhone 11
     final itemWidth = size.width * 0.75;
     final theme = Theme.of(context);
     
-    final double progress = widget.project.donatedAmount / widget.project.targetDonation;
-
+    final double progress = widget.project.targetDonation == 0 ? 0 : widget.project.donatedAmount / widget.project.targetDonation;
+   print(progress);
     return Scaffold(
       backgroundColor: theme.brightness == Brightness.dark ? theme.scaffoldBackgroundColor : thirdColor,
       appBar: AppBar(
@@ -274,7 +275,7 @@ Color _getStatusColor(String status) {
             ClipRRect(
               borderRadius: BorderRadius.circular(12),
               child: LinearProgressIndicator(
-                value: progress,
+                value: progress == null ?0:progress,
                 minHeight: 12,
                 backgroundColor: Colors.grey[300],
                 valueColor: const AlwaysStoppedAnimation<Color>(

@@ -8,37 +8,24 @@ import 'package:khotwa/service/volunteer_service.dart';
 
 class VolunteerController extends GetxController {
  final VolunteerService _volunteerService = Get.put(VolunteerService());
-  var myEvents = [].obs;
+  var myEvents = <EventModel>[].obs;
   var myTasks = <Rx<TaskModel>>[].obs;
   var myEvaluations = [].obs;
-  var myBadges = [].obs;
+  var myBadgets = [].obs;
   var isLoading = false.obs;
   var allEvents = <EventModel>[].obs;
   var topProjects = <TopProject>[].obs;
   var allProjects = <ProjectModel>[].obs;
   var recommendedEvents = <EventModel>[].obs;
-  var profile = Rxn<ProfileModel>(); // Observable Profile
+   var registeredEvents = <int, bool>{}.obs;
+  var profile = Rxn<ProfileModel>(); 
   var isProfileLoading = false.obs;
+
   @override
   void onInit() {
     fetchProfile();
+    fetchMyBadgets();
     super.onInit();
-  }
-
-  Future<void> fetchVolunteerData() async {
-    try {
-      isLoading(true);
-      await Future.wait([
-        fetchMyEvents(),
-        fetchMyTasks(),
-        fetchMyEvaluations(),
-        fetchMyBadges(),
-      ]);
-    } catch (e) {
-      Get.snackbar('Error', 'Failed to fetch volunteer data');
-    } finally {
-      isLoading(false);
-    }
   }
 
   Future<void> fetchMyEvents() async {
@@ -64,37 +51,44 @@ class VolunteerController extends GetxController {
     myEvaluations.assignAll(evaluations);
   }
 
-  Future<void> fetchMyBadges() async {
-    final badges = await _volunteerService.getMyBadges();
-    myBadges.assignAll(badges);
+  Future<void> fetchMyBadgets() async {
+     try {
+    isLoading(true);
+    final badgets = await _volunteerService.getMyBadges();
+    print(badgets);
+    myBadgets.assignAll(badgets);
+     }catch (e) {
+    Get.snackbar('Error', 'Failed to fetch My badgets');
+  } finally {
+    isLoading(false);
+  }
   }
 
-  Future<void> registerForEvent(int eventId) async {
+Future<void> registerForEvent(int eventId) async {
     try {
-      isLoading(true);
-      await _volunteerService.registerForEvent(eventId);
-      await fetchMyEvents();
-      Get.snackbar('Success', 'Registered for event successfully');
-    } catch (e) {
-      Get.snackbar('Error', 'Failed to register for event');
+      isLoading.value = true;
+      // TODO: call your API here
+      await Future.delayed(const Duration(seconds: 1));
+      registeredEvents[eventId] = true;
     } finally {
-      isLoading(false);
+      isLoading.value = false;
     }
   }
 
   Future<void> withdrawFromEvent(int eventId) async {
     try {
-      isLoading(true);
-      await _volunteerService.withdrawFromEvent(eventId);
-      await fetchMyEvents();
-      Get.snackbar('Success', 'Withdrawn from event successfully');
-    } catch (e) {
-      Get.snackbar('Error', 'Failed to withdraw from event');
+      isLoading.value = true;
+      // TODO: call your API here
+      await Future.delayed(const Duration(seconds: 1));
+      registeredEvents[eventId] = false;
     } finally {
-      isLoading(false);
+      isLoading.value = false;
     }
   }
 
+bool isRegisteredFor(int eventId) {
+  return myEvents.any((event) => event.id == eventId);
+}
   Future<void> submitFeedback(int eventId, int rating, String comment) async {
     try {
       isLoading(true);
@@ -205,4 +199,21 @@ Future<void> fetchProfile() async {
       isProfileLoading(false);
     }
   }
+
+    Future<void> uploadProfileImage(String filePath) async {
+    try {
+      isProfileLoading(true);
+      final result = await _volunteerService.uploadProfileImage(filePath);
+
+      // Refresh profile after successful upload
+      await fetchProfile();
+
+      Get.snackbar('Success', result['message'] ?? 'Profile image updated');
+    } catch (e) {
+      Get.snackbar('Error', 'Failed to upload profile image');
+    } finally {
+      isProfileLoading(false);
+    }
+  }
+
 }

@@ -1,28 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:khotwa/controller/volunteer_controller.dart';
 import 'package:khotwa/maps/maps_screen.dart';
 import 'package:khotwa/model/events_model.dart';
+import 'package:khotwa/shared/constants/base_url.dart';
 import 'package:khotwa/shared/constants/colors.dart';
-import 'package:khotwa/view/Home_Page/Home_Page/Home_Page_Donor.dart';
 import 'package:khotwa/view/event_and_projects/event_details/card_information_in_event.dart';
 import 'package:khotwa/view/event_and_projects/event_details/map_location_page.dart';
 import 'package:khotwa/view/event_and_projects/event_details/project_card_in_details_page.dart';
-import 'package:khotwa/view/event_and_projects/scan_qr_page.dart';
-import 'package:intl/intl.dart'; // For date formatting
-
 
 class EventDetailsPage extends StatelessWidget {
-  final EventModel event; // Add EventModel parameter
+  final EventModel event;
 
-  const EventDetailsPage({super.key, required this.event}); // Update constructor
+  const EventDetailsPage({super.key, required this.event});
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final theme = Theme.of(context);
+    final volunteerController = Get.find<VolunteerController>();
 
-    // Format the event date
-    final formattedDate = DateFormat('MMMM/dd/yyyy').format(event.date);
+    final formattedDate = DateFormat('MMMM dd, yyyy').format(event.date);
 
     return Scaffold(
       backgroundColor: theme.brightness == Brightness.dark
@@ -37,18 +36,16 @@ class EventDetailsPage extends StatelessWidget {
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back,
-            color: theme.brightness == Brightness.dark
-                ? Colors.white
-                : textBlack,
+            color:
+                theme.brightness == Brightness.dark ? Colors.white : textBlack,
           ),
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(
           "Event Details".tr,
           style: TextStyle(
-            color: theme.brightness == Brightness.dark
-                ? Colors.white
-                : textBlack,
+            color:
+                theme.brightness == Brightness.dark ? Colors.white : textBlack,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -83,21 +80,27 @@ class EventDetailsPage extends StatelessWidget {
                       ),
               ),
               const SizedBox(height: 16),
+
               Text(
                 event.title,
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                style:
+                    const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
+
               Text(
                 event.description,
                 style: TextStyle(
                   fontSize: 14,
-                  color:
-                      theme.brightness == Brightness.dark ? Colors.white : textBlack,
+                  color: theme.brightness == Brightness.dark
+                      ? Colors.white
+                      : textBlack,
                   height: 1.5,
                 ),
               ),
               const SizedBox(height: 24),
+
+              // Dates
               Row(
                 children: [
                   Expanded(
@@ -117,13 +120,14 @@ class EventDetailsPage extends StatelessWidget {
                       child: CardInformationInEvent(
                         icon: Icons.calendar_today,
                         title: 'End Date'.tr,
-                        value: formattedDate, // Use the same date if no end date
+                        value: formattedDate,
                       ),
                     ),
                   ),
                 ],
               ),
               SizedBox(height: size.height * 0.015),
+
               Row(
                 children: [
                   Expanded(
@@ -141,16 +145,18 @@ class EventDetailsPage extends StatelessWidget {
                     child: SizedBox(
                       height: 100,
                       child: GestureDetector(
-                        onTap: (){
-                          Get.to(LocationDisplayScreen(
-      center: LatLong(event.lat!, event.lng!),
-      locationName: "سوريا",
-      limitLocation: "سوريا",
-      locationPinIconColor: Colors.red,
-      eventName:event.title,
-      eventTime: event.time,
-      eventDate: event.date.toString(),
-    ),);
+                        onTap: () {
+                          Get.to(
+                            LocationDisplayScreen(
+                              center: LatLong(event.lat!, event.lng!),
+                              locationName: event.location,
+                              limitLocation: event.location,
+                              locationPinIconColor: Colors.red,
+                              eventName: event.title,
+                              eventTime: event.time,
+                              eventDate: event.date.toString(),
+                            ),
+                          );
                         },
                         child: CardInformationInEvent(
                           icon: Icons.location_on,
@@ -163,42 +169,63 @@ class EventDetailsPage extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 24),
+
+              // Project card
               ProjectCard(
                 size: size,
-                imagePath: 'assets/images/Intro.png', // Keep default or use from event if available
+                imagePath: 'assets/images/Intro.png',
                 projectName: event.projectName,
-                progressPercentage: 0.68, // Default value
+                progressPercentage: 0.68,
               ),
               const SizedBox(height: 30),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton.icon(
-                  onPressed: () async {
-                  // final result = await Navigator.push(
-                  //     context,
-                  //     MaterialPageRoute(builder: (context) =>  ScanQrPage()),
-                  //   );
-                  //   if (result != null) {
-                  //     ScaffoldMessenger.of(context).showSnackBar(
-                  //       SnackBar(content: Text("Scanned QR: $result")),
-                  //     );
-                  // }
-                  },
-                  icon: const Icon(Icons.qr_code_scanner),
-                  label: Text(
-                    'Join'.tr,
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: secondaryColor,
-                    foregroundColor: white,
-                    padding: const EdgeInsets.symmetric(vertical: 14),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                ),
+
+              Obx(() {
+  ;
+  final isLoading = volunteerController.isLoading.value;
+  final isRegistered = volunteerController.isRegisteredFor(event.id);
+
+  if (roleID != 2 && roleID != 3) {
+    return const SizedBox.shrink();
+  }
+
+  String buttonText = '';
+  VoidCallback? onPressed;
+
+  if ((event.status == 'upcoming') && !isRegistered) {
+    buttonText = 'Register'.tr;
+    onPressed = () => volunteerController.registerForEvent(event.id);
+  } else if (event.status == 'open' && isRegistered) {
+    buttonText = 'Withdraw'.tr;
+    onPressed = () => volunteerController.withdrawFromEvent(event.id);
+  }
+
+  if (buttonText.isEmpty) return const SizedBox.shrink();
+
+  return SizedBox(
+    width: double.infinity,
+    child: ElevatedButton(
+      onPressed: isLoading ? null : onPressed,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: secondaryColor,
+        foregroundColor: white,
+        padding: const EdgeInsets.symmetric(vertical: 14),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+      ),
+      child: isLoading
+          ? const CircularProgressIndicator(color: white)
+          : Text(
+              buttonText,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
               ),
+            ),
+    ),
+  );
+}),
+
               const SizedBox(height: 30),
             ],
           ),
