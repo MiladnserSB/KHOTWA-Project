@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:khotwa/controller/view_all_volunteers_controller.dart';
+import 'package:khotwa/model/profile_model.dart';
 import 'package:khotwa/shared/constants/colors.dart';
 
 class VolunteerCard extends StatelessWidget {
-  final VolunteerModel volunteer;
+  final Profile volunteer;
 
   const VolunteerCard({super.key, required this.volunteer});
 
@@ -24,7 +24,7 @@ class VolunteerCard extends StatelessWidget {
           child: Row(
             children: [
               CircleAvatar(
-                backgroundImage: NetworkImage(volunteer.image),
+                backgroundImage: NetworkImage(volunteer.profileImageUrl),
                 radius: 30,
                 backgroundColor: grey.withOpacity(0.1),
               ),
@@ -35,11 +35,11 @@ class VolunteerCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      volunteer.name,
+                      volunteer.fullName,
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
-                        color: textBlack
+                        color: textBlack,
                       ),
                     ),
                     const SizedBox(height: 6),
@@ -48,7 +48,7 @@ class VolunteerCard extends StatelessWidget {
                         Icon(Icons.location_on, size: 14, color: grey),
                         const SizedBox(width: 4),
                         Text(
-                          volunteer.city,
+                          volunteer.city ?? "Unknown",
                           style: TextStyle(fontSize: 12, color: grey),
                         ),
                       ],
@@ -59,7 +59,7 @@ class VolunteerCard extends StatelessWidget {
                         Icon(Icons.access_time, size: 14, color: grey),
                         const SizedBox(width: 4),
                         Text(
-                          "${volunteer.preferredTime} • ${volunteer.availability}",
+                          "${volunteer.preferredTime} • ${volunteer.availabilityDays.join(", ")}",
                           style: TextStyle(fontSize: 12, color: grey),
                         ),
                       ],
@@ -70,11 +70,11 @@ class VolunteerCard extends StatelessWidget {
                         Icon(Icons.volunteer_activism, size: 14, color: primaryColor),
                         const SizedBox(width: 4),
                         Text(
-                          "Total Hours: ${volunteer.hours}",
-                          style: TextStyle(
-                            fontSize: 12, 
+                          "Total Hours: ${volunteer.totalVolunteerHours ?? 0}",
+                          style: const TextStyle(
+                            fontSize: 12,
                             color: primaryColor,
-                            fontWeight: FontWeight.w500
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
                       ],
@@ -84,7 +84,9 @@ class VolunteerCard extends StatelessWidget {
               ),
               const SizedBox(width: 8),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  // Assign logic here
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: primaryColor,
                   foregroundColor: white,

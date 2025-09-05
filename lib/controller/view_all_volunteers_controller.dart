@@ -1,98 +1,92 @@
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+// import 'package:get/get.dart';
+// import 'package:flutter/material.dart';
+// import 'package:khotwa/service/supervisor_service.dart';
+// import 'package:khotwa/model/profile_model.dart';
 
-class ViewAllVolunteersController extends GetxController {
-  final volunteers = <VolunteerModel>[].obs;
-  final filteredVolunteers = <VolunteerModel>[].obs;
-  final isLoading = true.obs;
-  final searchController = TextEditingController();
+// class ViewAllVolunteersController extends GetxController {
+//   final SupervisorService _supervisorService = SupervisorService();
 
-  @override
-  void onInit() {
-    super.onInit();
-    fetchVolunteers();
-  }
+//   final volunteers = <Profile>[].obs;
+//   final filteredVolunteers = <Profile>[].obs;
+//   final isLoading = true.obs;
+//   final searchController = TextEditingController();
 
-  @override
-  void onClose() {
-    searchController.dispose();
-    super.onClose();
-  }
+//   // Active filters
+//   final selectedCities = <String>[].obs;
+//   final selectedInterests = <String>[].obs;
+//   final selectedDays = <String>[].obs;
+//   final selectedTimes = <String>[].obs;
+//   final selectedHours = <String>[].obs;
 
-  void fetchVolunteers() async {
-    isLoading.value = true;
-    
-    await Future.delayed(Duration(seconds: 2));
-    
-    volunteers.assignAll([
-      VolunteerModel(
-        name: "Sarah Chen",
-        hours: "120",
-        image: "https://randomuser.me/api/portraits/women/44.jpg",
-        city: "Damascus",
-        preferredTime: "Morning",
-        availability: "Weekends"
-      ),
-      VolunteerModel(
-        name: "Michael Davis",
-        hours: "85",
-        image: "https://randomuser.me/api/portraits/men/32.jpg",
-        city: "Aleppo",
-        preferredTime: "Evening",
-        availability: "Weekdays"
-      ),
-      VolunteerModel(
-        name: "Maria Rodriguez",
-        hours: "100",
-        image: "https://randomuser.me/api/portraits/women/65.jpg",
-        city: "Homs",
-        preferredTime: "Afternoon",
-        availability: "Flexible"
-      ),
-      VolunteerModel(
-        name: "David Lee",
-        hours: "90",
-        image: "https://randomuser.me/api/portraits/men/71.jpg",
-        city: "Latakia",
-        preferredTime: "Morning",
-        availability: "Weekends"
-      ),
-    ]);
-    
-    filteredVolunteers.assignAll(volunteers);
-    isLoading.value = false;
-  }
+//   @override
+//   void onInit() {
+//     super.onInit();
+//     fetchVolunteers();
+//   }
 
-  void searchVolunteers(String query) {
-    if (query.isEmpty) {
-      filteredVolunteers.assignAll(volunteers);
-    } else {
-      filteredVolunteers.assignAll(volunteers.where((volunteer) =>
-          volunteer.name.toLowerCase().contains(query.toLowerCase()) ||
-          volunteer.city.toLowerCase().contains(query.toLowerCase())));
-    }
-  }
+//   @override
+//   void onClose() {
+//     searchController.dispose();
+//     super.onClose();
+//   }
 
-  void applyFilters(Map<String, dynamic> filters) {
-    // Filter logic will be implemented here
-    filteredVolunteers.assignAll(volunteers);
-  }
-}
+//   Future<void> fetchVolunteers() async {
+//     try {
+//       isLoading.value = true;
+//       final response = await _supervisorService.getAllVolunteers();
+//       volunteers.assignAll(response.data);
+//       filteredVolunteers.assignAll(volunteers);
+//     } catch (e) {
+//       Get.snackbar("Error", "Failed to load volunteers: $e");
+//     } finally {
+//       isLoading.value = false;
+//     }
+//   }
 
-class VolunteerModel {
-  final String name;
-  final String hours;
-  final String image;
-  final String city;
-  final String preferredTime;
-  final String availability;
+//   void searchVolunteers(String query) {
+//     if (query.isEmpty) {
+//       applyFilters(); // reset with filters
+//     } else {
+//       filteredVolunteers.assignAll(
+//         volunteers.where((v) =>
+//           v.fullName.toLowerCase().contains(query.toLowerCase()) ||
+//           (v.city?.toLowerCase().contains(query.toLowerCase()) ?? false)
+//         ),
+//       );
+//     }
+//   }
 
-  VolunteerModel({
-    required this.name,
-    required this.hours,
-    required this.image,
-    required this.city,
-    required this.preferredTime,
-    required this.availability,
-  });
-}
+//   void toggleFilter(List<String> filterList, String value, bool selected) {
+//     if (selected) {
+//       filterList.add(value);
+//     } else {
+//       filterList.remove(value);
+//     }
+//   }
+
+//   void applyFilters() {
+//     filteredVolunteers.assignAll(
+//       volunteers.where((v) {
+//         final cityMatch = selectedCities.isEmpty || selectedCities.contains(v.city);
+//         final interestMatch = selectedInterests.isEmpty || 
+//           v.interests.any((i) => selectedInterests.contains(i));
+//         final dayMatch = selectedDays.isEmpty ||
+//           v.availabilityDays.any((d) => selectedDays.contains(d));
+//         final timeMatch = selectedTimes.isEmpty ||
+//           selectedTimes.contains(v.preferredTime);
+//         final hoursMatch = selectedHours.isEmpty || _matchHours(v.totalVolunteerHours);
+
+//         return cityMatch && interestMatch && dayMatch && timeMatch && hoursMatch;
+//       }).toList(),
+//     );
+//   }
+
+//   bool _matchHours(int? totalHours) {
+//     if (totalHours == null) return false;
+//     if (selectedHours.contains("< 50") && totalHours < 50) return true;
+//     if (selectedHours.contains("50-100") && totalHours >= 50 && totalHours <= 100) return true;
+//     if (selectedHours.contains("100-150") && totalHours > 100 && totalHours <= 150) return true;
+//     if (selectedHours.contains("150+") && totalHours > 150) return true;
+//     return false;
+//   }
+// }

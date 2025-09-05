@@ -1,18 +1,24 @@
-
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:khotwa/controller/supervisor_controller.dart';
 import 'package:khotwa/shared/constants/colors.dart';
 import 'package:khotwa/view/search_and_view_all_volunteers/filter_dialogue.dart';
+import 'package:khotwa/view/search_and_view_all_volunteers/volunteer_card.dart';
 
 class SearchResultsPage extends StatelessWidget {
   final String searchQuery;
-  
-  const SearchResultsPage({super.key, required this.searchQuery});
+  final SupervisorController controller = Get.find<SupervisorController>();
+
+  SearchResultsPage({super.key, required this.searchQuery});
 
   @override
   Widget build(BuildContext context) {
+    controller.searchController.text = searchQuery;
+    controller.searchVolunteers(searchQuery);
+
     return Scaffold(
       appBar: AppBar(
-        title: Text("Search Results for: $searchQuery", style: TextStyle(color: textBlack)),
+        title: Text("Search Results", style: TextStyle(color: textBlack)),
         backgroundColor: white,
         elevation: 0,
         centerTitle: true,
@@ -21,11 +27,12 @@ class SearchResultsPage extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            // Search Bar with Filter Button
+            // Search Bar + Filter
             Row(
               children: [
                 Expanded(
                   child: TextField(
+                    controller: controller.searchController,
                     decoration: InputDecoration(
                       hintText: "Search Volunteers...",
                       hintStyle: TextStyle(color: grey),
@@ -42,9 +49,7 @@ class SearchResultsPage extends StatelessWidget {
                       ),
                       contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
                     ),
-                    onSubmitted: (value) {
-                      // Update search results
-                    },
+                    onSubmitted: controller.searchVolunteers,
                   ),
                 ),
                 const SizedBox(width: 12),
@@ -69,14 +74,26 @@ class SearchResultsPage extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 20),
-            // Results will be shown here
+
+            // Results
             Expanded(
-              child: Center(
-                child: Text(
-                  "Search results for: $searchQuery",
-                  style: TextStyle(color: grey, fontSize: 16),
-                ),
-              ),
+              child: Obx(() {
+                if (controller.isLoading.value) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                if (controller.filteredVolunteers.isEmpty) {
+                  return const Center(
+                    child: Text("No volunteers found", style: TextStyle(color: grey)),
+                  );
+                }
+                return ListView.builder(
+                  itemCount: controller.filteredVolunteers.length,
+                  itemBuilder: (context, index) {
+                    final volunteer = controller.filteredVolunteers[index];
+                    return VolunteerCard(volunteer: volunteer);
+                  },
+                );
+              }),
             ),
           ],
         ),
