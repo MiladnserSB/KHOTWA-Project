@@ -256,15 +256,7 @@ Future<Map<String, dynamic>> checkOut(String qrToken) async {
 }
 
 
-  // Additional features
-  Future<List<dynamic>> getVolunteerLog() async {
-    try {
-      final response = await dio.get('/api/volunteer/events/log');
-      return response.data['data'] ?? [];
-    } on DioException catch (e) {
-      throw Exception('Failed to load log: ${e.response?.statusCode}');
-    }
-  }
+
 
   Future<List<dynamic>> getRecommendedEvents() async {
     try {
@@ -529,5 +521,33 @@ Future<EventEvaluationsModel> submitEventFeedback(
     );
   }
 }
+
+
+
+
+
+
+Future<List<dynamic>> getVolunteerLog({int? eventId}) async {
+  try {
+    final token = await _getToken();
+    final response = await dio.get(
+      '/api/volunteer/events/log',
+      queryParameters: eventId != null ? {'event_id': eventId} : null,
+      options: Options(
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      ),
+    );
+
+    return response.data['data'] ?? [];
+  } on DioException catch (e) {
+    throw Exception('Failed to load volunteer log: ${e.response?.statusCode} - ${e.response?.data}');
+  }
+}
+
+
 
 }

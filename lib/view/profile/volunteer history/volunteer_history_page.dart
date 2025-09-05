@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:khotwa/controller/volunteer_controller.dart';
 import 'package:khotwa/model/badgets_model.dart';
+import 'package:khotwa/model/volunteer_log_model.dart';
 import 'package:khotwa/shared/constants/base_url.dart';
 import 'package:khotwa/shared/constants/colors.dart';
 import 'package:khotwa/view/profile/volunteer%20history/warnings_page.dart';
@@ -11,44 +12,16 @@ class VolunteerHistoryPage extends StatelessWidget {
 
   final VolunteerController controller = Get.find<VolunteerController>();
 
-  final List<Map<String, dynamic>> dataList = [
-    {
-      'campaign': 'Blood Donation Drive',
-      'hours': 5,
-      'role': 'Organizer',
-      'rate': 4.5,
-      'date': '2023-06-10',
-      'isCurrent': false,
-    },
-    {
-      'campaign': 'Health Awareness Campaign',
-      'hours': 3,
-      'role': 'Volunteer',
-      'rate': 4.8,
-      'date': '2023-04-22',
-      'isCurrent': false,
-    },
-    {
-      'campaign': 'Ongoing Tree Planting',
-      'hours': 2,
-      'role': 'Team Member',
-      'rate': 5.0,
-      'date': '2025-07-01',
-      'isCurrent': true,
-    },
-  ];
-
   @override
   Widget build(BuildContext context) {
-    final totalTime = dataList.fold<int>(
-      0,
-      (acc, item) => acc + (item['hours'] as int),
-    );
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      controller.fetchVolunteerLog();
+      controller.fetchBadges();
+    });
 
     final personName = 'Ahmed Ali'.tr;
     final joinedDateText = 'Joined: March 15, 2022'.tr;
     final theme = Theme.of(context);
-
 
     return Scaffold(
       backgroundColor: theme.brightness == Brightness.dark
@@ -93,99 +66,107 @@ class VolunteerHistoryPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               /// Profile Header
-              Container(
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  color: theme.brightness == Brightness.dark
-                      ? thirdColor
-                      : Colors.white,
-                  borderRadius: BorderRadius.circular(20),
-                  boxShadow: [
-                    BoxShadow(
-                      color: grey.withOpacity(0.3),
-                      blurRadius: 12,
-                      offset: const Offset(0, 6),
-                    ),
-                  ],
-                ),
-                child: Row(
-                  children: [
-                    CircleAvatar(
-                      radius: 35,
-                      backgroundColor: primaryColor,
-                      child: const Icon(Icons.person, color: white, size: 32),
-                    ),
-                    const SizedBox(width: 16),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+              Obx(() {
+                final totalTime = controller.volunteerLog.fold<int>(
+                  0,
+                  (acc, item) => acc + (item.event?.durationHours ?? 0),
+                );
+
+                return Container(
+                  padding: const EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    color: theme.brightness == Brightness.dark
+                        ? thirdColor
+                        : Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [
+                      BoxShadow(
+                        color: grey.withOpacity(0.3),
+                        blurRadius: 12,
+                        offset: const Offset(0, 6),
+                      ),
+                    ],
+                  ),
+                  child: Row(
+                    children: [
+                      CircleAvatar(
+                        radius: 35,
+                        backgroundColor: primaryColor,
+                        child: const Icon(Icons.person, color: white, size: 32),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              personName,
+                              style: const TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: textBlack,
+                              ),
+                            ),
+                            const SizedBox(height: 6),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 4,
+                              ),
+                              decoration: BoxDecoration(
+                                color: secondaryColor.withOpacity(0.2),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Text(
+                                'Active Volunteer'.tr,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 12,
+                                  color: secondaryColor,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 6),
+                            Text(
+                              joinedDateText,
+                              style: const TextStyle(fontSize: 12, color: grey),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Column(
                         children: [
                           Text(
-                            personName,
+                            "Volunteer Hours".tr,
                             style: const TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: textBlack,
+                              color: fourthColor,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 13,
                             ),
                           ),
-                          const SizedBox(height: 6),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 12,
-                              vertical: 4,
-                            ),
-                            decoration: BoxDecoration(
-                              color: secondaryColor.withOpacity(0.2),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
+                          const SizedBox(height: 8),
+                          CircleAvatar(
+                            radius: 25,
+                            backgroundColor: primaryColor,
                             child: Text(
-                              'Active Volunteer'.tr,
+                              "$totalTime",
                               style: const TextStyle(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 12,
-                                color: secondaryColor,
+                                color: white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
                               ),
                             ),
                           ),
-                          const SizedBox(height: 6),
-                          Text(
-                            joinedDateText,
-                            style: const TextStyle(fontSize: 12, color: grey),
-                          ),
                         ],
                       ),
-                    ),
-                    Column(
-                      children: [
-                        Text(
-                          "Volunteer Hours".tr,
-                          style: const TextStyle(
-                            color: fourthColor,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 13,
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        CircleAvatar(
-                          radius: 25,
-                          backgroundColor: primaryColor,
-                          child: Text(
-                            "$totalTime",
-                            style: const TextStyle(
-                              color: white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
+                    ],
+                  ),
+                );
+              }),
 
               const SizedBox(height: 32),
 
+              /// Badges
               Text(
                 "My Badges".tr,
                 style: TextStyle(
@@ -241,7 +222,9 @@ class VolunteerHistoryPage extends StatelessWidget {
                           children: [
                             CircleAvatar(
                               radius: 28,
-                              backgroundImage: NetworkImage(baseUrl+ badge.iconUrl),
+                              backgroundImage: NetworkImage(
+                                baseUrl + badge.iconUrl,
+                              ),
                               backgroundColor: secondaryColor.withOpacity(0.1),
                             ),
                             const SizedBox(height: 8),
@@ -257,10 +240,7 @@ class VolunteerHistoryPage extends StatelessWidget {
                             ),
                             Text(
                               "Level ${badge.level}",
-                              style: const TextStyle(
-                                fontSize: 11,
-                                color: grey,
-                              ),
+                              style: const TextStyle(fontSize: 11, color: grey),
                             ),
                           ],
                         ),
@@ -272,6 +252,7 @@ class VolunteerHistoryPage extends StatelessWidget {
 
               const SizedBox(height: 32),
 
+              /// Campaign History
               Center(
                 child: Text(
                   "Campaign History".tr,
@@ -286,9 +267,28 @@ class VolunteerHistoryPage extends StatelessWidget {
               ),
               const SizedBox(height: 12),
 
-              ...dataList
-                  .map((item) => _buildCampaignCard(context, item))
-                  .toList(),
+              Obx(() {
+                if (controller.isVolunteerLogLoading.value) {
+                  return const Center(
+                    child: CircularProgressIndicator(color: secondaryColor),
+                  );
+                }
+
+                if (controller.volunteerLog.isEmpty) {
+                  return Center(
+                    child: Text(
+                      "No campaign history yet".tr,
+                      style: const TextStyle(color: grey, fontSize: 14),
+                    ),
+                  );
+                }
+
+                return Column(
+                  children: controller.volunteerLog
+                      .map((item) => _buildCampaignCard(context, item))
+                      .toList(),
+                );
+              }),
             ],
           ),
         ),
@@ -296,7 +296,7 @@ class VolunteerHistoryPage extends StatelessWidget {
     );
   }
 
-  Widget _buildCampaignCard(BuildContext context, Map<String, dynamic> item) {
+  Widget _buildCampaignCard(BuildContext context, VolunteerLog item) {
     final theme = Theme.of(context);
 
     return Container(
@@ -319,9 +319,13 @@ class VolunteerHistoryPage extends StatelessWidget {
         ),
         leading: CircleAvatar(
           radius: 28,
-          backgroundColor: item['isCurrent'] ? secondaryColor : primaryColor,
+          backgroundColor: (item.registration?.status ?? "") == "active"
+              ? secondaryColor
+              : primaryColor,
           child: Text(
-            item['rate'].toString(),
+            (item.evaluations != null && item.evaluations!.isNotEmpty)
+                ? item.evaluations!.first.averageRating ?? "0"
+                : "0",
             style: const TextStyle(
               fontWeight: FontWeight.bold,
               color: white,
@@ -330,7 +334,7 @@ class VolunteerHistoryPage extends StatelessWidget {
           ),
         ),
         title: Text(
-          item['campaign'],
+          item.event?.title ?? "",
           style: TextStyle(
             fontWeight: FontWeight.w600,
             color: theme.brightness == Brightness.dark
@@ -344,12 +348,12 @@ class VolunteerHistoryPage extends StatelessWidget {
           children: [
             const SizedBox(height: 4),
             Text(
-              "${'Role:'.tr} ${item['role']}  •  ${'Hours:'.tr} ${item['hours']}",
+              "${'Role:'.tr} ${item.registration?.status ?? "N/A"}  •  ${'Hours:'.tr} ${item.event?.durationHours ?? 0}",
               style: const TextStyle(fontSize: 12, color: grey),
             ),
             const SizedBox(height: 4),
             Text(
-              "${'Date:'.tr} ${item['date']}",
+              "${'Date:'.tr} ${item.event?.date?.toLocal().toString().split(' ')[0] ?? "N/A"}",
               style: const TextStyle(fontSize: 12, color: grey),
             ),
           ],
@@ -357,17 +361,19 @@ class VolunteerHistoryPage extends StatelessWidget {
         trailing: Container(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
           decoration: BoxDecoration(
-            color: item['isCurrent']
+            color: (item.event?.status ?? "") == "active"
                 ? secondaryColor.withOpacity(0.15)
                 : primaryColor.withOpacity(0.15),
             borderRadius: BorderRadius.circular(12),
           ),
           child: Text(
-            item['isCurrent'] ? "Active".tr : "Completed".tr,
+            item.event?.status?.capitalizeFirst ?? "",
             style: TextStyle(
               fontSize: 11,
               fontWeight: FontWeight.bold,
-              color: item['isCurrent'] ? secondaryColor : primaryColor,
+              color: (item.event?.status ?? "") == "active"
+                  ? secondaryColor
+                  : primaryColor,
             ),
           ),
         ),

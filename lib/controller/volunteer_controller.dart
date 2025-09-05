@@ -1,10 +1,12 @@
 import 'package:get/get.dart';
+import 'package:khotwa/model/badgets_model.dart';
 import 'package:khotwa/model/event_evaluations_model.dart';
 import 'package:khotwa/model/events_model.dart';
 import 'package:khotwa/model/profile_model.dart';
 import 'package:khotwa/model/projects_model.dart';
 import 'package:khotwa/model/tasks_model.dart';
 import 'package:khotwa/model/top_projects_model.dart';
+import 'package:khotwa/model/volunteer_log_model.dart';
 import 'package:khotwa/service/volunteer_service.dart';
 import 'package:khotwa/shared/constants/base_url.dart';
 
@@ -13,8 +15,6 @@ class VolunteerController extends GetxController {
   var myEvents = <EventModel>[].obs;
   var myTasks = <Rx<TaskModel>>[].obs;
   var myEvaluations = [].obs;
-  var myBadgets = [].obs;
-  var isLoading = false.obs;
   var allEvents = <EventModel>[].obs;
   var topProjects = <TopProject>[].obs;
   var allProjects = <ProjectModel>[].obs;
@@ -26,10 +26,20 @@ class VolunteerController extends GetxController {
   var checkOutStatus = <int, bool>{}.obs;  
   var eventFeedback = Rxn<EventEvaluationModel>();
 var isFeedbackLoading = false.obs;
+
+
+ var volunteerLog = <VolunteerLog>[].obs;
+  var isVolunteerLogLoading = false.obs;
+  var warnings = <Evaluation>[].obs; 
+
+  var myBadgets = <BadgetModel>[].obs;
+  var isLoading = false.obs;
+
   @override
   void onInit() {
     fetchProfile();
-    fetchMyBadgets();
+    fetchVolunteerLog();
+    fetchBadges();
     super.onInit();
   }
 
@@ -56,16 +66,16 @@ var isFeedbackLoading = false.obs;
     myEvaluations.assignAll(evaluations);
   }
 
-  Future<void> fetchMyBadgets() async {
-     try {
-    isLoading(true);
-    final badgets = await _volunteerService.getMyBadges();
-    myBadgets.assignAll(badgets);
-     }catch (e) {
-    Get.snackbar('Error', 'Failed to fetch My badgets');
-  } finally {
-    isLoading(false);
-  }
+   Future<void> fetchBadges() async {
+    try {
+      isLoading(true);
+      final badges = await _volunteerService.getMyBadges();
+      myBadgets.assignAll(badges.cast<BadgetModel>());
+    } catch (e) {
+      Get.snackbar('Error', 'Failed to load badges: $e');
+    } finally {
+      isLoading(false);
+    }
   }
 
 Future<void> registerForEvent(int eventId) async {
@@ -210,6 +220,8 @@ Future<void> fetchProfile() async {
       isProfileLoading(true);
       final fetchedProfile = await _volunteerService.getProfile();
       profile.value = fetchedProfile;
+      await   fetchVolunteerLog();
+
     } catch (e) {
       Get.snackbar('Error', 'Failed to fetch profile');
     } finally {
@@ -307,5 +319,45 @@ Future<void> submitEventFeedback(int eventId, int rating, String comment) async 
     isLoading(false);
   }
 }
+
+
+
+
+Future<void> fetchVolunteerLog({int? eventId}) async {
+  try {
+    isVolunteerLogLoading(true);
+
+    final log = await _volunteerService.getVolunteerLog(eventId: eventId);
+
+    if (log is List) {
+      final parsed = log
+          .map((e) => VolunteerLog.fromJson(e as Map<String, dynamic>))
+          .toList();
+      volunteerLog.assignAll(parsed);
+
+      final extractedWarnings = parsed
+          .expand((vLog) => vLog.evaluations ?? [])
+          .where((eval) => eval.warning != null)
+          .cast<Evaluation>()   
+          .toList();
+
+      warnings.assignAll(extractedWarnings);
+    } else {
+      throw Exception('Invalid data format for volunteer log');
+    }
+  } catch (e) {
+    Get.snackbar('Error', 'Failed to fetch volunteer log: $e');
+  } finally {
+    isVolunteerLogLoading(false);
+  }
+}
+
+
+
+
+
+
+
+
 
 }
