@@ -142,6 +142,9 @@ class HomeProjectsCardDonorAndVisitor extends StatelessWidget {
                     context: context,
                     builder: (BuildContext context) {
                       return Dialog(
+                        backgroundColor:  theme.brightness == Brightness.dark
+          ? sixth
+          : thirdColor,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
                         ),
@@ -172,7 +175,7 @@ class HomeProjectsCardDonorAndVisitor extends StatelessWidget {
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   fontSize: 14,
-                                  color: Colors.grey[700],
+                                  color: Colors.grey[600],
                                   fontFamily: '._Acumin Variable Concept',
                                 ),
                               ),

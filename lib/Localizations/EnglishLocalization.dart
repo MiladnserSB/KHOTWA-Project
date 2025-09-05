@@ -331,6 +331,7 @@ class EnglishLocalization extends Translations {
       "Take a Photo": "Take a Photo",
       "Choose from Gallery": "Choose from Gallery",
       "Failed to load profile": "Failed to load profile",
+      "My Donation":"My Donation",
     },
   };
 }

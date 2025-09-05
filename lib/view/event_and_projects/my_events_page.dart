@@ -169,6 +169,8 @@ class EventCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+        final theme = Theme.of(context);
+
     return Card(
       elevation: elevation,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -267,12 +269,92 @@ class EventCard extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
-            DonateApologizeButton(
-              title: 'Apologize'.tr,
-              onTap: () {
-                Get.find<VolunteerController>().withdrawFromEvent(event.id);
-              },
-            ),
+    DonateApologizeButton(
+  title: 'Apologize'.tr,
+  onTap: () {
+    final theme = Theme.of(context);
+
+    showDialog(
+      context: context,
+      builder: (ctx) => Dialog(
+        backgroundColor: theme.brightness == Brightness.dark
+            ? sixth
+            : thirdColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                'Confirm'.tr,
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: theme.brightness == Brightness.dark
+                      ? Colors.white
+                      : Colors.black,
+                ),
+              ),
+              const SizedBox(height: 12),
+              Text(
+                'Are you sure you want to apologize for the event'.tr,
+                style: TextStyle(
+                  fontSize: 14,
+                  color:Colors.grey
+                      
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                   ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFFDDA15E),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                                       onPressed: () => Navigator.of(ctx).pop(),
+
+                    child: Text(
+                      'No'.tr,
+                      style: const TextStyle(color: Colors.white),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFFDDA15E),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    onPressed: () {
+                      Navigator.of(ctx).pop();
+                      Get.find<VolunteerController>()
+                          .withdrawFromEvent(event.id);
+                    },
+                    child: Text(
+                      'Yes'.tr,
+                      style: const TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  },
+),
+
+
           ],
         ),
       ),

@@ -19,7 +19,7 @@ class ForgotPasswordDialogue extends StatelessWidget {
 
     return Dialog(
       backgroundColor: theme.brightness == Brightness.dark
-                        ? Color(0xFF202020)
+                        ? sixth
                         : thirdColor,
       insetPadding: const EdgeInsets.symmetric(horizontal: 30, vertical: 24),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
@@ -38,8 +38,8 @@ class ForgotPasswordDialogue extends StatelessWidget {
                   fontSize: width * 0.050,
                   fontWeight: FontWeight.bold,
                   color: theme.brightness == Brightness.dark
-                      ? primaryColor
-                      : secondaryColor,
+                      ? Colors.white
+                      : Colors.black,
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -50,9 +50,7 @@ class ForgotPasswordDialogue extends StatelessWidget {
                   style: TextStyle(
                     fontSize: width * 0.045,
                     fontWeight: FontWeight.bold,
-                    color: theme.brightness == Brightness.dark
-                      ? Colors.white
-                      : Colors.black,
+                    color: Colors.grey,
                   ),
                 ),
               

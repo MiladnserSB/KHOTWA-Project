@@ -18,7 +18,8 @@ class TasksPage extends StatefulWidget {
 }
 
 class _TasksPageState extends State<TasksPage> {
-  final VolunteerController _volunteerController = Get.find<VolunteerController>();
+  final VolunteerController _volunteerController =
+      Get.find<VolunteerController>();
   final TextEditingController _searchController = TextEditingController();
   var _filteredTasks = <Rx<TaskModel>>[];
 
@@ -79,8 +80,9 @@ class _TasksPageState extends State<TasksPage> {
     final theme = Theme.of(context);
 
     return Scaffold(
-      backgroundColor:
-          theme.brightness == Brightness.dark ? Colors.black : thirdColor,
+      backgroundColor: theme.brightness == Brightness.dark
+          ? Colors.black
+          : thirdColor,
       floatingActionButton: roleID == 2
           ? FloatingActionButton(
               onPressed: () {
@@ -94,8 +96,9 @@ class _TasksPageState extends State<TasksPage> {
       appBar: AppBar(
         elevation: 1,
         surfaceTintColor: Colors.transparent,
-        backgroundColor:
-            theme.brightness == Brightness.dark ? Colors.black : thirdColor,
+        backgroundColor: theme.brightness == Brightness.dark
+            ? Colors.black
+            : thirdColor,
         title: Text(
           "My Tasks".tr,
           style: TextStyle(
@@ -116,22 +119,19 @@ class _TasksPageState extends State<TasksPage> {
               onChanged: _filterTasks,
             ),
             const SizedBox(height: 16),
-        Expanded(
-  child: _volunteerController.isLoading.value
-      ? const Center(child: CustomProgressIndicator())
-      : _filteredTasks.isEmpty
-          ? const Center(child: Text("No tasks found"))
-          : AnimatedTaskListView(
-              size: size,
-              itemHeight: size.height * 0.35,
-              tasks: _filteredTasks
-                  .map((taskRx) => TaskCard(
-                        task: taskRx,
-                      ))
-                  .toList(),
+            Expanded(
+              child: _volunteerController.isLoading.value
+                  ? const Center(child: CustomProgressIndicator())
+                  : _filteredTasks.isEmpty
+                  ? const Center(child: Text("No tasks found"))
+                  : AnimatedTaskListView(
+                      size: size,
+                      itemHeight: size.height * 0.35,
+                      tasks: _filteredTasks
+                          .map((taskRx) => TaskCard(task: taskRx))
+                          .toList(),
+                    ),
             ),
-),
-
           ],
         ),
       ),

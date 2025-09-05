@@ -4,6 +4,7 @@ import 'package:khotwa/shared/constants/colors.dart';
 import 'package:khotwa/view/Home_Page/Animted_bottom/About_page.dart';
 import 'package:khotwa/view/Home_Page/Home_Page/Home_Page_Donor.dart';
 import 'package:khotwa/view/change_password/change_password_page.dart';
+import 'package:khotwa/view/donner/my_donations/my_donations_page.dart';
 import 'package:khotwa/view/settings/settings_page.dart';
 
 class AnimatedBottomBarPageDonor extends StatefulWidget {
@@ -21,15 +22,13 @@ class _AnimatedBottomBarPageDonorState
   final List<_NavItem> _items = [
     _NavItem(icon: Icons.menu, label: 'menu'.tr),
     _NavItem(icon: Icons.home, label: 'home'.tr),
-    _NavItem(icon: Icons.volunteer_activism, label: 'donate'.tr),
-    _NavItem(icon: Icons.shopping_cart, label: 'cart'.tr),
+    _NavItem(icon: Icons.volunteer_activism, label: 'My Donation'.tr),
   ];
 
   final List<Widget> _pages = [
-    SizedBox(),
-    HomePageDonor(),
-    ChangingPasswordPage(),
-    ChangingPasswordPage(),
+    SizedBox(),         
+    HomePageDonor(),     
+    MyDonationsPage(),     
   ];
 
   void _onIconTap(int index) {
@@ -52,9 +51,7 @@ class _AnimatedBottomBarPageDonorState
     return Scaffold(
       key: _scaffoldKey,
       drawer: Drawer(
-        backgroundColor: theme.brightness == Brightness.dark
-            ? Colors.black
-            : thirdColor,
+        backgroundColor: isDark ? Colors.black : thirdColor,
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
@@ -75,11 +72,11 @@ class _AnimatedBottomBarPageDonorState
                   const SizedBox(height: 10),
                   Text(
                     'user name'.tr,
-                    style: TextStyle(color: Colors.white, fontSize: 18),
+                    style: const TextStyle(color: Colors.white, fontSize: 18),
                   ),
                   Text(
                     'user email'.tr,
-                    style: TextStyle(color: Colors.white70, fontSize: 14),
+                    style: const TextStyle(color: Colors.white70, fontSize: 14),
                   ),
                 ],
               ),
@@ -104,8 +101,7 @@ class _AnimatedBottomBarPageDonorState
       bottomNavigationBar: Container(
         padding: const EdgeInsets.symmetric(vertical: 10),
         decoration: BoxDecoration(
-          color:
-              theme.bottomNavigationBarTheme.backgroundColor ??
+          color: theme.bottomNavigationBarTheme.backgroundColor ??
               theme.scaffoldBackgroundColor,
           boxShadow: [
             BoxShadow(
@@ -138,9 +134,8 @@ class _AnimatedBottomBarPageDonorState
                       color: isSelected
                           ? const Color(0xFFDDA15E)
                           : theme.textTheme.bodyMedium?.color,
-                      fontWeight: isSelected
-                          ? FontWeight.bold
-                          : FontWeight.normal,
+                      fontWeight:
+                          isSelected ? FontWeight.bold : FontWeight.normal,
                     ),
                   ),
                 ],

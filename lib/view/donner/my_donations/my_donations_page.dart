@@ -10,19 +10,29 @@ class MyDonationsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+        final theme = Theme.of(context);
+
     return Scaffold(
-      backgroundColor: white,
+      backgroundColor:  theme.brightness == Brightness.dark
+            ? Colors.black
+            : thirdColor,
       appBar: AppBar(
-        backgroundColor: white,
+        backgroundColor:  theme.brightness == Brightness.dark
+            ? primaryColor
+            : secondaryColor,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: textBlack),
+          icon:  Icon(Icons.arrow_back, color:  theme.brightness == Brightness.dark
+            ? Colors.white
+            : Colors.black,),
           onPressed: () => Navigator.pop(context),
         ),
         title:  Text(
           "My Donations".tr,
           style: TextStyle(
-            color: textBlack,
+            color:  theme.brightness == Brightness.dark
+            ? Colors.white
+            : Colors.black,
             fontWeight: FontWeight.bold,
           ),
         ),

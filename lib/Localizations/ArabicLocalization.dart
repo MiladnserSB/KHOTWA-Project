@@ -331,6 +331,7 @@ class ArabicLocalization extends Translations {
       "Choose from Gallery": "اختر من المعرض",
       "Take a Photo": "اخذ صورة فورية",
       "Failed to load profile": "خطأ في تحميل الصورة",
+      "My Donation":"تبرعاتي "
     },
   };
 }

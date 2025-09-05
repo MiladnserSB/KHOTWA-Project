@@ -27,7 +27,7 @@ class _DonorLoginDialogState extends State<DonorLoginDialog> {
       setState(() {
         _isLoading = true;
       });
-      
+
       // Simulate API call
       Future.delayed(const Duration(seconds: 2), () {
         setState(() {
@@ -35,7 +35,7 @@ class _DonorLoginDialogState extends State<DonorLoginDialog> {
         });
         Navigator.of(context).pop();
         ScaffoldMessenger.of(context).showSnackBar(
-           SnackBar(
+          SnackBar(
             content: Text('Login successful!'.tr),
             backgroundColor: Colors.green,
           ),
@@ -57,7 +57,7 @@ class _DonorLoginDialogState extends State<DonorLoginDialog> {
 
   @override
   Widget build(BuildContext context) {
-          final theme = Theme.of(context); 
+    final theme = Theme.of(context);
 
     final mediaQuery = MediaQuery.of(context);
     final width = mediaQuery.size.width;
@@ -67,29 +67,25 @@ class _DonorLoginDialogState extends State<DonorLoginDialog> {
     final textScaleFactor = mediaQuery.textScaleFactor.clamp(0.8, 1.2);
 
     // Calculate responsive dimensions
-    final dialogWidth = isTablet 
-      ? width * 0.5 
-      : isLandscape 
-        ? width * 0.7 
+    final dialogWidth = isTablet
+        ? width * 0.5
+        : isLandscape
+        ? width * 0.7
         : width * 0.9;
-    
-    final horizontalPadding = isTablet 
-      ? width * 0.03 
-      : width * 0.05;
-    
-    final verticalPadding = isLandscape 
-      ? height * 0.02 
-      : height * 0.03;
+
+    final horizontalPadding = isTablet ? width * 0.03 : width * 0.05;
+
+    final verticalPadding = isLandscape ? height * 0.02 : height * 0.03;
 
     return Dialog(
-      backgroundColor: theme.brightness == Brightness.dark ? const Color(0xFF202020) : thirdColor,
+      backgroundColor: theme.brightness == Brightness.dark
+          ? sixth
+          : thirdColor,
       insetPadding: EdgeInsets.symmetric(
         horizontal: isTablet ? width * 0.1 : width * 0.05,
         vertical: isLandscape ? height * 0.1 : height * 0.15,
       ),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: ConstrainedBox(
         constraints: BoxConstraints(
           maxWidth: dialogWidth,
@@ -101,7 +97,6 @@ class _DonorLoginDialogState extends State<DonorLoginDialog> {
             vertical: verticalPadding,
           ),
           child: Form(
-            
             key: _formKey,
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -113,28 +108,29 @@ class _DonorLoginDialogState extends State<DonorLoginDialog> {
                     style: TextStyle(
                       fontSize: isTablet ? 28 : 22 * textScaleFactor,
                       fontWeight: FontWeight.bold,
-color: theme.brightness == Brightness.dark ? Colors.white : primaryColor,                    ),
+                      color: theme.brightness == Brightness.dark
+                          ? Colors.white
+                          : primaryColor,
+                    ),
                     textAlign: TextAlign.center,
                   ),
                 ),
                 SizedBox(height: isLandscape ? height * 0.015 : height * 0.02),
-                
+
                 // Name Field
                 Text(
                   'Name'.tr,
                   style: TextStyle(
                     fontSize: isTablet ? 18 : 16 * textScaleFactor,
                     fontWeight: FontWeight.w500,
-                    color:       theme.brightness == Brightness.dark
+                    color: theme.brightness == Brightness.dark
                         ? Colors.grey
                         : Colors.black, // Added color
                   ),
                 ),
                 SizedBox(height: height * 0.01),
                 TextFormField(
-                    style: const TextStyle( 
-    color: Colors.black,
-  ),
+                  style: const TextStyle(color: Colors.black),
                   controller: _nameController,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -151,7 +147,9 @@ color: theme.brightness == Brightness.dark ? Colors.white : primaryColor,       
                     fillColor: white, // Changed to white
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(color: primaryColor), // Added border color
+                      borderSide: BorderSide(
+                        color: primaryColor,
+                      ), // Added border color
                     ),
                     contentPadding: EdgeInsets.symmetric(
                       horizontal: isTablet ? 20 : 16,
@@ -168,16 +166,17 @@ color: theme.brightness == Brightness.dark ? Colors.white : primaryColor,       
                   ),
                 ),
                 SizedBox(height: isLandscape ? height * 0.015 : height * 0.02),
-                
+
                 // Email Field
                 Text(
                   'Email'.tr,
                   style: TextStyle(
                     fontSize: isTablet ? 18 : 16 * textScaleFactor,
                     fontWeight: FontWeight.w500,
-  color:       theme.brightness == Brightness.dark
+                    color: theme.brightness == Brightness.dark
                         ? Colors.grey
-                        : Colors.black,                   ),
+                        : Colors.black,
+                  ),
                 ),
                 SizedBox(height: height * 0.01),
                 TextFormField(
@@ -192,18 +191,18 @@ color: theme.brightness == Brightness.dark ? Colors.white : primaryColor,       
                       return "Enter a valid email".tr;
                     }
                     return null;
-                  },  style:  TextStyle( 
-    color: Colors.black,
-  ),
+                  },
+                  style: TextStyle(color: Colors.black),
                   decoration: InputDecoration(
-                    
                     hintText: 'Enter your email'.tr,
                     filled: true,
                     fillColor: white, // Changed to white
-                    
+
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(color: primaryColor), // Added border color
+                      borderSide: BorderSide(
+                        color: primaryColor,
+                      ), // Added border color
                     ),
                     contentPadding: EdgeInsets.symmetric(
                       horizontal: isTablet ? 20 : 16,
@@ -220,7 +219,7 @@ color: theme.brightness == Brightness.dark ? Colors.white : primaryColor,       
                   ),
                 ),
                 SizedBox(height: isLandscape ? height * 0.02 : height * 0.03),
-                
+
                 // Buttons - Adaptive layout based on screen size
                 if (isLandscape && !isTablet)
                   Row(
@@ -240,10 +239,14 @@ color: theme.brightness == Brightness.dark ? Colors.white : primaryColor,       
     );
   }
 
-  List<Widget> _buildButtons(BuildContext context, bool isTablet, double width) {
+  List<Widget> _buildButtons(
+    BuildContext context,
+    bool isTablet,
+    double width,
+  ) {
     return [
       ElevatedButton(
-               onPressed: _isLoading ? null : () => Navigator.of(context).pop(),
+        onPressed: _isLoading ? null : () => Navigator.of(context).pop(),
 
         style: ElevatedButton.styleFrom(
           backgroundColor: secondaryColor, // Changed to primaryColor
@@ -266,10 +269,7 @@ color: theme.brightness == Brightness.dark ? Colors.white : primaryColor,       
               )
             : Text(
                 'Cancel'.tr,
-                style: TextStyle(
-                  fontSize: isTablet ? 16 : 14,
-                  color: white,
-                ),
+                style: TextStyle(fontSize: isTablet ? 16 : 14, color: white),
               ),
       ),
       SizedBox(width: width * 0.03),
@@ -296,10 +296,7 @@ color: theme.brightness == Brightness.dark ? Colors.white : primaryColor,       
               )
             : Text(
                 'Login'.tr,
-                style: TextStyle(
-                  fontSize: isTablet ? 16 : 14,
-                  color: white,
-                ),
+                style: TextStyle(fontSize: isTablet ? 16 : 14, color: white),
               ),
       ),
     ];

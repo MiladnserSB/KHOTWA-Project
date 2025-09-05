@@ -11,5 +11,6 @@ const Color thirdColor =Color(0xFFf4ebdf);
 
 const Color fourthColor = Color.fromARGB(255, 9, 123, 81);
 const Color fifth = const Color.fromARGB(255, 23, 53, 42);
+const Color sixth =const Color.fromARGB(255, 82, 77, 77);
 
 

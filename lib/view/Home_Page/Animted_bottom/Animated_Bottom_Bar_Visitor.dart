@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:khotwa/shared/constants/colors.dart';
 import 'package:khotwa/view/Home_Page/Animted_bottom/About_page.dart';
+import 'package:khotwa/view/Home_Page/Animted_bottom/Animated_Bottom_Bar_Donor.dart';
 import 'package:khotwa/view/Home_Page/Home_Page/Home_Page_Visitor.dart';
 import 'package:khotwa/view/change_password/change_password_page.dart';
+import 'package:khotwa/view/donner/my_donations/my_donations_page.dart';
 import 'package:khotwa/view/login/login_page.dart';
 import 'package:khotwa/view/settings/settings_page.dart';
 
@@ -23,16 +25,14 @@ class _AnimatedBottomBarPageVisitorState
     _NavItem(icon: Icons.menu, label: 'menu'.tr),
     _NavItem(icon: Icons.login, label: 'login'.tr),
     _NavItem(icon: Icons.home, label: 'home'.tr),
-    _NavItem(icon: Icons.volunteer_activism, label: 'donate'.tr),
-    _NavItem(icon: Icons.shopping_cart, label: 'cart'.tr),
+    _NavItem(icon: Icons.volunteer_activism, label: 'My Donation'.tr),
   ];
 
   final List<Widget> _pages = [
     SizedBox(),
     LoginPage(),
     HomePageVisitor(),
-    ChangingPasswordPage(),
-    ChangingPasswordPage(),
+    MyDonationsPage(),
   ];
 
   void _onIconTap(int index) {

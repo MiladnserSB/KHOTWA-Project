@@ -23,6 +23,9 @@ class TaskCard extends StatelessWidget {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
+        backgroundColor:  theme.brightness == Brightness.dark
+          ? sixth
+          : thirdColor,
         title: Text(
           title,
           style: TextStyle(
