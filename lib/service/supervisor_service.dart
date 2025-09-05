@@ -1,52 +1,85 @@
+import 'dart:typed_data';
+
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
+import 'package:khotwa/model/event_registeration_model.dart';
 import '../shared/constants/base_url.dart';
 
 class SupervisorService extends GetxService {
   late Dio dio;
-
+  bool isInitialized = false;
   @override
   void onInit() {
     super.onInit();
-    dio = Dio(BaseOptions(
-      baseUrl: baseUrl,
-      connectTimeout: const Duration(seconds: 30),
-      receiveTimeout: const Duration(seconds: 30),
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-    ));
-
-    dio.interceptors.add(InterceptorsWrapper(
-      onRequest: (options, handler) async {
-        final token = await _getToken();
-        if (token.isNotEmpty) {
-          options.headers['Authorization'] = 'Bearer $token';
-        }
-        return handler.next(options);
-      },
-    ));
+    initializeDio();
   }
+void initializeDio() {
+    dio = Dio(
+      BaseOptions(
+        baseUrl: baseUrl,
+        connectTimeout: const Duration(seconds: 30),
+        receiveTimeout: const Duration(seconds: 30),
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+      ),
+    );
 
+    dio.interceptors.add(
+      InterceptorsWrapper(
+        onRequest: (options, handler) async {
+          try {
+            final token = await _getToken();
+            if (token.isNotEmpty) {
+              options.headers['Authorization'] = 'Bearer $token';
+            }
+          } catch (e) {
+            print('Error getting token: $e');
+          }
+          return handler.next(options);
+        },
+        onError: (error, handler) {
+          print('Dio error: ${error.message}');
+          return handler.next(error);
+        },
+      ),
+    );
+
+    isInitialized = true;
+    print('Dio initialized successfully');
+  }
   Future<String> _getToken() async {
-    return '';
+    return '13|8ZGjbRignaaOuyonnTAR3tbPQZfhDZ2anxbxXfFge2d903cb';
   }
 
-  // QR Generation
-  Future<Map<String, dynamic>> generateEventQR(int eventId) async {
-    try {
-      final response = await dio.get('/api/supervisor/events/$eventId/qr');
-      return response.data;
-    } on DioException catch (e) {
-      throw Exception('Failed to generate QR: ${e.response?.statusCode}');
-    }
+  Future<Uint8List> generateEventQR(int eventId) async {
+  try {
+    final token = await _getToken();
+    final response = await dio.get(
+      '/api/supervisor/events/$eventId/qr',
+      options: Options(
+        responseType: ResponseType.bytes, // 👈 important
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      ),
+    );
+
+    return Uint8List.fromList(response.data);
+  } on DioException catch (e) {
+    throw Exception('Failed to generate QR: ${e.response?.statusCode}');
   }
+}
+
 
   // Attendance
   Future<List<dynamic>> getEventAttendance(int eventId) async {
     try {
-      final response = await dio.get('/api/supervisor/attendance/event/$eventId');
+      final response = await dio.get(
+        '/api/supervisor/attendance/event/$eventId',
+      );
       return response.data['data'] ?? [];
     } on DioException catch (e) {
       throw Exception('Failed to load attendance: ${e.response?.statusCode}');
@@ -55,47 +88,86 @@ class SupervisorService extends GetxService {
 
   Future<List<dynamic>> getEventRegistrations(int eventId) async {
     try {
-      final response = await dio.get('/api/supervisor/attendance/event/$eventId/registrations');
-      return response.data['data'] ?? [];
+         final token = await _getToken();
+      final response = await dio.get(
+        '/api/supervisor/attendance/event/$eventId/registrations',
+        options: Options(
+          headers: {
+            'Accept': 'application/json',
+            'Authorization': 'Bearer $token',
+          },
+        ),
+      );
+      final data = response.data['data'] as List<dynamic>;
+      return data.map((e) => EventRegistration.fromJson(e)).toList();
     } on DioException catch (e) {
-      throw Exception('Failed to load registrations: ${e.response?.statusCode}');
+      throw Exception(
+        'Failed to load registrations: ${e.response?.statusCode}',
+      );
     }
   }
 
-  Future<Map<String, dynamic>> manualCheckIn(int eventId, List<int> volunteerIds) async {
-    try {
-      final response = await dio.post(
-        '/api/supervisor/attendance/manual',
-        data: {
-          'event_id': eventId,
-          'volunteer_ids': volunteerIds,
-          'action': 'checkin',
-        },
-      );
-      return response.data;
-    } on DioException catch (e) {
-      throw Exception('Failed to check in: ${e.response?.statusCode}');
-    }
+Future<Map<String, dynamic>> manualCheckIn(
+  int eventId,
+  List<dynamic> volunteerIds,
+) async {
+  try {
+    final token = await _getToken();
+    final response = await dio.post(
+      '/api/supervisor/attendance/manual',
+      data: {
+        'event_id': eventId,
+        'volunteer_ids': volunteerIds,
+        'action': 'checkin',
+      },
+        options: Options(
+          headers: {
+            'Accept': 'application/json',
+            'Authorization': 'Bearer $token',
+          },
+        ),
+    );
+    return response.data;
+  } on DioException catch (e) {
+    throw Exception(
+      'Failed to check in: ${e.response?.statusCode} ${e.response?.data}',
+    );
   }
+}
 
-  Future<Map<String, dynamic>> manualCheckOut(int eventId, List<int> volunteerIds) async {
-    try {
-      final response = await dio.post(
-        '/api/supervisor/attendance/manual',
-        data: {
-          'event_id': eventId,
-          'volunteer_ids': volunteerIds,
-          'action': 'checkout',
-        },
-      );
-      return response.data;
-    } on DioException catch (e) {
-      throw Exception('Failed to check out: ${e.response?.statusCode}');
-    }
+// Manual Attendance (Check-Out)
+Future<Map<String, dynamic>> manualCheckOut(
+  int eventId,
+  List<dynamic> volunteerIds,
+) async {
+  try {
+    final token = await _getToken();
+    final response = await dio.post(
+      '/api/supervisor/attendance/manual',
+      data: {
+        'event_id': eventId,
+        'volunteer_ids': volunteerIds,
+        'action': 'checkout',
+      },
+        options: Options(
+          headers: {
+            'Accept': 'application/json',
+            'Authorization': 'Bearer $token',
+          },
+        ),
+    );
+    return response.data;
+  } on DioException catch (e) {
+    throw Exception(
+      'Failed to check out: ${e.response?.statusCode} ${e.response?.data}',
+    );
   }
+}
 
   // Evaluations
-  Future<Map<String, dynamic>> createEvaluation(Map<String, dynamic> evaluationData) async {
+  Future<Map<String, dynamic>> createEvaluation(
+    Map<String, dynamic> evaluationData,
+  ) async {
     try {
       final response = await dio.post(
         '/api/supervisor/evaluations',
@@ -107,7 +179,10 @@ class SupervisorService extends GetxService {
     }
   }
 
-  Future<Map<String, dynamic>> updateEvaluation(int evaluationId, Map<String, dynamic> updateData) async {
+  Future<Map<String, dynamic>> updateEvaluation(
+    int evaluationId,
+    Map<String, dynamic> updateData,
+  ) async {
     try {
       final response = await dio.put(
         '/api/supervisor/evaluations/$evaluationId',
@@ -121,7 +196,9 @@ class SupervisorService extends GetxService {
 
   Future<List<dynamic>> getEventEvaluations(int eventId) async {
     try {
-      final response = await dio.get('/api/supervisor/events/$eventId/evaluations');
+      final response = await dio.get(
+        '/api/supervisor/events/$eventId/evaluations',
+      );
       return response.data['data'] ?? [];
     } on DioException catch (e) {
       throw Exception('Failed to load evaluations: ${e.response?.statusCode}');
@@ -130,7 +207,9 @@ class SupervisorService extends GetxService {
 
   Future<Map<String, dynamic>> getEvaluationById(int evaluationId) async {
     try {
-      final response = await dio.get('/api/supervisor/evaluations/$evaluationId');
+      final response = await dio.get(
+        '/api/supervisor/evaluations/$evaluationId',
+      );
       return response.data;
     } on DioException catch (e) {
       throw Exception('Failed to load evaluation: ${e.response?.statusCode}');
@@ -140,10 +219,7 @@ class SupervisorService extends GetxService {
   // Tasks
   Future<Map<String, dynamic>> createTask(Map<String, dynamic> taskData) async {
     try {
-      final response = await dio.post(
-        '/api/supervisor/tasks',
-        data: taskData,
-      );
+      final response = await dio.post('/api/supervisor/tasks', data: taskData);
       return response.data;
     } on DioException catch (e) {
       throw Exception('Failed to create task: ${e.response?.statusCode}');
@@ -153,7 +229,9 @@ class SupervisorService extends GetxService {
   // Volunteer Feedback
   Future<List<dynamic>> getVolunteerFeedback(int volunteerId) async {
     try {
-      final response = await dio.get('/api/admin/feedback/volunteer/$volunteerId');
+      final response = await dio.get(
+        '/api/admin/feedback/volunteer/$volunteerId',
+      );
       return response.data['data'] ?? [];
     } on DioException catch (e) {
       throw Exception('Failed to load feedback: ${e.response?.statusCode}');
@@ -165,7 +243,9 @@ class SupervisorService extends GetxService {
       final response = await dio.get('/api/admin/events/$eventId/feedback');
       return response.data['data'] ?? [];
     } on DioException catch (e) {
-      throw Exception('Failed to load event feedback: ${e.response?.statusCode}');
+      throw Exception(
+        'Failed to load event feedback: ${e.response?.statusCode}',
+      );
     }
   }
 }

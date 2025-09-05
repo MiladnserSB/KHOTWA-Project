@@ -1,64 +1,36 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:khotwa/controller/supervisor_controller.dart';
 import 'package:khotwa/shared/constants/colors.dart';
 import 'package:khotwa/view/supervisor/attendence/attendence_button.dart';
 import 'package:khotwa/view/supervisor/attendence/show_qr_in_page.dart';
 import 'package:khotwa/view/supervisor/attendence/show_qr_out_page.dart';
 import 'package:khotwa/view/supervisor/attendence/volunteer_card.dart';
+import 'package:khotwa/model/event_registeration_model.dart';
+import 'package:khotwa/widgets/custom_progress_indicator.dart';
 
 class AttendanceList extends StatefulWidget {
   final bool checkIn;
-  const AttendanceList({super.key,required this.checkIn});
+  final int eventId;
+
+  const AttendanceList({
+    super.key,
+    required this.checkIn,
+    required this.eventId,
+  });
+
   @override
   State<AttendanceList> createState() => _AttendanceListState();
 }
 
 class _AttendanceListState extends State<AttendanceList> {
- 
-@override
+  final SupervisorController controller = Get.put(SupervisorController());
+
+  @override
   void initState() {
     super.initState();
+    controller.fetchEventRegistrations(widget.eventId);
   }
-
-  final List<Map<String, dynamic>> volunteers = [
-    {
-      "name": "Alice Johnson",
-      "role": "Event Coordinator",
-      "image": "https://randomuser.me/api/portraits/women/1.jpg",
-      "checked": false,
-    },
-    {
-      "name": "Bob Williams",
-      "role": "Volunteer Helper",
-      "image": "https://randomuser.me/api/portraits/men/2.jpg",
-      "checked": true,
-    },
-    {
-      "name": "Charlie Brown",
-      "role": "Logistics Support",
-      "image": "https://randomuser.me/api/portraits/men/3.jpg",
-      "checked": false,
-    },
-    {
-      "name": "Diana Prince",
-      "role": "Community Outreach",
-      "image": "https://randomuser.me/api/portraits/women/4.jpg",
-      "checked": true,
-    },
-    {
-      "name": "Eve Adams",
-      "role": "Guest Relations",
-      "image": "https://randomuser.me/api/portraits/women/5.jpg",
-      "checked": false,
-    },
-    {
-      "name": "Frank Miller",
-      "role": "Setup Crew",
-      "image": "https://randomuser.me/api/portraits/men/6.jpg",
-      "checked": false,
-    },
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -68,43 +40,85 @@ class _AttendanceListState extends State<AttendanceList> {
       padding: const EdgeInsets.all(16),
       child: Column(
         children: [
-
           AttendanceButton(
             label: "QR Attendance".tr,
             icon: Icons.qr_code,
             backgroundColor: secondaryColor,
             height: buttonHeight * 0.8,
-            onPressed: () { widget.checkIn ? Get.to(ShowQrInPage()) : Get.to(ShowQrOutPage());},
+            onPressed: () async {
+              await controller.generateEventQR(
+                widget.eventId,
+                widget.checkIn, 
+              );
+            },
           ),
           const SizedBox(height: 16),
+
           Expanded(
-            child: ListView.builder(
-              physics: const BouncingScrollPhysics(),
-              itemCount: volunteers.length,
-              itemBuilder: (context, index) {
-                final volunteer = volunteers[index];
-                return VolunteerCard(
-                  name: volunteer["name"],
-                  role: volunteer["role"],
-                  imageUrl: volunteer["image"],
-                  checked: volunteer["checked"],
-                  isCheckIn: widget.checkIn,
-                  onCheckChanged: (val) {
-                    setState(() {
-                      volunteer["checked"] = val ?? false;
-                    });
-                  },
-                  onFeedbackPressed: () {},
+            child: Obx(() {
+              if (controller.isLoading.value) {
+                return const Center(child: CustomProgressIndicator());
+              }
+              if (controller.eventRegistrations.isEmpty) {
+                return Center(
+                  child: Text(
+                    "No volunteers registered".tr,
+                    style: const TextStyle(color: grey),
+                  ),
                 );
-              },
-            ),
+              }
+
+              return ListView.builder(
+                physics: const BouncingScrollPhysics(),
+                itemCount: controller.eventRegistrations.length,
+                itemBuilder: (context, index) {
+                  final EventRegistration eventRegistration =
+                      controller.eventRegistrations[index];
+
+                  return VolunteerCard(
+                    name: eventRegistration.volunteer.fullName,
+                    role: 'Volunteer',
+                    imageUrl: eventRegistration.volunteer.profileImageUrl ?? "",
+                    checked: eventRegistration.isSelected ?? false,
+                    isCheckIn: widget.checkIn,
+                    onCheckChanged: (val) {
+                      controller.eventRegistrations[index] =
+                          eventRegistration.copyWith(
+                        isSelected: val ?? false,
+                      );
+                    },
+                    onFeedbackPressed: () {
+                      // TODO: Open feedback form
+                    },
+                  );
+                },
+              );
+            }),
           ),
+
           const SizedBox(height: 12),
+
           AttendanceButton(
             label: "Submit Attendance".tr,
             backgroundColor: primaryColor,
             height: buttonHeight,
-            onPressed: () {},
+            onPressed: () async {
+              final selectedIds = controller.eventRegistrations
+                  .where((reg) => reg.isSelected == true)
+                  .map((reg) => reg.volunteerId)
+                  .toList();
+
+              if (selectedIds.isEmpty) {
+                Get.snackbar("Error", "Please select at least one volunteer");
+                return;
+              }
+
+              if (widget.checkIn) {
+                await controller.manualCheckIn(widget.eventId, selectedIds);
+              } else {
+                await controller.manualCheckOut(widget.eventId, selectedIds);
+              }
+            },
           ),
         ],
       ),

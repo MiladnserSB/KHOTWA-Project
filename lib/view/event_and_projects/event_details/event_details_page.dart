@@ -10,6 +10,7 @@ import 'package:khotwa/shared/constants/colors.dart';
 import 'package:khotwa/view/event_and_projects/event_details/card_information_in_event.dart';
 import 'package:khotwa/view/event_and_projects/event_details/map_location_page.dart';
 import 'package:khotwa/view/event_and_projects/event_details/project_card_in_details_page.dart';
+import 'package:khotwa/view/supervisor/attendence/attendence_page.dart';
 
 class EventDetailsPage extends StatefulWidget {
   final EventModel event;
@@ -265,7 +266,7 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
                     // };
                   } else if (roleID == 3) {
                     buttonText = 'Attendance'.tr;
-                    onPressed = () => Get.toNamed('/attendence_page', arguments: widget.event);
+                    onPressed = () => Get.to(AttendancePage(eventId: widget.event.id,) );
                   }
                 }
 
@@ -298,133 +299,192 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
 
               const SizedBox(height: 30),
 
-              /// 🔹 Feedback Section
-              Text(
-                "Feedback".tr,
-                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 12),
+              /// Inside your EventDetailsPage build method -> Replace Feedback section with this
+Column(
+  crossAxisAlignment: CrossAxisAlignment.start,
+  children: [
+    /// 🔹 Feedback Title
+    Text(
+      "Feedback".tr,
+      style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+    ),
+    const SizedBox(height: 12),
 
-              /// Show feedback
-              Obx(() {
-                if (volunteerController.isFeedbackLoading.value) {
-                  return const Center(child: CircularProgressIndicator(color: secondaryColor));
-                }
+    /// 🔹 Feedback List
+    Obx(() {
+      if (volunteerController.isFeedbackLoading.value) {
+        return const Center(
+          child: CircularProgressIndicator(color: secondaryColor),
+        );
+      }
 
-                final feedback = volunteerController.eventFeedback.value;
-                if (feedback == null) {
-                  return Text("No feedback yet".tr);
-                }
+      final feedback = volunteerController.eventFeedback.value;
 
-                return Card(
-                  color: theme.cardColor,
-                  margin: const EdgeInsets.symmetric(vertical: 8),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                  child: Padding(
-                    padding: const EdgeInsets.all(12),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(feedback.volunteer.name,
-                            style: const TextStyle(fontWeight: FontWeight.bold)),
-                        const SizedBox(height: 4),
-                        Row(
-                          children: List.generate(
-                            5,
-                            (i) => Icon(
-                              i < feedback.rating ? Icons.star : Icons.star_border,
-                              color: secondaryColor,
-                              size: 18,
-                            ),
+      if (feedback == null) {
+        return Text("No feedback yet".tr);
+      }
+
+      final feedbacks = [feedback];
+
+      return ListView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: feedbacks.length,
+        itemBuilder: (context, index) {
+          final fb = feedbacks[index];
+          return Card(
+            elevation: 2,
+            color: theme.cardColor,
+            margin: const EdgeInsets.symmetric(vertical: 8),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(14),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      /// Avatar circle with initials
+                      CircleAvatar(
+                        backgroundColor: secondaryColor.withOpacity(0.2),
+                        child: Text(
+                          fb.volunteer.name.isNotEmpty
+                              ? fb.volunteer.name[0].toUpperCase()
+                              : "?",
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: secondaryColor,
                           ),
                         ),
-                        const SizedBox(height: 6),
-                        Text(feedback.comment),
-                        const SizedBox(height: 6),
-                        Text(
-                          DateFormat.yMMMd().format(feedback.createdAt),
-                          style: TextStyle(color: Colors.grey.shade600, fontSize: 12),
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              fb.volunteer.name,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 15,
+                              ),
+                            ),
+                            Text(
+                              DateFormat.yMMMd().format(fb.createdAt),
+                              style: TextStyle(
+                                color: Colors.grey.shade600,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                      /// Stars
+                      Row(
+                        children: List.generate(
+                          5,
+                          (i) => Icon(
+                            i < fb.rating ? Icons.star : Icons.star_border,
+                            color: secondaryColor,
+                            size: 18,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                );
-              }),
-
-              const SizedBox(height: 20),
-
-              /// 🔹 Add Feedback
-              Text(
-                "Add Your Feedback".tr,
-                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-              ),
-              const SizedBox(height: 10),
-
-              /// Rating stars
-              Row(
-                children: List.generate(
-                  5,
-                  (i) => IconButton(
-                    onPressed: () {
-                      setState(() => _selectedRating = i + 1);
-                    },
-                    icon: Icon(
-                      i < _selectedRating ? Icons.star : Icons.star_border,
-                      color: secondaryColor,
-                    ),
+                  const SizedBox(height: 10),
+                  Text(
+                    fb.comment,
+                    style: const TextStyle(fontSize: 14, height: 1.4),
                   ),
-                ),
+                ],
               ),
+            ),
+          );
+        },
+      );
+    }),
 
-              /// Comment box
-              TextField(
-                controller: _commentController,
-                decoration: InputDecoration(
-                  hintText: "Write a comment...".tr,
-                  filled: true,
-                  fillColor: theme.cardColor,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide.none,
-                  ),
-                ),
-                maxLines: 3,
-              ),
-              const SizedBox(height: 12),
+    const SizedBox(height: 30),
 
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () async {
-                    if (_selectedRating == 0 || _commentController.text.isEmpty) {
-                      Get.snackbar("Error".tr, "Please provide rating and comment".tr);
-                      return;
-                    }
-                    await volunteerController.submitEventFeedback(
-                      widget.event.id,
-                      _selectedRating,
-                      _commentController.text,
-                    );
-                    _commentController.clear();
-                    setState(() => _selectedRating = 0);
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: secondaryColor,
-                    foregroundColor: white,
-                    padding: const EdgeInsets.symmetric(vertical: 14),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                  child: Text("Submit Feedback".tr),
-                ),
-              ),
+    /// 🔹 Add Feedback Section
+    Text(
+      "Add Your Feedback".tr,
+      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+    ),
+    const SizedBox(height: 10),
 
-              const SizedBox(height: 30),
-            ],
+    Row(
+      children: List.generate(
+        5,
+        (i) => IconButton(
+          onPressed: () {
+            setState(() => _selectedRating = i + 1);
+          },
+          icon: Icon(
+            i < _selectedRating ? Icons.star : Icons.star_border,
+            color: secondaryColor,
+            size: 28,
           ),
         ),
       ),
-    );
+    ),
+
+    TextField(
+      controller: _commentController,
+      style: TextStyle(
+        color: textBlack
+      ),
+      decoration: InputDecoration(
+        hintText: "Write a comment...".tr,
+        filled: true,
+        fillColor: theme.cardColor,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: BorderSide.none,
+        ),
+      ),
+      maxLines: 3,
+    ),
+    const SizedBox(height: 14),
+
+    Center(
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width*0.7,
+        child: ElevatedButton.icon(
+          onPressed: () async {
+            if (_selectedRating == 0 || _commentController.text.isEmpty) {
+              Get.snackbar("Error".tr, "Please provide rating and comment".tr);
+              return;
+            }
+            await volunteerController.submitEventFeedback(
+              widget.event.id,
+              _selectedRating,
+              _commentController.text,
+            );
+            _commentController.clear();
+            setState(() => _selectedRating = 0);
+          },
+          icon: const Icon(Icons.send, color: white, size: 20),
+          label: Text("Submit Feedback".tr),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: secondaryColor,
+            foregroundColor: white,
+            padding: const EdgeInsets.symmetric(vertical: 14),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(14),
+            ),
+          ),
+        ),
+      ),
+    ),
+  ],
+)
+
+        ])
+      ),
+    ));
   }
 }

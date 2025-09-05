@@ -19,6 +19,7 @@ import 'package:khotwa/view/Home_Page/Animted_bottom/Animated_Bottom_Bar_Volunte
 import 'package:khotwa/view/donner/donate/donate_page.dart';
 import 'package:khotwa/view/event_and_projects/event_details/map_location_page.dart';
 import 'package:khotwa/view/notifications/notifications_list_page.dart';
+import 'package:khotwa/view/supervisor/attendence/attendence_page.dart';
 
 
 // Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {

@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
 import 'package:khotwa/service/supervisor_service.dart';
 import 'package:khotwa/shared/constants/app_routes.dart';
+import 'package:khotwa/view/supervisor/attendence/show_qr_in_page.dart';
+import 'package:khotwa/view/supervisor/attendence/show_qr_out_page.dart';
 
 class SupervisorController extends GetxController {
   final SupervisorService _supervisorService = SupervisorService();
@@ -10,18 +12,26 @@ class SupervisorController extends GetxController {
   var eventEvaluations = [].obs;
   var isLoading = false.obs;
 
-  Future<void> generateEventQR(int eventId) async {
-    try {
-      isLoading(true);
-      final qrData = await _supervisorService.generateEventQR(eventId);
-      // Handle QR data (show dialog, navigate to QR page, etc.)
-      Get.toNamed(AppRoutes.showQR, arguments: qrData);
-    } catch (e) {
-      Get.snackbar('Error', 'Failed to generate QR code');
-    } finally {
-      isLoading(false);
+Future<void> generateEventQR(int eventId, bool isCheckIn) async {
+  try {
+    isLoading(true);
+
+    final qrBytes = await _supervisorService.generateEventQR(eventId);
+
+    if (isCheckIn) {
+      Get.to(() => const ShowQrInPage(), arguments: qrBytes);
+    } else {
+      Get.to(() => const ShowQrOutPage(), arguments: qrBytes);
     }
+
+  } catch (e) {
+    Get.snackbar('Error', 'Failed to generate QR code: $e');
+  } finally {
+    isLoading(false);
   }
+}
+
+
 
   Future<void> fetchEventAttendance(int eventId) async {
     try {
@@ -35,10 +45,12 @@ class SupervisorController extends GetxController {
     }
   }
 
+
   Future<void> fetchEventRegistrations(int eventId) async {
     try {
       isLoading(true);
-      final registrations = await _supervisorService.getEventRegistrations(eventId);
+      final registrations =
+          await _supervisorService.getEventRegistrations(eventId);
       eventRegistrations.assignAll(registrations);
     } catch (e) {
       Get.snackbar('Error', 'Failed to fetch registrations');
@@ -59,31 +71,32 @@ class SupervisorController extends GetxController {
     }
   }
 
-  Future<void> manualCheckIn(int eventId, List<int> volunteerIds) async {
-    try {
-      isLoading(true);
-      await _supervisorService.manualCheckIn(eventId, volunteerIds);
-      await fetchEventAttendance(eventId);
-      Get.snackbar('Success', 'Manual check-in completed');
-    } catch (e) {
-      Get.snackbar('Error', 'Failed to perform manual check-in');
-    } finally {
-      isLoading(false);
-    }
+Future<void> manualCheckIn(int eventId, List<dynamic> volunteerIds) async {
+  try {
+    isLoading(true);
+    await _supervisorService.manualCheckIn(eventId, volunteerIds);
+    await fetchEventAttendance(eventId);
+    Get.snackbar('Success', 'Manual check-in completed');
+  } catch (e) {
+    Get.snackbar('Error', 'Failed to perform manual check-in');
+  } finally {
+    isLoading(false);
   }
+}
 
-  Future<void> manualCheckOut(int eventId, List<int> volunteerIds) async {
-    try {
-      isLoading(true);
-      await _supervisorService.manualCheckOut(eventId, volunteerIds);
-      await fetchEventAttendance(eventId);
-      Get.snackbar('Success', 'Manual check-out completed');
-    } catch (e) {
-      Get.snackbar('Error', 'Failed to perform manual check-out');
-    } finally {
-      isLoading(false);
-    }
+Future<void> manualCheckOut(int eventId, List<dynamic> volunteerIds) async {
+  try {
+    isLoading(true);
+    await _supervisorService.manualCheckOut(eventId, volunteerIds);
+    await fetchEventAttendance(eventId);
+    Get.snackbar('Success', 'Manual check-out completed');
+  } catch (e) {
+    Get.snackbar('Error', 'Failed to perform manual check-out');
+  } finally {
+    isLoading(false);
   }
+}
+
 
   Future<void> createEvaluation(Map<String, dynamic> evaluationData) async {
     try {

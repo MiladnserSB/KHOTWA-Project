@@ -85,11 +85,11 @@ class AppRoutes {
       page: () => HomePageSupervisor(),
       binding: SupervisorBinding(),
     ),
-    GetPage(
-      name: attendance,
-      page: () => AttendancePage(),
-      binding: SupervisorBinding(),
-    ),
+    // GetPage(
+    //   name: attendance,
+    //   page: () => AttendancePage(),
+    //   binding: SupervisorBinding(),
+    // ),
     GetPage(
       name: showQR,
       page: () => ShowQrInPage(),

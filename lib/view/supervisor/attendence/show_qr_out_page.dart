@@ -1,24 +1,23 @@
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:khotwa/shared/constants/colors.dart';
-import 'package:qr_flutter/qr_flutter.dart';
 
 class ShowQrOutPage extends StatelessWidget {
   const ShowQrOutPage({super.key});
 
-  final String dummyToken = "DUMMY-TOKEN-1234567890";
-
   @override
   Widget build(BuildContext context) {
+    final qrBytes = Get.arguments as Uint8List; // receive bytes from controller
     final theme = Theme.of(context);
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
       backgroundColor: white,
       appBar: AppBar(
-        title:  Text(
+        title: Text(
           "Check out QR".tr,
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
         elevation: 0,
@@ -38,8 +37,7 @@ class ShowQrOutPage extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 20),
-          
-              // QR Card
+
               Card(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16),
@@ -47,19 +45,9 @@ class ShowQrOutPage extends StatelessWidget {
                 elevation: 6,
                 child: Padding(
                   padding: const EdgeInsets.all(20),
-                  child: QrImageView(
-                    data: dummyToken,
-                    version: QrVersions.auto,
-                    size: size.width * 0.6,
-                    gapless: false,
-                    // eyeStyle: QrEyeStyle(
-                    //   color: secondaryColor,
-                    //   eyeShape: QrEyeShape.square,
-                    // ),
-                    dataModuleStyle: QrDataModuleStyle(
-                      color: Colors.black,
-                      dataModuleShape: QrDataModuleShape.square,
-                    ),
+                  child: Image.memory(
+                    qrBytes,
+                    width: size.width * 0.6,
                   ),
                 ),
               ),

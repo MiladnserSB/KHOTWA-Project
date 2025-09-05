@@ -5,11 +5,12 @@ import 'package:khotwa/shared/constants/colors.dart';
 import 'package:khotwa/view/supervisor/attendence/attendence_list.dart';
 
 class AttendancePage extends StatelessWidget {
-  const AttendancePage({super.key});
-
+  const AttendancePage({super.key, required this.eventId});
+  final int eventId;
   @override
   Widget build(BuildContext context) {
-    final double fontScale = MediaQuery.of(context).size.width / 375; // iPhone 11 base
+    final double fontScale =
+        MediaQuery.of(context).size.width / 375; // iPhone 11 base
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -41,16 +42,16 @@ class AttendancePage extends StatelessWidget {
               fontWeight: FontWeight.w600,
               fontSize: 14 * fontScale,
             ),
-            tabs:  [
+            tabs: [
               Tab(text: 'Check In'.tr, icon: Icon(Icons.login)),
               Tab(text: 'Check Out'.tr, icon: Icon(Icons.logout)),
             ],
           ),
         ),
-        body:  TabBarView(
+        body: TabBarView(
           children: [
-            AttendanceList(checkIn: true,),
-            AttendanceList(checkIn: false,),
+            AttendanceList(checkIn: true, eventId: eventId), 
+            AttendanceList(checkIn: false, eventId: eventId),
           ],
         ),
       ),

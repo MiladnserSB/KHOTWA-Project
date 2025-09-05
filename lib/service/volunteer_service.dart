@@ -74,7 +74,6 @@ class VolunteerService extends GetxService {
         ),
       );
       final eventsModel = EventsModel.fromJson(response.data);
-      print(response.data);
       return eventsModel.data;
     } on DioException catch (e) {
       throw Exception('Failed to load events: ${e.response?.statusCode}');
@@ -501,6 +500,7 @@ Future<EventEvaluationsModel> submitEventFeedback(
   String comment,
 ) async {
   try {
+
     final token = await _getToken();
 
     final response = await dio.post(
@@ -518,7 +518,6 @@ Future<EventEvaluationsModel> submitEventFeedback(
         },
       ),
     );
-
     if (response.statusCode == 200) {
       return EventEvaluationsModel.fromJson(response.data);
     } else {

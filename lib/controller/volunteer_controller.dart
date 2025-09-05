@@ -60,7 +60,6 @@ var isFeedbackLoading = false.obs;
      try {
     isLoading(true);
     final badgets = await _volunteerService.getMyBadges();
-    print(badgets);
     myBadgets.assignAll(badgets);
      }catch (e) {
     Get.snackbar('Error', 'Failed to fetch My badgets');
@@ -168,7 +167,6 @@ Future<void> fetchAllProjects() async {
   try {
     isLoading(true);
     final projects = await _volunteerService.getAllProjects();
-    print("we fetch the prjects");
     allProjects.assignAll(projects);
   } catch (e) {
     Get.snackbar('Error', 'Failed to fetch all projects');
@@ -179,7 +177,6 @@ Future<void> fetchAllProjects() async {
 Future<void> fetchTopProjects() async {
   try {
     final List<TopProject> projects = await _volunteerService.getTopProjects();
-    print("We are done for here");
     topProjects.assignAll(projects);
   } catch (e) {
     Get.snackbar('Error', 'Failed to fetch top projects: $e');
@@ -224,9 +221,7 @@ Future<void> fetchProfile() async {
     Future<void> uploadProfileImage(String filePath) async {
     try {
       isProfileLoading(true);
-      print(filePath);
       final result = await _volunteerService.uploadProfileImage( filePath);
-print("done for upload here");
       await fetchProfile();
 
       Get.snackbar('Success', result['message'] ?? 'Profile image updated');
