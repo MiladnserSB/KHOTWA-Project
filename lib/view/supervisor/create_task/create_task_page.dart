@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:khotwa/shared/constants/colors.dart';
 import 'package:khotwa/view/supervisor/create_task/date_picker_section.dart';
+import 'package:khotwa/controller/supervisor_controller.dart';
 
 class CreateTaskPage extends StatelessWidget {
   CreateTaskPage({super.key});
@@ -11,23 +12,24 @@ class CreateTaskPage extends StatelessWidget {
   final Rx<DateTime?> startDate = Rx<DateTime?>(null);
   final Rx<DateTime?> dueDate = Rx<DateTime?>(null);
 
+  final SupervisorController controller = Get.put(SupervisorController());
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
     return Scaffold(
-        backgroundColor:  theme.brightness == Brightness.dark ? Colors.black : thirdColor,
+      backgroundColor: theme.brightness == Brightness.dark ? Colors.black : thirdColor,
       appBar: AppBar(
-        
         title: Text(
           "create new task".tr,
           style: TextStyle(
             color: theme.brightness == Brightness.dark ? Colors.white : textBlack,
           ),
         ),
-        backgroundColor:  theme.brightness == Brightness.dark ? Colors.black : thirdColor,
-       elevation: 1,
-  surfaceTintColor: Colors.transparent,
+        backgroundColor: theme.brightness == Brightness.dark ? Colors.black : thirdColor,
+        elevation: 1,
+        surfaceTintColor: Colors.transparent,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
@@ -99,12 +101,23 @@ class CreateTaskPage extends StatelessWidget {
                   backgroundColor: secondaryColor,
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                 ),
-                onPressed: () {
-                  print("Task Saved");
-                  print("Name: ${taskNameController.text}");
-                  print("Description: ${descriptionController.text}");
-                  print("Start Date: ${startDate.value}");
-                  print("Due Date: ${dueDate.value}");
+                onPressed: () async {
+                  if (taskNameController.text.isEmpty ||
+                      descriptionController.text.isEmpty ||
+                      startDate.value == null ||
+                      dueDate.value == null) {
+                    Get.snackbar("Error", "Please fill all fields");
+                    return;
+                  }
+
+                  await controller.createTask(
+                    title: taskNameController.text,
+                    description: descriptionController.text,
+                    volunteerId: 17, 
+                    volunteerHours: 1, 
+                    startDate: startDate.value!.toIso8601String(),
+                    dueDate: dueDate.value!.toIso8601String(),
+                  );
                 },
                 child: Text(
                   "assign".tr,
@@ -121,9 +134,13 @@ class CreateTaskPage extends StatelessWidget {
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                 ),
                 onPressed: () => Get.back(),
-
-                child: Text("cancel".tr, style:  TextStyle(fontSize: 16,color:          theme.brightness == Brightness.dark ? Colors.white : primaryColor,
-)),
+                child: Text(
+                  "cancel".tr,
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: theme.brightness == Brightness.dark ? Colors.white : primaryColor,
+                  ),
+                ),
               ),
             ),
           ],

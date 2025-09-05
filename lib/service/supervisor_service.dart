@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
+import 'package:khotwa/model/all_volunteers_model.dart';
 import 'package:khotwa/model/event_registeration_model.dart';
 import '../shared/constants/base_url.dart';
 
@@ -216,13 +217,63 @@ Future<Map<String, dynamic>> manualCheckOut(
     }
   }
 
-  // Tasks
-  Future<Map<String, dynamic>> createTask(Map<String, dynamic> taskData) async {
+
+
+Future<Map<String, dynamic>> createTask({
+  required String title,
+  required String description,
+  required int volunteerId,
+  required int volunteerHours,
+  required String startDate,
+  required String dueDate,
+}) async {
+  try {
+    final token = await _getToken();
+
+    final response = await dio.post(
+      '/api/supervisor/tasks',
+      data: {
+        "title": title,
+        "description": description,
+        "volunteer_id": volunteerId,
+        "volunteer_hours": volunteerHours,
+        "start_date": startDate,
+        "due_date": dueDate,
+      },
+      options: Options(
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      ),
+    );
+
+    return response.data;
+  } on DioException catch (e) {
+    throw Exception(
+      'Failed to create task: ${e.response?.statusCode} ${e.response?.data}',
+    );
+  }
+}
+ Future<AllVolunteersModel> getAllVolunteers() async {
     try {
-      final response = await dio.post('/api/supervisor/tasks', data: taskData);
-      return response.data;
+      final token = await _getToken();
+      final response = await dio.get(
+        '/api/supervisor/volunteers',
+        options: Options(
+          headers: {
+            'Accept': 'application/json',
+            'Authorization': 'Bearer $token',
+          },
+        ),
+      );
+print("object");
+      return AllVolunteersModel.fromJson(response.data);
     } on DioException catch (e) {
-      throw Exception('Failed to create task: ${e.response?.statusCode}');
+      throw Exception(
+        'Failed to load volunteers: ${e.response?.statusCode} ${e.response?.data}',
+      );
     }
   }
 

@@ -1,94 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:khotwa/controller/view_all_volunteers_controller.dart';
+import 'package:khotwa/controller/supervisor_controller.dart';
 import 'package:khotwa/shared/constants/colors.dart';
 import 'package:get/get.dart';
 import 'package:khotwa/view/search_and_view_all_volunteers/filter_dialogue.dart';
 import 'package:khotwa/view/search_and_view_all_volunteers/search_result_page.dart';
 import 'package:khotwa/view/search_and_view_all_volunteers/volunteer_card.dart';
-
-class ViewAllVolunteersController extends GetxController {
-  final volunteers = <VolunteerModel>[].obs;
-  final filteredVolunteers = <VolunteerModel>[].obs;
-  final isLoading = true.obs;
-  final searchController = TextEditingController();
-
-  @override
-  void onInit() {
-    super.onInit();
-    fetchVolunteers();
-  }
-
-  @override
-  void onClose() {
-    searchController.dispose();
-    super.onClose();
-  }
-
-  void fetchVolunteers() async {
-    isLoading.value = true;
-    
-    await Future.delayed(Duration(seconds: 2));
-    
-    volunteers.assignAll([
-      VolunteerModel(
-        name: "Sarah Chen",
-        hours: "120",
-        image: "https://randomuser.me/api/portraits/women/44.jpg",
-        city: "Damascus",
-        preferredTime: "Morning",
-        availability: "Weekends"
-      ),
-      VolunteerModel(
-        name: "Michael Davis",
-        hours: "85",
-        image: "https://randomuser.me/api/portraits/men/32.jpg",
-        city: "Aleppo",
-        preferredTime: "Evening",
-        availability: "Weekdays"
-      ),
-      VolunteerModel(
-        name: "Maria Rodriguez",
-        hours: "100",
-        image: "https://randomuser.me/api/portraits/women/65.jpg",
-        city: "Homs",
-        preferredTime: "Afternoon",
-        availability: "Flexible"
-      ),
-      VolunteerModel(
-        name: "David Lee",
-        hours: "90",
-        image: "https://randomuser.me/api/portraits/men/71.jpg",
-        city: "Latakia",
-        preferredTime: "Morning",
-        availability: "Weekends"
-      ),
-    ]);
-    
-    filteredVolunteers.assignAll(volunteers);
-    isLoading.value = false;
-  }
-
-  void searchVolunteers(String query) {
-    if (query.isEmpty) {
-      filteredVolunteers.assignAll(volunteers);
-    } else {
-      filteredVolunteers.assignAll(volunteers.where((volunteer) =>
-          volunteer.name.toLowerCase().contains(query.toLowerCase()) ||
-          volunteer.city.toLowerCase().contains(query.toLowerCase())));
-    }
-  }
-
-  void applyFilters(Map<String, dynamic> filters) {
-    // Filter logic will be implemented here
-    filteredVolunteers.assignAll(volunteers);
-  }
-}
-
 class ViewAllVolunteersPage extends StatelessWidget {
   ViewAllVolunteersPage({super.key});
 
-  final ViewAllVolunteersController controller = Get.put(ViewAllVolunteersController());
-
+  final SupervisorController controller = Get.put(SupervisorController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -200,4 +120,3 @@ class ViewAllVolunteersPage extends StatelessWidget {
     );
   }
 }
-
