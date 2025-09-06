@@ -5,13 +5,13 @@ import 'package:khotwa/view/supervisor/create_task/date_picker_section.dart';
 import 'package:khotwa/controller/supervisor_controller.dart';
 
 class CreateTaskPage extends StatelessWidget {
-  CreateTaskPage({super.key});
+  CreateTaskPage({super.key, required this.volunteerId});
 
   final TextEditingController taskNameController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
   final Rx<DateTime?> startDate = Rx<DateTime?>(null);
   final Rx<DateTime?> dueDate = Rx<DateTime?>(null);
-
+  final int volunteerId;
   final SupervisorController controller = Get.put(SupervisorController());
 
   @override
@@ -113,8 +113,8 @@ class CreateTaskPage extends StatelessWidget {
                   await controller.createTask(
                     title: taskNameController.text,
                     description: descriptionController.text,
-                    volunteerId: 17, 
-                    volunteerHours: 1, 
+                    volunteerId: 17,
+                    volunteerHours: 1,
                     startDate: startDate.value!.toIso8601String(),
                     dueDate: dueDate.value!.toIso8601String(),
                   );

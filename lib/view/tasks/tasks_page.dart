@@ -4,6 +4,7 @@ import 'package:khotwa/controller/volunteer_controller.dart';
 import 'package:khotwa/model/tasks_model.dart';
 import 'package:khotwa/shared/constants/base_url.dart';
 import 'package:khotwa/shared/constants/colors.dart';
+import 'package:khotwa/view/search_and_view_all_volunteers/view_all_volunteers_page.dart';
 import 'package:khotwa/view/supervisor/create_task/create_task_page.dart';
 import 'package:khotwa/view/tasks/animated_task_list_view.dart';
 import 'package:khotwa/view/tasks/custom_search_bar.dart';
@@ -86,7 +87,7 @@ class _TasksPageState extends State<TasksPage> {
       floatingActionButton: roleID == 2
           ? FloatingActionButton(
               onPressed: () {
-                Get.to(() => CreateTaskPage());
+                Get.to(() => ViewAllVolunteersPage());
               },
               backgroundColor: theme.scaffoldBackgroundColor,
               shape: const CircleBorder(),

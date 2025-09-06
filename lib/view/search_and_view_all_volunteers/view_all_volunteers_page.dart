@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:khotwa/controller/supervisor_controller.dart';
 import 'package:khotwa/shared/constants/colors.dart';
-import 'package:get/get.dart';
 import 'package:khotwa/view/search_and_view_all_volunteers/filter_dialogue.dart';
-import 'package:khotwa/view/search_and_view_all_volunteers/search_result_page.dart';
 import 'package:khotwa/view/search_and_view_all_volunteers/volunteer_card.dart';
+
 class ViewAllVolunteersPage extends StatelessWidget {
   ViewAllVolunteersPage({super.key});
 
   final SupervisorController controller = Get.put(SupervisorController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,8 +31,8 @@ class ViewAllVolunteersPage extends StatelessWidget {
                     controller: controller.searchController,
                     decoration: InputDecoration(
                       hintText: "Search Volunteers...",
-                      hintStyle: TextStyle(color: grey),
-                      prefixIcon: Icon(Icons.search, color: grey),
+                      hintStyle: const TextStyle(color: grey),
+                      prefixIcon: const Icon(Icons.search, color: grey),
                       filled: true,
                       fillColor: grey.withOpacity(0.1),
                       enabledBorder: OutlineInputBorder(
@@ -40,21 +41,14 @@ class ViewAllVolunteersPage extends StatelessWidget {
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(color: primaryColor),
+                        borderSide: const BorderSide(color: primaryColor),
                       ),
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 14,
+                      ),
                     ),
-                    onChanged: (value) {
-                      controller.searchVolunteers(value);
-                    },
-                    onSubmitted: (value) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => SearchResultsPage(searchQuery: value),
-                        ),
-                      );
-                    },
+                    onChanged: (value) => controller.searchVolunteers(value),
                   ),
                 ),
                 const SizedBox(width: 12),
@@ -67,7 +61,7 @@ class ViewAllVolunteersPage extends StatelessWidget {
                     border: Border.all(color: primaryColor.withOpacity(0.3)),
                   ),
                   child: IconButton(
-                    icon: Icon(Icons.filter_list, color: primaryColor),
+                    icon: const Icon(Icons.filter_list, color: primaryColor),
                     onPressed: () {
                       showDialog(
                         context: context,
@@ -78,45 +72,116 @@ class ViewAllVolunteersPage extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 20),
-            
+
+            const SizedBox(height: 10),
+
+            // Active filters section
+            Obx(() {
+              final hasFilters = controller.selectedCities.isNotEmpty ||
+                  controller.selectedInterests.isNotEmpty ||
+                  controller.selectedDays.isNotEmpty ||
+                  controller.selectedTimes.isNotEmpty ||
+                  controller.selectedHours.isNotEmpty;
+
+              if (!hasFilters) return const SizedBox.shrink();
+
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 10),
+                child: Wrap(
+                  spacing: 8,
+                  runSpacing: 4,
+                  children: [
+                    ...controller.selectedCities.map((city) => _buildFilterChip(city, controller.selectedCities)),
+                    ...controller.selectedInterests.map((i) => _buildFilterChip(i, controller.selectedInterests)),
+                    ...controller.selectedDays.map((d) => _buildFilterChip(d, controller.selectedDays)),
+                    ...controller.selectedTimes.map((t) => _buildFilterChip(t, controller.selectedTimes)),
+                    ...controller.selectedHours.map((h) => _buildFilterChip(h, controller.selectedHours)),
+                    ActionChip(
+                      label: const Text("Clear All"),
+                      onPressed: () {
+                        controller.selectedCities.clear();
+                        controller.selectedInterests.clear();
+                        controller.selectedDays.clear();
+                        controller.selectedTimes.clear();
+                        controller.selectedHours.clear();
+                        controller.applyFilters();
+                      },
+                    )
+                  ],
+                ),
+              );
+            }),
+
+            const SizedBox(height: 10),
+
             // Volunteer List
-            Obx(() => controller.isLoading.value 
-              ? Expanded(
+            Obx(() {
+              if (controller.isLoading.value) {
+                return const Expanded(
                   child: Center(
                     child: CircularProgressIndicator(color: primaryColor),
                   ),
-                )
-              : Expanded(
-                  child: LayoutBuilder(
-                    builder: (context, constraints) {
-                      int crossAxisCount = 1;
-                      if (constraints.maxWidth > 900) {
-                        crossAxisCount = 3;
-                      } else if (constraints.maxWidth > 600) {
-                        crossAxisCount = 2;
-                      }
-                      return GridView.builder(
-                        itemCount: controller.filteredVolunteers.length,
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: crossAxisCount,
-                          childAspectRatio: 3.2,
-                          crossAxisSpacing: 16,
-                          mainAxisSpacing: 16,
-                        ),
-                        itemBuilder: (context, index) {
-                          return VolunteerCard(
-                            volunteer: controller.filteredVolunteers[index],
-                          );
-                        },
-                      );
-                    },
+                );
+              }
+
+              if (controller.filteredVolunteers.isEmpty) {
+                return const Expanded(
+                  child: Center(
+                    child: Text("No volunteers found", style: TextStyle(color: grey)),
                   ),
+                );
+              }
+
+              return Expanded(
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    int crossAxisCount = 1;
+                    double childAspectRatio = 3.2;
+
+                    if (constraints.maxWidth > 900) {
+                      crossAxisCount = 3;
+                      childAspectRatio = 1.8;
+                    } else if (constraints.maxWidth > 600) {
+                      crossAxisCount = 2;
+                      childAspectRatio = 2.0;
+                    } else {
+                      crossAxisCount = 1;
+                      childAspectRatio = 2.5;
+                    }
+
+                    return GridView.builder(
+                      itemCount: controller.filteredVolunteers.length,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: crossAxisCount,
+                        childAspectRatio: childAspectRatio,
+                        crossAxisSpacing: 16,
+                        mainAxisSpacing: 16,
+                      ),
+                      itemBuilder: (context, index) {
+                        return VolunteerCard(
+                          volunteer: controller.filteredVolunteers[index],
+                        );
+                      },
+                    );
+                  },
                 ),
-            ),
+              );
+            }),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildFilterChip(String label, List<String> list) {
+    final SupervisorController controller = Get.find<SupervisorController>();
+    return Chip(
+      label: Text(label),
+      onDeleted: () {
+        controller.toggleFilter(list, label, false);
+        controller.applyFilters();
+      },
+      deleteIcon: const Icon(Icons.close, size: 16),
     );
   }
 }

@@ -13,12 +13,13 @@ class SearchResultsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Initialize search
     controller.searchController.text = searchQuery;
     controller.searchVolunteers(searchQuery);
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Search Results", style: TextStyle(color: textBlack)),
+        title: const Text("Search Results", style: TextStyle(color: textBlack)),
         backgroundColor: white,
         elevation: 0,
         centerTitle: true,
@@ -27,7 +28,7 @@ class SearchResultsPage extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            // Search Bar + Filter
+            // 🔎 Search Bar + Filter
             Row(
               children: [
                 Expanded(
@@ -35,8 +36,8 @@ class SearchResultsPage extends StatelessWidget {
                     controller: controller.searchController,
                     decoration: InputDecoration(
                       hintText: "Search Volunteers...",
-                      hintStyle: TextStyle(color: grey),
-                      prefixIcon: Icon(Icons.search, color: grey),
+                      hintStyle: const TextStyle(color: grey),
+                      prefixIcon: const Icon(Icons.search, color: grey),
                       filled: true,
                       fillColor: grey.withOpacity(0.1),
                       enabledBorder: OutlineInputBorder(
@@ -45,11 +46,11 @@ class SearchResultsPage extends StatelessWidget {
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(color: primaryColor),
+                        borderSide: const BorderSide(color: primaryColor),
                       ),
                       contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
                     ),
-                    onSubmitted: controller.searchVolunteers,
+                    onChanged: controller.searchVolunteers,
                   ),
                 ),
                 const SizedBox(width: 12),
@@ -62,7 +63,7 @@ class SearchResultsPage extends StatelessWidget {
                     border: Border.all(color: primaryColor.withOpacity(0.3)),
                   ),
                   child: IconButton(
-                    icon: Icon(Icons.filter_list, color: primaryColor),
+                    icon: const Icon(Icons.filter_list, color: primaryColor),
                     onPressed: () {
                       showDialog(
                         context: context,
@@ -73,13 +74,51 @@ class SearchResultsPage extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 20),
 
-            // Results
+            const SizedBox(height: 10),
+
+            // 🎯 Active Filters
+            Obx(() {
+              final hasFilters = controller.selectedCities.isNotEmpty ||
+                  controller.selectedInterests.isNotEmpty ||
+                  controller.selectedDays.isNotEmpty ||
+                  controller.selectedTimes.isNotEmpty ||
+                  controller.selectedHours.isNotEmpty;
+
+              if (!hasFilters) return const SizedBox.shrink();
+
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 10),
+                child: Wrap(
+                  spacing: 8,
+                  runSpacing: 4,
+                  children: [
+                    ...controller.selectedCities.map((city) => _buildFilterChip(city, controller.selectedCities)),
+                    ...controller.selectedInterests.map((i) => _buildFilterChip(i, controller.selectedInterests)),
+                    ...controller.selectedDays.map((d) => _buildFilterChip(d, controller.selectedDays)),
+                    ...controller.selectedTimes.map((t) => _buildFilterChip(t, controller.selectedTimes)),
+                    ...controller.selectedHours.map((h) => _buildFilterChip(h, controller.selectedHours)),
+                    ActionChip(
+                      label: const Text("Clear All"),
+                      onPressed: () {
+                        controller.selectedCities.clear();
+                        controller.selectedInterests.clear();
+                        controller.selectedDays.clear();
+                        controller.selectedTimes.clear();
+                        controller.selectedHours.clear();
+                        controller.applyFilters();
+                      },
+                    )
+                  ],
+                ),
+              );
+            }),
+
+            // 📋 Results
             Expanded(
               child: Obx(() {
                 if (controller.isLoading.value) {
-                  return const Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator(color: primaryColor));
                 }
                 if (controller.filteredVolunteers.isEmpty) {
                   return const Center(
@@ -98,6 +137,19 @@ class SearchResultsPage extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  /// 🏷 Helper for removable filter chips
+  Widget _buildFilterChip(String label, List<String> list) {
+    final SupervisorController controller = Get.find<SupervisorController>();
+    return Chip(
+      label: Text(label),
+      onDeleted: () {
+        controller.toggleFilter(list, label, false);
+        controller.applyFilters();
+      },
+      deleteIcon: const Icon(Icons.close, size: 16),
     );
   }
 }

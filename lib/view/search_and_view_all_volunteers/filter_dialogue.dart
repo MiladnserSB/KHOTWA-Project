@@ -28,7 +28,7 @@ class FilterDialog extends StatelessWidget {
               "Everyday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
             ], controller.selectedDays),
             _buildSection("Preferred Time", [
-              "1-2 hours/week", "3-5 hours/week", "6-10 hours/week", "More than 10 hours/week"
+              "Morning", "Afternoon", "Evening"
             ], controller.selectedTimes),
             _buildSection("Total Hours", [
               "< 50", "50-100", "100-150", "150+"

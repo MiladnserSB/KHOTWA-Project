@@ -100,10 +100,10 @@ class AppRoutes {
       page: () => VolunteerFeedbackPage(),
       binding: SupervisorBinding(),
     ),
-    GetPage(
-      name: createTask,
-      page: () => CreateTaskPage(),
-      binding: SupervisorBinding(),
-    ),
+    // GetPage(
+    //   name: createTask,
+    //   page: () => CreateTaskPage(),
+    //   binding: SupervisorBinding(),
+    // ),
   ];
 }

@@ -34,131 +34,127 @@ class ProfileModel {
 }
 
 class Profile {
-  final int id;
-  final int userId;
-  final String status;
-  final String fullName;
-  final String gender;
-  final String birthDate;
-  final String phone;
-  final String email;
+  final int? id;
+  final int? userId;
+  final String? status;
+  final String? fullName;
+  final String? gender;
+  final String? birthDate;
+  final String? phone;
+  final String? email;
   final String? city;
-  final String address;
-  final List<String> interests;
-  final List<String> availability;
-  final List<String> availabilityDays;
-  final String preferredTime;
-  final int volunteeringYears;
-  final String motivation;
-  final String emergencyContactName;
-  final String emergencyContactPhone;
-  final String emergencyContactRelationship;
-  final String educationLevel;
-  final String university;
-  final DateTime registrationDate;
-
+  final String? address;
+  final List<String>? interests;
+  final List<String>? availability;
+  final List<String>? availabilityDays;
+  final String? preferredTime;
+  final int? volunteeringYears;
+  final String? motivation;
+  final String? emergencyContactName;
+  final String? emergencyContactPhone;
+  final String? emergencyContactRelationship;
+  final String? educationLevel;
+  final String? university;
+  final DateTime? registrationDate;
   final int? totalVolunteerHours;
-
-  final String profileImageUrl;
-  final List<String> skills;
-  final List<String> badges;
-  final DateTime createdAt;
-  final DateTime updatedAt;
+  final String? profileImageUrl;
+  final List<String>? skills;
+  final List<String>? badges;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
 
   Profile({
-    required this.id,
-    required this.userId,
-    required this.status,
-    required this.fullName,
-    required this.gender,
-    required this.birthDate,
-    required this.phone,
-    required this.email,
-    required this.city,
-    required this.address,
-    required this.interests,
-    required this.availability,
-    required this.availabilityDays,
-    required this.preferredTime,
-    required this.volunteeringYears,
-    required this.motivation,
-    required this.emergencyContactName,
-    required this.emergencyContactPhone,
-    required this.emergencyContactRelationship,
-    required this.educationLevel,
-    required this.university,
-    required this.registrationDate,
-    this.totalVolunteerHours, 
-    required this.profileImageUrl,
-    required this.skills,
-    required this.badges,
-    required this.createdAt,
-    required this.updatedAt,
+    this.id,
+    this.userId,
+    this.status,
+    this.fullName,
+    this.gender,
+    this.birthDate,
+    this.phone,
+    this.email,
+    this.city,
+    this.address,
+    this.interests,
+    this.availability,
+    this.availabilityDays,
+    this.preferredTime,
+    this.volunteeringYears,
+    this.motivation,
+    this.emergencyContactName,
+    this.emergencyContactPhone,
+    this.emergencyContactRelationship,
+    this.educationLevel,
+    this.university,
+    this.registrationDate,
+    this.totalVolunteerHours,
+    this.profileImageUrl,
+    this.skills,
+    this.badges,
+    this.createdAt,
+    this.updatedAt,
   });
 
   factory Profile.fromJson(Map<String, dynamic> json) => Profile(
-    id: json["id"],
-    userId: json["user_id"],
-    status: json["status"],
-    fullName: json["full_name"],
-    gender: json["gender"],
-    birthDate: json["birth_date"],
-    phone: json["phone"],
-    email: json["email"],
-    city: json["city"],
-    address: json["address"],
-    interests: List<String>.from(json["interests"].map((x) => x)),
-    availability: List<String>.from(json["availability"].map((x) => x)),
-    availabilityDays: List<String>.from(
-      json["availability_days"].map((x) => x),
-    ),
-    preferredTime: json["preferred_time"],
-    volunteeringYears: json["volunteering_years"],
-    motivation: json["motivation"],
-    emergencyContactName: json["emergency_contact_name"],
-    emergencyContactPhone: json["emergency_contact_phone"],
-    emergencyContactRelationship: json["emergency_contact_relationship"],
-    educationLevel: json["education_level"],
-    university: json["university"],
-    registrationDate: DateTime.parse(json["registration_date"]),
-
-    totalVolunteerHours: json["total_volunteer_hours"] == null ? null: json["total_volunteer_hours"],
-
-    profileImageUrl: json["profile_image_url"],
-    skills: List<String>.from(json["skills"].map((x) => x)),
-    badges: List<String>.from(json["badges"].map((x) => x)),
-    createdAt: DateTime.parse(json["created_at"]),
-    updatedAt: DateTime.parse(json["updated_at"]),
-  );
+        id: json["id"] as int?,
+        userId: json["user_id"] as int?,
+        status: json["status"] as String?,
+        fullName: json["full_name"] as String?,
+        gender: json["gender"] as String?,
+        birthDate: json["birth_date"] as String?,
+        phone: json["phone"] as String?,
+        email: json["email"] as String?,
+        city: json["city"] as String?,
+        address: json["address"] as String?,
+        interests: (json["interests"] as List?)?.map((x) => x.toString()).toList() ?? [],
+        availability: (json["availability"] as List?)?.map((x) => x.toString()).toList() ?? [],
+        availabilityDays: (json["availability_days"] as List?)?.map((x) => x.toString()).toList() ?? [],
+        preferredTime: json["preferred_time"] as String?,
+        volunteeringYears: json["volunteering_years"] as int?,
+        motivation: json["motivation"] as String?,
+        emergencyContactName: json["emergency_contact_name"] as String?,
+        emergencyContactPhone: json["emergency_contact_phone"] as String?,
+        emergencyContactRelationship: json["emergency_contact_relationship"] as String?,
+        educationLevel: json["education_level"] as String?,
+        university: json["university"] as String?,
+        registrationDate: json["registration_date"] != null
+            ? DateTime.tryParse(json["registration_date"])
+            : null,
+        totalVolunteerHours: json["total_volunteer_hours"] as int?,
+        profileImageUrl: json["profile_image_url"] as String?,
+        skills: (json["skills"] as List?)?.map((x) => x.toString()).toList() ?? [],
+        badges: (json["badges"] as List?)?.map((x) => x.toString()).toList() ?? [],
+        createdAt: json["created_at"] != null ? DateTime.tryParse(json["created_at"]) : null,
+        updatedAt: json["updated_at"] != null ? DateTime.tryParse(json["updated_at"]) : null,
+      );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "user_id": userId,
-    "status": status,
-    "full_name": fullName,
-    "gender": gender,
-    "birth_date": birthDate,
-    "phone": phone,
-    "email": email,
-    "city": city,
-    "address": address,
-    "interests": List<dynamic>.from(interests.map((x) => x)),
-    "availability": List<dynamic>.from(availability.map((x) => x)),
-    "availability_days": List<dynamic>.from(availabilityDays.map((x) => x)),
-    "preferred_time": preferredTime,
-    "volunteering_years": volunteeringYears,
-    "motivation": motivation,
-    "emergency_contact_name": emergencyContactName,
-    "emergency_contact_phone": emergencyContactPhone,
-    "emergency_contact_relationship": emergencyContactRelationship,
-    "education_level": educationLevel,
-    "university": university,
-    "registration_date":"${registrationDate.year}-${registrationDate.month.toString().padLeft(2, '0')}-${registrationDate.day.toString().padLeft(2, '0')}",
-    "total_volunteer_hours": totalVolunteerHours,
-    "profile_image_url": profileImageUrl,
-    "skills": List<dynamic>.from(skills.map((x) => x)),
-    "badges": List<dynamic>.from(badges.map((x) => x)),
-    "created_at": createdAt.toIso8601String(),
-    "updated_at": updatedAt.toIso8601String(),
-  };
+        "id": id,
+        "user_id": userId,
+        "status": status,
+        "full_name": fullName,
+        "gender": gender,
+        "birth_date": birthDate,
+        "phone": phone,
+        "email": email,
+        "city": city,
+        "address": address,
+        "interests": interests ?? [],
+        "availability": availability ?? [],
+        "availability_days": availabilityDays ?? [],
+        "preferred_time": preferredTime,
+        "volunteering_years": volunteeringYears,
+        "motivation": motivation,
+        "emergency_contact_name": emergencyContactName,
+        "emergency_contact_phone": emergencyContactPhone,
+        "emergency_contact_relationship": emergencyContactRelationship,
+        "education_level": educationLevel,
+        "university": university,
+        "registration_date": registrationDate?.toIso8601String(),
+        "total_volunteer_hours": totalVolunteerHours,
+        "profile_image_url": profileImageUrl,
+        "skills": skills ?? [],
+        "badges": badges ?? [],
+        "created_at": createdAt?.toIso8601String(),
+        "updated_at": updatedAt?.toIso8601String(),
+      };
 }

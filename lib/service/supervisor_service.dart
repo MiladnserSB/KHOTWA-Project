@@ -8,18 +8,17 @@ import '../shared/constants/base_url.dart';
 
 class SupervisorService extends GetxService {
   late Dio dio;
-  bool isInitialized = false;
-  @override
-  void onInit() {
+
+  SupervisorService() {
     super.onInit();
-    initializeDio();
+    _initializeDio();
   }
-void initializeDio() {
+
+  void _initializeDio() {
     dio = Dio(
       BaseOptions(
         baseUrl: baseUrl,
-        connectTimeout: const Duration(seconds: 30),
-        receiveTimeout: const Duration(seconds: 30),
+
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
@@ -46,10 +45,8 @@ void initializeDio() {
         },
       ),
     );
-
-    isInitialized = true;
-    print('Dio initialized successfully');
   }
+
   Future<String> _getToken() async {
     return '13|8ZGjbRignaaOuyonnTAR3tbPQZfhDZ2anxbxXfFge2d903cb';
   }
@@ -60,7 +57,7 @@ void initializeDio() {
     final response = await dio.get(
       '/api/supervisor/events/$eventId/qr',
       options: Options(
-        responseType: ResponseType.bytes, // 👈 important
+        responseType: ResponseType.bytes,
         headers: {
           'Accept': 'application/json',
           'Authorization': 'Bearer $token',
@@ -74,8 +71,6 @@ void initializeDio() {
   }
 }
 
-
-  // Attendance
   Future<List<dynamic>> getEventAttendance(int eventId) async {
     try {
       final response = await dio.get(
@@ -136,7 +131,6 @@ Future<Map<String, dynamic>> manualCheckIn(
   }
 }
 
-// Manual Attendance (Check-Out)
 Future<Map<String, dynamic>> manualCheckOut(
   int eventId,
   List<dynamic> volunteerIds,

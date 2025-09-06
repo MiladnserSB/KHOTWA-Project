@@ -18,7 +18,9 @@ import 'package:khotwa/view/Home_Page/Animted_bottom/Animated_Bottom_Bar_Visitor
 import 'package:khotwa/view/Home_Page/Animted_bottom/Animated_Bottom_Bar_Volunteer.dart';
 import 'package:khotwa/view/donner/donate/donate_page.dart';
 import 'package:khotwa/view/event_and_projects/event_details/map_location_page.dart';
+import 'package:khotwa/view/intro/Splash_Screen.dart';
 import 'package:khotwa/view/notifications/notifications_list_page.dart';
+import 'package:khotwa/view/search_and_view_all_volunteers/view_all_volunteers_page.dart';
 import 'package:khotwa/view/supervisor/attendence/attendence_page.dart';
 
 
@@ -164,7 +166,7 @@ class MyApp extends StatelessWidget {
         ),
 
         themeMode: themeController.themeMode,
-        home: AnimatedBottomBarPageVolunteer()
+        home: SplashScreen()
       );
     });
   }

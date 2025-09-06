@@ -76,7 +76,7 @@ class _AttendanceListState extends State<AttendanceList> {
                       controller.eventRegistrations[index];
 
                   return VolunteerCard(
-                    name: eventRegistration.volunteer.fullName,
+                    name: eventRegistration.volunteer.fullName ?? "-",
                     role: 'Volunteer',
                     imageUrl: eventRegistration.volunteer.profileImageUrl ?? "",
                     checked: eventRegistration.isSelected ?? false,

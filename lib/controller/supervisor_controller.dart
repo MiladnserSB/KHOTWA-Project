@@ -57,18 +57,10 @@ class SupervisorController extends GetxController {
     }
   }
 
-  void searchVolunteers(String query) {
-    if (query.isEmpty) {
-      applyFilters();
-    } else {
-      filteredVolunteers.assignAll(
-        volunteers.where((v) =>
-          v.fullName.toLowerCase().contains(query.toLowerCase()) ||
-          (v.city?.toLowerCase().contains(query.toLowerCase()) ?? false)
-        ),
-      );
-    }
-  }
+void searchVolunteers(String query) {
+  searchQuery.value = query;
+  applyFilters();
+}
 
   void toggleFilter(List<String> filterList, String value, bool selected) {
     if (selected) {
@@ -78,22 +70,48 @@ class SupervisorController extends GetxController {
     }
   }
 
-  void applyFilters() {
-    filteredVolunteers.assignAll(
-      volunteers.where((v) {
-        final cityMatch = selectedCities.isEmpty || selectedCities.contains(v.city);
-        final interestMatch = selectedInterests.isEmpty ||
-            v.interests.any((i) => selectedInterests.contains(i));
-        final dayMatch = selectedDays.isEmpty ||
-            v.availabilityDays.any((d) => selectedDays.contains(d));
-        final timeMatch = selectedTimes.isEmpty ||
-            selectedTimes.contains(v.preferredTime);
-        final hoursMatch = selectedHours.isEmpty || _matchHours(v.totalVolunteerHours);
+var searchQuery = ''.obs;
 
-        return cityMatch && interestMatch && dayMatch && timeMatch && hoursMatch;
-      }).toList(),
-    );
-  }
+
+
+
+void applyFilters() {
+  final query = searchController.text.trim().toLowerCase();
+
+  filteredVolunteers.assignAll(
+    volunteers.where((v) {
+      // Search condition
+      final matchesSearch = query.isEmpty ||
+          (v.fullName?.toLowerCase().contains(query) ?? false) ||
+          (v.city?.toLowerCase().contains(query) ?? false);
+
+      // Filters
+      final cityMatch =
+          selectedCities.isEmpty || selectedCities.contains(v.city);
+
+      final interestMatch = selectedInterests.isEmpty ||
+          (v.interests ?? []).any((i) => selectedInterests.contains(i));
+
+      final dayMatch = selectedDays.isEmpty ||
+          (v.availabilityDays ?? []).any((d) => selectedDays.contains(d));
+
+      final timeMatch = selectedTimes.isEmpty ||
+          selectedTimes.contains(v.preferredTime);
+
+      final hoursMatch =
+          selectedHours.isEmpty || _matchHours(v.totalVolunteerHours);
+
+      return matchesSearch &&
+          cityMatch &&
+          interestMatch &&
+          dayMatch &&
+          timeMatch &&
+          hoursMatch;
+    }).toList(),
+  );
+}
+
+
 
   bool _matchHours(int? totalHours) {
     if (totalHours == null) return false;

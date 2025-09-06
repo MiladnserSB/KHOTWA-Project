@@ -131,8 +131,8 @@ List<Map<String, dynamic>> getCategoryPage(int index) {
 
     case 1: // Volunteer Info
       return [
-        {'label': 'Interests'.tr, 'key': 'interests', 'value': profile.interests.join(", ")},
-        {'label': 'Availability'.tr, 'key': 'availability', 'value': profile.availability.join(", ")},
+        {'label': 'Interests'.tr, 'key': 'interests', 'value': profile.interests!.join(", ")},
+        {'label': 'Availability'.tr, 'key': 'availability', 'value': profile.availability!.join(", ")},
         {
           'label': 'Preferred Time'.tr,
           'key': 'preferred_time',
@@ -154,7 +154,7 @@ List<Map<String, dynamic>> getCategoryPage(int index) {
         {
           'label': 'Skills'.tr,
           'key': 'skills',
-          'value': profile.skills.join(", "),
+          'value': profile.skills!.join(", "),
           'type': 'multiselect',
           'options': [
             'Teamwork',

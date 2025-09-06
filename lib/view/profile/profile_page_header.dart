@@ -61,7 +61,7 @@ class ProfilePageHeader extends StatelessWidget {
     final theme = Theme.of(context);
     final textScale = MediaQuery.of(context).textScaleFactor;
 
-    String imageUrl = profile.profileImageUrl;
+    String imageUrl = profile.profileImageUrl ?? 'assets/images/logo1.png';
 
     return Container(
       color: theme.brightness == Brightness.dark ? Colors.black : thirdColor,
@@ -81,7 +81,7 @@ class ProfilePageHeader extends StatelessWidget {
               return CircleAvatar(
                 radius: 40,
 
-                backgroundImage: NetworkImage(baseUrl+ imageUrl),
+                backgroundImage: imageUrl !='assets/images/logo1.png' ? NetworkImage(baseUrl+ imageUrl):AssetImage(imageUrl),
                 onBackgroundImageError: (_, __) {},
               );
             }),
@@ -92,7 +92,7 @@ class ProfilePageHeader extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  profile.fullName,
+                  profile.fullName!,
                   style: TextStyle(
                     fontSize: 16 * textScale,
                     fontWeight: FontWeight.bold,
@@ -103,7 +103,7 @@ class ProfilePageHeader extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  profile.email,
+                  profile.email??'-',
                   style: TextStyle(
                     fontSize: 13 * textScale,
                     color: theme.brightness == Brightness.dark
