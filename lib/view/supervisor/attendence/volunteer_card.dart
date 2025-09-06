@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_utils/get_utils.dart';
 import 'package:khotwa/shared/constants/colors.dart';
+import 'package:khotwa/view/supervisor/feedback/feedback_page.dart';
 
 class VolunteerCard extends StatelessWidget {
   final String name;
@@ -66,24 +67,34 @@ class VolunteerCard extends StatelessWidget {
               activeColor: primaryColor,
               checkColor: white,
             ),
-           isCheckIn? OutlinedButton(
-              onPressed: onFeedbackPressed,
-              style: OutlinedButton.styleFrom(
-                backgroundColor: secondaryColor,
-                side: BorderSide(color: secondaryColor, width: 1.2),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
+           isCheckIn
+    ? OutlinedButton(
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (_) => VolunteerFeedbackPage(
               ),
-              child: Text(
-                "Feedback".tr,
-                style: TextStyle(
-                  fontSize: 12 * fontScale,
-                  fontWeight: FontWeight.w600,
-                  color: white,
-                ),
-              ),
-            ): SizedBox(width: 0.1,),
+            ),
+          );
+        },
+        style: OutlinedButton.styleFrom(
+          backgroundColor: secondaryColor,
+          side: BorderSide(color: secondaryColor, width: 1.2),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+        ),
+        child: Text(
+          "Feedback".tr,
+          style: TextStyle(
+            fontSize: 12 * fontScale,
+            fontWeight: FontWeight.w600,
+            color: white,
+          ),
+        ),
+      )
+    : SizedBox(width: 0.1),
+
           ],
         ),
       ),

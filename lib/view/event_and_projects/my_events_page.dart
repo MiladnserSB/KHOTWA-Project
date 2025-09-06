@@ -5,6 +5,7 @@ import 'package:khotwa/controller/volunteer_controller.dart';
 import 'package:khotwa/model/events_model.dart';
 import 'package:khotwa/shared/constants/colors.dart';
 import 'package:khotwa/view/Search/Search_results_page.dart';
+import 'package:khotwa/view/event_and_projects/calender_page.dart';
 import 'package:khotwa/view/event_and_projects/donate_apologize_button.dart';
 import 'package:khotwa/view/event_and_projects/event_details/event_details_page.dart';
 import 'package:khotwa/widgets/custom_progress_indicator.dart';
@@ -69,7 +70,40 @@ class _MyEventsPageState extends State<MyEventsPage> {
               SizedBox(height: size.height * 0.02),
               // 🔍 search bar
               _buildSearchBar(size),
-              SizedBox(height: size.height * 0.02),
+    SizedBox(height: size.height * 0.015),
+
+    Align(
+      alignment: Alignment.center,
+      child: ElevatedButton.icon(
+  onPressed: () {
+    Get.to(MyEventsCalendarPage());
+  },
+  icon: const Icon(Icons.calendar_today, size: 18,color: Colors.white,),
+  label:  Text(
+    "View Events Date in Calendar".tr,
+    style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),
+  ),
+  style: ElevatedButton.styleFrom(
+    backgroundColor: const Color(0xFFDDA15E),
+    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+    elevation: 6,
+    shadowColor: Colors.orangeAccent,
+  ).copyWith(
+    overlayColor: MaterialStateProperty.resolveWith<Color?>(
+      (Set<MaterialState> states) {
+        if (states.contains(MaterialState.pressed)) {
+          return Colors.orange.withOpacity(0.2);
+        }
+        return null;
+      },
+    ),
+  ),
+)
+
+    ),
+
+    SizedBox(height: size.height * 0.015),
 
               Expanded(
                 child: Obx(() {
@@ -153,6 +187,10 @@ class _MyEventsPageState extends State<MyEventsPage> {
       ),
     );
   }
+
+
+
+  
 }
 
 class EventCard extends StatelessWidget {
@@ -248,6 +286,7 @@ class EventCard extends StatelessWidget {
                     label: "Date".tr,
                     value:
                         "${event.date.toLocal().toString().split(' ')[0]} (${event.durationHours}h)",
+                      
                   ),
                   InfoRow(
                     icon: LucideIcons.clock,
@@ -384,26 +423,22 @@ class InfoRow extends StatelessWidget {
         children: [
           Icon(icon, size: size.width * 0.05, color: Colors.white),
           SizedBox(width: size.width * 0.03),
-          Text(
-            "$label: ",
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: size.width * 0.04,
-              color: Colors.white,
-            ),
-          ),
           Expanded(
             child: Text(
-              value,
+              "$label: $value",
               style: TextStyle(
-                fontSize: size.width * 0.038,
+                fontWeight: FontWeight.bold,
+                fontSize: size.width * 0.04,
                 color: Colors.white,
               ),
               overflow: TextOverflow.ellipsis,
             ),
           ),
+
+         
         ],
       ),
     );
   }
 }
+

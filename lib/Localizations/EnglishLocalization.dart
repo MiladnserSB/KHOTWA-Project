@@ -332,6 +332,14 @@ class EnglishLocalization extends Translations {
       "Choose from Gallery": "Choose from Gallery",
       "Failed to load profile": "Failed to load profile",
       "My Donation":"My Donation",
+      "Write a comment":"Write a comment",
+      "Add Your Feedback":"Add Your Feedback",
+      "Attendance":"Attendance",
+      "View Events Date in Calendar":"View Events Date in Calendar",
+      "My Events Calendar":"My Events Calendar",
+
+
+
     },
   };
 }

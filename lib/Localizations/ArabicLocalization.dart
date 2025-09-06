@@ -331,7 +331,12 @@ class ArabicLocalization extends Translations {
       "Choose from Gallery": "اختر من المعرض",
       "Take a Photo": "اخذ صورة فورية",
       "Failed to load profile": "خطأ في تحميل الصورة",
-      "My Donation":"تبرعاتي "
+      "My Donation":"تبرعاتي ",
+      "Write a comment":"اكتب تعليق",
+      "Add Your Feedback":"اكتب ملاحظاتك",
+      "Attendance":"الحضور",
+      "My Events Calendar":"تقويم فعالياتي",
+      "View Events Date in Calendar":"عرض فعالياتي في تقويم",
     },
   };
 }
