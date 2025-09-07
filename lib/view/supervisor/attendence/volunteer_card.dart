@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_utils/get_utils.dart';
+import 'package:khotwa/shared/constants/base_url.dart';
 import 'package:khotwa/shared/constants/colors.dart';
 import 'package:khotwa/view/supervisor/feedback/feedback_page.dart';
 
@@ -43,7 +44,7 @@ class VolunteerCard extends StatelessWidget {
         contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
         leading: CircleAvatar(
           radius: 26,
-          backgroundImage: NetworkImage(imageUrl),
+          backgroundImage: NetworkImage(baseUrl+imageUrl),
         ),
         title: Text(
           name,

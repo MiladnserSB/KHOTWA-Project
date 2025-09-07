@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:khotwa/controller/supervisor_controller.dart';
 import 'package:khotwa/shared/constants/colors.dart';
+import 'package:khotwa/view/event_and_projects/scan_qr_page.dart';
 import 'package:khotwa/view/supervisor/attendence/attendence_button.dart';
 import 'package:khotwa/view/supervisor/attendence/show_qr_in_page.dart';
 import 'package:khotwa/view/supervisor/attendence/show_qr_out_page.dart';
@@ -24,13 +25,27 @@ class AttendanceList extends StatefulWidget {
 }
 
 class _AttendanceListState extends State<AttendanceList> {
-  final SupervisorController controller = Get.put(SupervisorController());
+  late SupervisorController controller;
 
   @override
   void initState() {
     super.initState();
-    controller.fetchEventRegistrations(widget.eventId);
+
+    if (!Get.isRegistered<SupervisorController>()) {
+      Get.lazyPut(() => SupervisorController());
+    }
+
+    controller = Get.find<SupervisorController>();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      controller.fetchEventRegistrations(widget.eventId, checkIn: widget.checkIn);
+    });
   }
+
+ 
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -46,10 +61,7 @@ class _AttendanceListState extends State<AttendanceList> {
             backgroundColor: secondaryColor,
             height: buttonHeight * 0.8,
             onPressed: () async {
-              await controller.generateEventQR(
-                widget.eventId,
-                widget.checkIn, 
-              );
+              await controller.generateEventQR(widget.eventId, widget.checkIn);
             },
           ),
           const SizedBox(height: 16),
@@ -82,14 +94,10 @@ class _AttendanceListState extends State<AttendanceList> {
                     checked: eventRegistration.isSelected ?? false,
                     isCheckIn: widget.checkIn,
                     onCheckChanged: (val) {
-                      controller.eventRegistrations[index] =
-                          eventRegistration.copyWith(
-                        isSelected: val ?? false,
-                      );
+                      controller.eventRegistrations[index] = eventRegistration
+                          .copyWith(isSelected: val ?? false);
                     },
-                    onFeedbackPressed: () {
-                      // TODO: Open feedback form
-                    },
+                    onFeedbackPressed: () {},
                   );
                 },
               );
@@ -125,3 +133,5 @@ class _AttendanceListState extends State<AttendanceList> {
     );
   }
 }
+
+

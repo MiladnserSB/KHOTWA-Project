@@ -22,6 +22,31 @@ class HomePageVolunteer extends StatefulWidget {
 }
 
 class _HomePageVolunteerState extends State<HomePageVolunteer> {
+
+
+
+
+    bool isLoading1 = false;
+  bool isLoading2 = false;
+  bool isLoading3 = false;
+
+  Future<void> _onViewAllPressed(int index) async {
+    setState(() {
+      if (index == 1) isLoading1 = true;
+      if (index == 2) isLoading2 = true;
+      if (index == 3) isLoading3 = true;
+    });
+
+    await Future.delayed(const Duration(seconds: 120));
+
+    setState(() {
+      if (index == 1) isLoading1 = false;
+      if (index == 2) isLoading2 = false;
+      if (index == 3) isLoading3 = false;
+    });
+  }
+
+
   final FocusNode _focusNode = FocusNode();
   final TextEditingController _controller = TextEditingController();
   final VolunteerController _volunteerController = Get.put(
@@ -45,19 +70,19 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
 
   final List<Map<String, String>> personList = [
     {
-      "name": "Robert Fox",
+      "name": "Jeeny",
       "role": "Admin",
-      "image": 'assets/images/person.jpg',
+      "image": 'assets/images/jeeny.jpg',
     },
     {
-      "name": "Theresa Webb",
+      "name": "Milad",
       "role": "Advisor",
-      "image": 'assets/images/person.jpg',
+      "image": 'assets/images/Milad.jpg',
     },
     {
-      "name": "Kristin Watson",
+      "name": "Abood",
       "role": "Serinan",
-      "image": 'assets/images/person.jpg',
+      "image": 'assets/images/photo_2025-09-07_23-25-37.jpg',
     },
   ];
 
@@ -80,7 +105,6 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
       });
     });
 
-    // Load data when the page initializes
     _loadData();
   }
 
@@ -138,9 +162,9 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
                     },
                     child: ClipOval(
                       child: Image.asset(
-                        'assets/images/new.jpg',
-                        width: 50,
-                        height: 50,
+                        'assets/images/profile1.jpg',
+                        width:40,
+                        height: 40,
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -150,7 +174,7 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
                       child: Text(
                         'Khotwa'.tr,
                         style: TextStyle(
-                          fontSize: 35,
+                          fontSize: 40,
                           fontFamily: 'DG Heaven',
                           color: secondaryColor,
                         ),
@@ -188,7 +212,9 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
                       ? Get.find<AppSearchController>()
                       : Get.put(AppSearchController());
 
-                  searchController.searchMyTasksAndAllprojectsAndAllEvents(value);
+                  searchController.searchMyTasksAndAllprojectsAndAllEvents(
+                    value,
+                  );
                 },
                 onSubmitted: (value) {
                   Get.to(() => SearchResultsPage());
@@ -200,11 +226,11 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
                   fillColor: Colors.white,
                   isDense: true,
                   contentPadding: EdgeInsets.symmetric(
-                    vertical: 13,
-                    horizontal: 12,
+                    vertical: 10,
+                    horizontal: 10,
                   ),
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(15),
                     borderSide: BorderSide.none,
                   ),
                   prefixIcon: const Icon(
@@ -276,25 +302,24 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
                     style: subtitleStyle.copyWith(color: textColor),
                   ),
                   GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => EventsAndProjectsPage(),
-                        ),
-                      );
-                    },
-                    child: Text(
-                      "view all".tr,
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: theme.brightness == Brightness.dark
-                            ? Colors.white
-                            : primaryColor,
-                        fontFamily: 'DG Heaven',
-                      ),
-                    ),
+            onTap: () => _onViewAllPressed(1),
+          child: isLoading1
+              ? const SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                )
+              : Text(
+                  "view all".tr,
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: theme.brightness == Brightness.dark
+                        ? Colors.white
+                        : primaryColor,
+                    fontFamily: 'DG Heaven',
                   ),
+                ),
+        ),
                 ],
               ),
               const SizedBox(height: 10),
@@ -302,7 +327,7 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
               Obx(() {
                 if (_volunteerController.isLoading.value) {
                   return SizedBox(
-                    height: 330,
+                    height: 300,
                     child: Center(child: CustomProgressIndicator()),
                   );
                 }
@@ -355,26 +380,25 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
                     "Recommended".tr,
                     style: subtitleStyle.copyWith(color: textColor),
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => EventsAndProjectsPage(),
-                        ),
-                      );
-                    },
-                    child: Text(
-                      "view all".tr,
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: theme.brightness == Brightness.dark
-                            ? Colors.white
-                            : primaryColor,
-                        fontFamily: 'DG Heaven',
-                      ),
-                    ),
+                    GestureDetector(
+            onTap: () => _onViewAllPressed(2),
+          child: isLoading2
+              ? const SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                )
+              : Text(
+                  "view all".tr,
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: theme.brightness == Brightness.dark
+                        ? Colors.white
+                        : primaryColor,
+                    fontFamily: 'DG Heaven',
                   ),
+                ),
+        ),
                 ],
               ),
               const SizedBox(height: 10),
@@ -441,26 +465,25 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
                     "top projects".tr,
                     style: subtitleStyle.copyWith(color: textColor),
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => EventsAndProjectsPage(),
-                        ),
-                      );
-                    },
-                    child: Text(
-                      "view all".tr,
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: theme.brightness == Brightness.dark
-                            ? Colors.white
-                            : primaryColor,
-                        fontFamily: 'DG Heaven',
-                      ),
-                    ),
+                   GestureDetector(
+            onTap: () => _onViewAllPressed(3),
+          child: isLoading3
+              ? const SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                )
+              : Text(
+                  "view all".tr,
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: theme.brightness == Brightness.dark
+                        ? Colors.white
+                        : primaryColor,
+                    fontFamily: 'DG Heaven',
                   ),
+                ),
+        ),
                 ],
               ),
               const SizedBox(height: 10),

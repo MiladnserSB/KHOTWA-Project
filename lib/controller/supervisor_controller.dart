@@ -1,5 +1,7 @@
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:khotwa/model/event_registeration_model.dart';
 import 'package:khotwa/model/profile_model.dart';
 import 'package:khotwa/service/supervisor_service.dart';
 import 'package:khotwa/view/supervisor/attendence/show_qr_in_page.dart';
@@ -28,6 +30,8 @@ class SupervisorController extends GetxController {
   final selectedTimes = <String>[].obs;
   final selectedHours = <String>[].obs;
 
+ var checkInRegistrations = <EventRegistration>[].obs;
+  var checkOutRegistrations = <EventRegistration>[].obs;
   @override
   void onInit() {
     super.onInit();
@@ -129,7 +133,8 @@ void applyFilters() {
     try {
       isLoading(true);
 
-      final qrBytes = await _supervisorService.generateEventQR(eventId);
+      final Uint8List qrBytes =
+          await _supervisorService.generateEventQR(eventId, isCheckIn);
 
       if (isCheckIn) {
         Get.to(() => const ShowQrInPage(), arguments: qrBytes);
@@ -137,15 +142,32 @@ void applyFilters() {
         Get.to(() => const ShowQrOutPage(), arguments: qrBytes);
       }
     } catch (e) {
-      Get.snackbar('Error', 'Failed to generate QR code: $e');
+      Get.snackbar(
+        'Error',
+        'Failed to generate QR code: $e',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red.withOpacity(0.8),
+        colorText: Colors.white,
+      );
     } finally {
       isLoading(false);
     }
   }
 
+
+
+
+
+
+
+
+
+
+
   // ----------------------------
   // Attendance
   // ----------------------------
+  
   Future<void> fetchEventAttendance(int eventId) async {
     try {
       isLoading(true);
@@ -183,11 +205,22 @@ void applyFilters() {
       isLoading(false);
     }
   }
+  
+
+  Future<void> submitAttendance(
+      int eventId, bool checkIn, List<int> volunteerIds) async {
+    if (checkIn) {
+      await manualCheckIn(eventId, volunteerIds);
+    } else {
+      await manualCheckOut(eventId, volunteerIds);
+    }
+  }
+  
 
   // ----------------------------
   // Event Registrations & Evaluations
   // ----------------------------
-  Future<void> fetchEventRegistrations(int eventId) async {
+  Future<void> fetchEventRegistrations(int eventId, {required bool checkIn}) async {
     try {
       isLoading(true);
       final registrations = await _supervisorService.getEventRegistrations(eventId);

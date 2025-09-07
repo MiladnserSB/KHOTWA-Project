@@ -85,7 +85,7 @@ class HomeProjectsCard extends StatelessWidget {
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 50),
           LinearProgressIndicator(
             value: progress,
             color: Colors.green,
@@ -93,7 +93,7 @@ class HomeProjectsCard extends StatelessWidget {
             minHeight: 8,
             borderRadius: BorderRadius.circular(6),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 5),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
            children: [
@@ -107,24 +107,24 @@ class HomeProjectsCard extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: () {
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(builder: (context) => ProjectDetailsPage()),
-              // );
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFFDDA15E),
-              padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 8),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            ),
-            child: Text(
-              'Details'.tr,
-              style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-            ),
-          ),
+          const SizedBox(height: 10),
+          // ElevatedButton(
+          //   onPressed: () {
+          //     // Navigator.push(
+          //     //   context,
+          //     //   MaterialPageRoute(builder: (context) => ProjectDetailsPage()),
+          //     // );
+          //   },
+          //   style: ElevatedButton.styleFrom(
+          //     backgroundColor: const Color(0xFFDDA15E),
+          //     padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 8),
+          //     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          //   ),
+          //   child: Text(
+          //     'Details'.tr,
+          //     style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          //   ),
+          // ),
         ],
       ),
     );

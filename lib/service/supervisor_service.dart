@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
@@ -51,25 +52,48 @@ class SupervisorService extends GetxService {
     return '13|8ZGjbRignaaOuyonnTAR3tbPQZfhDZ2anxbxXfFge2d903cb';
   }
 
-  Future<Uint8List> generateEventQR(int eventId) async {
-  try {
-    final token = await _getToken();
-    final response = await dio.get(
-      '/api/supervisor/events/$eventId/qr',
-      options: Options(
-        responseType: ResponseType.bytes,
-        headers: {
-          'Accept': 'application/json',
-          'Authorization': 'Bearer $token',
-        },
-      ),
-    );
+ 
 
-    return Uint8List.fromList(response.data);
-  } on DioException catch (e) {
-    throw Exception('Failed to generate QR: ${e.response?.statusCode}');
+
+  Future<Uint8List> generateEventQR(int eventId, bool isCheckIn) async {
+    try {
+      final token = await _getToken();
+
+      final response = await dio.get(
+        '/api/supervisor/events/$eventId/qr',
+        queryParameters: {'checkIn': isCheckIn.toString()}, // convert bool to string
+        options: Options(
+          responseType: ResponseType.bytes, // try bytes first
+          headers: {
+            'Authorization': 'Bearer $token',
+            'Accept': 'application/json', // JSON or bytes
+          },
+        ),
+      );
+
+      if (response.data == null) throw Exception('QR code data is null');
+
+      final dataList = response.data as List<int>;
+
+      // Try to decode JSON first
+      final str = utf8.decode(dataList, allowMalformed: true);
+      if (str.trim().startsWith('{')) {
+        final map = jsonDecode(str) as Map<String, dynamic>;
+        final qrBase64 = map['qrCode'] as String?;
+        if (qrBase64 == null) throw Exception('QR code key missing in response');
+        return base64Decode(qrBase64);
+      }
+
+      // Otherwise treat as raw bytes
+      return Uint8List.fromList(dataList);
+    } on DioException catch (e) {
+      final status = e.response?.statusCode;
+      final message = e.response?.data;
+      throw Exception('Failed to generate QR: status $status, message: $message');
+    }
   }
-}
+
+
 
   Future<List<dynamic>> getEventAttendance(int eventId) async {
     try {
@@ -158,6 +182,13 @@ Future<Map<String, dynamic>> manualCheckOut(
     );
   }
 }
+
+
+
+
+
+
+
 
   // Evaluations
   Future<Map<String, dynamic>> createEvaluation(
@@ -283,7 +314,7 @@ print("object");
     }
   }
 
-  Future<List<dynamic>> getEventFeedbackByVolunteer(int eventId) async {
+Future<List<dynamic>> getEventFeedbackByVolunteer(int eventId) async {
     try {
       final response = await dio.get('/api/admin/events/$eventId/feedback');
       return response.data['data'] ?? [];

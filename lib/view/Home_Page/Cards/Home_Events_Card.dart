@@ -14,7 +14,8 @@ class HomeEventsCard extends StatelessWidget {
     required this.title,
     required this.image,
     required this.volunteersCount,
-    required this.status, required this.requiredVolunteers,
+    required this.status,
+    required this.requiredVolunteers,
   });
 
   Color _getStatusColor(String status) {
@@ -32,21 +33,17 @@ class HomeEventsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-      final theme = Theme.of(context); 
+    final theme = Theme.of(context);
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-      width:  220,   
+      width: 220,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(14),
-        color:         theme.brightness == Brightness.dark ? thirdColor : Colors.white,
+        color: theme.brightness == Brightness.dark ? thirdColor : Colors.white,
 
         boxShadow: const [
-          BoxShadow(
-            color: Colors.black12,
-            blurRadius: 4,
-            offset: Offset(0, 2),
-          ),
+          BoxShadow(color: Colors.black12, blurRadius: 4, offset: Offset(0, 2)),
         ],
       ),
       child: Column(
@@ -54,7 +51,9 @@ class HomeEventsCard extends StatelessWidget {
           Stack(
             children: [
               ClipRRect(
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(14)),
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(14),
+                ),
                 child: Image.asset(
                   image,
                   height: 140,
@@ -66,7 +65,10 @@ class HomeEventsCard extends StatelessWidget {
                 top: 8,
                 right: 8,
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 4,
+                  ),
                   decoration: BoxDecoration(
                     color: _getStatusColor(status),
                     borderRadius: BorderRadius.circular(12),
@@ -86,7 +88,10 @@ class HomeEventsCard extends StatelessWidget {
                 left: 0,
                 right: 0,
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 6,
+                    vertical: 4,
+                  ),
                   decoration: const BoxDecoration(
                     gradient: LinearGradient(
                       begin: Alignment.topCenter,
@@ -94,34 +99,33 @@ class HomeEventsCard extends StatelessWidget {
                       colors: [Colors.transparent, Colors.black54],
                     ),
                   ),
-                
                 ),
               ),
-                
             ],
-            
           ),
-          SizedBox(height: 15),
-           Text(
-                    title,
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold,
+          SizedBox(height: 30),
+          Text(
+            title,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
               fontFamily: '._Acumin Variable Concept',
-                      fontSize: 16,
-                      color: Colors.black,
-                    ),
-                  ),
+              fontSize: 16,
+              color: Colors.black,
+            ),
+          ),
+                    SizedBox(height:20),
+
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 18),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 25),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Icon(Icons.group, size: 18, color: primaryColor),
                 const SizedBox(width: 6),
                 Text(
-"$volunteersCount/$requiredVolunteers ${'Volunteers'.tr}",
+                  "$volunteersCount/$requiredVolunteers ${'Volunteers'.tr}",
                   style: const TextStyle(
-                    fontSize: 12,
+                    fontSize: 13,
                     fontWeight: FontWeight.w500,
                     color: Colors.black87,
                   ),
@@ -130,25 +134,31 @@ class HomeEventsCard extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 6),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor:Color(0xFFDDA15E) ,
-              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 6),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              textStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-            ),
-            onPressed: () {
-    //           Navigator.push(
-    //   context,
-    //   MaterialPageRoute(builder: (context) => EventDetailsPage()),
-    // );
-            },
-           
-              child:  Text('View Details'.tr,style:TextStyle(color:  Colors.white))),
-          
-          const SizedBox(height: 10),
+          // ElevatedButton(
+          //   style: ElevatedButton.styleFrom(
+          //     backgroundColor: Color(0xFFDDA15E),
+          //     padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 6),
+          //     shape: RoundedRectangleBorder(
+          //       borderRadius: BorderRadius.circular(10),
+          //     ),
+          //     textStyle: const TextStyle(
+          //       fontSize: 12,
+          //       fontWeight: FontWeight.bold,
+          //     ),
+          //   ),
+          //   onPressed: () {
+          //     Navigator.push(
+          //       context,
+          //       MaterialPageRoute(builder: (context) => EventDetailsPage()),
+          //     );
+          //   },
+
+          //   child: Text(
+          //     'View Details'.tr,
+          //     style: TextStyle(color: Colors.white),
+          //   ),
+          // ),
+
         ],
       ),
     );
