@@ -15,13 +15,13 @@ class DonateForm extends StatefulWidget {
 class _DonateFormState extends State<DonateForm> {
   final _formKey = GlobalKey<FormState>();
 
-  final TextEditingController donorController = TextEditingController();
+  final TextEditingController donorNameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController amountController = TextEditingController();
 
   String? paymentMethod;
 
-  final DonorController donorControllerX = Get.put(DonorController());
+  final DonorController donorController = Get.put(DonorController());
 
   @override
   Widget build(BuildContext context) {
@@ -33,29 +33,37 @@ class _DonateFormState extends State<DonateForm> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // Header box
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
                     color: thirdColor.withOpacity(0.5),
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child:Column(
-  crossAxisAlignment: CrossAxisAlignment.start,
-  children: [
-    Text("Make a Difference Today".tr, style: TextStyle(color: textBlack)),
-    SizedBox(height: 8),
-    Text("Your benevolent gift fuels positive change in communities worldwide.".tr, style: TextStyle(color: textBlack)),
-    SizedBox(height: 8),
-    Text("Every contribution, big or small, creates a ripple effect of hope and transformation.".tr, style: TextStyle(color: textBlack)),
-  ],
-)
-,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Make a Difference Today".tr,
+                          style: TextStyle(color: textBlack)),
+                      const SizedBox(height: 8),
+                      Text(
+                          "Your benevolent gift fuels positive change in communities worldwide."
+                              .tr,
+                          style: TextStyle(color: textBlack)),
+                      const SizedBox(height: 8),
+                      Text(
+                          "Every contribution, big or small, creates a ripple effect of hope and transformation."
+                              .tr,
+                          style: TextStyle(color: textBlack)),
+                    ],
+                  ),
                 ),
                 const SizedBox(height: 24),
 
                 // Donor Name
                 TextFormField(
-                  controller: donorController,
+                   style: TextStyle(color: textBlack),
+                  controller: donorNameController,
                   validator: (val) =>
                       val == null || val.isEmpty ? "Enter your name".tr : null,
                   decoration: InputDecoration(
@@ -70,6 +78,7 @@ class _DonateFormState extends State<DonateForm> {
 
                 // Email
                 TextFormField(
+                   style: TextStyle(color: textBlack),
                   controller: emailController,
                   keyboardType: TextInputType.emailAddress,
                   validator: (val) {
@@ -94,6 +103,7 @@ class _DonateFormState extends State<DonateForm> {
 
                 // Amount
                 TextFormField(
+                  style: TextStyle(color: textBlack),
                   controller: amountController,
                   keyboardType: TextInputType.number,
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
@@ -121,7 +131,7 @@ class _DonateFormState extends State<DonateForm> {
                 DropdownButtonFormField<String>(
                   value: paymentMethod,
                   items:  [
-                    DropdownMenuItem(value: "card", child: Text("Card".tr)),
+                    // DropdownMenuItem(value: "card", child: Text("Card".tr)),
                     DropdownMenuItem(value: "cash", child: Text("Cash".tr)),
                   ],
                   onChanged: (val) => setState(() => paymentMethod = val),
@@ -130,6 +140,9 @@ class _DonateFormState extends State<DonateForm> {
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
+                  ),
+                  style: TextStyle(
+                    color: textBlack
                   ),
                   validator: (val) =>
                       val == null ? "Select a payment method".tr : null,
@@ -152,7 +165,7 @@ class _DonateFormState extends State<DonateForm> {
                         _showConfirmationDialog(context);
                       }
                     },
-                    child:  Text(
+                    child: Text(
                       "Donate Now".tr,
                       style: TextStyle(color: white, fontSize: 16),
                     ),
@@ -172,9 +185,9 @@ class _DonateFormState extends State<DonateForm> {
                       padding: const EdgeInsets.symmetric(vertical: 16),
                     ),
                     onPressed: () {
-                      Get.to(() => MyDonationsPage());
+                      Get.to(() => const MyDonationsPage());
                     },
-                    child:  Text(
+                    child: Text(
                       "My Donations".tr,
                       style: TextStyle(color: primaryColor, fontSize: 16),
                     ),
@@ -185,138 +198,120 @@ class _DonateFormState extends State<DonateForm> {
           ),
         );
 
-        if (constraints.maxWidth < 600) {
-          return Padding(
-            padding: const EdgeInsets.all(16),
-            child: formContent,
-          );
-        } else {
-          return Center(
-            child: SizedBox(
-              width: 500,
-              child: Card(
-                color: white,
-                elevation: 3,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
+        return constraints.maxWidth < 600
+            ? Padding(padding: const EdgeInsets.all(16), child: formContent)
+            : Center(
+                child: SizedBox(
+                  width: 500,
+                  child: Card(
+                    color: white,
+                    elevation: 3,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(24),
+                      child: formContent,
+                    ),
+                  ),
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.all(24),
-                  child: formContent,
-                ),
-              ),
-            ),
-          );
-        }
+              );
       },
     );
   }
 
   void _showConfirmationDialog(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    final theme = Theme.of(context);
-
     showDialog(
       context: context,
       builder: (context) {
-        return Dialog(
-          backgroundColor:
-              theme.brightness == Brightness.dark ? textBlack : Colors.white,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
-          child: Padding(
-            padding: EdgeInsets.all(size.width * 0.06),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(Icons.warning_amber_rounded,
-                    size: size.width * 0.15, color: secondaryColor),
-                SizedBox(height: size.height * 0.02),
-                Text(
-                  'Donation Confirmation'.tr,
-                  style: TextStyle(
-                    fontSize: size.width * 0.05,
-                    fontWeight: FontWeight.bold,
-                    color: primaryColor,
-                  ),
-                ),
-                SizedBox(height: size.height * 0.015),
-                Text(
-                  'Are you sure you want to donate for the event or project?'.tr,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: size.width * 0.04,
-                    color: theme.brightness == Brightness.dark
-                        ? Colors.white
-                        : textBlack,
-                  ),
-                ),
-                SizedBox(height: size.height * 0.03),
-                Row(
-                  children: [
-                    // Cancel Button
-                    Expanded(
-                      child: ElevatedButton(
-                        onPressed: () => Navigator.of(context).pop(),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: secondaryColor,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                        child:  Text(
-                          'Cancel'.tr,
-                          style: TextStyle(
-                            color: white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(width: size.width * 0.03),
-                    Expanded(
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          Navigator.of(context).pop();
-
-                          final donation = await donorControllerX.createDonation({
-                            "amount": int.parse(amountController.text),
-                            "project_id": 1, // TODO: make dynamic if needed
-                            "event_id": 15, // TODO: make dynamic if needed
-                            "donor_name": donorController.text,
-                            "donor_email": emailController.text,
-                            "type": paymentMethod,
-                          });
-
-                          if (donation != null) {
-                            await donorControllerX.confirmDonation({
-                              "donation_id": donation.data.donationId ?? 0,
-                              "transaction_id": "pi_123456789", 
-                              "payment_status": "paid",
-                              "method": paymentMethod,
-                              "amount": int.parse(amountController.text),
-                            });
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: secondaryColor,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                        child:  Text(
-                          'Donate'.tr,
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
+        return Obx(() {
+          return Dialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
             ),
-          ),
-        );
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(Icons.warning_amber_rounded,
+                      size: 50, color: secondaryColor),
+                  const SizedBox(height: 16),
+                  Text('Donation Confirmation'.tr,
+                      style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: primaryColor)),
+                  const SizedBox(height: 12),
+                  Text(
+                    'Are you sure you want to donate for the event or project?'
+                        .tr,
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 24),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed: () => Navigator.of(context).pop(),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: secondaryColor,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          child: Text('Cancel'.tr,
+                              style: const TextStyle(color: white)),
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed: () async {
+                            Navigator.of(context).pop();
+
+                            final donation =
+                                await donorController.createDonation({
+                              "amount": int.parse(amountController.text),
+                              "project_id": 1, // TODO: dynamic later
+                              "event_id": 15, // TODO: dynamic later
+                              "donor_name": donorNameController.text,
+                              "donor_email": emailController.text,
+                              "type": paymentMethod,
+                            });
+
+                            if (donation != null) {
+                              await donorController.confirmDonation({
+                                "donation_id": donation.data.donationId ?? 0,
+                                "transaction_id": "pi_123456789",
+                                "payment_status": "paid",
+                                "method": paymentMethod,
+                                "amount": int.parse(amountController.text),
+                              });
+                            }
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: primaryColor,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          child: Text('Donate'.tr,
+                              style: const TextStyle(color: white)),
+                        ),
+                      ),
+                    ],
+                  ),
+                  if (donorController.isLoadingDonations.value)
+                    const Padding(
+                      padding: EdgeInsets.only(top: 12),
+                      child: CircularProgressIndicator(),
+                    ),
+                ],
+              ),
+            ),
+          );
+        });
       },
     );
   }

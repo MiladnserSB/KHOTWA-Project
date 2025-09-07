@@ -51,9 +51,13 @@ DonorController donorController = Get.put(DonorController());
         _projectScroll = _projectScrollController.offset;
       });
     });
-    
+    _loadData();
   }
-
+ Future<void> _loadData() async {
+    await donorController.fetchTopProjects();
+    await donorController.fetchAllEvents();
+    await donorController.fetchAllProjects();
+  }
 
   @override
   void dispose() {

@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_utils/get_utils.dart';
 import 'package:khotwa/controller/auth_controller.dart';
+import 'package:khotwa/controller/donner_controller.dart';
 import 'package:khotwa/controller/visitor_controller.dart';
+import 'package:khotwa/shared/constants/base_url.dart';
 import 'package:khotwa/shared/constants/colors.dart';
 
 class DonorLoginDialog extends StatefulWidget {
@@ -18,12 +20,21 @@ class _DonorLoginDialogState extends State<DonorLoginDialog> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  final visitorController = Get.find<VisitorController>();
+   late dynamic roleController;
   final authController = Get.put(AuthController());
 
   bool _isLoading = false;
   bool _obscurePassword = true; // toggle for password visibility
+ @override
+  void initState() {
+    super.initState();
 
+    if (roleID == 4) {
+      roleController = Get.find<DonorController>();
+    } else {
+      roleController = Get.find<VisitorController>();
+    }
+  }
   @override
   void dispose() {
     _nameController.dispose();

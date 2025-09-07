@@ -7,10 +7,11 @@ import 'package:khotwa/controller/volunteer_controller.dart';
 import 'package:khotwa/model/events_model.dart';
 import 'package:khotwa/model/projects_model.dart';
 import 'package:khotwa/shared/constants/base_url.dart';
- // Import your ProjectModel
+// Import your ProjectModel
 import 'package:khotwa/shared/constants/colors.dart';
 import 'package:khotwa/view/Home_Page/Cards/donor_login_dialog.dart';
 import 'package:khotwa/view/Search/Search_results_page.dart';
+import 'package:khotwa/view/donner/donate/donate_page.dart';
 import 'package:khotwa/view/event_and_projects/donate_apologize_button.dart';
 import 'package:khotwa/view/event_and_projects/event_details/event_details_page.dart';
 import 'package:khotwa/view/event_and_projects/project_details/project_details_page.dart';
@@ -22,6 +23,7 @@ import 'package:intl/intl.dart';
 String formatNumber(num number, String locale) {
   return NumberFormat.decimalPattern(locale).format(number);
 }
+
 String _getStatusText(String status) {
   switch (status.toLowerCase()) {
     case "open":
@@ -58,6 +60,7 @@ Color _getStatusColor(String status) {
       return Colors.grey;
   }
 }
+
 class EventsAndProjectsPage extends StatefulWidget {
   const EventsAndProjectsPage({super.key});
 
@@ -70,24 +73,23 @@ class _EventsAndProjectsPageState extends State<EventsAndProjectsPage>
   late TabController _tabController;
   late dynamic _volunteerController;
 
-
-
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
-     if (roleID == -1) {
+    if (roleID == -1) {
       _volunteerController = Get.find<VisitorController>();
-    } else if(roleID == 4){
+    } else if (roleID == 4) {
       _volunteerController = Get.find<DonorController>();
-    }else{
+    } else {
       _volunteerController = Get.find<VolunteerController>();
     }
     _loadData();
   }
+
   Future<void> _loadData() async {
     await _volunteerController.fetchAllEvents();
-     await _volunteerController.fetchAllProjects();
+    await _volunteerController.fetchAllProjects();
   }
 
   @override
@@ -98,15 +100,16 @@ class _EventsAndProjectsPageState extends State<EventsAndProjectsPage>
 
   @override
   Widget build(BuildContext context) {
-    
-    final theme = Theme.of(context); 
+    final theme = Theme.of(context);
     final size = MediaQuery.of(context).size;
     final double itemHeight = size.height * 0.38;
 
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        backgroundColor:  theme.brightness == Brightness.dark ? Colors.black : thirdColor,
+        backgroundColor: theme.brightness == Brightness.dark
+            ? Colors.black
+            : thirdColor,
         body: SafeArea(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
@@ -125,35 +128,34 @@ class _EventsAndProjectsPageState extends State<EventsAndProjectsPage>
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(12),
                         ),
-                        child:  Row(
+                        child: Row(
                           children: [
                             SizedBox(width: 10),
-                            Icon(Icons.search,color: Colors.black,size: 20,),
+                            Icon(Icons.search, color: Colors.black, size: 20),
                             SizedBox(width: 10),
                             Expanded(
-                              child:TextField(
-                                  style: const TextStyle(color: Colors.black),
-                                  onChanged: (value) {
-                                    final searchController =
-                                        Get.isRegistered<AppSearchController>()
-                                        ? Get.find<AppSearchController>()
-                                        : Get.put(AppSearchController());
+                              child: TextField(
+                                style: const TextStyle(color: Colors.black),
+                                onChanged: (value) {
+                                  final searchController =
+                                      Get.isRegistered<AppSearchController>()
+                                      ? Get.find<AppSearchController>()
+                                      : Get.put(AppSearchController());
 
-                                    searchController.searchAllEventsAndAllProjects(value);
-                                  },
-                                  onSubmitted: (value) {
-                                  
-
-                                    Get.to(() => SearchResultsPage());
-                                  },
-                                  decoration: InputDecoration(
-                                    hintText: 'search'.tr,
-                                    hintStyle: const TextStyle(
-                                      color: Colors.black,
-                                    ),
-                                    border: InputBorder.none,
+                                  searchController
+                                      .searchAllEventsAndAllProjects(value);
+                                },
+                                onSubmitted: (value) {
+                                  Get.to(() => SearchResultsPage());
+                                },
+                                decoration: InputDecoration(
+                                  hintText: 'search'.tr,
+                                  hintStyle: const TextStyle(
+                                    color: Colors.black,
                                   ),
+                                  border: InputBorder.none,
                                 ),
+                              ),
                             ),
                           ],
                         ),
@@ -163,14 +165,16 @@ class _EventsAndProjectsPageState extends State<EventsAndProjectsPage>
                 ),
                 SizedBox(height: size.height * 0.03),
                 Container(
-                  width: double.infinity, 
+                  width: double.infinity,
                   height: 50,
                   padding: const EdgeInsets.all(4),
                   decoration: BoxDecoration(
-                    color: theme.brightness == Brightness.dark ? Color.fromARGB(255, 77, 75, 75) : Colors.white,
+                    color: theme.brightness == Brightness.dark
+                        ? Color.fromARGB(255, 77, 75, 75)
+                        : Colors.white,
                     borderRadius: BorderRadius.circular(30),
                   ),
-                  child:Row(
+                  child: Row(
                     children: [
                       Expanded(
                         child: ButtonsTabBar(
@@ -179,27 +183,27 @@ class _EventsAndProjectsPageState extends State<EventsAndProjectsPage>
                           unselectedBackgroundColor: Colors.grey[200],
                           unselectedLabelStyle: const TextStyle(
                             color: Colors.black,
-                            fontSize: 12, 
+                            fontSize: 12,
                             fontWeight: FontWeight.w600,
                           ),
                           labelStyle: const TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
-                            fontSize: 12, 
+                            fontSize: 12,
                           ),
                           radius: 16,
                           contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 63, 
+                            horizontal: 63,
                             vertical: 8,
                           ),
-                          tabs:  [
+                          tabs: [
                             Tab(text: 'Events'.tr),
                             Tab(text: 'Projects'.tr),
                           ],
                         ),
                       ),
                     ],
-                  )
+                  ),
                 ),
                 SizedBox(height: size.height * 0.02),
                 Expanded(
@@ -227,7 +231,9 @@ class _EventsAndProjectsPageState extends State<EventsAndProjectsPage>
                         if (_volunteerController.isLoading.value) {
                           return Center(child: CustomProgressIndicator());
                         } else if (_volunteerController.allProjects.isEmpty) {
-                          return Center(child: Text('No projects available'.tr));
+                          return Center(
+                            child: Text('No projects available'.tr),
+                          );
                         } else {
                           return AnimatedListView(
                             size: size,
@@ -303,10 +309,12 @@ class _AnimatedListViewState extends State<AnimatedListView>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    
+
     // Determine which list to use based on isEvent flag
-    final itemCount = widget.isEvent ? widget.events.length : widget.projects.length;
-    
+    final itemCount = widget.isEvent
+        ? widget.events.length
+        : widget.projects.length;
+
     return ListView.separated(
       controller: _controller,
       physics: const BouncingScrollPhysics(),
@@ -314,7 +322,7 @@ class _AnimatedListViewState extends State<AnimatedListView>
       separatorBuilder: (_, __) => const SizedBox(height: 20),
       itemBuilder: (context, index) {
         double scale = _calculateScale(index);
-        
+
         if (widget.isEvent) {
           final event = widget.events[index];
           return Transform.scale(
@@ -356,10 +364,10 @@ class _AnimatedListViewState extends State<AnimatedListView>
 
 class EventCard extends StatelessWidget {
   const EventCard({
-    super.key, 
-    required this.size, 
-    this.elevation = 2, 
-    required this.event
+    super.key,
+    required this.size,
+    this.elevation = 2,
+    required this.event,
   });
 
   final Size size;
@@ -369,9 +377,6 @@ class EventCard extends StatelessWidget {
   String _formatDate(DateTime date) {
     return DateFormat('dd.MM.yyyy').format(date);
   }
-
- 
-
 
   @override
   Widget build(BuildContext context) {
@@ -472,7 +477,8 @@ class EventCard extends StatelessWidget {
                   InfoRow(
                     icon: Icons.volunteer_activism,
                     label: "Volunteers".tr,
-                    value: "${event.currentVolunteers} / ${event.requiredVolunteers}",
+                    value:
+                        "${event.currentVolunteers} / ${event.requiredVolunteers}",
                   ),
                 ],
               ),
@@ -561,9 +567,9 @@ class ProjectCard extends StatelessWidget {
 
   Color _getStatusColor(String status) {
     switch (status) {
-    case 'active':
+      case 'active':
         return Colors.green;
-    case 'completed':
+      case 'completed':
         return Colors.blue;
       case 'postponed':
         return Colors.orange;
@@ -575,9 +581,7 @@ class ProjectCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double target = project.targetDonation;
-  final double progress = target > 0
-      ? (project.donatedAmount / target)
-      : 0.0;
+    final double progress = target > 0 ? (project.donatedAmount / target) : 0.0;
 
     return Card(
       elevation: elevation,
@@ -590,26 +594,26 @@ class ProjectCard extends StatelessWidget {
             ClipRRect(
               borderRadius: BorderRadius.circular(12),
               child: project.coverImage != null
-                ? Image.network(
-                    project.coverImage!,
-                    height: size.height * 0.2,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Image.asset(
-                        'assets/images/Intro.png',
-                        height: size.height * 0.2,
-                        width: double.infinity,
-                        fit: BoxFit.cover,
-                      );
-                    },
-                  )
-                : Image.asset(
-                    'assets/images/Intro.png',
-                    height: size.height * 0.2,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                  ),
+                  ? Image.network(
+                      project.coverImage!,
+                      height: size.height * 0.2,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Image.asset(
+                          'assets/images/Intro.png',
+                          height: size.height * 0.2,
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                        );
+                      },
+                    )
+                  : Image.asset(
+                      'assets/images/Intro.png',
+                      height: size.height * 0.2,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                    ),
             ),
             SizedBox(height: 12),
             Row(
@@ -657,16 +661,18 @@ class ProjectCard extends StatelessWidget {
                 vertical: size.height * 0.015,
               ),
               child: Column(
-                children:  [
+                children: [
                   InfoRow(
                     icon: Icons.calendar_today,
                     label: "Date".tr,
-                    value: "${_formatDate(project.startDate)} - ${_formatDate(project.endDate)}",
+                    value:
+                        "${_formatDate(project.startDate)} - ${_formatDate(project.endDate)}",
                   ),
                   InfoRow(
                     icon: Icons.monetization_on,
                     label: "Target money".tr,
-                    value: "${formatNumber(project.targetDonation, Get.locale?.languageCode ?? "en")} \$",
+                    value:
+                        "${formatNumber(project.targetDonation, Get.locale?.languageCode ?? "en")} \$",
                   ),
                   InfoRow(
                     icon: Icons.people,
@@ -676,7 +682,7 @@ class ProjectCard extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(height: 24), 
+            SizedBox(height: 24),
             Column(
               children: [
                 TweenAnimationBuilder<double>(
@@ -687,13 +693,13 @@ class ProjectCard extends StatelessWidget {
                       height: 8,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8),
-                        color: Colors.grey[300], 
+                        color: Colors.grey[300],
                       ),
                       child: ClipRRect(
-                        borderRadius: BorderRadius.circular(8), 
+                        borderRadius: BorderRadius.circular(8),
                         child: LinearProgressIndicator(
                           value: value,
-                          backgroundColor: Colors.transparent, 
+                          backgroundColor: Colors.transparent,
                           valueColor: AlwaysStoppedAnimation<Color>(
                             Color.fromARGB(255, 22, 70, 26),
                           ),
@@ -702,7 +708,7 @@ class ProjectCard extends StatelessWidget {
                     );
                   },
                 ),
-                SizedBox(height: 10), 
+                SizedBox(height: 10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -723,12 +729,21 @@ class ProjectCard extends StatelessWidget {
                   ],
                 ),
                 SizedBox(height: 20),
-                DonateApologizeButton(title: 'Donate'.tr, onTap: () {showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return const DonorLoginDialog();
-                                        },
-                                      );}),
+                DonateApologizeButton(
+                  title: 'Donate'.tr,
+                  onTap: () {
+                    if(roleID==-1)
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return const DonorLoginDialog();
+                      },
+                    );
+                    else{
+                      Get.to(DonatePage());
+                    }
+                  },
+                ),
               ],
             ),
           ],
@@ -736,5 +751,4 @@ class ProjectCard extends StatelessWidget {
       ),
     );
   }
-  
 }
