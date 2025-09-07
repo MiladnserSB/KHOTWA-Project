@@ -22,11 +22,7 @@ class HomePageVolunteer extends StatefulWidget {
 }
 
 class _HomePageVolunteerState extends State<HomePageVolunteer> {
-
-
-
-
-    bool isLoading1 = false;
+  bool isLoading1 = false;
   bool isLoading2 = false;
   bool isLoading3 = false;
 
@@ -45,7 +41,6 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
       if (index == 3) isLoading3 = false;
     });
   }
-
 
   final FocusNode _focusNode = FocusNode();
   final TextEditingController _controller = TextEditingController();
@@ -69,16 +64,8 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
   );
 
   final List<Map<String, String>> personList = [
-    {
-      "name": "Jeeny",
-      "role": "Admin",
-      "image": 'assets/images/jeeny.jpg',
-    },
-    {
-      "name": "Milad",
-      "role": "Advisor",
-      "image": 'assets/images/Milad.jpg',
-    },
+    {"name": "Jeeny", "role": "Admin", "image": 'assets/images/jeeny.jpg'},
+    {"name": "Milad", "role": "Advisor", "image": 'assets/images/Milad.jpg'},
     {
       "name": "Abood",
       "role": "Serinan",
@@ -146,10 +133,9 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
           : thirdColor,
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 0),
           child: Column(
             children: [
-              // Header
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -163,7 +149,7 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
                     child: ClipOval(
                       child: Image.asset(
                         'assets/images/profile1.jpg',
-                        width:40,
+                        width: 40,
                         height: 40,
                         fit: BoxFit.cover,
                       ),
@@ -171,13 +157,11 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
                   ),
                   Expanded(
                     child: Center(
-                      child: Text(
-                        'Khotwa'.tr,
-                        style: TextStyle(
-                          fontSize: 40,
-                          fontFamily: 'DG Heaven',
-                          color: secondaryColor,
-                        ),
+                      child: Image.asset(
+                        "assets/images/logo2.png",
+                        width: 100,
+                        height: 80,
+                        fit: BoxFit.contain,
                       ),
                     ),
                   ),
@@ -242,11 +226,26 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
                 style: TextStyle(fontSize: 18, color: Colors.black),
               ),
 
-              const SizedBox(height: 15),
-
+              const SizedBox(height: 30),
+              Center(
+                child: RichText(
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: "top ".tr,
+                        style: subtitleStyle.copyWith(color: primaryColor),
+                      ),
+                      TextSpan(
+                        text: "Volunteers".tr,
+                        style: subtitleStyle.copyWith(color: secondaryColor),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
               Center(
                 child: Container(
-                  height: 200,
+                  height: 165,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: List.generate(personList.length, (index) {
@@ -292,77 +291,75 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
                 ),
               ),
 
-              const SizedBox(height: 10),
-
+              SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "my events".tr,
-                    style: subtitleStyle.copyWith(color: textColor),
+                    "top projects".tr,
+                    style: subtitleStyle.copyWith(color: secondaryColor),
                   ),
                   GestureDetector(
-            onTap: () => _onViewAllPressed(1),
-          child: isLoading1
-              ? const SizedBox(
-                  width: 20,
-                  height: 20,
-                  child: CircularProgressIndicator(strokeWidth: 2),
-                )
-              : Text(
-                  "view all".tr,
-                  style: TextStyle(
-                    fontSize: 13,
-                    color: theme.brightness == Brightness.dark
-                        ? Colors.white
-                        : primaryColor,
-                    fontFamily: 'DG Heaven',
+                    onTap: () => _onViewAllPressed(3),
+                    child: isLoading3
+                        ? const SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          )
+                        : Text(
+                            "view all".tr,
+                            style: TextStyle(
+                              fontSize: 10,
+                              color: theme.brightness == Brightness.dark
+                                  ? Colors.white
+                                  : Colors.black,
+                              fontFamily: 'DG Heaven',
+                            ),
+                          ),
                   ),
-                ),
-        ),
                 ],
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 15),
 
               Obx(() {
-                if (_volunteerController.isLoading.value) {
+                if (_volunteerController.isLoading.value &&
+                    _volunteerController.topProjects.isEmpty) {
                   return SizedBox(
-                    height: 300,
+                    height: 350,
                     child: Center(child: CustomProgressIndicator()),
                   );
                 }
 
-                if (_volunteerController.myEvents.isEmpty) {
+                if (_volunteerController.topProjects.isEmpty) {
                   return SizedBox(
-                    height: 330,
-                    child: Center(child: Text("No events found")),
+                    height: 350,
+                    child: Center(child: CustomProgressIndicator()),
                   );
                 }
 
                 return SizedBox(
-                  height: 330,
+                  height: 370,
                   child: ListView.separated(
-                    controller: _myEventScrollController,
+                    controller: _projectScrollController,
                     scrollDirection: Axis.horizontal,
-                    itemCount: _volunteerController.myEvents.length,
-                    separatorBuilder: (context, index) =>
-                        const SizedBox(width: 10),
+                    itemCount: _volunteerController.topProjects.length,
+                    separatorBuilder: (_, __) => const SizedBox(width: 10),
                     itemBuilder: (context, index) {
-                      final event = _volunteerController.myEvents[index];
+                      final project = _volunteerController.topProjects[index];
                       double scale = _calculateScale(
-                        _myEventScroll,
+                        _projectScroll,
                         index,
-                        220,
+                        260,
                       );
 
                       return Transform.scale(
                         scale: scale,
-                        child: HomeEventsCard(
-                          title: event.title,
-                          image: event.coverImage ?? 'assets/images/new.jpg',
-                          volunteersCount: event.currentVolunteers,
-                          requiredVolunteers: event.requiredVolunteers,
-                          status: event.status.toString().split('.').last,
+                        child: HomeProjectsCard(
+                          name: project.name,
+                          organization: project.organization,
+                          paid: project.paid.toDouble(),
+                          total: (project.paid + 5000).toDouble(),
                         ),
                       );
                     },
@@ -370,40 +367,38 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
                 );
               }),
 
-              const SizedBox(height: 25),
+              const SizedBox(height: 40),
 
-              // Recommended Events Section
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Recommended".tr,
-                    style: subtitleStyle.copyWith(color: textColor),
+                    "Recommended Events".tr,
+                    style: subtitleStyle.copyWith(color: secondaryColor),
                   ),
-                    GestureDetector(
-            onTap: () => _onViewAllPressed(2),
-          child: isLoading2
-              ? const SizedBox(
-                  width: 20,
-                  height: 20,
-                  child: CircularProgressIndicator(strokeWidth: 2),
-                )
-              : Text(
-                  "view all".tr,
-                  style: TextStyle(
-                    fontSize: 13,
-                    color: theme.brightness == Brightness.dark
-                        ? Colors.white
-                        : primaryColor,
-                    fontFamily: 'DG Heaven',
+                  GestureDetector(
+                    onTap: () => _onViewAllPressed(2),
+                    child: isLoading2
+                        ? const SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          )
+                        : Text(
+                            "view all".tr,
+                            style: TextStyle(
+                              fontSize: 10,
+                              color: theme.brightness == Brightness.dark
+                                  ? Colors.white
+                                  : Colors.black,
+                              fontFamily: 'DG Heaven',
+                            ),
+                          ),
                   ),
-                ),
-        ),
                 ],
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 15),
 
-              // Recommended Events from API
               Obx(() {
                 if (_volunteerController.isLoading.value &&
                     _volunteerController.recommendedEvents.isEmpty) {
@@ -457,75 +452,75 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
 
               const SizedBox(height: 25),
 
-              // Top Projects Section
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "top projects".tr,
-                    style: subtitleStyle.copyWith(color: textColor),
+                    "my events".tr,
+                    style: subtitleStyle.copyWith(color: secondaryColor),
                   ),
-                   GestureDetector(
-            onTap: () => _onViewAllPressed(3),
-          child: isLoading3
-              ? const SizedBox(
-                  width: 20,
-                  height: 20,
-                  child: CircularProgressIndicator(strokeWidth: 2),
-                )
-              : Text(
-                  "view all".tr,
-                  style: TextStyle(
-                    fontSize: 13,
-                    color: theme.brightness == Brightness.dark
-                        ? Colors.white
-                        : primaryColor,
-                    fontFamily: 'DG Heaven',
+                  GestureDetector(
+                    onTap: () => _onViewAllPressed(1),
+                    child: isLoading1
+                        ? const SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          )
+                        : Text(
+                            "view all".tr,
+                            style: TextStyle(
+                              fontSize: 10,
+                              color: theme.brightness == Brightness.dark
+                                  ? Colors.white
+                                  : Colors.black,
+                              fontFamily: 'DG Heaven',
+                            ),
+                          ),
                   ),
-                ),
-        ),
                 ],
               ),
               const SizedBox(height: 10),
 
               Obx(() {
-                if (_volunteerController.isLoading.value &&
-                    _volunteerController.topProjects.isEmpty) {
+                if (_volunteerController.isLoading.value) {
                   return SizedBox(
-                    height: 350,
+                    height: 300,
                     child: Center(child: CustomProgressIndicator()),
                   );
                 }
 
-                if (_volunteerController.topProjects.isEmpty) {
+                if (_volunteerController.myEvents.isEmpty) {
                   return SizedBox(
-                    height: 350,
-                    child: Center(child: CustomProgressIndicator()),
+                    height: 330,
+                    child: Center(child: Text("No events found")),
                   );
                 }
 
                 return SizedBox(
-                  height: 370,
+                  height: 330,
                   child: ListView.separated(
-                    controller: _projectScrollController,
+                    controller: _myEventScrollController,
                     scrollDirection: Axis.horizontal,
-                    itemCount: _volunteerController.topProjects.length,
-                    separatorBuilder: (_, __) => const SizedBox(width: 10),
+                    itemCount: _volunteerController.myEvents.length,
+                    separatorBuilder: (context, index) =>
+                        const SizedBox(width: 10),
                     itemBuilder: (context, index) {
-                      final project = _volunteerController.topProjects[index];
+                      final event = _volunteerController.myEvents[index];
                       double scale = _calculateScale(
-                        _projectScroll,
+                        _myEventScroll,
                         index,
-                        260,
+                        220,
                       );
 
                       return Transform.scale(
                         scale: scale,
-                        child: HomeProjectsCard(
-                          name: project.name,
-                          organization: project.organization,
-                          paid: project.paid.toDouble(),
-                          total: (project.paid + 5000).toDouble(),
+                        child: HomeEventsCard(
+                          title: event.title,
+                          image: event.coverImage ?? 'assets/images/new.jpg',
+                          volunteersCount: event.currentVolunteers,
+                          requiredVolunteers: event.requiredVolunteers,
+                          status: event.status.toString().split('.').last,
                         ),
                       );
                     },
@@ -533,7 +528,7 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
                 );
               }),
 
-              const SizedBox(height: 30),
+              const SizedBox(height: 25),
             ],
           ),
         ),

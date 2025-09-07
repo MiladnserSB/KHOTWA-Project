@@ -109,11 +109,11 @@ class HomeEventsCard extends StatelessWidget {
             style: const TextStyle(
               fontWeight: FontWeight.bold,
               fontFamily: '._Acumin Variable Concept',
-              fontSize: 16,
+              fontSize: 14,
               color: Colors.black,
             ),
           ),
-                    SizedBox(height:20),
+          SizedBox(height: 20),
 
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 25),
@@ -134,6 +134,7 @@ class HomeEventsCard extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 6),
+
           // ElevatedButton(
           //   style: ElevatedButton.styleFrom(
           //     backgroundColor: Color(0xFFDDA15E),
@@ -158,7 +159,6 @@ class HomeEventsCard extends StatelessWidget {
           //     style: TextStyle(color: Colors.white),
           //   ),
           // ),
-
         ],
       ),
     );

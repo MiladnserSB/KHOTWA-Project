@@ -18,11 +18,29 @@ class HomePageVisitor extends StatefulWidget {
 }
 
 class _HomePageVisitorState extends State<HomePageVisitor> {
+  bool isLoading1 = false;
+  bool isLoading2 = false;
+  bool isLoading3 = false;
+
+  Future<void> _onViewAllPressed(int index) async {
+    setState(() {
+      if (index == 1) isLoading1 = true;
+      if (index == 2) isLoading2 = true;
+      if (index == 3) isLoading3 = true;
+    });
+
+    await Future.delayed(const Duration(seconds: 120));
+
+    setState(() {
+      if (index == 1) isLoading1 = false;
+      if (index == 2) isLoading2 = false;
+      if (index == 3) isLoading3 = false;
+    });
+  }
+
   final FocusNode _focusNode = FocusNode();
   final TextEditingController _controller = TextEditingController();
-  final VisitorController visitorController = Get.put(
-    VisitorController(),
-  );
+  final VisitorController visitorController = Get.put(VisitorController());
   final ScrollController _myEventScrollController = ScrollController();
   final ScrollController _recommendedScrollController = ScrollController();
   final ScrollController _projectScrollController = ScrollController();
@@ -60,6 +78,7 @@ class _HomePageVisitorState extends State<HomePageVisitor> {
     await visitorController.fetchAllEvents();
     await visitorController.fetchAllProjects();
   }
+
   @override
   void dispose() {
     _focusNode.dispose();
@@ -78,20 +97,12 @@ class _HomePageVisitorState extends State<HomePageVisitor> {
   );
 
   final List<Map<String, String>> personList = [
+    {"name": "Jeeny", "role": "Admin", "image": 'assets/images/jeeny.jpg'},
+    {"name": "Milad", "role": "Advisor", "image": 'assets/images/Milad.jpg'},
     {
-      "name": "Robert Fox",
-      "role": "Admin",
-      "image": 'assets/images/person.jpg',
-    },
-    {
-      "name": "Theresa Webb",
-      "role": "Advisor",
-      "image": 'assets/images/person.jpg',
-    },
-    {
-      "name": "Kristin Watson",
+      "name": "Abood",
       "role": "Serinan",
-      "image": 'assets/images/person.jpg',
+      "image": 'assets/images/photo_2025-09-07_23-25-37.jpg',
     },
   ];
 
@@ -140,7 +151,7 @@ class _HomePageVisitorState extends State<HomePageVisitor> {
           : thirdColor,
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -154,11 +165,11 @@ class _HomePageVisitorState extends State<HomePageVisitor> {
                         MaterialPageRoute(builder: (_) => ProfilePage()),
                       );
                     },
-                    child: ClipOval(
+                   child: ClipOval(
                       child: Image.asset(
-                        'assets/images/new.jpg',
-                        width: 50,
-                        height: 50,
+                        'assets/images/profile1.jpg',
+                        width: 40,
+                        height: 40,
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -166,13 +177,11 @@ class _HomePageVisitorState extends State<HomePageVisitor> {
 
                   Expanded(
                     child: Center(
-                      child: Text(
-                        'Khotwa'.tr,
-                        style: TextStyle(
-                          fontSize: 35,
-                          fontFamily: 'DG Heaven',
-                          color: secondaryColor,
-                        ),
+                      child: Image.asset(
+                        "assets/images/logo2.png",
+                        width: 100,
+                        height: 80,
+                        fit: BoxFit.contain,
                       ),
                     ),
                   ),
@@ -200,13 +209,15 @@ class _HomePageVisitorState extends State<HomePageVisitor> {
               TextField(
                 controller: _controller,
                 focusNode: _focusNode,
-                 onChanged: (value) {
+                onChanged: (value) {
                   final searchController =
                       Get.isRegistered<AppSearchController>()
                       ? Get.find<AppSearchController>()
                       : Get.put(AppSearchController());
 
-                  searchController.searchMyTasksAndAllprojectsAndAllEvents(value);
+                  searchController.searchMyTasksAndAllprojectsAndAllEvents(
+                    value,
+                  );
                 },
                 onSubmitted: (value) {
                   Get.to(() => SearchResultsPage());
@@ -234,11 +245,26 @@ class _HomePageVisitorState extends State<HomePageVisitor> {
                 style: TextStyle(fontSize: 18, color: Colors.black),
               ),
 
-              const SizedBox(height: 20),
-
+              const SizedBox(height: 30),
+              Center(
+                child: RichText(
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: "top ".tr,
+                        style: subtitleStyle.copyWith(color: primaryColor),
+                      ),
+                      TextSpan(
+                        text: "Volunteers".tr,
+                        style: subtitleStyle.copyWith(color: secondaryColor),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
               Center(
                 child: Container(
-                  height: 200,
+                  height: 165,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: List.generate(personList.length, (index) {
@@ -410,7 +436,6 @@ class _HomePageVisitorState extends State<HomePageVisitor> {
               //     },
               //   ),
               // ),
-
               const SizedBox(height: 25),
 
               // Top Projects
@@ -419,68 +444,65 @@ class _HomePageVisitorState extends State<HomePageVisitor> {
                 children: [
                   Text(
                     "top projects".tr,
-                    style: subtitleStyle.copyWith(
-                      color: theme.brightness == Brightness.dark
-                          ? Colors.white
-                          : Colors.black,
-                    ),
+                    style: subtitleStyle.copyWith(color: secondaryColor),
                   ),
                   GestureDetector(
-                    onTap: () {
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //     builder: (_) => EventsAndProjectsPage(),
-                      //   ),
-                      // );
-                    },
-                    child: Text(
-                      "view all".tr,
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: theme.brightness == Brightness.dark
-                            ? Colors.white
-                            : primaryColor,
-                        fontFamily: 'DG Heaven',
-                      ),
-                    ),
+                    onTap: () => _onViewAllPressed(3),
+                    child: isLoading3
+                        ? const SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          )
+                        : Text(
+                            "view all".tr,
+                            style: TextStyle(
+                              fontSize: 10,
+                              color: theme.brightness == Brightness.dark
+                                  ? Colors.white
+                                  : Colors.black,
+                              fontFamily: 'DG Heaven',
+                            ),
+                          ),
                   ),
                 ],
               ),
               const SizedBox(height: 10),
 
-             Obx(() {
-  if (visitorController.topProjects.isEmpty) {
-    return const Center(
-      child: CustomProgressIndicator(),
-    );
-  }
+              Obx(() {
+                if (visitorController.topProjects.isEmpty) {
+                  return const Center(child: CustomProgressIndicator());
+                }
 
-  return SizedBox(
-    height: 370,
-    child: ListView.separated(
-      controller: _projectScrollController,
-      scrollDirection: Axis.horizontal,
-      itemCount: visitorController.topProjects.length,
-      separatorBuilder: (_, __) => const SizedBox(width: 10),
-      itemBuilder: (context, index) {
-        final project = visitorController.topProjects[index];
-        double scale = _calculateScale(_projectScroll, index, 260);
+                return SizedBox(
+                  height: 370,
+                  child: ListView.separated(
+                    controller: _projectScrollController,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: visitorController.topProjects.length,
+                    separatorBuilder: (_, __) => const SizedBox(width: 10),
+                    itemBuilder: (context, index) {
+                      final project = visitorController.topProjects[index];
+                      double scale = _calculateScale(
+                        _projectScroll,
+                        index,
+                        260,
+                      );
 
-        return Transform.scale(
-          scale: scale,
-          child: HomeProjectsCardDonorAndVisitor(
-            name: project.name,
-            organization: project.organization,
-            paid: project.paid.toDouble(),
-            total: project.activityScore
-                .toDouble(), // 🔹 use real total if available in API
-          ),
-        );
-      },
-    ),
-  );
-}),
+                      return Transform.scale(
+                        scale: scale,
+                        child: HomeProjectsCardDonorAndVisitor(
+                          name: project.name,
+                          organization: project.organization,
+                          paid: project.paid.toDouble(),
+                          total: project.activityScore
+                              .toDouble(), // 🔹 use real total if available in API
+                        ),
+                      );
+                    },
+                  ),
+                );
+              }),
 
               const SizedBox(height: 10),
             ],

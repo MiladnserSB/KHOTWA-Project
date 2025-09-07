@@ -50,7 +50,7 @@ class ArabicLocalization extends Translations {
       "organization water": "مؤسسة المياه",
       "status accept": "مقبول",
       "my events": "فعالياتي",
-      "Recommended": "موصى به",
+      "Recommended Events": " فعاليات موصى بها",
       "top projects": "أهم المشاريع",
       "view all": "عرض الكل",
       "search": "بحث...",
@@ -337,6 +337,10 @@ class ArabicLocalization extends Translations {
       "Attendance":"الحضور",
       "My Events Calendar":"تقويم فعالياتي",
       "View Events Date in Calendar":"عرض فعالياتي في تقويم",
+      "top Volunteers":"أبرز المتطوعين",
+      "Volunteers":"المتطوعين",
+      "top ":"أبرز",
+      "register":"انشاء حساب"
     },
   };
 }

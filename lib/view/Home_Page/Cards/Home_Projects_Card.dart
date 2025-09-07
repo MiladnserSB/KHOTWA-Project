@@ -20,26 +20,32 @@ class HomeProjectsCard extends StatelessWidget {
   String formatNumber(double number) {
     String langCode = Get.locale?.languageCode ?? 'en';
     if (langCode == 'ar') {
-      const arabicNumbers = ['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'];
-      return number.toStringAsFixed(0).split('').map((e) {
-        if (RegExp(r'\d').hasMatch(e)) {
-          return arabicNumbers[int.parse(e)];
-        } else {
-          return e;
-        }
-      }).join('');
+      const arabicNumbers = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
+      return number
+          .toStringAsFixed(0)
+          .split('')
+          .map((e) {
+            if (RegExp(r'\d').hasMatch(e)) {
+              return arabicNumbers[int.parse(e)];
+            } else {
+              return e;
+            }
+          })
+          .join('');
     } else {
       // Format with commas for thousands
-      return number.toStringAsFixed(0).replaceAllMapped(
-        RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
-        (Match m) => '${m[1]},',
-      );
+      return number
+          .toStringAsFixed(0)
+          .replaceAllMapped(
+            RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+            (Match m) => '${m[1]},',
+          );
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context); 
+    final theme = Theme.of(context);
     double progress = total > 0 ? paid / total : 0;
 
     return Container(
@@ -48,7 +54,9 @@ class HomeProjectsCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: theme.brightness == Brightness.dark ? thirdColor : Colors.white,
         borderRadius: BorderRadius.circular(14),
-        boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 4, offset: Offset(0,2))],
+        boxShadow: const [
+          BoxShadow(color: Colors.black12, blurRadius: 4, offset: Offset(0, 2)),
+        ],
       ),
       width: 235,
       child: Column(
@@ -67,9 +75,9 @@ class HomeProjectsCard extends StatelessWidget {
           Text(
             name,
             style: TextStyle(
-              fontSize: 16, 
+              fontSize: 16,
               fontWeight: FontWeight.bold,
-              color: Colors.black
+              color: Colors.black,
             ),
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
@@ -78,10 +86,7 @@ class HomeProjectsCard extends StatelessWidget {
           const SizedBox(height: 6),
           Text(
             organization,
-            style: TextStyle(
-              fontSize: 12, 
-              color: Colors.black
-            ),
+            style: TextStyle(fontSize: 12, color: Colors.black),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
@@ -96,7 +101,7 @@ class HomeProjectsCard extends StatelessWidget {
           const SizedBox(height: 5),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-           children: [
+            children: [
               Text(
                 'paid'.trParams({'amount'.tr: formatNumber(paid)}),
                 style: const TextStyle(fontSize: 11, color: Colors.green),

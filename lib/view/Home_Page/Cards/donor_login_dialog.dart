@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_utils/get_utils.dart';
 import 'package:khotwa/controller/auth_controller.dart';
-import 'package:khotwa/controller/donner_controller.dart';
 import 'package:khotwa/controller/visitor_controller.dart';
-import 'package:khotwa/shared/constants/base_url.dart';
 import 'package:khotwa/shared/constants/colors.dart';
 
 class DonorLoginDialog extends StatefulWidget {
@@ -20,21 +18,12 @@ class _DonorLoginDialogState extends State<DonorLoginDialog> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-   late dynamic roleController;
+  final visitorController = Get.find<VisitorController>();
   final authController = Get.put(AuthController());
 
   bool _isLoading = false;
   bool _obscurePassword = true; // toggle for password visibility
- @override
-  void initState() {
-    super.initState();
 
-    if (roleID == 4) {
-      roleController = Get.find<DonorController>();
-    } else {
-      roleController = Get.find<VisitorController>();
-    }
-  }
   @override
   void dispose() {
     _nameController.dispose();
@@ -53,16 +42,13 @@ class _DonorLoginDialogState extends State<DonorLoginDialog> {
         await authController.registerUser(
           username: _nameController.text.trim(),
           email: _emailController.text.trim(),
-          password: _passwordController.text.trim(), 
-          roleId: 4, 
+          password: _passwordController.text.trim(),
+          roleId: 4,
         );
         if (mounted) Navigator.of(context).pop();
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(e.toString()),
-            backgroundColor: Colors.red,
-          ),
+          SnackBar(content: Text(e.toString()), backgroundColor: Colors.red),
         );
       } finally {
         if (mounted) {
@@ -97,15 +83,14 @@ class _DonorLoginDialogState extends State<DonorLoginDialog> {
     final dialogWidth = isTablet
         ? width * 0.5
         : isLandscape
-            ? width * 0.7
-            : width * 0.9;
+        ? width * 0.7
+        : width * 0.9;
 
     final horizontalPadding = isTablet ? width * 0.03 : width * 0.05;
     final verticalPadding = isLandscape ? height * 0.02 : height * 0.03;
 
     return Dialog(
-      backgroundColor:
-          theme.brightness == Brightness.dark ? sixth : thirdColor,
+      backgroundColor: theme.brightness == Brightness.dark ? sixth : thirdColor,
       insetPadding: EdgeInsets.symmetric(
         horizontal: isTablet ? width * 0.1 : width * 0.05,
         vertical: isLandscape ? height * 0.1 : height * 0.15,
@@ -184,15 +169,17 @@ class _DonorLoginDialogState extends State<DonorLoginDialog> {
 
   /// Helper to build labels
   Widget _buildLabel(
-      String text, bool isTablet, double scale, ThemeData theme) {
+    String text,
+    bool isTablet,
+    double scale,
+    ThemeData theme,
+  ) {
     return Text(
       text,
       style: TextStyle(
         fontSize: isTablet ? 18 : 16 * scale,
         fontWeight: FontWeight.w500,
-        color: theme.brightness == Brightness.dark
-            ? Colors.grey
-            : Colors.black,
+        color: theme.brightness == Brightness.dark ? Colors.grey : Colors.black,
       ),
     );
   }
@@ -280,10 +267,7 @@ class _DonorLoginDialogState extends State<DonorLoginDialog> {
         horizontal: isTablet ? 20 : 16,
         vertical: isTablet ? 18 : 14,
       ),
-      hintStyle: TextStyle(
-        color: grey,
-        fontSize: isTablet ? 16 : 14,
-      ),
+      hintStyle: TextStyle(color: grey, fontSize: isTablet ? 16 : 14),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
         borderSide: BorderSide(color: primaryColor, width: 2),

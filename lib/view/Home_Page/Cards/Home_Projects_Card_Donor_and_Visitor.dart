@@ -22,14 +22,18 @@ class HomeProjectsCardDonorAndVisitor extends StatelessWidget {
   String formatNumber(double number) {
     String langCode = Get.locale?.languageCode ?? 'en';
     if (langCode == 'ar') {
-      const arabicNumbers = ['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'];
-      return number.toStringAsFixed(0).split('').map((e) {
-        if (RegExp(r'\d').hasMatch(e)) {
-          return arabicNumbers[int.parse(e)];
-        } else {
-          return e;
-        }
-      }).join('');
+      const arabicNumbers = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
+      return number
+          .toStringAsFixed(0)
+          .split('')
+          .map((e) {
+            if (RegExp(r'\d').hasMatch(e)) {
+              return arabicNumbers[int.parse(e)];
+            } else {
+              return e;
+            }
+          })
+          .join('');
     } else {
       return number.toStringAsFixed(0);
     }
@@ -108,7 +112,6 @@ class HomeProjectsCardDonorAndVisitor extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-            
               ElevatedButton(
                 onPressed: () {
                   // Navigator.push(
@@ -135,16 +138,15 @@ class HomeProjectsCardDonorAndVisitor extends StatelessWidget {
                   ),
                 ),
               ),
-                ElevatedButton(
+              ElevatedButton(
                 onPressed: () {
                   showDialog(
-                    
                     context: context,
                     builder: (BuildContext context) {
                       return Dialog(
-                        backgroundColor:  theme.brightness == Brightness.dark
-          ? sixth
-          : thirdColor,
+                        backgroundColor: theme.brightness == Brightness.dark
+                            ? sixth
+                            : thirdColor,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
                         ),
@@ -171,7 +173,8 @@ class HomeProjectsCardDonorAndVisitor extends StatelessWidget {
                               ),
                               SizedBox(height: 15),
                               Text(
-                                "Please log in to continue with the donation process.".tr,
+                                "Please log in to continue with the donation process."
+                                    .tr,
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   fontSize: 14,

@@ -20,6 +20,26 @@ class HomePageSupervisor extends StatefulWidget {
 }
 
 class _HomePageSupervisorState extends State<HomePageSupervisor> {
+  bool isLoading1 = false;
+  bool isLoading2 = false;
+  bool isLoading3 = false;
+
+  Future<void> _onViewAllPressed(int index) async {
+    setState(() {
+      if (index == 1) isLoading1 = true;
+      if (index == 2) isLoading2 = true;
+      if (index == 3) isLoading3 = true;
+    });
+
+    await Future.delayed(const Duration(seconds: 120));
+
+    setState(() {
+      if (index == 1) isLoading1 = false;
+      if (index == 2) isLoading2 = false;
+      if (index == 3) isLoading3 = false;
+    });
+  }
+
   final FocusNode _focusNode = FocusNode();
   final TextEditingController _controller = TextEditingController();
 
@@ -73,20 +93,12 @@ class _HomePageSupervisorState extends State<HomePageSupervisor> {
   );
 
   final List<Map<String, String>> personList = [
+    {"name": "Jeeny", "role": "Admin", "image": 'assets/images/jeeny.jpg'},
+    {"name": "Milad", "role": "Advisor", "image": 'assets/images/Milad.jpg'},
     {
-      "name": "Robert Fox",
-      "role": "Admin",
-      "image": 'assets/images/person.jpg',
-    },
-    {
-      "name": "Theresa Webb",
-      "role": "Advisor",
-      "image": 'assets/images/person.jpg',
-    },
-    {
-      "name": "Kristin Watson",
+      "name": "Abood",
       "role": "Serinan",
-      "image": 'assets/images/person.jpg',
+      "image": 'assets/images/photo_2025-09-07_23-25-37.jpg',
     },
   ];
 
@@ -135,7 +147,7 @@ class _HomePageSupervisorState extends State<HomePageSupervisor> {
           : thirdColor,
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -149,11 +161,11 @@ class _HomePageSupervisorState extends State<HomePageSupervisor> {
                         MaterialPageRoute(builder: (_) => ProfilePage()),
                       );
                     },
-                    child: ClipOval(
+                   child: ClipOval(
                       child: Image.asset(
-                        'assets/images/new.jpg',
-                        width: 50,
-                        height: 50,
+                        'assets/images/profile1.jpg',
+                        width: 40,
+                        height: 40,
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -161,16 +173,15 @@ class _HomePageSupervisorState extends State<HomePageSupervisor> {
 
                   Expanded(
                     child: Center(
-                      child: Text(
-                        'Khotwa'.tr,
-                        style: TextStyle(
-                          fontSize: 35,
-                          fontFamily: 'DG Heaven',
-                          color: secondaryColor,
-                        ),
+                      child: Image.asset(
+                        "assets/images/logo2.png",
+                        width: 100,
+                        height: 80,
+                        fit: BoxFit.contain,
                       ),
                     ),
                   ),
+
                   IconButton(
                     icon: Icon(
                       Icons.notifications,
@@ -191,17 +202,19 @@ class _HomePageSupervisorState extends State<HomePageSupervisor> {
                 ],
               ),
 
-              const SizedBox(height: 20),
+              const SizedBox(height: 15),
               TextField(
                 controller: _controller,
                 focusNode: _focusNode,
-                 onChanged: (value) {
+                onChanged: (value) {
                   final searchController =
                       Get.isRegistered<AppSearchController>()
                       ? Get.find<AppSearchController>()
                       : Get.put(AppSearchController());
 
-                  searchController.searchMyTasksAndAllprojectsAndAllEvents(value);
+                  searchController.searchMyTasksAndAllprojectsAndAllEvents(
+                    value,
+                  );
                 },
                 onSubmitted: (value) {
                   Get.to(() => SearchResultsPage());
@@ -213,8 +226,8 @@ class _HomePageSupervisorState extends State<HomePageSupervisor> {
                   fillColor: Colors.white,
                   isDense: true,
                   contentPadding: EdgeInsets.symmetric(
-                    vertical: 13,
-                    horizontal: 12,
+                    vertical: 12,
+                    horizontal: 10,
                   ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20),
@@ -228,12 +241,27 @@ class _HomePageSupervisorState extends State<HomePageSupervisor> {
                 ),
                 style: TextStyle(fontSize: 18, color: Colors.black),
               ),
-
-              const SizedBox(height: 20),
+              const SizedBox(height: 30),
+              Center(
+                child: RichText(
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: "top ".tr,
+                        style: subtitleStyle.copyWith(color: primaryColor),
+                      ),
+                      TextSpan(
+                        text: "Volunteers".tr,
+                        style: subtitleStyle.copyWith(color: secondaryColor),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
 
               Center(
                 child: Container(
-                  height: 200,
+                  height: 165,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: List.generate(personList.length, (index) {
@@ -279,99 +307,88 @@ class _HomePageSupervisorState extends State<HomePageSupervisor> {
                 ),
               ),
 
-              const SizedBox(height: 10),
+              const SizedBox(height: 20),
 
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "My Events".tr,
-                    style: subtitleStyle.copyWith(
-                      color: theme.brightness == Brightness.dark
-                          ? Colors.white
-                          : Colors.black,
-                    ),
+                    "top projects".tr,
+                    style: subtitleStyle.copyWith(color: secondaryColor),
                   ),
                   GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => EventsAndProjectsPage(),
-                        ),
-                      );
-                    },
-                    child: Text(
-                      "View all".tr,
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: theme.brightness == Brightness.dark
-                            ? Colors.white
-                            : primaryColor,
-                        fontFamily: 'DG Heaven',
-                      ),
-                    ),
+                    onTap: () => _onViewAllPressed(3),
+                    child: isLoading3
+                        ? const SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          )
+                        : Text(
+                            "view all".tr,
+                            style: TextStyle(
+                              fontSize: 10,
+                              color: theme.brightness == Brightness.dark
+                                  ? Colors.white
+                                  : Colors.black,
+                              fontFamily: 'DG Heaven',
+                            ),
+                          ),
                   ),
                 ],
               ),
               const SizedBox(height: 10),
 
               SizedBox(
-                height: 330,
+                height: 370,
                 child: ListView.separated(
-                  controller: _myEventScrollController,
+                  controller: _projectScrollController,
                   scrollDirection: Axis.horizontal,
-                  itemCount: myeventsList.length,
+                  itemCount: projectsList.length,
                   separatorBuilder: (_, __) => const SizedBox(width: 10),
                   itemBuilder: (context, index) {
-                    final event = myeventsList[index];
-                    double scale = _calculateScale(_myEventScroll, index, 220);
+                    final project = projectsList[index];
+                    double scale = _calculateScale(_projectScroll, index, 260);
                     return Transform.scale(
                       scale: scale,
-                      child: HomeEventsCard(
-                        title: event['title']!,
-                        image: event['image']!,
-                        volunteersCount: 12,
-                        status: 'accept',
-                        requiredVolunteers: 1,
+                      child: HomeProjectsCard(
+                        name: project['name'],
+                        organization: project['organization'],
+                        paid: project['paid'],
+                        total: project['total'],
                       ),
                     );
                   },
                 ),
               ),
 
-              const SizedBox(height: 25),
+              const SizedBox(height: 40),
 
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Recommended".tr,
-                    style: subtitleStyle.copyWith(
-                      color: theme.brightness == Brightness.dark
-                          ? Colors.white
-                          : Colors.black,
-                    ),
+                    "Recommended Events".tr,
+                    style: subtitleStyle.copyWith(color: secondaryColor),
                   ),
                   GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => EventsAndProjectsPage(),
-                        ),
-                      );
-                    },
-                    child: Text(
-                      "View all".tr,
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: theme.brightness == Brightness.dark
-                            ? Colors.white
-                            : primaryColor,
-                        fontFamily: 'DG Heaven',
-                      ),
-                    ),
+                    onTap: () => _onViewAllPressed(3),
+                    child: isLoading2
+                        ? const SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          )
+                        : Text(
+                            "view all".tr,
+                            style: TextStyle(
+                              fontSize: 10,
+                              color: theme.brightness == Brightness.dark
+                                  ? Colors.white
+                                  : Colors.black,
+                              fontFamily: 'DG Heaven',
+                            ),
+                          ),
                   ),
                 ],
               ),
@@ -405,60 +422,56 @@ class _HomePageSupervisorState extends State<HomePageSupervisor> {
                 ),
               ),
 
-              const SizedBox(height: 25),
+              const SizedBox(height: 40),
 
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Top Projects".tr,
-                    style: subtitleStyle.copyWith(
-                      color: theme.brightness == Brightness.dark
-                          ? Colors.white
-                          : Colors.black,
-                    ),
+                    "my events".tr,
+                    style: subtitleStyle.copyWith(color: secondaryColor),
                   ),
                   GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => EventsAndProjectsPage(),
-                        ),
-                      );
-                    },
-                    child: Text(
-                      "View all".tr,
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: theme.brightness == Brightness.dark
-                            ? Colors.white
-                            : primaryColor,
-                        fontFamily: 'DG Heaven',
-                      ),
-                    ),
+                    onTap: () => _onViewAllPressed(3),
+                    child: isLoading1
+                        ? const SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          )
+                        : Text(
+                            "view all".tr,
+                            style: TextStyle(
+                              fontSize: 10,
+                              color: theme.brightness == Brightness.dark
+                                  ? Colors.white
+                                  : Colors.black,
+                              fontFamily: 'DG Heaven',
+                            ),
+                          ),
                   ),
                 ],
               ),
               const SizedBox(height: 10),
 
               SizedBox(
-                height: 370,
+                height: 330,
                 child: ListView.separated(
-                  controller: _projectScrollController,
+                  controller: _myEventScrollController,
                   scrollDirection: Axis.horizontal,
-                  itemCount: projectsList.length,
+                  itemCount: myeventsList.length,
                   separatorBuilder: (_, __) => const SizedBox(width: 10),
                   itemBuilder: (context, index) {
-                    final project = projectsList[index];
-                    double scale = _calculateScale(_projectScroll, index, 260);
+                    final event = myeventsList[index];
+                    double scale = _calculateScale(_myEventScroll, index, 220);
                     return Transform.scale(
                       scale: scale,
-                      child: HomeProjectsCard(
-                        name: project['name'],
-                        organization: project['organization'],
-                        paid: project['paid'],
-                        total: project['total'],
+                      child: HomeEventsCard(
+                        title: event['title']!,
+                        image: event['image']!,
+                        volunteersCount: 12,
+                        status: 'accept',
+                        requiredVolunteers: 1,
                       ),
                     );
                   },

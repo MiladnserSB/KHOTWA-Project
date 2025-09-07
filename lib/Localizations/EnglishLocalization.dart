@@ -58,7 +58,7 @@ class EnglishLocalization extends Translations {
       "Apology Confirmation": "Apology Confirmation",
       "Are you sure you want to apologize for the event":
           "Are you sure you want to apologize for the event",
-      "Recommended": "Recommended",
+      "Recommended Events": "Recommended Events",
       "top projects": "Top Projects",
       "view all": "View All",
       "search": "Search...",
@@ -337,8 +337,10 @@ class EnglishLocalization extends Translations {
       "Attendance":"Attendance",
       "View Events Date in Calendar":"View Events Date in Calendar",
       "My Events Calendar":"My Events Calendar",
-
-
+"top Volunteers":"top Volunteers",
+"Volunteers":"Volunteers",
+"top ":"top",
+"register":"register",
 
     },
   };

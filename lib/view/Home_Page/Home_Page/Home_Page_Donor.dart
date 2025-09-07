@@ -19,13 +19,33 @@ class HomePageDonor extends StatefulWidget {
 }
 
 class _HomePageDonorState extends State<HomePageDonor> {
+  bool isLoading1 = false;
+  bool isLoading2 = false;
+  bool isLoading3 = false;
+
+  Future<void> _onViewAllPressed(int index) async {
+    setState(() {
+      if (index == 1) isLoading1 = true;
+      if (index == 2) isLoading2 = true;
+      if (index == 3) isLoading3 = true;
+    });
+
+    await Future.delayed(const Duration(seconds: 120));
+
+    setState(() {
+      if (index == 1) isLoading1 = false;
+      if (index == 2) isLoading2 = false;
+      if (index == 3) isLoading3 = false;
+    });
+  }
+
   final FocusNode _focusNode = FocusNode();
   final TextEditingController _controller = TextEditingController();
-DonorController donorController = Get.put(DonorController());
+  DonorController donorController = Get.put(DonorController());
   final ScrollController _myEventScrollController = ScrollController();
   final ScrollController _recommendedScrollController = ScrollController();
   final ScrollController _projectScrollController = ScrollController();
-  
+
   double _myEventScroll = 0.0;
   double _recommendedScroll = 0.0;
   double _projectScroll = 0.0;
@@ -51,12 +71,6 @@ DonorController donorController = Get.put(DonorController());
         _projectScroll = _projectScrollController.offset;
       });
     });
-    _loadData();
-  }
- Future<void> _loadData() async {
-    await donorController.fetchTopProjects();
-    await donorController.fetchAllEvents();
-    await donorController.fetchAllProjects();
   }
 
   @override
@@ -78,20 +92,12 @@ DonorController donorController = Get.put(DonorController());
   );
 
   final List<Map<String, String>> personList = [
+    {"name": "Jeeny", "role": "Admin", "image": 'assets/images/jeeny.jpg'},
+    {"name": "Milad", "role": "Advisor", "image": 'assets/images/Milad.jpg'},
     {
-      "name": "Robert Fox",
-      "role": "Admin",
-      "image": 'assets/images/person.jpg',
-    },
-    {
-      "name": "Theresa Webb",
-      "role": "Advisor",
-      "image": 'assets/images/person.jpg',
-    },
-    {
-      "name": "Kristin Watson",
+      "name": "Abood",
       "role": "Serinan",
-      "image": 'assets/images/person.jpg',
+      "image": 'assets/images/photo_2025-09-07_23-25-37.jpg',
     },
   ];
 
@@ -139,7 +145,7 @@ DonorController donorController = Get.put(DonorController());
           : thirdColor,
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -155,26 +161,24 @@ DonorController donorController = Get.put(DonorController());
                     },
                     child: ClipOval(
                       child: Image.asset(
-                        'assets/images/new.jpg',
-                        width: 50,
-                        height: 50,
+                        'assets/images/profile1.jpg',
+                        width: 40,
+                        height: 40,
                         fit: BoxFit.cover,
                       ),
                     ),
                   ),
-
                   Expanded(
                     child: Center(
-                      child: Text(
-                        'Khotwa'.tr,
-                        style: TextStyle(
-                          fontSize: 35,
-                          fontFamily: 'DG Heaven',
-                          color: secondaryColor,
-                        ),
+                      child: Image.asset(
+                        "assets/images/logo2.png",
+                        width: 100,
+                        height: 80,
+                        fit: BoxFit.contain,
                       ),
                     ),
                   ),
+
                   IconButton(
                     icon: Icon(
                       Icons.notifications,
@@ -221,8 +225,8 @@ DonorController donorController = Get.put(DonorController());
 
                   isDense: true,
                   contentPadding: EdgeInsets.symmetric(
-                    vertical: 13,
-                    horizontal: 12,
+                    vertical: 12,
+                    horizontal: 15,
                   ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20),
@@ -237,11 +241,26 @@ DonorController donorController = Get.put(DonorController());
                 style: TextStyle(fontSize: 18, color: Colors.black),
               ),
 
-              const SizedBox(height: 20),
-
+              const SizedBox(height: 30),
+              Center(
+                child: RichText(
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: "top ".tr,
+                        style: subtitleStyle.copyWith(color: primaryColor),
+                      ),
+                      TextSpan(
+                        text: "Volunteers".tr,
+                        style: subtitleStyle.copyWith(color: secondaryColor),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
               Center(
                 child: Container(
-                  height: 200,
+                  height: 165,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: List.generate(personList.length, (index) {
@@ -414,65 +433,81 @@ DonorController donorController = Get.put(DonorController());
               // ),
 
               // const SizedBox(height: 25),
-             // ---------------------- TOP PROJECTS ----------------------
-    Row(
+              // ---------------------- TOP PROJECTS ----------------------
+              const SizedBox(height: 2),
+
+              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Top Projects".tr,
+                    "top projects".tr,
                     style: TextStyle(
                       fontSize: 24,
-                      color: theme.brightness == Brightness.dark ? Colors.white : Colors.black,
+                      color: secondaryColor,
                       fontFamily: 'DG Heaven',
                     ),
                   ),
                   GestureDetector(
-                    onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => EventsAndProjectsPage())),
-                    child: Text(
-                      "view all".tr,
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: theme.brightness == Brightness.dark ? Colors.white : primaryColor,
-                        fontFamily: 'DG Heaven',
-                      ),
-                    ),
+                    onTap: () => _onViewAllPressed(3),
+                    child: isLoading3
+                        ? const SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          )
+                        : Text(
+                            "view all".tr,
+                            style: TextStyle(
+                              fontSize: 10,
+                              color: theme.brightness == Brightness.dark
+                                  ? Colors.white
+                                  : Colors.black,
+                              fontFamily: 'DG Heaven',
+                            ),
+                          ),
                   ),
                 ],
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 15),
               // Reactive Projects List
-            Obx(() {
-  if (donorController.isLoadingTopProjects.value) {
-    return const Center(child: CustomProgressIndicator());
-  }
-  if (donorController.topProjects.isEmpty) {
-    return Center(child: Text("no_projects_available".tr));
-  }
+              Obx(() {
+                if (donorController.isLoadingTopProjects.value) {
+                  return const Center(child: CustomProgressIndicator());
+                }
+                if (donorController.topProjects.isEmpty) {
+                  return Center(child: Text("no_projects_available".tr));
+                }
 
-  return SizedBox(
-    height: 370,
-    child: ListView.separated(
-      controller: _projectScrollController,
-      scrollDirection: Axis.horizontal,
-      itemCount: donorController.topProjects.length,
-      separatorBuilder: (_, __) => const SizedBox(width: 10),
-      itemBuilder: (context, index) {
-        final project = donorController.topProjects[index];
-        double scale = _calculateScale(_projectScroll, index, 260);
+                return SizedBox(
+                  height: 370,
+                  child: ListView.separated(
+                    controller: _projectScrollController,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: donorController.topProjects.length,
+                    separatorBuilder: (_, __) => const SizedBox(width: 10),
+                    itemBuilder: (context, index) {
+                      final project = donorController.topProjects[index];
+                      double scale = _calculateScale(
+                        _projectScroll,
+                        index,
+                        260,
+                      );
 
-        return Transform.scale(
-          scale: scale,
-          child: HomeProjectsCardDonorAndVisitor(
-            name: project.name,
-            organization: project.organization,
-            paid: project.paid.toDouble(),
-            total: project.paid.toDouble()+5000, // Use the total from API if available
-          ),
-        );
-      },
-    ),
-  );
-}),
+                      return Transform.scale(
+                        scale: scale,
+                        child: HomeProjectsCardDonorAndVisitor(
+                          name: project.name,
+                          organization: project.organization,
+                          paid: project.paid.toDouble(),
+                          total:
+                              project.paid.toDouble() +
+                              5000, // Use the total from API if available
+                        ),
+                      );
+                    },
+                  ),
+                );
+              }),
             ],
           ),
         ),
