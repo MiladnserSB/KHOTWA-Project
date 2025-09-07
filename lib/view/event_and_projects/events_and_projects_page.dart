@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:khotwa/controller/Search_controller.dart';
+import 'package:khotwa/controller/donner_controller.dart';
+import 'package:khotwa/controller/visitor_controller.dart';
 import 'package:khotwa/controller/volunteer_controller.dart';
 import 'package:khotwa/model/events_model.dart';
 import 'package:khotwa/model/projects_model.dart';
+import 'package:khotwa/shared/constants/base_url.dart';
  // Import your ProjectModel
 import 'package:khotwa/shared/constants/colors.dart';
+import 'package:khotwa/view/Home_Page/Cards/donor_login_dialog.dart';
 import 'package:khotwa/view/Search/Search_results_page.dart';
 import 'package:khotwa/view/event_and_projects/donate_apologize_button.dart';
 import 'package:khotwa/view/event_and_projects/event_details/event_details_page.dart';
 import 'package:khotwa/view/event_and_projects/project_details/project_details_page.dart';
+import 'package:khotwa/widgets/custom_progress_indicator.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:buttons_tabbar/buttons_tabbar.dart';
 import 'package:intl/intl.dart';
@@ -63,12 +68,21 @@ class EventsAndProjectsPage extends StatefulWidget {
 class _EventsAndProjectsPageState extends State<EventsAndProjectsPage>
     with TickerProviderStateMixin {
   late TabController _tabController;
-  final VolunteerController _volunteerController = Get.find<VolunteerController>();
+  late dynamic _volunteerController;
+
+
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
+     if (roleID == -1) {
+      _volunteerController = Get.find<VisitorController>();
+    } else if(roleID == 4){
+      _volunteerController = Get.find<DonorController>();
+    }else{
+      _volunteerController = Get.find<VolunteerController>();
+    }
     _loadData();
   }
   Future<void> _loadData() async {
@@ -195,7 +209,7 @@ class _EventsAndProjectsPageState extends State<EventsAndProjectsPage>
                       // Events Tab
                       Obx(() {
                         if (_volunteerController.isLoading.value) {
-                          return Center(child: CircularProgressIndicator());
+                          return Center(child: CustomProgressIndicator());
                         } else if (_volunteerController.allEvents.isEmpty) {
                           return Center(child: Text('No events available'.tr));
                         } else {
@@ -211,7 +225,7 @@ class _EventsAndProjectsPageState extends State<EventsAndProjectsPage>
                       // Projects Tab
                       Obx(() {
                         if (_volunteerController.isLoading.value) {
-                          return Center(child: CircularProgressIndicator());
+                          return Center(child: CustomProgressIndicator());
                         } else if (_volunteerController.allProjects.isEmpty) {
                           return Center(child: Text('No projects available'.tr));
                         } else {
@@ -709,7 +723,12 @@ class ProjectCard extends StatelessWidget {
                   ],
                 ),
                 SizedBox(height: 20),
-                DonateApologizeButton(title: 'Donate'.tr, onTap: () {}),
+                DonateApologizeButton(title: 'Donate'.tr, onTap: () {showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return const DonorLoginDialog();
+                                        },
+                                      );}),
               ],
             ),
           ],

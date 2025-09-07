@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:khotwa/controller/visitor_controller.dart';
 import 'package:khotwa/controller/volunteer_controller.dart';
 import 'package:khotwa/maps/maps_screen.dart';
 import 'package:khotwa/model/events_model.dart';
@@ -22,17 +23,20 @@ class EventDetailsPage extends StatefulWidget {
 }
 
 class _EventDetailsPageState extends State<EventDetailsPage> {
-  final VolunteerController volunteerController = Get.find<VolunteerController>();
-
+  late VolunteerController volunteerController;
+      
+  final VisitorController visitorController = Get.find<VisitorController>();
   final TextEditingController _commentController = TextEditingController();
   int _selectedRating = 0;
 
   @override
   void initState() {
     super.initState();
-    volunteerController.fetchEventFeedback(widget.event.id);
+    if (roleID != -1){ 
+     volunteerController= Get.find<VolunteerController>();
+      volunteerController.fetchEventFeedback(widget.event.id);
   }
-
+  }
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -52,14 +56,18 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back,
-            color: theme.brightness == Brightness.dark ? Colors.white : textBlack,
+            color: theme.brightness == Brightness.dark
+                ? Colors.white
+                : textBlack,
           ),
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(
           "Event Details".tr,
           style: TextStyle(
-            color: theme.brightness == Brightness.dark ? Colors.white : textBlack,
+            color: theme.brightness == Brightness.dark
+                ? Colors.white
+                : textBlack,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -108,10 +116,12 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
 
               /// 🔹 Description
               Text(
-                widget.event.description,
+                widget.event.description!,
                 style: TextStyle(
                   fontSize: 14,
-                  color: theme.brightness == Brightness.dark ? Colors.white : textBlack,
+                  color: theme.brightness == Brightness.dark
+                      ? Colors.white
+                      : textBlack,
                   height: 1.5,
                 ),
               ),
@@ -166,7 +176,10 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
                         onTap: () {
                           Get.to(
                             LocationDisplayScreen(
-                              center: LatLong(widget.event.lat!, widget.event.lng!),
+                              center: LatLong(
+                                widget.event.lat!,
+                                widget.event.lng!,
+                              ),
                               locationName: widget.event.location,
                               limitLocation: widget.event.location,
                               locationPinIconColor: Colors.red,
@@ -198,293 +211,337 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
               const SizedBox(height: 30),
 
               /// 🔹 Join / Withdraw button
-              Obx(() {
-                final isLoading = volunteerController.isLoading.value;
-                final isRegistered = volunteerController.isRegisteredFor(widget.event.id);
+              roleID != -1
+                  ? Obx(() {
+                      final isLoading = volunteerController.isLoading.value;
+                      final isRegistered = volunteerController.isRegisteredFor(
+                        widget.event.id,
+                      );
 
-                if (roleID != 2 && roleID != 3) {
-                  return const SizedBox.shrink();
-                }
+                      if (roleID != 2 && roleID != 3) {
+                        return const SizedBox.shrink();
+                      }
 
-                String buttonText = '';
-                VoidCallback? onPressed;
+                      String buttonText = '';
+                      VoidCallback? onPressed;
 
-                if (widget.event.status == 'upcoming') {
-                  final eventStart = DateTime(
-                    widget.event.date.year,
-                    widget.event.date.month,
-                    widget.event.date.day,
-                  );
-                  final now = DateTime.now();
-                  final hoursUntilStart = eventStart.difference(now).inHours;
+                      if (widget.event.status == 'upcoming') {
+                        final eventStart = DateTime(
+                          widget.event.date.year,
+                          widget.event.date.month,
+                          widget.event.date.day,
+                        );
+                        final now = DateTime.now();
+                        final hoursUntilStart = eventStart
+                            .difference(now)
+                            .inHours;
 
-                  if (!isRegistered &&
-                      widget.event.currentVolunteers < widget.event.requiredVolunteers) {
-                    buttonText = 'Join'.tr;
-                    onPressed = () => volunteerController.registerForEvent(widget.event.id);
-                  } else if (isRegistered) {
-                    if (hoursUntilStart > 24) {
-                      buttonText = 'Withdraw'.tr;
-                      onPressed = () =>
-                          volunteerController.withdrawFromEvent(widget.event.id);
-                    } else {
-                      buttonText = 'Registered'.tr;
-                    }
-                  }
-                } else if (widget.event.status == 'open' && isRegistered) {
-                  if (roleID == 2) {
-                    buttonText = 'Scan QR'.tr;
-                     // onPressed = () async {
-                    //   final result = await Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(builder: (context) => ScanQrPage()),
-                    //   );
-                    //   if (result != null) {
-                    //     final volunteerController =
-                    //         Get.find<VolunteerController>();
+                        if (!isRegistered &&
+                            widget.event.currentVolunteers <
+                                widget.event.requiredVolunteers && widget.event.status == 'upcoming') {
+                          buttonText = 'Join'.tr;
+                          onPressed = () => volunteerController
+                              .registerForEvent(widget.event.id);
+                        } else if (isRegistered) {
+                          if (hoursUntilStart > 24) {
+                            buttonText = 'Withdraw'.tr;
+                            onPressed = () => volunteerController
+                                .withdrawFromEvent(widget.event.id);
+                          } else {
+                            buttonText = 'Registered'.tr;
+                          }
+                        }
+                      } else if (widget.event.status == 'open' &&
+                          isRegistered) {
+                        if (roleID == 3) {
+                          buttonText = 'Scan QR Code'.tr;
+                          // onPressed = () async {
+                          //   final result = await Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(builder: (context) => ScanQrPage()),
+                          //   );
+                          //   if (result != null) {
+                          //     final volunteerController =
+                          //         Get.find<VolunteerController>();
 
-                    //     if (volunteerController.checkInStatus[event.id] !=
-                    //         true) {
-                    //       await volunteerController.handleCheckIn(
-                    //         event.id,
-                    //         result,
-                    //       );
-                    //     }
-                    //     else if (volunteerController.checkOutStatus[event.id] !=
-                    //         true) {
-                    //       await volunteerController.handleCheckOut(
-                    //         event.id,
-                    //         result,
-                    //       );
-                    //     } else {
-                    //       Get.snackbar(
-                    //         'Info',
-                    //         'You are already checked in and checked out for this event.',
-                    //       );
-                    //     }
-                    //   }
-                    // };
-                  } else if (roleID == 3) {
-                    buttonText = 'Attendance'.tr;
-                    onPressed = () => Get.to(AttendancePage(eventId: widget.event.id,) );
-                  }
-                }
+                          //     if (volunteerController.checkInStatus[event.id] !=
+                          //         true) {
+                          //       await volunteerController.handleCheckIn(
+                          //         event.id,
+                          //         result,
+                          //       );
+                          //     }
+                          //     else if (volunteerController.checkOutStatus[event.id] !=
+                          //         true) {
+                          //       await volunteerController.handleCheckOut(
+                          //         event.id,
+                          //         result,
+                          //       );
+                          //     } else {
+                          //       Get.snackbar(
+                          //         'Info',
+                          //         'You are already checked in and checked out for this event.',
+                          //       );
+                          //     }
+                          //   }
+                          // };
+                        } else if (roleID == 2) {
+                          buttonText = 'Attendance'.tr;
+                          onPressed = () =>
+                              Get.to(AttendancePage(eventId: widget.event.id));
+                        }
+                      }
 
-                if (buttonText.isEmpty) return const SizedBox.shrink();
+                      if (buttonText.isEmpty) return const SizedBox.shrink();
 
-                return SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: isLoading ? null : onPressed,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: secondaryColor,
-                      foregroundColor: white,
-                      padding: const EdgeInsets.symmetric(vertical: 14),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                    child: isLoading
-                        ? const CircularProgressIndicator(color: white)
-                        : Text(
-                            buttonText,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
+                      return SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: isLoading ? null : onPressed,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: secondaryColor,
+                            foregroundColor: white,
+                            padding: const EdgeInsets.symmetric(vertical: 14),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
                             ),
                           ),
-                  ),
-                );
-              }),
+                          child: isLoading
+                              ? const CircularProgressIndicator(color: white)
+                              : Text(
+                                  buttonText,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                        ),
+                      );
+                    })
+                  : SizedBox(height: 0.01),
 
               const SizedBox(height: 30),
 
               /// Inside your EventDetailsPage build method -> Replace Feedback section with this
-Column(
-  crossAxisAlignment: CrossAxisAlignment.start,
-  children: [
-    /// 🔹 Feedback Title
-    Text(
-      "Feedback".tr,
-      style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-    ),
-    const SizedBox(height: 12),
-
-    /// 🔹 Feedback List
-    Obx(() {
-      if (volunteerController.isFeedbackLoading.value) {
-        return const Center(
-          child: CircularProgressIndicator(color: secondaryColor),
-        );
-      }
-
-      final feedback = volunteerController.eventFeedback.value;
-
-      if (feedback == null) {
-        return Text("No feedback yet".tr);
-      }
-
-      final feedbacks = [feedback];
-
-      return ListView.builder(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        itemCount: feedbacks.length,
-        itemBuilder: (context, index) {
-          final fb = feedbacks[index];
-          return Card(
-            elevation: 2,
-            color: theme.cardColor,
-            margin: const EdgeInsets.symmetric(vertical: 8),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(14),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      /// Avatar circle with initials
-                      CircleAvatar(
-                        backgroundColor: secondaryColor.withOpacity(0.2),
-                        child: Text(
-                          fb.volunteer.name.isNotEmpty
-                              ? fb.volunteer.name[0].toUpperCase()
-                              : "?",
+              roleID != -1
+                  ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        /// 🔹 Feedback Title
+                        Text(
+                          "Feedback".tr,
                           style: const TextStyle(
+                            fontSize: 20,
                             fontWeight: FontWeight.bold,
-                            color: secondaryColor,
                           ),
                         ),
-                      ),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              fb.volunteer.name,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 15,
+                        const SizedBox(height: 12),
+
+                        /// 🔹 Feedback List
+                        Obx(() {
+                          if (volunteerController.isFeedbackLoading.value) {
+                            return const Center(
+                              child: CircularProgressIndicator(
+                                color: secondaryColor,
                               ),
-                            ),
-                            Text(
-                              DateFormat.yMMMd().format(fb.createdAt),
-                              style: TextStyle(
-                                color: Colors.grey.shade600,
-                                fontSize: 12,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      /// Stars
-                      Row(
-                        children: List.generate(
-                          5,
-                          (i) => Icon(
-                            i < fb.rating ? Icons.star : Icons.star_border,
-                            color: secondaryColor,
-                            size: 18,
+                            );
+                          }
+
+                          final feedback =
+                              volunteerController.eventFeedback.value;
+
+                          if (feedback == null) {
+                            return Text("No feedback yet".tr);
+                          }
+
+                          final feedbacks = [feedback];
+
+                          return ListView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: feedbacks.length,
+                            itemBuilder: (context, index) {
+                              final fb = feedbacks[index];
+                              return Card(
+                                elevation: 2,
+                                color: theme.cardColor,
+                                margin: const EdgeInsets.symmetric(vertical: 8),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(14),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          /// Avatar circle with initials
+                                          CircleAvatar(
+                                            backgroundColor: secondaryColor
+                                                .withOpacity(0.2),
+                                            child: Text(
+                                              fb.volunteer.name.isNotEmpty
+                                                  ? fb.volunteer.name[0]
+                                                        .toUpperCase()
+                                                  : "?",
+                                              style: const TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: secondaryColor,
+                                              ),
+                                            ),
+                                          ),
+                                          const SizedBox(width: 10),
+                                          Expanded(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  fb.volunteer.name,
+                                                  style: const TextStyle(
+                                                    fontWeight: FontWeight.w600,
+                                                    fontSize: 15,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  DateFormat.yMMMd().format(
+                                                    fb.createdAt,
+                                                  ),
+                                                  style: TextStyle(
+                                                    color: Colors.grey.shade600,
+                                                    fontSize: 12,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+
+                                          /// Stars
+                                          Row(
+                                            children: List.generate(
+                                              5,
+                                              (i) => Icon(
+                                                i < fb.rating
+                                                    ? Icons.star
+                                                    : Icons.star_border,
+                                                color: secondaryColor,
+                                                size: 18,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 10),
+                                      Text(
+                                        fb.comment,
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          height: 1.4,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        }),
+
+                        const SizedBox(height: 30),
+
+                        /// 🔹 Add Feedback Section
+                        Text(
+                          "Add Your Feedback".tr,
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    fb.comment,
-                    style: const TextStyle(fontSize: 14, height: 1.4),
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
-      );
-    }),
+                        const SizedBox(height: 10),
 
-    const SizedBox(height: 30),
+                        Row(
+                          children: List.generate(
+                            5,
+                            (i) => IconButton(
+                              onPressed: () {
+                                setState(() => _selectedRating = i + 1);
+                              },
+                              icon: Icon(
+                                i < _selectedRating
+                                    ? Icons.star
+                                    : Icons.star_border,
+                                color: secondaryColor,
+                                size: 28,
+                              ),
+                            ),
+                          ),
+                        ),
 
-    /// 🔹 Add Feedback Section
-    Text(
-      "Add Your Feedback".tr,
-      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-    ),
-    const SizedBox(height: 10),
+                        TextField(
+                          controller: _commentController,
+                          style: TextStyle(color: textBlack),
+                          decoration: InputDecoration(
+                            hintText: "Write a comment...".tr,
+                            filled: true,
+                            fillColor: theme.cardColor,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(14),
+                              borderSide: BorderSide.none,
+                            ),
+                          ),
+                          maxLines: 3,
+                        ),
+                        const SizedBox(height: 14),
 
-    Row(
-      children: List.generate(
-        5,
-        (i) => IconButton(
-          onPressed: () {
-            setState(() => _selectedRating = i + 1);
-          },
-          icon: Icon(
-            i < _selectedRating ? Icons.star : Icons.star_border,
-            color: secondaryColor,
-            size: 28,
+                        Center(
+                          child: SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.7,
+                            child: ElevatedButton.icon(
+                              onPressed: () async {
+                                if (_selectedRating == 0 ||
+                                    _commentController.text.isEmpty) {
+                                  Get.snackbar(
+                                    "Error".tr,
+                                    "Please provide rating and comment".tr,
+                                  );
+                                  return;
+                                }
+                                await volunteerController.submitEventFeedback(
+                                  widget.event.id,
+                                  _selectedRating,
+                                  _commentController.text,
+                                );
+                                _commentController.clear();
+                                setState(() => _selectedRating = 0);
+                              },
+                              icon: const Icon(
+                                Icons.send,
+                                color: white,
+                                size: 20,
+                              ),
+                              label: Text("Submit Feedback".tr),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: secondaryColor,
+                                foregroundColor: white,
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 14,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(14),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+                  : SizedBox(height: 0.01),
+            ],
           ),
         ),
       ),
-    ),
-
-    TextField(
-      controller: _commentController,
-      style: TextStyle(
-        color: textBlack
-      ),
-      decoration: InputDecoration(
-        hintText: "Write a comment...".tr,
-        filled: true,
-        fillColor: theme.cardColor,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide.none,
-        ),
-      ),
-      maxLines: 3,
-    ),
-    const SizedBox(height: 14),
-
-    Center(
-      child: SizedBox(
-        width: MediaQuery.of(context).size.width*0.7,
-        child: ElevatedButton.icon(
-          onPressed: () async {
-            if (_selectedRating == 0 || _commentController.text.isEmpty) {
-              Get.snackbar("Error".tr, "Please provide rating and comment".tr);
-              return;
-            }
-            await volunteerController.submitEventFeedback(
-              widget.event.id,
-              _selectedRating,
-              _commentController.text,
-            );
-            _commentController.clear();
-            setState(() => _selectedRating = 0);
-          },
-          icon: const Icon(Icons.send, color: white, size: 20),
-          label: Text("Submit Feedback".tr),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: secondaryColor,
-            foregroundColor: white,
-            padding: const EdgeInsets.symmetric(vertical: 14),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(14),
-            ),
-          ),
-        ),
-      ),
-    ),
-  ],
-)
-
-        ])
-      ),
-    ));
+    );
   }
 }

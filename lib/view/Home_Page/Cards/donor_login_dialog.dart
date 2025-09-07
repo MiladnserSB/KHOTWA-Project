@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_utils/get_utils.dart';
+import 'package:khotwa/controller/auth_controller.dart';
+import 'package:khotwa/controller/visitor_controller.dart';
 import 'package:khotwa/shared/constants/colors.dart';
 
 class DonorLoginDialog extends StatefulWidget {
@@ -13,43 +16,57 @@ class _DonorLoginDialogState extends State<DonorLoginDialog> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  final visitorController = Get.find<VisitorController>();
+  final authController = Get.put(AuthController());
+
   bool _isLoading = false;
+  bool _obscurePassword = true; // toggle for password visibility
 
   @override
   void dispose() {
     _nameController.dispose();
     _emailController.dispose();
+    _passwordController.dispose();
     super.dispose();
   }
 
-  void _submitForm() {
+  Future<void> _submitForm() async {
     if (_formKey.currentState!.validate()) {
       setState(() {
         _isLoading = true;
       });
 
-      // Simulate API call
-      Future.delayed(const Duration(seconds: 2), () {
-        setState(() {
-          _isLoading = false;
-        });
-        Navigator.of(context).pop();
+      try {
+        await authController.registerUser(
+          username: _nameController.text.trim(),
+          email: _emailController.text.trim(),
+          password: _passwordController.text.trim(), 
+          roleId: 4, 
+        );
+        if (mounted) Navigator.of(context).pop();
+      } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Login successful!'.tr),
-            backgroundColor: Colors.green,
+            content: Text(e.toString()),
+            backgroundColor: Colors.red,
           ),
         );
-      });
+      } finally {
+        if (mounted) {
+          setState(() {
+            _isLoading = false;
+          });
+        }
+      }
     }
   }
 
-  // Helper method to determine if device is in landscape
   bool _isLandscape(BuildContext context) {
     return MediaQuery.of(context).orientation == Orientation.landscape;
   }
 
-  // Helper method to determine if device is a tablet
   bool _isTablet(BuildContext context) {
     final shortestSide = MediaQuery.of(context).size.shortestSide;
     return shortestSide > 600;
@@ -66,21 +83,18 @@ class _DonorLoginDialogState extends State<DonorLoginDialog> {
     final isTablet = _isTablet(context);
     final textScaleFactor = mediaQuery.textScaleFactor.clamp(0.8, 1.2);
 
-    // Calculate responsive dimensions
     final dialogWidth = isTablet
         ? width * 0.5
         : isLandscape
-        ? width * 0.7
-        : width * 0.9;
+            ? width * 0.7
+            : width * 0.9;
 
     final horizontalPadding = isTablet ? width * 0.03 : width * 0.05;
-
     final verticalPadding = isLandscape ? height * 0.02 : height * 0.03;
 
     return Dialog(
-      backgroundColor: theme.brightness == Brightness.dark
-          ? sixth
-          : thirdColor,
+      backgroundColor:
+          theme.brightness == Brightness.dark ? sixth : thirdColor,
       insetPadding: EdgeInsets.symmetric(
         horizontal: isTablet ? width * 0.1 : width * 0.05,
         vertical: isLandscape ? height * 0.1 : height * 0.15,
@@ -117,110 +131,28 @@ class _DonorLoginDialogState extends State<DonorLoginDialog> {
                 ),
                 SizedBox(height: isLandscape ? height * 0.015 : height * 0.02),
 
-                // Name Field
-                Text(
-                  'Name'.tr,
-                  style: TextStyle(
-                    fontSize: isTablet ? 18 : 16 * textScaleFactor,
-                    fontWeight: FontWeight.w500,
-                    color: theme.brightness == Brightness.dark
-                        ? Colors.grey
-                        : Colors.black, // Added color
-                  ),
-                ),
+                /// Name field
+                _buildLabel('Name'.tr, isTablet, textScaleFactor, theme),
                 SizedBox(height: height * 0.01),
-                TextFormField(
-                  style: const TextStyle(color: Colors.black),
-                  controller: _nameController,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Name is required".tr;
-                    }
-                    if (value.length < 2) {
-                      return "Name must be at least 2 characters".tr;
-                    }
-                    return null;
-                  },
-                  decoration: InputDecoration(
-                    hintText: 'Enter your full name'.tr,
-                    filled: true,
-                    fillColor: white, // Changed to white
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(
-                        color: primaryColor,
-                      ), // Added border color
-                    ),
-                    contentPadding: EdgeInsets.symmetric(
-                      horizontal: isTablet ? 20 : 16,
-                      vertical: isTablet ? 18 : 14,
-                    ),
-                    hintStyle: TextStyle(
-                      color: grey, // Changed to grey6
-                      fontSize: isTablet ? 16 : 14,
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(color: primaryColor, width: 2),
-                    ),
-                  ),
-                ),
+                _buildNameField(isTablet),
+
                 SizedBox(height: isLandscape ? height * 0.015 : height * 0.02),
 
-                // Email Field
-                Text(
-                  'Email'.tr,
-                  style: TextStyle(
-                    fontSize: isTablet ? 18 : 16 * textScaleFactor,
-                    fontWeight: FontWeight.w500,
-                    color: theme.brightness == Brightness.dark
-                        ? Colors.grey
-                        : Colors.black,
-                  ),
-                ),
+                /// Email field
+                _buildLabel('Email'.tr, isTablet, textScaleFactor, theme),
                 SizedBox(height: height * 0.01),
-                TextFormField(
-                  controller: _emailController,
-                  keyboardType: TextInputType.emailAddress,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Email is required".tr;
-                    }
-                    final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+');
-                    if (!emailRegex.hasMatch(value)) {
-                      return "Enter a valid email".tr;
-                    }
-                    return null;
-                  },
-                  style: TextStyle(color: Colors.black),
-                  decoration: InputDecoration(
-                    hintText: 'Enter your email'.tr,
-                    filled: true,
-                    fillColor: white, // Changed to white
+                _buildEmailField(isTablet),
 
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(
-                        color: primaryColor,
-                      ), // Added border color
-                    ),
-                    contentPadding: EdgeInsets.symmetric(
-                      horizontal: isTablet ? 20 : 16,
-                      vertical: isTablet ? 18 : 14,
-                    ),
-                    hintStyle: TextStyle(
-                      color: grey, // Changed to grey
-                      fontSize: isTablet ? 16 : 14,
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(color: primaryColor, width: 2),
-                    ),
-                  ),
-                ),
+                SizedBox(height: isLandscape ? height * 0.015 : height * 0.02),
+
+                /// Password field
+                _buildLabel('Password'.tr, isTablet, textScaleFactor, theme),
+                SizedBox(height: height * 0.01),
+                _buildPasswordField(isTablet),
+
                 SizedBox(height: isLandscape ? height * 0.02 : height * 0.03),
 
-                // Buttons - Adaptive layout based on screen size
+                /// Buttons
                 if (isLandscape && !isTablet)
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -239,6 +171,115 @@ class _DonorLoginDialogState extends State<DonorLoginDialog> {
     );
   }
 
+  /// Helper to build labels
+  Widget _buildLabel(
+      String text, bool isTablet, double scale, ThemeData theme) {
+    return Text(
+      text,
+      style: TextStyle(
+        fontSize: isTablet ? 18 : 16 * scale,
+        fontWeight: FontWeight.w500,
+        color: theme.brightness == Brightness.dark
+            ? Colors.grey
+            : Colors.black,
+      ),
+    );
+  }
+
+  /// Name field
+  Widget _buildNameField(bool isTablet) {
+    return TextFormField(
+      style: const TextStyle(color: Colors.black),
+      controller: _nameController,
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return "Name is required".tr;
+        }
+        if (value.length < 2) {
+          return "Name must be at least 2 characters".tr;
+        }
+        return null;
+      },
+      decoration: _inputDecoration('Enter your full name'.tr, isTablet),
+    );
+  }
+
+  /// Email field
+  Widget _buildEmailField(bool isTablet) {
+    return TextFormField(
+      controller: _emailController,
+      keyboardType: TextInputType.emailAddress,
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return "Email is required".tr;
+        }
+        final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+');
+        if (!emailRegex.hasMatch(value)) {
+          return "Enter a valid email".tr;
+        }
+        return null;
+      },
+      style: const TextStyle(color: Colors.black),
+      decoration: _inputDecoration('Enter your email'.tr, isTablet),
+    );
+  }
+
+  /// Password field
+  Widget _buildPasswordField(bool isTablet) {
+    return TextFormField(
+      controller: _passwordController,
+      obscureText: _obscurePassword,
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return "Password is required".tr;
+        }
+        if (value.length < 6) {
+          return "Password must be at least 6 characters".tr;
+        }
+        return null;
+      },
+      style: const TextStyle(color: Colors.black),
+      decoration: _inputDecoration('Enter your password'.tr, isTablet).copyWith(
+        suffixIcon: IconButton(
+          icon: Icon(
+            _obscurePassword ? Icons.visibility_off : Icons.visibility,
+            color: grey,
+          ),
+          onPressed: () {
+            setState(() {
+              _obscurePassword = !_obscurePassword;
+            });
+          },
+        ),
+      ),
+    );
+  }
+
+  /// Input decoration builder
+  InputDecoration _inputDecoration(String hint, bool isTablet) {
+    return InputDecoration(
+      hintText: hint,
+      filled: true,
+      fillColor: white,
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: BorderSide(color: primaryColor),
+      ),
+      contentPadding: EdgeInsets.symmetric(
+        horizontal: isTablet ? 20 : 16,
+        vertical: isTablet ? 18 : 14,
+      ),
+      hintStyle: TextStyle(
+        color: grey,
+        fontSize: isTablet ? 16 : 14,
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: BorderSide(color: primaryColor, width: 2),
+      ),
+    );
+  }
+
   List<Widget> _buildButtons(
     BuildContext context,
     bool isTablet,
@@ -247,9 +288,8 @@ class _DonorLoginDialogState extends State<DonorLoginDialog> {
     return [
       ElevatedButton(
         onPressed: _isLoading ? null : () => Navigator.of(context).pop(),
-
         style: ElevatedButton.styleFrom(
-          backgroundColor: secondaryColor, // Changed to primaryColor
+          backgroundColor: secondaryColor,
           padding: EdgeInsets.symmetric(
             horizontal: isTablet ? 24 : 20,
             vertical: isTablet ? 16 : 12,
@@ -258,25 +298,16 @@ class _DonorLoginDialogState extends State<DonorLoginDialog> {
             borderRadius: BorderRadius.circular(12),
           ),
         ),
-        child: _isLoading
-            ? SizedBox(
-                width: isTablet ? 24 : 20,
-                height: isTablet ? 24 : 20,
-                child: CircularProgressIndicator(
-                  strokeWidth: 2,
-                  valueColor: AlwaysStoppedAnimation<Color>(white),
-                ),
-              )
-            : Text(
-                'Cancel'.tr,
-                style: TextStyle(fontSize: isTablet ? 16 : 14, color: white),
-              ),
+        child: Text(
+          'Cancel'.tr,
+          style: TextStyle(fontSize: isTablet ? 16 : 14, color: white),
+        ),
       ),
       SizedBox(width: width * 0.03),
       ElevatedButton(
         onPressed: _isLoading ? null : _submitForm,
         style: ElevatedButton.styleFrom(
-          backgroundColor: secondaryColor, // Changed to primaryColor
+          backgroundColor: secondaryColor,
           padding: EdgeInsets.symmetric(
             horizontal: isTablet ? 24 : 20,
             vertical: isTablet ? 16 : 12,
@@ -289,7 +320,7 @@ class _DonorLoginDialogState extends State<DonorLoginDialog> {
             ? SizedBox(
                 width: isTablet ? 24 : 20,
                 height: isTablet ? 24 : 20,
-                child: CircularProgressIndicator(
+                child: const CircularProgressIndicator(
                   strokeWidth: 2,
                   valueColor: AlwaysStoppedAnimation<Color>(white),
                 ),

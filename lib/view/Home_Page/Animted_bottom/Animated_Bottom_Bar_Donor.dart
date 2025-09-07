@@ -5,6 +5,7 @@ import 'package:khotwa/view/Home_Page/Animted_bottom/About_page.dart';
 import 'package:khotwa/view/Home_Page/Home_Page/Home_Page_Donor.dart';
 import 'package:khotwa/view/change_password/change_password_page.dart';
 import 'package:khotwa/view/donner/my_donations/my_donations_page.dart';
+import 'package:khotwa/view/event_and_projects/events_and_projects_page.dart';
 import 'package:khotwa/view/settings/settings_page.dart';
 
 class AnimatedBottomBarPageDonor extends StatefulWidget {
@@ -23,12 +24,14 @@ class _AnimatedBottomBarPageDonorState
     _NavItem(icon: Icons.menu, label: 'menu'.tr),
     _NavItem(icon: Icons.home, label: 'home'.tr),
     _NavItem(icon: Icons.volunteer_activism, label: 'My Donation'.tr),
+    _NavItem(icon: Icons.event, label: 'projects events'.tr),
   ];
 
   final List<Widget> _pages = [
-    SizedBox(),         
-    HomePageDonor(),     
-    MyDonationsPage(),     
+    SizedBox(),
+    HomePageDonor(),
+    MyDonationsPage(),
+     EventsAndProjectsPage(),
   ];
 
   void _onIconTap(int index) {

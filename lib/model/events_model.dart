@@ -1,7 +1,8 @@
 import 'package:meta/meta.dart';
 import 'dart:convert';
 
-EventsModel eventsModelFromJson(String str) => EventsModel.fromJson(json.decode(str));
+EventsModel eventsModelFromJson(String str) =>
+    EventsModel.fromJson(json.decode(str));
 String eventsModelToJson(EventsModel data) => json.encode(data.toJson());
 
 class EventsModel {
@@ -32,15 +33,17 @@ class EventsModel {
 class EventModel {
   final int id;
   final String title;
-  final String description;
+  final String? arTitle; // NEW, nullable
+  final String? description;
+  final String? arDescription; // NEW, nullable
   final DateTime date;
   final String time;
   final int durationHours;
   final String location;
-  final double? lat; // nullable
-  final double? lng; // nullable
+  final double? lat;
+  final double? lng;
   final String status;
-  final String? coverImage; // nullable
+  final String? coverImage;
   final int requiredVolunteers;
   final int currentVolunteers;
   final int registeredCount;
@@ -48,14 +51,16 @@ class EventModel {
   final String projectName;
   final DateTime createdAt;
   final DateTime updatedAt;
-  final String? qrToken; // nullable
-  final String? qrTokenExpiresAt; // nullable
-  final String? qrImagePath; // nullable
+  final String? qrToken;
+  final String? qrTokenExpiresAt;
+  final String? qrImagePath;
 
   EventModel({
     required this.id,
     required this.title,
-    required this.description,
+    this.arTitle,
+    this.description,
+    this.arDescription,
     required this.date,
     required this.time,
     required this.durationHours,
@@ -79,14 +84,16 @@ class EventModel {
   factory EventModel.fromJson(Map<String, dynamic> json) => EventModel(
         id: json["id"],
         title: json["title"],
+        arTitle: json["ar_title"],
         description: json["description"],
+        arDescription: json["ar_description"],
         date: DateTime.parse(json["date"]),
         time: json["time"],
         durationHours: json["duration_hours"],
         location: json["location"],
         lat: json["lat"]?.toDouble(),
         lng: json["lng"]?.toDouble(),
-      status: (json["status"] as String?)?.toLowerCase() ?? "unknown",
+        status: (json["status"] as String?)?.toLowerCase() ?? "unknown",
         coverImage: json["cover_image"],
         requiredVolunteers: json["required_volunteers"],
         currentVolunteers: json["current_volunteers"],
@@ -103,7 +110,9 @@ class EventModel {
   Map<String, dynamic> toJson() => {
         "id": id,
         "title": title,
+        "ar_title": arTitle,
         "description": description,
+        "ar_description": arDescription,
         "date": date.toIso8601String(),
         "time": time,
         "duration_hours": durationHours,
@@ -125,18 +134,13 @@ class EventModel {
       };
 }
 
-enum Status {
-  OPEN,
-  CLOSED,
-  COMPLETED,
-  UPCOMING, ACTIVE
-}
+enum Status { OPEN, CLOSED, COMPLETED, UPCOMING, ACTIVE }
 
 final statusValues = EnumValues({
   "open": Status.OPEN,
   "closed": Status.CLOSED,
   "completed": Status.COMPLETED,
-  "upcoming": Status.UPCOMING
+  "upcoming": Status.UPCOMING,
 });
 
 class EnumValues<T> {

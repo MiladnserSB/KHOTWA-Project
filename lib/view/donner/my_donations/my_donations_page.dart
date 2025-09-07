@@ -5,34 +5,52 @@ import 'package:khotwa/model/my_donations_model.dart';
 import 'package:khotwa/shared/constants/colors.dart';
 import 'package:khotwa/view/donner/my_donations/donation_card.dart';
 
-class MyDonationsPage extends StatelessWidget {
+class MyDonationsPage extends StatefulWidget {
   const MyDonationsPage({super.key});
 
   @override
+  State<MyDonationsPage> createState() => _MyDonationsPageState();
+}
+
+class _MyDonationsPageState extends State<MyDonationsPage> {
+  final DonorController controller = Get.find<DonorController>();
+
+  @override
+  void initState() {
+    super.initState();
+    _loadData();
+  }
+
+  Future<void> _loadData() async {
+    await controller.fetchMyDonations();
+  }
+
+  @override
   Widget build(BuildContext context) {
-        final theme = Theme.of(context);
+    final theme = Theme.of(context);
 
     return Scaffold(
-      backgroundColor:  theme.brightness == Brightness.dark
-            ? Colors.black
-            : thirdColor,
+      backgroundColor:
+          theme.brightness == Brightness.dark ? Colors.black : thirdColor,
       appBar: AppBar(
-        backgroundColor:  theme.brightness == Brightness.dark
-            ? primaryColor
-            : secondaryColor,
+        backgroundColor:
+            theme.brightness == Brightness.dark ? primaryColor : secondaryColor,
         elevation: 0,
         leading: IconButton(
-          icon:  Icon(Icons.arrow_back, color:  theme.brightness == Brightness.dark
-            ? Colors.white
-            : Colors.black,),
+          icon: Icon(
+            Icons.arrow_back,
+            color: theme.brightness == Brightness.dark
+                ? Colors.white
+                : Colors.black,
+          ),
           onPressed: () => Navigator.pop(context),
         ),
-        title:  Text(
+        title: Text(
           "My Donations".tr,
           style: TextStyle(
-            color:  theme.brightness == Brightness.dark
-            ? Colors.white
-            : Colors.black,
+            color: theme.brightness == Brightness.dark
+                ? Colors.white
+                : Colors.black,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -48,7 +66,7 @@ class ResponsiveDonationsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final DonorController controller = Get.put(DonorController());
+    final DonorController controller = Get.find<DonorController>();
     final width = MediaQuery.of(context).size.width;
 
     return Obx(() {
@@ -57,7 +75,7 @@ class ResponsiveDonationsList extends StatelessWidget {
       }
 
       if (controller.myDonations.isEmpty) {
-        return  Center(
+        return Center(
           child: Text(
             "No donations found".tr,
             style: TextStyle(fontSize: 16, color: grey),
@@ -65,43 +83,49 @@ class ResponsiveDonationsList extends StatelessWidget {
         );
       }
 
+      // ✅ Mobile layout
       if (width < 600) {
         return ListView.builder(
           padding: const EdgeInsets.all(16),
           itemCount: controller.myDonations.length,
           itemBuilder: (context, index) {
-            return DonationCard(donation: _convertToDonation(controller.myDonations[index]));
+            return DonationCard(
+              donation: _convertToDonation(controller.myDonations[index]),
+            );
           },
         );
-      } else {
-        final crossAxisCount = width > 1024 ? 3 : 2;
-        return Padding(
-          padding: const EdgeInsets.all(24),
-          child: GridView.builder(
-            itemCount: controller.myDonations.length,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: crossAxisCount,
-              crossAxisSpacing: 16,
-              mainAxisSpacing: 16,
-              childAspectRatio: 1.6,
-            ),
-            itemBuilder: (context, index) {
-              return DonationCard(donation: _convertToDonation(controller.myDonations[index]));
-            },
-          ),
-        );
       }
+
+      // ✅ Tablet / Desktop layout
+      final crossAxisCount = width > 1024 ? 3 : 2;
+      return Padding(
+        padding: const EdgeInsets.all(24),
+        child: GridView.builder(
+          itemCount: controller.myDonations.length,
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: crossAxisCount,
+            crossAxisSpacing: 16,
+            mainAxisSpacing: 16,
+            childAspectRatio: 1.6,
+          ),
+          itemBuilder: (context, index) {
+            return DonationCard(
+              donation: _convertToDonation(controller.myDonations[index]),
+            );
+          },
+        ),
+      );
     });
   }
 
-  // Helper method to convert DonationModel to Donation
+  /// ✅ Convert backend model -> UI-friendly model
   Donation _convertToDonation(DonationModel model) {
     return Donation(
-      title: model.project,
-      event: model.event,
-      donorName: model.donorName,
+      title: model.project ??"-",
+      event: model.event ?? "-",
+      donorName: model.donorName ?? "-",
       date: _formatDate(model.donatedAt),
-      amount: double.parse(model.amount),
+      amount: double.tryParse(model.amount) ?? 0,
       paymentMethod: model.method.toLowerCase(),
       status: _getStatusText(model.paymentStatus),
     );
@@ -113,12 +137,12 @@ class ResponsiveDonationsList extends StatelessWidget {
 
   String _getStatusText(String paymentStatus) {
     switch (paymentStatus.toLowerCase()) {
-      case "Completed":
+      case "completed":
       case "success":
         return "Completed";
-      case "Pending":
+      case "pending":
         return "Pending";
-      case "Failed":
+      case "failed":
         return "Failed";
       default:
         return paymentStatus;

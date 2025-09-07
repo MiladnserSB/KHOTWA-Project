@@ -54,8 +54,7 @@ class LoginPage extends StatelessWidget {
                               : "Sign in".tr,
                           onPressed: authController.isLoading.value
                               ? null
-                              // ignore: unnecessary_null_comparison
-                              : () => authController.otp.value != null
+                              : () => authController.otp.value.isNotEmpty
                                     ? authController.loginAfterOTP()
                                     : authController.loginBeforeOTP(),
                           // onPressed: (){Get.to(AnimatedBottomBarPageVolunteer());},

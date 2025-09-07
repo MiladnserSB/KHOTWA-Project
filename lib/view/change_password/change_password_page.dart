@@ -12,7 +12,8 @@ class ChangingPasswordPage extends StatelessWidget {
   ChangingPasswordPage({super.key});
 
   final TextEditingController newPasswordController = TextEditingController();
-  final TextEditingController confirmPasswordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -25,8 +26,10 @@ class ChangingPasswordPage extends StatelessWidget {
     final bool cameFromForgotPassword = args['cameFromForgotPassword'] ?? false;
 
     return Scaffold(
-      backgroundColor: theme.brightness == Brightness.dark ? theme.scaffoldBackgroundColor : thirdColor,
-       resizeToAvoidBottomInset: true,
+      backgroundColor: theme.brightness == Brightness.dark
+          ? theme.scaffoldBackgroundColor
+          : thirdColor,
+      resizeToAvoidBottomInset: true,
       body: SafeArea(
         child: LayoutBuilder(
           builder: (ctx, constraints) {
@@ -36,9 +39,7 @@ class ChangingPasswordPage extends StatelessWidget {
                 vertical: 24,
               ),
               child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  minHeight: constraints.maxHeight,
-                ),
+                constraints: BoxConstraints(minHeight: constraints.maxHeight),
                 child: IntrinsicHeight(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -50,7 +51,6 @@ class ChangingPasswordPage extends StatelessWidget {
                       ),
 
                       const SizedBox(height: 36),
-
 
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -66,32 +66,28 @@ class ChangingPasswordPage extends StatelessWidget {
                           Text(
                             "We are done".tr,
                             style: theme.textTheme.titleMedium?.copyWith(
-                             
-                                  color:  secondaryColor
-           ,
+                              color: secondaryColor,
                               fontWeight: FontWeight.bold,
                               fontSize: screen.size.width * 0.065,
                             ),
                           ),
                           const SizedBox(width: 6),
-                          Icon(
-                            Icons.check_circle,
-                             color: secondaryColor
-          
-                          ),
+                          Icon(Icons.check_circle, color: secondaryColor),
                         ],
                       ),
                       SizedBox(height: screen.size.height * 0.075),
-                      
+
                       AuthCustomButton(
                         title: "Change".tr,
                         onPressed: () {
                           final newPass = newPasswordController.text.trim();
-                          final confirmPass = confirmPasswordController.text.trim();
+                          final confirmPass = confirmPasswordController.text
+                              .trim();
                           if (newPass.isEmpty || confirmPass.isEmpty) {
                             Get.snackbar(
                               "Error".tr,
-                              "Please enter the new password and its confirmation.".tr,
+                              "Please enter the new password and its confirmation."
+                                  .tr,
                             );
                             return;
                           }
@@ -117,11 +113,7 @@ class ChangingPasswordPage extends StatelessWidget {
                               confirmPassword: confirmPass,
                             );
                           } else {
-                            authController.changePassword(
-                              newPass,
-                              confirmPass,
-                            );
-                            
+                            authController.changePassword(newPass, confirmPass);
                           }
                         },
                       ),

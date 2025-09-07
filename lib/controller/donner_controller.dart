@@ -1,25 +1,38 @@
 import 'package:get/get.dart';
 import 'package:khotwa/model/create_donation_model.dart';
+import 'package:khotwa/model/events_model.dart';
 import 'package:khotwa/model/my_donations_model.dart';
+import 'package:khotwa/model/projects_model.dart';
+import 'package:khotwa/model/top_projects_model.dart';
 import 'package:khotwa/service/donner_service.dart';
 import 'package:khotwa/widgets/custom_snack_bar.dart';
-
 
 class DonorController extends GetxController {
   final DonationService _donationService = DonationService();
 
   var myDonations = <DonationModel>[].obs;
+  var allEvents = <EventModel>[].obs;
+  var topProjects = <TopProject>[].obs;
+  var allProjects = <ProjectModel>[].obs;
   var isLoading = false.obs;
+  var isLoadingDonations = false.obs;
+  var isLoadingEvents = false.obs;
+  var isLoadingProjects = false.obs;
+  var isLoadingTopProjects = false.obs;
 
   @override
   void onInit() {
-    fetchMyDonations();
     super.onInit();
+        fetchAllEvents();
+    fetchTopProjects();
+    fetchAllProjects();
+    fetchMyDonations();
+
   }
 
   Future<void> fetchMyDonations() async {
     try {
-      isLoading(true);
+      isLoadingDonations.value = true;
       final donationsResponse = await _donationService.getMyDonations();
       myDonations.assignAll(donationsResponse.data);
     } catch (e) {
@@ -29,16 +42,15 @@ class DonorController extends GetxController {
         message: 'Failed to fetch donations',
       );
     } finally {
-      isLoading(false);
+      isLoadingDonations.value = false;
     }
   }
 
   Future<CreateDonationModel?> createDonation(Map<String, dynamic> donationData) async {
     try {
-      isLoading(true);
+      isLoadingDonations.value = true;
       final createdDonation = await _donationService.createDonation(donationData);
 
-      // Refresh donations
       await fetchMyDonations();
 
       CustomSnackbar.show(
@@ -56,16 +68,15 @@ class DonorController extends GetxController {
       );
       return null;
     } finally {
-      isLoading(false);
+      isLoadingDonations.value = false;
     }
   }
 
   Future<void> confirmDonation(Map<String, dynamic> paymentData) async {
     try {
-      isLoading(true);
+      isLoadingDonations.value = true;
       await _donationService.confirmDonation(paymentData);
 
-      // Refresh donations
       await fetchMyDonations();
 
       CustomSnackbar.show(
@@ -80,7 +91,43 @@ class DonorController extends GetxController {
         message: 'Failed to confirm donation',
       );
     } finally {
-      isLoading(false);
+      isLoadingDonations.value = false;
+    }
+  }
+
+  Future<void> fetchAllEvents() async {
+    try {
+      isLoadingEvents.value = true;
+      final events = await _donationService.getAllEvents();
+      allEvents.assignAll(events);
+    } catch (e) {
+      // handle error if needed
+    } finally {
+      isLoadingEvents.value = false;
+    }
+  }
+
+  Future<void> fetchAllProjects() async {
+    try {
+      isLoadingProjects.value = true;
+      final projects = await _donationService.getAllProjects();
+      allProjects.assignAll(projects);
+    } catch (e) {
+      // handle error if needed
+    } finally {
+      isLoadingProjects.value = false;
+    }
+  }
+
+  Future<void> fetchTopProjects() async {
+    try {
+      isLoadingTopProjects.value = true;
+      final projects = await _donationService.getTopProjects();
+      topProjects.assignAll(projects);
+    } catch (e) {
+      // handle error if needed
+    } finally {
+      isLoadingTopProjects.value = false;
     }
   }
 }

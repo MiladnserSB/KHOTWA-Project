@@ -2,67 +2,69 @@
 //
 //     final myDonations = myDonationsFromJson(jsonString);
 
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
-MyDonations myDonationsFromJson(String str) => MyDonations.fromJson(json.decode(str));
+MyDonations myDonationsFromJson(String str) =>
+    MyDonations.fromJson(json.decode(str));
 
 String myDonationsToJson(MyDonations data) => json.encode(data.toJson());
 
 class MyDonations {
-    final bool status;
-    final String message;
-    final List<DonationModel> data;
+  final bool status;
+  final String message;
+  final List<DonationModel> data;
 
-    MyDonations({
-        required this.status,
-        required this.message,
-        required this.data,
-    });
+  MyDonations({
+    required this.status,
+    required this.message,
+    required this.data,
+  });
 
-    factory MyDonations.fromJson(Map<String, dynamic> json) => MyDonations(
+  factory MyDonations.fromJson(Map<String, dynamic> json) => MyDonations(
         status: json["status"],
         message: json["message"],
-        data: List<DonationModel>.from(json["data"].map((x) => DonationModel.fromJson(x))),
-    );
+        data: List<DonationModel>.from(
+          json["data"].map((x) => DonationModel.fromJson(x)),
+        ),
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "status": status,
         "message": message,
         "data": List<dynamic>.from(data.map((x) => x.toJson())),
-    };
+      };
 }
 
 class DonationModel {
-    final int id;
-    final String type;
-    final String amount;
-    final dynamic description;
-    final String donorName;
-    final String donorEmail;
-    final String method;
-    final String paymentStatus;
-    final dynamic transactionId;
-    final String project;
-    final String event;
-    final DateTime donatedAt;
+  final int id;
+  final String type;
+  final String amount;
+  final String? description;
+  final String? donorName;
+  final String donorEmail;
+  final String method;
+  final String paymentStatus;
+  final String? transactionId;
+  final String? project;
+  final String? event;
+  final DateTime donatedAt;
 
-    DonationModel({
-        required this.id,
-        required this.type,
-        required this.amount,
-        required this.description,
-        required this.donorName,
-        required this.donorEmail,
-        required this.method,
-        required this.paymentStatus,
-        required this.transactionId,
-        required this.project,
-        required this.event,
-        required this.donatedAt,
-    });
+  DonationModel({
+    required this.id,
+    required this.type,
+    required this.amount,
+    this.description,
+    this.donorName,
+    required this.donorEmail,
+    required this.method,
+    required this.paymentStatus,
+    this.transactionId,
+    this.project,
+    this.event,
+    required this.donatedAt,
+  });
 
-    factory DonationModel.fromJson(Map<String, dynamic> json) => DonationModel(
+  factory DonationModel.fromJson(Map<String, dynamic> json) => DonationModel(
         id: json["id"],
         type: json["type"],
         amount: json["amount"],
@@ -75,9 +77,9 @@ class DonationModel {
         project: json["project"],
         event: json["event"],
         donatedAt: DateTime.parse(json["donated_at"]),
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "id": id,
         "type": type,
         "amount": amount,
@@ -90,5 +92,5 @@ class DonationModel {
         "project": project,
         "event": event,
         "donated_at": donatedAt.toIso8601String(),
-    };
+      };
 }

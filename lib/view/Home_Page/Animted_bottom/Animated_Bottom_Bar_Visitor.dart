@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:khotwa/shared/constants/base_url.dart';
 import 'package:khotwa/shared/constants/colors.dart';
 import 'package:khotwa/view/Home_Page/Animted_bottom/About_page.dart';
-import 'package:khotwa/view/Home_Page/Animted_bottom/Animated_Bottom_Bar_Donor.dart';
+import 'package:khotwa/view/Home_Page/Cards/donor_login_dialog.dart';
 import 'package:khotwa/view/Home_Page/Home_Page/Home_Page_Visitor.dart';
-import 'package:khotwa/view/change_password/change_password_page.dart';
-import 'package:khotwa/view/donner/my_donations/my_donations_page.dart';
-import 'package:khotwa/view/login/login_page.dart';
+import 'package:khotwa/view/event_and_projects/events_and_projects_page.dart';
 import 'package:khotwa/view/settings/settings_page.dart';
 
 class AnimatedBottomBarPageVisitor extends StatefulWidget {
@@ -18,21 +17,24 @@ class AnimatedBottomBarPageVisitor extends StatefulWidget {
 class _AnimatedBottomBarPageVisitorState
     extends State<AnimatedBottomBarPageVisitor> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  int _selectedIndex = 2;
+  int _selectedIndex = 1;
   String _selectedDrawerItem = '';
+  
 
   final List<_NavItem> _items = [
     _NavItem(icon: Icons.menu, label: 'menu'.tr),
-    _NavItem(icon: Icons.login, label: 'login'.tr),
     _NavItem(icon: Icons.home, label: 'home'.tr),
-    _NavItem(icon: Icons.volunteer_activism, label: 'My Donation'.tr),
+    _NavItem(icon: Icons.login, label: 'register'.tr),
+    _NavItem(icon: Icons.event, label: 'projects events'.tr),
+    // _NavItem(icon: Icons.volunteer_activism, label: 'My Donation'.tr),
   ];
 
   final List<Widget> _pages = [
     SizedBox(),
-    LoginPage(),
     HomePageVisitor(),
-    MyDonationsPage(),
+    DonorLoginDialog(),
+    EventsAndProjectsPage(),
+    // MyDonationsPage(),
   ];
 
   void _onIconTap(int index) {
@@ -60,6 +62,7 @@ class _AnimatedBottomBarPageVisitorState
 
   @override
   Widget build(BuildContext context) {
+    roleID=-1;
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
 

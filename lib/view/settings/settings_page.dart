@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:flag/flag.dart';
 import 'package:khotwa/controller/Settings_Lang_Controller.dart';
 import 'package:khotwa/controller/theme_controller.dart';
 import 'package:khotwa/shared/constants/colors.dart';
@@ -10,7 +11,7 @@ class SettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-      final theme = Theme.of(context); 
+    final theme = Theme.of(context);
 
     final themeController = Get.find<ThemeController>();
     final languageController = Get.find<SettingsLangController>();
@@ -21,25 +22,29 @@ class SettingsPage extends StatelessWidget {
       final textColor = isDark ? Colors.white : Colors.black;
 
       return Scaffold(
-        backgroundColor:  theme.brightness == Brightness.dark ? Colors.black : thirdColor,
+        backgroundColor:
+            theme.brightness == Brightness.dark ? Colors.black : thirdColor,
         appBar: AppBar(
-        backgroundColor:  theme.brightness == Brightness.dark ? primaryColor : secondaryColor,
+          backgroundColor:
+              theme.brightness == Brightness.dark ? primaryColor : secondaryColor,
           title: Text(
             'settings'.tr,
             style: TextStyle(
-            
-              color:     theme.brightness == Brightness.dark ? Colors.white : Colors.black,
-      
+              color: theme.brightness == Brightness.dark
+                  ? Colors.white
+                  : Colors.black,
               fontWeight: FontWeight.bold,
-              
               fontSize: 20,
             ),
           ),
           centerTitle: true,
           elevation: 0,
-leading:   BackButton(color:   theme.brightness == Brightness.dark
-                        ? Colors.white
-                        : Colors.black,),         ),
+          leading: BackButton(
+            color: theme.brightness == Brightness.dark
+                ? Colors.white
+                : Colors.black,
+          ),
+        ),
         body: ListView(
           padding: EdgeInsets.symmetric(
             horizontal: MediaQuery.of(context).size.width * 0.05,
@@ -96,8 +101,8 @@ leading:   BackButton(color:   theme.brightness == Brightness.dark
                       borderRadius: BorderRadius.circular(20),
                       borderSide: BorderSide(color: textColor),
                     ),
-                    contentPadding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 10, vertical: 5),
                   ),
                   style: TextStyle(color: textColor, fontSize: 14),
                   onChanged: (String? newValue) {
@@ -105,9 +110,7 @@ leading:   BackButton(color:   theme.brightness == Brightness.dark
                       languageController.changeLanguage(newValue);
 
                       String langLabel =
-                          newValue == 'en' ? 'english'.tr : 'arabic'.tr;
-
-                      Get.snackbar(
+                          newValue == 'en' ? 'english'.tr : 'arabic'.tr;Get.snackbar(
                         "Language Changed".tr,
                         langLabel,
                         snackPosition: SnackPosition.BOTTOM,
@@ -116,9 +119,9 @@ leading:   BackButton(color:   theme.brightness == Brightness.dark
                   },
                   items: [
                     _buildLanguageItem(
-                        "en", 'English'.tr, "assets/images/english.png", textColor),
+                        "en", 'English'.tr, "GB", textColor), // 🇬🇧
                     _buildLanguageItem(
-                        "ar", 'Arabic'.tr, "assets/images/syria.png", textColor),
+                        "ar", 'Arabic'.tr, "SA", textColor), // 🇸🇦
                   ],
                   dropdownStyleData: DropdownStyleData(
                     maxHeight: 200,
@@ -126,14 +129,15 @@ leading:   BackButton(color:   theme.brightness == Brightness.dark
                     padding: EdgeInsets.zero,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-  color: theme.brightness == Brightness.dark
-                                ? primaryColor
-                                :   secondaryColor,                    ),
+                      color: theme.brightness == Brightness.dark
+                          ? primaryColor
+                          : secondaryColor,
+                    ),
                     elevation: 8,
                   ),
-                  menuItemStyleData: MenuItemStyleData(
+                  menuItemStyleData: const MenuItemStyleData(
                     height: 40,
-                    padding: const EdgeInsets.symmetric(horizontal: 14),
+                    padding: EdgeInsets.symmetric(horizontal: 14),
                   ),
                   iconStyleData: IconStyleData(
                     icon: const Icon(Icons.keyboard_arrow_down),
@@ -142,10 +146,8 @@ leading:   BackButton(color:   theme.brightness == Brightness.dark
                   ),
                   selectedItemBuilder: (BuildContext context) {
                     return [
-                      _buildSelectedItem(
-                          'English'.tr, "assets/images/english.png", textColor),
-                      _buildSelectedItem(
-                          'Arabic'.tr, "assets/images/syria.png", textColor),
+                      _buildSelectedItem('English'.tr, "GB", textColor),
+                      _buildSelectedItem('Arabic'.tr, "SA", textColor),
                     ];
                   },
                 )),
@@ -168,26 +170,36 @@ leading:   BackButton(color:   theme.brightness == Brightness.dark
   }
 
   DropdownMenuItem<String> _buildLanguageItem(
-      String code, String label, String assetPath, Color textColor) {
+      String code, String label, String countryCode, Color textColor) {
     return DropdownMenuItem(
       value: code,
       child: Row(
         children: [
-          Image.asset(assetPath, width: 24, height: 24),
+          Flag.fromString(
+            countryCode,
+            height: 20,
+            width: 30,
+            fit: BoxFit.fill,
+          ),
           const SizedBox(width: 8),
           Text(
             label,
-            style: TextStyle(color: textColor,fontSize: 15),
+            style: TextStyle(color: textColor, fontSize: 15),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildSelectedItem(String label, String assetPath, Color textColor) {
+  Widget _buildSelectedItem(String label, String countryCode, Color textColor) {
     return Row(
       children: [
-        Image.asset(assetPath, width: 24, height: 24),
+        Flag.fromString(
+          countryCode,
+          height: 20,
+          width: 30,
+          fit: BoxFit.fill,
+        ),
         const SizedBox(width: 8),
         Text(
           label,

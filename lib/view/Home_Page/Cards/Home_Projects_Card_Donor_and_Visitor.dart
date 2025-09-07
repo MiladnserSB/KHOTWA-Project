@@ -223,7 +223,7 @@ class HomeProjectsCardDonorAndVisitor extends StatelessWidget {
                                       ),
                                     ),
                                     child: Text(
-                                      "Login".tr,
+                                      "register".tr,
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         color: Colors.white,

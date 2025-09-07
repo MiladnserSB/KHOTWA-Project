@@ -9,11 +9,11 @@ class OtpInputSection extends StatelessWidget {
   final Size size;
   final Function(String) onSubmit;
 
-   OtpInputSection({super.key, required this.size, required this.onSubmit});
-AuthController authController= Get.find<AuthController>();
+  OtpInputSection({super.key, required this.size, required this.onSubmit});
+  AuthController authController = Get.find<AuthController>();
   @override
   Widget build(BuildContext context) {
-            final theme = Theme.of(context);
+    final theme = Theme.of(context);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -22,7 +22,12 @@ AuthController authController= Get.find<AuthController>();
           alignment: Alignment.centerLeft,
           child: Text(
             "Enter the 5-Digit".tr,
-            style: TextStyle(color:  theme.brightness == Brightness.dark ? Colors.white : Colors.black, fontSize: size.width * 0.038),
+            style: TextStyle(
+              color: theme.brightness == Brightness.dark
+                  ? Colors.white
+                  : Colors.black,
+              fontSize: size.width * 0.038,
+            ),
           ),
         ),
         SizedBox(height: size.height * 0.015),
@@ -38,21 +43,32 @@ AuthController authController= Get.find<AuthController>();
           fillColor: Colors.grey[300]!,
           cursorColor: secondaryColor,
           keyboardType: TextInputType.number,
+          onCodeChanged: (code) {
+            authController.otp.value = code;
+          },
+
+          // 👇 also call onSubmit when finished
           onSubmit: onSubmit,
         ),
+
         SizedBox(height: size.height * 0.025),
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Text(
               "Don't Recieve Code".tr,
-              style: TextStyle(color:  theme.brightness == Brightness.dark ? Colors.white : Colors.black, fontSize: size.width * 0.035),
+              style: TextStyle(
+                color: theme.brightness == Brightness.dark
+                    ? Colors.white
+                    : Colors.black,
+                fontSize: size.width * 0.035,
+              ),
             ),
             const SizedBox(width: 5),
             GestureDetector(
               onTap: () {
                 authController.loginBeforeOTP();
-             },
+              },
               child: Text(
                 "Resend".tr,
                 style: TextStyle(

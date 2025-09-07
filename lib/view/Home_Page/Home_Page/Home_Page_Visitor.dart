@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:khotwa/controller/Search_controller.dart';
+import 'package:khotwa/controller/visitor_controller.dart';
 import 'package:khotwa/shared/constants/colors.dart';
 import 'package:khotwa/view/Home_Page/Cards/Home_Events_Card.dart';
 import 'package:khotwa/view/Home_Page/Cards/Home_Person_Card.dart';
@@ -9,6 +10,7 @@ import 'package:khotwa/view/Search/Search_results_page.dart';
 import 'package:khotwa/view/event_and_projects/events_and_projects_page.dart';
 import 'package:khotwa/view/notifications/notifications_list_page.dart';
 import 'package:khotwa/view/profile/profile_page.dart';
+import 'package:khotwa/widgets/custom_progress_indicator.dart';
 
 class HomePageVisitor extends StatefulWidget {
   @override
@@ -18,7 +20,9 @@ class HomePageVisitor extends StatefulWidget {
 class _HomePageVisitorState extends State<HomePageVisitor> {
   final FocusNode _focusNode = FocusNode();
   final TextEditingController _controller = TextEditingController();
-
+  final VisitorController visitorController = Get.put(
+    VisitorController(),
+  );
   final ScrollController _myEventScrollController = ScrollController();
   final ScrollController _recommendedScrollController = ScrollController();
   final ScrollController _projectScrollController = ScrollController();
@@ -48,8 +52,14 @@ class _HomePageVisitorState extends State<HomePageVisitor> {
         _projectScroll = _projectScrollController.offset;
       });
     });
+    _loadData();
   }
 
+  Future<void> _loadData() async {
+    await visitorController.fetchTopProjects();
+    await visitorController.fetchAllEvents();
+    await visitorController.fetchAllProjects();
+  }
   @override
   void dispose() {
     _focusNode.dispose();
@@ -274,132 +284,132 @@ class _HomePageVisitorState extends State<HomePageVisitor> {
                 ),
               ),
 
-              const SizedBox(height: 10),
+              // const SizedBox(height: 10),
 
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "my events".tr,
-                    style: subtitleStyle.copyWith(
-                      color: theme.brightness == Brightness.dark
-                          ? Colors.white
-                          : Colors.black,
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => EventsAndProjectsPage(),
-                        ),
-                      );
-                    },
-                    child: Text(
-                      "view all".tr,
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: theme.brightness == Brightness.dark
-                            ? Colors.white
-                            : primaryColor,
-                        fontFamily: 'DG Heaven',
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //   children: [
+              //     Text(
+              //       "my events".tr,
+              //       style: subtitleStyle.copyWith(
+              //         color: theme.brightness == Brightness.dark
+              //             ? Colors.white
+              //             : Colors.black,
+              //       ),
+              //     ),
+              //     GestureDetector(
+              //       onTap: () {
+              //         Navigator.push(
+              //           context,
+              //           MaterialPageRoute(
+              //             builder: (_) => EventsAndProjectsPage(),
+              //           ),
+              //         );
+              //       },
+              //       child: Text(
+              //         "view all".tr,
+              //         style: TextStyle(
+              //           fontSize: 13,
+              //           color: theme.brightness == Brightness.dark
+              //               ? Colors.white
+              //               : primaryColor,
+              //           fontFamily: 'DG Heaven',
+              //         ),
+              //       ),
+              //     ),
+              //   ],
+              // ),
+              // const SizedBox(height: 10),
 
-              SizedBox(
-                height: 330,
-                child: ListView.separated(
-                  controller: _myEventScrollController,
-                  scrollDirection: Axis.horizontal,
-                  itemCount: myeventsList.length,
-                  separatorBuilder: (_, __) => const SizedBox(width: 10),
-                  itemBuilder: (context, index) {
-                    final event = myeventsList[index];
-                    double scale = _calculateScale(_myEventScroll, index, 220);
-                    return Transform.scale(
-                      scale: scale,
-                      child: HomeEventsCard(
-                        title: event['title']!,
-                        image: event['image']!,
-                        volunteersCount: 12,
-                        status: 'accept',
-                        requiredVolunteers: 1,
-                      ),
-                    );
-                  },
-                ),
-              ),
+              // SizedBox(
+              //   height: 330,
+              //   child: ListView.separated(
+              //     controller: _myEventScrollController,
+              //     scrollDirection: Axis.horizontal,
+              //     itemCount: myeventsList.length,
+              //     separatorBuilder: (_, __) => const SizedBox(width: 10),
+              //     itemBuilder: (context, index) {
+              //       final event = myeventsList[index];
+              //       double scale = _calculateScale(_myEventScroll, index, 220);
+              //       return Transform.scale(
+              //         scale: scale,
+              //         child: HomeEventsCard(
+              //           title: event['title']!,
+              //           image: event['image']!,
+              //           volunteersCount: 12,
+              //           status: 'accept',
+              //           requiredVolunteers: 1,
+              //         ),
+              //       );
+              //     },
+              //   ),
+              // ),
 
-              const SizedBox(height: 25),
+              // const SizedBox(height: 25),
 
-              // Recommended Events
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Recommended".tr,
-                    style: subtitleStyle.copyWith(
-                      color: theme.brightness == Brightness.dark
-                          ? Colors.white
-                          : Colors.black,
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => EventsAndProjectsPage(),
-                        ),
-                      );
-                    },
-                    child: Text(
-                      "view all".tr,
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: theme.brightness == Brightness.dark
-                            ? Colors.white
-                            : primaryColor,
-                        fontFamily: 'DG Heaven',
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
+              // // Recommended Events
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //   children: [
+              //     Text(
+              //       "Recommended".tr,
+              //       style: subtitleStyle.copyWith(
+              //         color: theme.brightness == Brightness.dark
+              //             ? Colors.white
+              //             : Colors.black,
+              //       ),
+              //     ),
+              //     GestureDetector(
+              //       onTap: () {
+              //         Navigator.push(
+              //           context,
+              //           MaterialPageRoute(
+              //             builder: (_) => EventsAndProjectsPage(),
+              //           ),
+              //         );
+              //       },
+              //       child: Text(
+              //         "view all".tr,
+              //         style: TextStyle(
+              //           fontSize: 13,
+              //           color: theme.brightness == Brightness.dark
+              //               ? Colors.white
+              //               : primaryColor,
+              //           fontFamily: 'DG Heaven',
+              //         ),
+              //       ),
+              //     ),
+              //   ],
+              // ),
+              // const SizedBox(height: 10),
 
-              SizedBox(
-                height: 330,
-                child: ListView.separated(
-                  controller: _recommendedScrollController,
-                  scrollDirection: Axis.horizontal,
-                  itemCount: myeventsList.length,
-                  separatorBuilder: (_, __) => const SizedBox(width: 10),
-                  itemBuilder: (context, index) {
-                    final event = myeventsList[index];
-                    double scale = _calculateScale(
-                      _recommendedScroll,
-                      index,
-                      240,
-                    );
-                    return Transform.scale(
-                      scale: scale,
-                      child: HomeEventsCard(
-                        title: event['title']!,
-                        image: event['image']!,
-                        volunteersCount: 12,
-                        status: 'accept',
-                        requiredVolunteers: 1,
-                      ),
-                    );
-                  },
-                ),
-              ),
+              // SizedBox(
+              //   height: 330,
+              //   child: ListView.separated(
+              //     controller: _recommendedScrollController,
+              //     scrollDirection: Axis.horizontal,
+              //     itemCount: myeventsList.length,
+              //     separatorBuilder: (_, __) => const SizedBox(width: 10),
+              //     itemBuilder: (context, index) {
+              //       final event = myeventsList[index];
+              //       double scale = _calculateScale(
+              //         _recommendedScroll,
+              //         index,
+              //         240,
+              //       );
+              //       return Transform.scale(
+              //         scale: scale,
+              //         child: HomeEventsCard(
+              //           title: event['title']!,
+              //           image: event['image']!,
+              //           volunteersCount: 12,
+              //           status: 'accept',
+              //           requiredVolunteers: 1,
+              //         ),
+              //       );
+              //     },
+              //   ),
+              // ),
 
               const SizedBox(height: 25),
 
@@ -417,12 +427,12 @@ class _HomePageVisitorState extends State<HomePageVisitor> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => EventsAndProjectsPage(),
-                        ),
-                      );
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (_) => EventsAndProjectsPage(),
+                      //   ),
+                      // );
                     },
                     child: Text(
                       "view all".tr,
@@ -439,30 +449,40 @@ class _HomePageVisitorState extends State<HomePageVisitor> {
               ),
               const SizedBox(height: 10),
 
-              SizedBox(
-                height: 370,
-                child: ListView.separated(
-                  controller: _projectScrollController,
-                  scrollDirection: Axis.horizontal,
-                  itemCount: projectsList.length,
-                  separatorBuilder: (_, __) => const SizedBox(width: 10),
-                  itemBuilder: (context, index) {
-                    final project = projectsList[index];
-                    double scale = _calculateScale(_projectScroll, index, 260);
-                    return Transform.scale(
-                      scale: scale,
-                      child: HomeProjectsCardDonorAndVisitor(
-                        name: project['name'],
-                        organization: project['organization'],
-                        paid: project['paid'],
-                        total: project['total'],
-                      ),
-                    );
-                  },
-                ),
-              ),
+             Obx(() {
+  if (visitorController.topProjects.isEmpty) {
+    return const Center(
+      child: CustomProgressIndicator(),
+    );
+  }
 
-              const SizedBox(height: 30),
+  return SizedBox(
+    height: 370,
+    child: ListView.separated(
+      controller: _projectScrollController,
+      scrollDirection: Axis.horizontal,
+      itemCount: visitorController.topProjects.length,
+      separatorBuilder: (_, __) => const SizedBox(width: 10),
+      itemBuilder: (context, index) {
+        final project = visitorController.topProjects[index];
+        double scale = _calculateScale(_projectScroll, index, 260);
+
+        return Transform.scale(
+          scale: scale,
+          child: HomeProjectsCardDonorAndVisitor(
+            name: project.name,
+            organization: project.organization,
+            paid: project.paid.toDouble(),
+            total: project.activityScore
+                .toDouble(), // 🔹 use real total if available in API
+          ),
+        );
+      },
+    ),
+  );
+}),
+
+              const SizedBox(height: 10),
             ],
           ),
         ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:khotwa/shared/constants/colors.dart';
+import 'package:khotwa/view/Home_Page/Cards/donor_login_dialog.dart';
 import 'package:khotwa/view/event_and_projects/events_and_projects_page.dart';
 import 'package:khotwa/view/event_and_projects/project_details/event_card_information.dart';
 import 'package:khotwa/model/projects_model.dart'; // Import your ProjectModel
@@ -9,7 +10,10 @@ import 'package:intl/intl.dart';
 class ProjectDetailsPage extends StatefulWidget {
   final ProjectModel project; // Add ProjectModel parameter
 
-  const ProjectDetailsPage({super.key, required this.project}); // Update constructor
+  const ProjectDetailsPage({
+    super.key,
+    required this.project,
+  }); // Update constructor
 
   @override
   State<ProjectDetailsPage> createState() => _ProjectDetailsPageState();
@@ -40,69 +44,81 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
     return DateFormat('MMMM/dd/yyyy').format(date);
   }
 
-String _getStatusText(String status) {
-  switch (status.toLowerCase()) {
-    case "open":
-      return 'Open'.tr;
-    case "closed":
-      return 'Closed'.tr;
-    case "completed":
-      return 'Completed'.tr;
-    case "upcoming":
-      return 'Upcoming'.tr;
-    case "active":
-      return 'Active'.tr;
-    case "postponed":
-      return 'Postponed'.tr;
-    default:
-      return 'Unknown'.tr;
+  String _getStatusText(String status) {
+    switch (status.toLowerCase()) {
+      case "open":
+        return 'Open'.tr;
+      case "closed":
+        return 'Closed'.tr;
+      case "completed":
+        return 'Completed'.tr;
+      case "upcoming":
+        return 'Upcoming'.tr;
+      case "active":
+        return 'Active'.tr;
+      case "postponed":
+        return 'Postponed'.tr;
+      default:
+        return 'Unknown'.tr;
+    }
   }
-}
 
-Color _getStatusColor(String status) {
-  switch (status.toLowerCase()) {
-    case "open":
-    case "active":
-      return Colors.green;
-    case "closed":
-      return Colors.red;
-    case "completed":
-      return Colors.blue;
-    case "upcoming":
-      return Colors.orange;
-    case "postponed":
-      return Colors.orange;
-    default:
-      return Colors.grey;
+  Color _getStatusColor(String status) {
+    switch (status.toLowerCase()) {
+      case "open":
+      case "active":
+        return Colors.green;
+      case "closed":
+        return Colors.red;
+      case "completed":
+        return Colors.blue;
+      case "upcoming":
+        return Colors.orange;
+      case "postponed":
+        return Colors.orange;
+      default:
+        return Colors.grey;
+    }
   }
-}
 
   @override
   Widget build(BuildContext context) {
- 
     final size = MediaQuery.of(context).size;
     final scaleFactor = size.width / 375; // base width = iPhone 11
     final itemWidth = size.width * 0.75;
     final theme = Theme.of(context);
-    
-    final double progress = widget.project.targetDonation == 0 ? 0 : widget.project.donatedAmount / widget.project.targetDonation;
-   print(progress);
+
+    final double progress = widget.project.targetDonation == 0
+        ? 0
+        : widget.project.donatedAmount / widget.project.targetDonation;
+    print(progress);
     return Scaffold(
-      backgroundColor: theme.brightness == Brightness.dark ? theme.scaffoldBackgroundColor : thirdColor,
+      backgroundColor: theme.brightness == Brightness.dark
+          ? theme.scaffoldBackgroundColor
+          : thirdColor,
       appBar: AppBar(
-        backgroundColor: theme.brightness == Brightness.dark ? theme.scaffoldBackgroundColor : thirdColor,
+        backgroundColor: theme.brightness == Brightness.dark
+            ? theme.scaffoldBackgroundColor
+            : thirdColor,
         elevation: 0,
         centerTitle: true,
         title: Text(
           'Project Details'.tr,
           style: TextStyle(
-            color: theme.brightness == Brightness.dark ? Colors.white : textBlack,
+            color: theme.brightness == Brightness.dark
+                ? Colors.white
+                : textBlack,
             fontWeight: FontWeight.bold,
             fontSize: 18 * scaleFactor,
           ),
         ),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: theme.brightness == Brightness.dark ? Colors.white : textBlack),
+          icon: Icon(
+            Icons.arrow_back,
+            color: theme.brightness == Brightness.dark
+                ? Colors.white
+                : textBlack,
+          ),
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
@@ -115,26 +131,26 @@ Color _getStatusColor(String status) {
             ClipRRect(
               borderRadius: BorderRadius.circular(16),
               child: widget.project.coverImage != null
-                ? Image.network(
-                    widget.project.coverImage!,
-                    width: double.infinity,
-                    height: size.height * 0.25,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Image.asset(
-                        'assets/images/logo1.png',
-                        width: double.infinity,
-                        height: size.height * 0.25,
-                        fit: BoxFit.cover,
-                      );
-                    },
-                  )
-                : Image.asset(
-                    'assets/images/logo1.png',
-                    width: double.infinity,
-                    height: size.height * 0.25,
-                    fit: BoxFit.cover,
-                  ),
+                  ? Image.network(
+                      widget.project.coverImage!,
+                      width: double.infinity,
+                      height: size.height * 0.25,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Image.asset(
+                          'assets/images/logo1.png',
+                          width: double.infinity,
+                          height: size.height * 0.25,
+                          fit: BoxFit.cover,
+                        );
+                      },
+                    )
+                  : Image.asset(
+                      'assets/images/logo1.png',
+                      width: double.infinity,
+                      height: size.height * 0.25,
+                      fit: BoxFit.cover,
+                    ),
             ),
             SizedBox(height: size.height * 0.02),
             Text(
@@ -146,10 +162,12 @@ Color _getStatusColor(String status) {
             ),
             SizedBox(height: size.height * 0.01),
             Text(
-              widget.project.description,
+              widget.project.description!,
               style: TextStyle(
                 fontSize: 14 * scaleFactor,
-                color: theme.brightness == Brightness.dark ? Colors.white : textBlack,
+                color: theme.brightness == Brightness.dark
+                    ? Colors.white
+                    : textBlack,
                 height: 1.5,
               ),
             ),
@@ -190,7 +208,10 @@ Color _getStatusColor(String status) {
               ),
               child: Row(
                 children: [
-                  Icon(Icons.info, color: _getStatusColor(widget.project.status)),
+                  Icon(
+                    Icons.info,
+                    color: _getStatusColor(widget.project.status),
+                  ),
                   SizedBox(width: size.width * 0.02),
                   Text(
                     "${"Status:".tr} ${_getStatusText(widget.project.status)}",
@@ -209,16 +230,18 @@ Color _getStatusColor(String status) {
               style: TextStyle(
                 fontSize: 16 * scaleFactor,
                 fontWeight: FontWeight.bold,
-                color: theme.brightness == Brightness.dark ? Colors.white : textBlack,
+                color: theme.brightness == Brightness.dark
+                    ? Colors.white
+                    : textBlack,
               ),
             ),
             SizedBox(height: size.height * 0.015),
             Container(
               padding: EdgeInsets.all(size.width * 0.04),
               decoration: BoxDecoration(
-                color: theme.brightness == Brightness.dark 
-                  ? Colors.grey[800] 
-                  : Colors.grey[100],
+                color: theme.brightness == Brightness.dark
+                    ? Colors.grey[800]
+                    : Colors.grey[100],
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Column(
@@ -268,14 +291,16 @@ Color _getStatusColor(String status) {
               style: TextStyle(
                 fontSize: 16 * scaleFactor,
                 fontWeight: FontWeight.bold,
-                color: theme.brightness == Brightness.dark ? Colors.white : textBlack,
+                color: theme.brightness == Brightness.dark
+                    ? Colors.white
+                    : textBlack,
               ),
             ),
             SizedBox(height: size.height * 0.015),
             ClipRRect(
               borderRadius: BorderRadius.circular(12),
               child: LinearProgressIndicator(
-                value: progress == null ?0:progress,
+                value: progress == null ? 0 : progress,
                 minHeight: 12,
                 backgroundColor: Colors.grey[300],
                 valueColor: const AlwaysStoppedAnimation<Color>(
@@ -290,7 +315,9 @@ Color _getStatusColor(String status) {
                 Text(
                   "${'Collected:'.tr} \$${widget.project.donatedAmount}",
                   style: TextStyle(
-                    color: theme.brightness == Brightness.dark ? Colors.white : primaryColor,
+                    color: theme.brightness == Brightness.dark
+                        ? Colors.white
+                        : primaryColor,
                     fontWeight: FontWeight.w600,
                     fontSize: 14 * scaleFactor,
                   ),
@@ -310,7 +337,12 @@ Color _getStatusColor(String status) {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  // Handle donation button press
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return const DonorLoginDialog();
+                    },
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: secondaryColor,
@@ -336,21 +368,34 @@ Color _getStatusColor(String status) {
     );
   }
 
-  Widget _buildStatRow(String label, String value, IconData icon, BuildContext context) {
+  Widget _buildStatRow(
+    String label,
+    String value,
+    IconData icon,
+    BuildContext context,
+  ) {
     final theme = Theme.of(context);
     final size = MediaQuery.of(context).size;
-    
+
     return Padding(
       padding: EdgeInsets.symmetric(vertical: size.height * 0.008),
       child: Row(
         children: [
-          Icon(icon, size: 20, color: theme.brightness == Brightness.dark ? Colors.white70 : Colors.grey[700]),
+          Icon(
+            icon,
+            size: 20,
+            color: theme.brightness == Brightness.dark
+                ? Colors.white70
+                : Colors.grey[700],
+          ),
           SizedBox(width: size.width * 0.03),
           Expanded(
             child: Text(
               label,
               style: TextStyle(
-                color: theme.brightness == Brightness.dark ? Colors.white70 : Colors.grey[700],
+                color: theme.brightness == Brightness.dark
+                    ? Colors.white70
+                    : Colors.grey[700],
                 fontSize: 14,
               ),
             ),
@@ -359,7 +404,9 @@ Color _getStatusColor(String status) {
             value,
             style: TextStyle(
               fontWeight: FontWeight.bold,
-              color: theme.brightness == Brightness.dark ? Colors.white : Colors.black,
+              color: theme.brightness == Brightness.dark
+                  ? Colors.white
+                  : Colors.black,
               fontSize: 14,
             ),
           ),
