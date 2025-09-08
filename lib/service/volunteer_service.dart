@@ -8,6 +8,7 @@ import 'package:khotwa/model/projects_model.dart';
 import 'package:khotwa/model/tasks_model.dart';
 import 'package:khotwa/model/top_projects_model.dart';
 import '../shared/constants/base_url.dart';
+import 'package:hive/hive.dart';
 
 class VolunteerService extends GetxService {
   late Dio dio;
@@ -56,8 +57,10 @@ class VolunteerService extends GetxService {
     print('Dio initialized successfully');
   }
 
-  Future<String> _getToken() async {
-    return '11|rlOVAxsob1pHEmFLwZN87HGyZrhbGUIQVSF4gemAcc591461';
+ Future<String> _getToken() async {
+    final box = Hive.box('authBox');
+    final token = box.get('token');
+    return token ?? '';
   }
 
   Future<List<EventModel>> getMyEvents() async {

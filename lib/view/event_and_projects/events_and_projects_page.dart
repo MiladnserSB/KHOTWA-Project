@@ -418,7 +418,7 @@ class EventCard extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Text(
-                      event.title,
+                   currentLanguage.toLowerCase().contains("ar") ? event.arTitle ?? event.title : event.title,
                       style: TextStyle(
                         fontSize: size.width * 0.045,
                         fontWeight: FontWeight.bold,
@@ -620,7 +620,7 @@ class ProjectCard extends StatelessWidget {
               children: [
                 Expanded(
                   child: Text(
-                    project.name,
+                   currentLanguage.toLowerCase().contains("ar") ? project.arName ?? project.name : project.name,
                     style: TextStyle(
                       fontSize: size.width * 0.045,
                       fontWeight: FontWeight.bold,

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:khotwa/shared/constants/base_url.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsLangController extends GetxController {
-  var locale = const Locale('en', 'US').obs;
+  var locale = const Locale('ar', 'SA').obs;
 
   @override
   void onInit() {
@@ -32,6 +33,7 @@ class SettingsLangController extends GetxController {
 
     if (locale.value != newLocale) {
       locale.value = newLocale;
+      currentLanguage = locale.value.languageCode;
       Get.updateLocale(newLocale);
       _saveLocale(newLocale);
     }

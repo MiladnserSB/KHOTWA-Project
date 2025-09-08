@@ -148,7 +148,7 @@ class _HomePageVolunteerState extends State<HomePageVolunteer> {
                     },
                     child: ClipOval(
                       child: Image.asset(
-                        'assets/images/profile1.jpg',
+                        'assets/images/image.png',
                         width: 40,
                         height: 40,
                         fit: BoxFit.cover,

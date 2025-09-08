@@ -25,7 +25,7 @@ class EventDetailsPage extends StatefulWidget {
 class _EventDetailsPageState extends State<EventDetailsPage> {
   late VolunteerController volunteerController;
       
-  final VisitorController visitorController = Get.find<VisitorController>();
+  // final VisitorController visitorController = Get.find<VisitorController>();
   final TextEditingController _commentController = TextEditingController();
   int _selectedRating = 0;
 
@@ -106,7 +106,7 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
 
               /// 🔹 Title
               Text(
-                widget.event.title,
+                 currentLanguage.toLowerCase().contains("ar") ? widget.event.arTitle ?? widget.event.title : widget.event.title,
                 style: const TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
@@ -116,7 +116,7 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
 
               /// 🔹 Description
               Text(
-                widget.event.description!,
+                   currentLanguage.toLowerCase().contains("ar") ? widget.event.arDescription ?? widget.event.description ?? "No description"  : widget.event.description ?? "No description",
                 style: TextStyle(
                   fontSize: 14,
                   color: theme.brightness == Brightness.dark

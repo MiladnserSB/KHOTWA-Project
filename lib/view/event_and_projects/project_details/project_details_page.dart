@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:khotwa/shared/constants/base_url.dart';
 import 'package:khotwa/shared/constants/colors.dart';
 import 'package:khotwa/view/Home_Page/Cards/donor_login_dialog.dart';
 import 'package:khotwa/view/event_and_projects/events_and_projects_page.dart';
@@ -154,7 +155,7 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
             ),
             SizedBox(height: size.height * 0.02),
             Text(
-              widget.project.name,
+               currentLanguage.toLowerCase().contains("ar") ? widget.project.arName ?? widget.project.name : widget.project.name,
               style: TextStyle(
                 fontSize: 20 * scaleFactor,
                 fontWeight: FontWeight.bold,
@@ -162,7 +163,7 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
             ),
             SizedBox(height: size.height * 0.01),
             Text(
-              widget.project.description!,
+              currentLanguage.toLowerCase().contains("ar") ? widget.project.arDescription ?? widget.project.arDescription?? "No description" : widget.project.arDescription ?? "No description",
               style: TextStyle(
                 fontSize: 14 * scaleFactor,
                 color: theme.brightness == Brightness.dark

@@ -39,7 +39,7 @@ class DonationService extends GetxService {
       'Content-Type': 'application/json',
     };
     if (withAuth && token.isNotEmpty) {
-      headers['Authorization'] = 'Bearer 1|BT7jbA0LJzG91mnAccUO04pOqO65eylpYOWWH0bRcb674020';
+      headers['Authorization'] = 'Bearer $token';
     }
     return headers;
   }
@@ -50,7 +50,7 @@ Future<MyDonations> getMyDonations() async {
   final response = await http.get(
     url,
     headers: {
-      'Authorization': 'Bearer 1|BT7jbA0LJzG91mnAccUO04pOqO65eylpYOWWH0bRcb674020',
+      'Authorization': 'Bearer $token',
       "ngrok-skip-browser-warning": "true",
     },
   );
