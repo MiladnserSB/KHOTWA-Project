@@ -24,8 +24,7 @@ class EventDetailsPage extends StatefulWidget {
 
 class _EventDetailsPageState extends State<EventDetailsPage> {
   late VolunteerController volunteerController;
-      
-  // final VisitorController visitorController = Get.find<VisitorController>();
+  late VisitorController visitorController;
   final TextEditingController _commentController = TextEditingController();
   int _selectedRating = 0;
 
@@ -35,7 +34,7 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
     if (roleID != -1){ 
      volunteerController= Get.find<VolunteerController>();
       volunteerController.fetchEventFeedback(widget.event.id);
-  }
+  }else{visitorController= Get.find<VisitorController>();}
   }
   @override
   Widget build(BuildContext context) {

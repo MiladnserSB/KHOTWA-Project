@@ -39,7 +39,7 @@ class EnglishLocalization extends Translations {
       "Theme Changed": "Theme Changed",
       "Language Changed": "Language Changed",
       //HomePageVolunteer
-      "Khotwa": "Khotwa",
+      "Khotwa": "ٍStep",
       "education support": "Education Support",
       "refugee assistance": "Refugee Assistance",
       "community water well": "Community Water Well",

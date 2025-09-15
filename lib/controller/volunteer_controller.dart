@@ -72,7 +72,7 @@ var isFeedbackLoading = false.obs;
       final badges = await _volunteerService.getMyBadges();
       myBadgets.assignAll(badges.cast<BadgetModel>());
     } catch (e) {
-      Get.snackbar('Error', 'Failed to load badges: $e');
+      // Get.snackbar('Error', 'Failed to load badges: $e');
     } finally {
       isLoading(false);
     }
@@ -88,10 +88,10 @@ Future<void> registerForEvent(int eventId) async {
       Get.snackbar('Success', result['message'] ?? 'Registered successfully');
       await fetchMyEvents(); 
     } else {
-      Get.snackbar('Error', result['message'] ?? 'Failed to register');
+      // Get.snackbar('Error', result['message'] ?? 'Failed to register');
     }
   } catch (e) {
-    Get.snackbar('Error', 'Failed to register for event: $e');
+    // Get.snackbar('Error', 'Failed to register for event: $e');
   } finally {
     isLoading.value = false;
   }
@@ -107,10 +107,10 @@ Future<void> withdrawFromEvent(int eventId) async {
       Get.snackbar('Success', result['message'] ?? 'Withdrawn successfully');
       await fetchMyEvents(); 
     } else {
-      Get.snackbar('Error', result['message'] ?? 'Failed to withdraw');
+      // Get.snackbar('Error', result['message'] ?? 'Failed to withdraw');
     }
   } catch (e) {
-    Get.snackbar('Error', 'Failed to withdraw from event: $e');
+    // Get.snackbar('Error', 'Failed to withdraw from event: $e');
   } finally {
     isLoading.value = false;
   }
@@ -155,7 +155,7 @@ Future<void> updateTaskStatus(int taskId, String action) async {
 
     Get.snackbar('Success'.tr, 'Task status updated successfully'.tr);
   } catch (e) {
-    Get.snackbar('Error'.tr, 'Failed to update task status'.tr);
+    // Get.snackbar('Error'.tr, 'Failed to update task status'.tr);
   } finally {
     isLoading(false);
   }
@@ -168,7 +168,7 @@ Future<void> fetchAllEvents() async {
     final events = await _volunteerService.getAllEvents();
     allEvents.assignAll(events);
   } catch (e) {
-    Get.snackbar('Error', 'Failed to fetch all events');
+    // Get.snackbar('Error', 'Failed to fetch all events');
   } finally {
     isLoading(false);
   }
@@ -179,7 +179,7 @@ Future<void> fetchAllProjects() async {
     final projects = await _volunteerService.getAllProjects();
     allProjects.assignAll(projects);
   } catch (e) {
-    Get.snackbar('Error', 'Failed to fetch all projects');
+    // Get.snackbar('Error', 'Failed to fetch all projects');
   } finally {
     isLoading(false);
   }
@@ -189,7 +189,7 @@ Future<void> fetchTopProjects() async {
     final List<TopProject> projects = await _volunteerService.getTopProjects();
     topProjects.assignAll(projects);
   } catch (e) {
-    Get.snackbar('Error', 'Failed to fetch top projects: $e');
+    // Get.snackbar('Error', 'Failed to fetch top projects: $e');
 
   }
 }
@@ -210,7 +210,7 @@ Future<void> fetchRecommendedEvents() async {
       recommendedEvents.assignAll(eventModels);
     }
   } catch (e) {
-    Get.snackbar('Error', 'Failed to fetch recommended events');
+    // Get.snackbar('Error', 'Failed to fetch recommended events');
   }
 }
 
@@ -223,7 +223,7 @@ Future<void> fetchProfile() async {
       await   fetchVolunteerLog();
 
     } catch (e) {
-      Get.snackbar('Error', 'Failed to fetch profile');
+      // Get.snackbar('Error', 'Failed to fetch profile');
     } finally {
       isProfileLoading(false);
     }
@@ -239,7 +239,7 @@ Future<void> fetchProfile() async {
       Get.snackbar('Success', result['message'] ?? 'Profile image updated');
     } catch (e) {
       print(e.toString());
-      Get.snackbar('Error', 'Failed to upload profile image ${e.toString()} ',);
+      // Get.snackbar('Error', 'Failed to upload profile image ${e.toString()} ',);
     } finally {
       isProfileLoading(false);
     }
@@ -251,7 +251,7 @@ Future<void> updateProfile(Map<String, dynamic> profileData) async {
     profile.value = updatedProfile; // update observable profile
     Get.snackbar('Success', updatedProfile.message);
   } catch (e) {
-    Get.snackbar('Error', 'Failed to update profile: $e');
+    // Get.snackbar('Error', 'Failed to update profile: $e');
   } finally {
     isProfileLoading(false);
   }
@@ -264,10 +264,10 @@ Future<void> handleCheckIn(int eventId, String qrToken) async {
       checkInStatus[eventId] = true;
       Get.snackbar('Success', result['message'] ?? 'Checked in successfully');
     } else {
-      Get.snackbar('Error', result['message'] ?? 'Failed to check in');
+      // Get.snackbar('Error', result['message'] ?? 'Failed to check in');
     }
   } catch (e) {
-    Get.snackbar('Error', 'Check-in failed: $e');
+    // Get.snackbar('Error', 'Check-in failed: $e');
   } finally {
     isLoading(false);
   }
@@ -281,10 +281,10 @@ Future<void> handleCheckOut(int eventId, String qrToken) async {
       checkOutStatus[eventId] = true;
       Get.snackbar('Success', result['message'] ?? 'Checked out successfully');
     } else {
-      Get.snackbar('Error', result['message'] ?? 'Failed to check out');
+      // Get.snackbar('Error', result['message'] ?? 'Failed to check out');
     }
   } catch (e) {
-    Get.snackbar('Error', 'Check-out failed: $e');
+    // Get.snackbar('Error', 'Check-out failed: $e');
   } finally {
     isLoading(false);
   }
@@ -300,7 +300,7 @@ Future<void> fetchEventFeedback(int eventId) async {
 
     Get.snackbar('Success', result.message);
   } catch (e) {
-    Get.snackbar('Error', 'Failed to load feedback: $e');
+    // Get.snackbar('Error', 'Failed to load feedback: $e');
   } finally {
     isFeedbackLoading(false);
   }
@@ -314,7 +314,7 @@ Future<void> submitEventFeedback(int eventId, int rating, String comment) async 
 
     Get.snackbar('Success', result.message);
   } catch (e) {
-    Get.snackbar('Error', 'Failed to submit feedback: $e');
+    // Get.snackbar('Error', 'Failed to submit feedback: $e');
   } finally {
     isLoading(false);
   }
@@ -346,7 +346,7 @@ Future<void> fetchVolunteerLog({int? eventId}) async {
       throw Exception('Invalid data format for volunteer log');
     }
   } catch (e) {
-    Get.snackbar('Error', 'Failed to fetch volunteer log: $e');
+    // Get.snackbar('Error', 'Failed to fetch volunteer log: $e');
   } finally {
     isVolunteerLogLoading(false);
   }

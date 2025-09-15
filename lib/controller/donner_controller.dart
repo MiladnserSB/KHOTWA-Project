@@ -84,12 +84,12 @@ class DonorController extends GetxController {
         title: 'Success',
         message: 'Donation confirmed successfully',
       );
-    } catch (e) {
-      CustomSnackbar.show(
-        type: SnackbarType.error,
-        title: 'Error',
-        message: 'Failed to confirm donation',
-      );
+    // } catch (e) {
+    //   CustomSnackbar.show(
+    //     type: SnackbarType.error,
+    //     title: 'Error',
+    //     message: 'Failed to confirm donation',
+    //   );
     } finally {
       isLoadingDonations.value = false;
     }

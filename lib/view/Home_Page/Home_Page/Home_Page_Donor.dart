@@ -92,12 +92,12 @@ class _HomePageDonorState extends State<HomePageDonor> {
   );
 
   final List<Map<String, String>> personList = [
-    {"name": "Jeeny", "role": "Admin", "image": 'assets/images/jeeny.jpg'},
-    {"name": "Milad", "role": "Advisor", "image": 'assets/images/Milad.jpg'},
+  {"name": "Jeeny", "role": "Admin", "image": 'assets/images/new.jpg'},
+    {"name": "Milad", "role": "Advisor", "image": 'assets/images/Intro.png'},
     {
       "name": "Abood",
       "role": "Serinan",
-      "image": 'assets/images/photo_2025-09-07_23-25-37.jpg',
+      "image": 'assets/images/new.jpg',
     },
   ];
 
@@ -161,7 +161,7 @@ class _HomePageDonorState extends State<HomePageDonor> {
                     },
                     child: ClipOval(
                       child: Image.asset(
-                        'assets/images/profile1.jpg',
+                        'assets/images/image.png',
                         width: 40,
                         height: 40,
                         fit: BoxFit.cover,

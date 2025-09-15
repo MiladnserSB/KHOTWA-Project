@@ -41,7 +41,7 @@ class ArabicLocalization extends Translations {
       "Theme Changed": "تم تغيير النمط",
       "Language Changed": "تم تغيير اللغة",
       //HomePageVolunteer
-      "Khotwa": "خطوة",
+      "Khotwa": "درجة",
       "education support": "دعم التعليم",
       "refugee assistance": "مساعدة اللاجئين",
       "community water well": "بئر مياه المجتمع",
